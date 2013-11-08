@@ -1,0 +1,32 @@
+{template header}
+
+{template announcement}
+
+<ul class="product_list">
+	<!--{loop $products $p}-->
+	<li>
+		<div class="icon" style="background:$p[icon_background];">
+			<img src="$p[icon]" />
+		</div>
+		<div class="detail">
+			<div class="name">$p[name]</div>
+			<div class="soldout">销量：<span class="value">$p[soldout]</span></div>
+			<ul class="rule">
+			<!--{loop $p['rule'] $r}-->
+				<li>
+					<span class="price">$r[price]</span>
+					<span class="priceunit">$r[priceunit]</span>
+					<span class="amount">$r[amount]</span>
+					<span class="amountunit">$r[amountunit]</span>
+				</li>
+			<!--{/loop}-->
+			</ul>
+			<div class="more">
+				<a href="###">点击展开并购买</a>
+			</div>
+		</div>
+	</li>
+	<!--{/loop}-->
+</ul>
+
+{template footer}

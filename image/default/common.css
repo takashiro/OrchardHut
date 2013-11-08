@@ -1,0 +1,321 @@
+body{
+	background:url(body_bg.png);
+	user-select:none;
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-khtml-user-select:none;
+	-moz-user-select:moz-none;
+	-ms-user-select:none;
+	padding:0;
+	margin:0;
+}
+
+body, button, input, select, textarea{
+	font-family:微软雅黑;
+}
+
+a{
+	text-decoration:none;
+	color:#FE6565;
+}
+
+ul{
+	padding:0;
+	margin:0;
+}
+
+li{
+	list-style:none;
+}
+
+button{
+	margin:5px;
+	width:150px;
+	background-color:#fe6565;
+	background:url(button_bg.jpg) repeat;
+	box-shadow:0 1px 3px #ccc;
+	background-size:auto 100%;
+	color:white;
+	border:0 solid;
+	border-radius:10px;
+	display:inline-block;
+	text-decoration:none;
+	padding:15px;
+	font-size:large;
+	font-weight:bold;
+	cursor:pointer;
+}
+
+form label{
+	line-height:2em;
+}
+
+input {
+	color: #444;
+	background-color: white;
+	background-size: auto 15px;
+	padding: 8px;
+	border-radius: 8px;
+	border: 1px solid #ddd;
+	width:149px;
+}
+
+input:focus {
+	outline: none;
+	border: 1px solid #fe6565;
+}
+
+#sharebox{
+	display:none;
+}
+
+.announcement{
+	background:#FD7271;
+	padding:25px 20px;
+	box-shadow: inset 0 -3px 10px #fc6464;
+	position:relative;
+}
+
+.announcement .content{
+	background:url(announcement_bg.jpg);
+	height:210px;
+	margin:auto;
+	box-shadow: 0 5px 16px #dc5858;
+}
+
+.announcement .sticker_left{
+	width:55px;
+	height:51px;
+	position:absolute;
+	left:0;
+	top:3px;
+	background:url(sticker_left.png) no-repeat;
+}
+
+.announcement .sticker_right{
+	width:55px;
+	height:58px;
+	position:absolute;
+	top:3px;
+	right:0;
+	background:url(sticker_right.png) no-repeat;
+}
+
+.container{
+	margin:0 auto;
+	padding-bottom:50px;
+}
+
+ul.product_list{
+	background:white;
+	width:100%;
+	box-shadow:0 1px 6px #8F8F8F;
+	line-height:2em;
+	color:#A59999;
+}
+
+ul.product_list > li{
+	margin-bottom:2px;
+	position:relative;
+	min-height:110px;
+	padding-left:110px;
+}
+
+ul.product_list > li .icon{
+	width:110px;
+	position:absolute;
+	left:0;
+	height:100%;
+}
+
+ul.product_list > li .icon img{
+	width:110px;
+	height:110px;
+	border:0;
+}
+
+ul.product_list > li .detail .name{
+	font-weight:bold;
+	background:#F5FFD9;
+	border-bottom:white 2px solid;
+	padding-left:1em;
+}
+
+ul.product_list > li .detail .soldout{
+	position:absolute;
+	top:0;
+	right:1em;
+}
+
+ul.product_list > li .detail ul.rule li{
+	padding-left:1em;
+	background:#F5FFD9;
+	border-bottom:white 2px solid;
+}
+
+ul.product_list > li .detail .more{
+	text-align:right;
+	padding:0 1em;
+	font-weight:bold;
+	font-size:11pt;
+}
+
+ul.product_list > li .detail .more a{
+	color:#FC7E7C;
+}
+
+footer{
+	width:100%;
+	text-align:center;
+	background:url(footer_border.png) repeat-x;
+	background-size: auto 6px;
+	padding-top:5px;
+	position:fixed;
+	left:0;
+	bottom:0;
+	font-size:small;
+}
+
+footer ul.button_list{
+	background:url(footer_bg.jpg) repeat-x;
+	background-size: auto 56px;
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+footer ul.button_list li{
+	width:24%;
+	display:inline-block;
+	border-right:#e54c4c 1px solid;
+}
+
+footer ul.button_list li:last-child{
+	border-right:0px solid;
+}
+
+footer ul.button_list li a{
+	display:block;
+	width:100%;
+	color:white;
+	height:23px;
+	padding-top:30px;
+	transition:0.2s linear;
+}
+
+footer ul.button_list li:hover{
+	background:url(icon_activebg.jpg) repeat-x;
+	background-color:#fe6565;
+	background-size:auto 54px;
+
+}
+
+footer ul.button_list li a:hover{
+	text-shadow: 0 0 4px #ffcccc;
+}
+
+footer ul.button_list #myorder a{
+	background:url(icon_myorder.png) no-repeat;
+	background-position:center 10px;
+}
+
+footer ul.button_list #buyfruit a{
+	background:url(icon_buyfruit.png) no-repeat;
+	background-position:center 10px;
+}
+
+footer ul.button_list #buypackage a{
+	background:url(icon_buypackage.png) no-repeat;
+	background-position:center 10px;
+}
+
+footer ul.button_list #cart a{
+	background:url(icon_cart.png) no-repeat;
+	background-position:center 10px;
+	position:relative;
+}
+
+footer ul.button_list #cart-goods-number{
+	font-weight:bold;
+	background-color:#fe6565;
+	color:white;
+	border:white 3px solid;
+	border-radius:15px;
+	padding:0 4px;
+	position:absolute;
+	top:3px;
+	margin-left:-10px;
+}
+
+.post_buttons{
+	text-align:center;
+}
+
+
+.box{
+	border-radius:8px;
+	box-shadow:rgb(116, 116, 116) 0px 0px 8px 0px;
+	margin:40px auto;
+	background:white;
+	text-align:center;
+	padding-bottom:10px;
+}
+
+.box h1{
+	height:17px;
+	background:url(icon_watermelon.png) repeat-x;
+	background-size:auto 17px;
+	padding-top:17px;
+	font-size:large;
+	margin-bottom:20px;
+}
+
+.box .content{
+	margin:0 10px;
+}
+
+.messagebox{
+	width:470px;
+}
+
+.messagebox h1{
+	margin-bottom:40px;
+}
+
+.icon_home{
+	background:#FE6565 url(icon_home.png) no-repeat;
+	width:35px;
+	height:35px;
+	border-radius:17.5px;
+	background-position:center center;
+	background-size:17.5px 18px;
+	display:inline-block;
+}
+
+.profile{
+	height:35px;
+}
+
+.profile .icon_home{
+	float:left;
+}
+
+.profile .account{
+	float:left;
+	height:35px;
+	line-height:35px;
+	margin-left:0.5em;
+	font-weight:bold;
+	font-size:middle;
+}
+
+.profile .operation{
+	height:35px;
+	line-height:35px;
+	float:right;
+}
+
+.profile .operation li{
+	display:inline;
+	margin:0 1em;
+}
