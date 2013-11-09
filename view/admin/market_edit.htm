@@ -1,0 +1,79 @@
+{template header}
+
+<script type="text/javascript">
+$(function(){
+	$('#price_list').editlist({
+		'edit' : '$mod_url&action=editprice&productid=$product[id]',
+		'delete' : '$mod_url&action=deleteprice&productid=$product[id]',
+		'attr' : ['price', 'priceunit', 'amount', 'amountunit'],
+		'buttons' : {'delete':'删除'}
+	});
+});
+</script>
+
+<div class="box">
+	<h1>商品管理 - $product[name]</h1>
+	<div class="content">
+		<form action="###" method="post" enctype="multipart/form-data">
+			<table>
+				<tr><th>名称</th><td><input type="text" name="name" value="$product[name]" /></td></tr>
+				<tr><th>介绍</th><td><input type="text" name="introduction" value="$product[introduction]" /></td></tr>
+				<tr>
+					<th>缩略图</th>
+					<td>
+						<!--{if $product['icon']}-->
+						<img src="$product[icon]" /><br />
+						<!--{/if}-->
+						<input type="file" name="icon" />
+					</td>
+				</tr>
+				<tr>
+					<th>照片</th>
+					<td>
+						<!--{if $product['photo']}-->
+						<img src="$product[photo]" /><br />
+						<!--{/if}-->
+						<input type="file" name="photo" />
+					</td>
+				</tr>
+			</table>
+			<div class="post_button">
+				<button type="submit">修改</button>
+			</div>
+		</form>
+	</div>
+
+	<div id="price_list" class="edit_list">
+		<table>
+			<thead>
+				<tr>
+					<td>价格</td>
+					<td>价格单位</td>
+					<td>数量</td>
+					<td>数量单位</td>
+					<td>操作</td>
+				</tr>
+			</thead>
+			<tbody>
+				<!--{loop $prices $p}-->
+				<tr primaryvalue="$p[id]">
+					<td>$p[price]</td>
+					<td realvalue="$p[priceunit]">{eval echo Product::PriceUnits($p['priceunit']);}</td>
+					<td>$p[amount]</td>
+					<td realvalue="$p[amountunit]">{eval echo Product::AmountUnits($p['amountunit']);}</td>
+					<td></td>
+				</tr>
+				<!--{/loop}-->
+				<tr>
+					<td><input type="text" class="number" value="1" /></td>
+					<td>{eval echo Template::select('', Product::PriceUnits());}</td>
+					<td><input type="text" class="number" value="1" /></td>
+					<td>{eval echo Template::select('', Product::AmountUnits());}</td>
+					<td><button type="button" class="add">添加</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{template footer}

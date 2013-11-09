@@ -10,18 +10,21 @@ class DBObject{
 	function __destruct(){
 		global $db;
 
-		//????
-		if($this->oattr){
-			foreach($this->oattr as $key => $value){
-				if($value != $this->attr[$key]){
-					$this->update[$key] = $this->attr[$key];
+		$db->select_table(static::TABLE_NAME);
+
+		$id = $this->attr(static::PRIMARY_KEY);
+		if($id > 0){
+			if($this->oattr){
+				foreach($this->oattr as $key => $value){
+					if($value != $this->attr[$key]){
+						$this->update[$key] = $this->attr[$key];
+					}
 				}
 			}
-		}
 
-		if($this->update){
-			$db->select_table(static::TABLE_NAME);
-			$db->UPDATE($this->update, static::PRIMARY_KEY.'=\''.$this->attr(static::PRIMARY_KEY).'\'');
+			if($this->update){
+				$db->UPDATE($this->update, static::PRIMARY_KEY.'=\''.$this->attr(static::PRIMARY_KEY).'\'');
+			}
 		}
 	}
 
@@ -74,15 +77,33 @@ class DBObject{
 		$this->update[$attr] = $value;
 	}
 
+	public function insert(){
+		global $db;
+		$db->select_table(static::TABLE_NAME);
+		$db->INSERT($this->attr);
+
+		$this->attr(static::PRIMARY_KEY, $db->insert_id());
+		return $this->attr(static::PRIMARY_KEY);
+	}
+
 	public function deleteFromDB(){
-		DB::select_table(static::TABLE_NAME);
-		DB::DELETE('id='.$this->id);  //调用了mysql类的函数
+		global $db;
+		$db->select_table(static::TABLE_NAME);
+		$db->DELETE('id='.$this->id);
 		$this->attr = $this->oattr = array();
 	}
 
+	static public function Delete($id){
+		global $db;
+		$id = intval($id);
+		$db->select_table(static::TABLE_NAME);
+		$db->DELETE('id='.$id);
+	}
+
 	static public function Exist($id){
-		DB::select_table(static::TABLE_NAME);
-		return DB::RESULTF(static::PRIMARY_KEY, '`'.static::PRIMARY_KEY.'`=\''.$id.'\'');
+		global $db;
+		$db->select_table(static::TABLE_NAME);
+		return $db->RESULTF(static::PRIMARY_KEY, '`'.static::PRIMARY_KEY.'`=\''.$id.'\'');
 	}
 
 	static public function Count(){
