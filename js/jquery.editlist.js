@@ -33,8 +33,6 @@
 				var index = td.index();
 				var tbody = td.parent().parent();
 
-				alert(this);
-
 				var input = tbody.children(':last-child').children().eq(index).find('input,select').clone();
 
 				if(td.attr('realvalue')){
