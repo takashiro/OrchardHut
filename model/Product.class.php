@@ -87,6 +87,10 @@ class Product extends DBObject{
 		if($id > 0){
 			$update = array();
 
+			if(isset($price['subtype'])){
+				$update['subtype'] = $price['subtype'];
+			}
+
 			if(isset($price['price'])){
 				$update['price'] = floatval($price['price']);
 			}
@@ -108,6 +112,7 @@ class Product extends DBObject{
 		}else{
 			@$price = array(
 				'productid' => $this->id,
+				'subtype' => $price['subtype'],
 				'price' => floatval($price['price']),
 				'priceunit' => intval($price['priceunit']),
 				'amount' => floatval($price['amount']),

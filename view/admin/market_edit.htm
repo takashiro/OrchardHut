@@ -5,7 +5,7 @@ $(function(){
 	$('#price_list').editlist({
 		'edit' : '$mod_url&action=editprice&productid=$product[id]',
 		'delete' : '$mod_url&action=deleteprice&productid=$product[id]',
-		'attr' : ['price', 'priceunit', 'amount', 'amountunit'],
+		'attr' : ['subtype', 'price', 'priceunit', 'amount', 'amountunit'],
 		'buttons' : {'delete':'删除'}
 	});
 });
