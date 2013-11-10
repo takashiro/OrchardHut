@@ -2,8 +2,10 @@
 
 require_once './core/init.inc.php';
 
+$type = isset($_GET['type']) ? intval($_GET['type']) : 0;
+
 $db->select_table('product');
-$products = $db->MFETCH('*');
+$products = $db->MFETCH('*', 'type='.$type);
 
 $product = new Product;
 foreach($products as &$p){

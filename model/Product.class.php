@@ -55,21 +55,23 @@ class Product extends DBObject{
 	}
 
 	function getImage($attr){
-		if($this->$attr){
+		if(!empty($this->$attr)){
 			return './data/attachment/product_'.$this->id.'_'.$attr.'.png';
 		}else{
-			return './view/template/default/product_unknown_icon.png';
+			return './view/default/image/product_unknown_icon.png';
 		}
 	}
 
-	public function getPrices(){
+	public function getPrices($to_readable = false){
 		if($this->id > 0){
 			global $db;
 			$db->select_table('productprice');
 			$prices = $db->MFETCH('*', 'productid='.$this->id);
-			foreach($prices as &$p){
-				$p['priceunit'] = self::PriceUnits($p['priceunit']);
-				$p['amountunit'] = self::AmountUnits($p['amountunit']);
+			if($to_readable){
+				foreach($prices as &$p){
+					$p['priceunit'] = self::PriceUnits($p['priceunit']);
+					$p['amountunit'] = self::AmountUnits($p['amountunit']);
+				}
 			}
 			return $prices;
 		}else{
@@ -128,12 +130,8 @@ class Product extends DBObject{
 	public function toArray(){
 		if($this->id > 0){
 			$attr = parent::toArray();
-			if($attr['photo']){
-				$attr['photo'] = $this->getImage('photo');
-			}
-			if($attr['icon']){
-				$attr['icon'] = $this->getImage('icon');
-			}
+			$attr['photo'] = $this->getImage('photo');
+			$attr['icon'] = $this->getImage('icon');
 			return $attr;
 		}else{
 			return array(
