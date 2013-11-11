@@ -41,9 +41,9 @@ $(function(){
 						<td>
 							{eval echo Order::$Status[$o['status']];}
 							<!--{if $o['status'] == 0 && $_G['admin']->hasPermission('order_sort')}-->
-							<div><a href="###">[已打包]</a></div>
+							<div><a href="###" title="将订单标记为已打包">[已打包]</a></div>
 							<!--{elseif $o['status'] == 1 && $_G['admin']->hasPermission('order_deliver')}-->
-							<div><a href="###">[已签收]</a></div>
+							<div><a href="###" title="将订单标记为已签收">[已签收]</a></div>
 							<!--{/if}-->
 						</td>
 						<td>
