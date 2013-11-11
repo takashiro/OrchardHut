@@ -3,6 +3,8 @@
 class Order extends DBObject{
 	const TABLE_NAME = 'order';
 
+	public static $Status = array('待出库', '开始派送', '已签收');
+
 	private $detail = array();
 	private $address_components = array();
 
@@ -17,6 +19,10 @@ class Order extends DBObject{
 			$db->select_table('orderaddresscomponent');
 			$this->address_components = $db->MFETCH('*', 'orderid='.$id);
 		}
+	}
+
+	public function __destruct(){
+		parent::__destruct();
 	}
 
 	public function addDetail($d){
@@ -53,10 +59,6 @@ class Order extends DBObject{
 		unset($c);
 		$db->select_table('orderaddresscomponent');
 		$db->INSERTS($this->address_components);
-	}
-
-	public function __destruct(){
-		parent::__destruct();
 	}
 }
 

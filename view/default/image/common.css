@@ -450,3 +450,20 @@ footer ul.button_list #cart-goods-number{
 .cart .post_buttons{
 	margin-top:20px;
 }
+
+.order_list{
+	margin:10px 0;
+}
+
+.order_list table{
+	width:100%;
+	border-collapse:collapse;
+}
+
+.order_list table th, .order_list table td{
+	border:#FCBDBC 1px solid;;
+}
+
+.order_list table thead{
+	background:#FCBDBC;
+}
