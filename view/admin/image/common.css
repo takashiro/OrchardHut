@@ -200,15 +200,19 @@ footer{
 	margin:0 1em;
 }
 
-.edit_list table{
+.list table{
 	width:100%;
 	border-collapse:collapse;
 }
 
-.edit_list table thead tr{
+.list table thead{
+	background:#FFC8C8;
+}
+
+.list table thead tr{
 	background:background:url(footer_bg.jpg) repeat-x;
 }
 
-.edit_list table td, .edit_list table th{
+.list table td, .edit_list table th{
 	border:#FFC8C8 1px solid;
 }

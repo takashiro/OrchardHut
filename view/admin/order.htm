@@ -1,0 +1,62 @@
+{template header}
+
+<script type="text/javascript">
+$(function(){
+	$('#productlist').editlist({
+		'edit' : '$mod_url&action=edit',
+		'delete' : '$mod_url&action=delete',
+		'attr' : ['name', 'type']
+	});
+});
+</script>
+
+<div class="box">
+	<h1>订单管理</h1>
+	<div class="content">
+		<div id="orderlist" class="list">
+			<table>
+				<thead>
+					<tr>
+					<!--{loop Address::Format() $f}-->
+						<td>$f[name]</td>
+					<!--{/loop}-->
+						<td>地址</td>
+						<td>收件人</td>
+						<td>物品</td>
+						<td>价格</td>
+						<td>状态</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					<!--{loop $orders $o}-->
+					<tr primaryvalue="$o[id]">
+						<!--{loop Address::Format() $format}-->
+							<td>{eval echo $o['address'][$format['id']];}</td>
+						<!--{/loop}-->
+						<td>$o[extaddress]</td>
+						<td>$o[addressee]<br />$o[mobile]</td>
+						<td>$o[items]</td>
+						<td>$o[totalprice] $o[priceunit]</td>
+						<td>
+							{eval echo Order::$Status[$o['status']];}
+							<!--{if $o['status'] == 0 && $_G['admin']->hasPermission('order_sort')}-->
+							<div><a href="###">[已打包]</a></div>
+							<!--{elseif $o['status'] == 1 && $_G['admin']->hasPermission('order_deliver')}-->
+							<div><a href="###">[已签收]</a></div>
+							<!--{/if}-->
+						</td>
+						<td>
+							<a href="###">[打印]</a>
+						</td>
+					</tr>
+					<!--{/loop}-->
+					<tr>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{template footer}
