@@ -137,6 +137,8 @@ class Product extends DBObject{
 			$attr = parent::toArray();
 			$attr['photo'] = $this->getImage('photo');
 			$attr['icon'] = $this->getImage('icon');
+			$attr['text_color'] = isset($attr['text_color']) ? dechex($attr['text_color']) : 0x000000;
+			$attr['background_color'] = isset($attr['background_color']) ? dechex($attr['background_color']) : 0xFFFFFF;
 			return $attr;
 		}else{
 			return array(
@@ -144,6 +146,8 @@ class Product extends DBObject{
 				'name' => '',
 				'type' => 0,
 				'introduction' => '',
+				'text_color' => '#000',
+				'background_color' => '#FFF',
 				'prices' => array(),
 			);
 		}

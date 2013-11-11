@@ -149,7 +149,6 @@ ul.product_list > li .icon img{
 
 ul.product_list > li .detail .name{
 	font-weight:bold;
-	background:#F5FFD9;
 	border-bottom:white 2px solid;
 	padding-left:1em;
 }
@@ -162,7 +161,6 @@ ul.product_list > li .detail .soldout{
 
 ul.product_list > li .detail ul.rule li{
 	padding-left:1em;
-	background:#F5FFD9;
 	border-bottom:white 2px solid;
 	line-height:40px;
 	height:40px;

@@ -200,6 +200,10 @@ footer{
 	margin:0 1em;
 }
 
+.list{
+	margin:10px;
+}
+
 .list table{
 	width:100%;
 	border-collapse:collapse;

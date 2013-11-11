@@ -11,18 +11,18 @@
 				<div class="icon">
 					<img src="$p[icon]" />
 				</div>
-				<div class="detail">
-					<div class="name">$p[name]</div>
+				<div class="detail" style="background:#$p[background_color]">
+					<div class="name" style="color:#$p[text_color];">$p[name]</div>
 					<ul class="rule">
-					<li product-id="$p[productid]" price-id="$p[id]">
-						<span class="subtype">$p[subtype]</span>
-						<span class="price">$p[price]</span>
-						<span class="priceunit">$p[priceunit]</span>
-						<span class="amount">$p[amount]</span>
-						<span class="amountunit">$p[amountunit]</span>
-						x
-						<span class="number">$p[number]</span>
-					</li>
+						<li product-id="$p[productid]" price-id="$p[id]">
+							<span class="subtype" style="color:#$p[text_color];">$p[subtype]</span>
+							<span class="price" style="color:#$p[text_color];">$p[price]</span>
+							<span class="priceunit">$p[priceunit]</span>
+							<span class="amount" style="color:#$p[text_color];">$p[amount]</span>
+							<span class="amountunit" style="color:#$p[text_color];">$p[amountunit]</span>
+							x
+							<span class="number">$p[number]</span>
+						</li>
 					</ul>
 					<div class="subtotal">
 						小计：<span class="number">$p[subtotal]</span> <span class="unit">$p[priceunit]</span>

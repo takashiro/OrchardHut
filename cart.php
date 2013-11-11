@@ -117,12 +117,16 @@ switch($action){
 		}else{
 			$product = new Product;
 			foreach($products as &$p){
+				$number = $cart[$p['id']];
+				foreach($p as $attr => $value){
+					$product->$attr = $value;
+				}
 				$product->id = $p['productid'];
-				$product->icon = $p['icon'];
-				$product->photo = $p['photo'];
+				
+				$p = $product->toArray();
 				$p['icon'] = $product->getImage('icon');
 				$p['photo'] = $product->getImage('photo');
-				$p['number'] = $cart[$p['id']];
+				$p['number'] = $number;
 				$p['subtotal'] = $p['price'] * $p['number'];
 
 				if(array_key_exists($p['priceunit'], $total_price)){
@@ -138,12 +142,6 @@ switch($action){
 
 			include view('cart');
 		}
-	break;
-
-	case 'editaddress':
-	break;
-
-	case 'deleteaddress':
 	break;
 }
 

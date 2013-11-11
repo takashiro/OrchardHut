@@ -10,17 +10,17 @@
 		<div class="icon">
 			<img src="$p[icon]" />
 		</div>
-		<div class="detail">
-			<div class="name">$p[name]</div>
+		<div class="detail" style="background:#$p[background_color]">
+			<div class="name" style="color:#$p[text_color];">$p[name]</div>
 			<div class="soldout">销量：<span class="value">$p[soldout]</span></div>
 			<ul class="rule">
 			<!--{loop $p['rule'] $r}-->
 				<li product-id="$p[id]" price-id="$r[id]">
-					<span class="subtype">$r[subtype]</span>
-					<span class="price">$r[price]</span>
+					<span class="subtype" style="color:#$p[text_color];">$r[subtype]</span>
+					<span class="price" style="color:#$p[text_color];">$r[price]</span>
 					<span class="priceunit">$r[priceunit]</span>
-					<span class="amount">$r[amount]</span>
-					<span class="amountunit">$r[amountunit]</span>
+					<span class="amount" style="color:#$p[text_color];">$r[amount]</span>
+					<span class="amountunit" style="color:#$p[text_color];">$r[amountunit]</span>
 					<div class="order_input numberbox"></div>
 				</li>
 			<!--{/loop}-->

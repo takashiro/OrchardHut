@@ -1,5 +1,9 @@
 {template header}
 
+<script type="text/javascript" src="./plugin/spectrum/spectrum.js"></script>
+<style type="text/css">
+@import url(./plugin/spectrum/spectrum.css);
+</style>
 <script type="text/javascript">
 $(function(){
 	$('#price_list').editlist({
@@ -7,6 +11,12 @@ $(function(){
 		'delete' : '$mod_url&action=deleteprice&productid=$product[id]',
 		'attr' : ['subtype', 'price', 'priceunit', 'amount', 'amountunit'],
 		'buttons' : {'delete':'删除'}
+	});
+
+	$('input.color').spectrum({
+		'chooseText' : '选择',
+		'cancelText' : '取消',
+		'preferredFormat' : 'hex'
 	});
 });
 </script>
@@ -22,7 +32,7 @@ $(function(){
 					<th>缩略图</th>
 					<td>
 						<!--{if $product['icon']}-->
-						<img src="$product[icon]" /><br />
+						<img src="$product[icon]" width="110" /><br />
 						<!--{/if}-->
 						<input type="file" name="icon" />
 					</td>
@@ -36,6 +46,8 @@ $(function(){
 						<input type="file" name="photo" />
 					</td>
 				</tr>
+				<tr><th>文字颜色</th><td><input type="text" name="text_color" class="color" value="#$product[text_color]" /></td></tr>
+				<tr><th>背景颜色</th><td><input type="text" name="background_color" class="color" value="#$product[background_color]" /></td></tr>
 			</table>
 			<div class="post_button">
 				<button type="submit">修改</button>
@@ -43,7 +55,7 @@ $(function(){
 		</form>
 	</div>
 
-	<div id="price_list" class="edit_list">
+	<div id="price_list" class="list edit_list">
 		<table>
 			<thead>
 				<tr>

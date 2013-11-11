@@ -12,8 +12,8 @@
 
 		options = $.extend(defaults, options);
 
-		options.edit += (options.edit.indexOf('?') == -1 ? '?' : '&') + 'ajax=1';
-		options.delete += (options.delete.indexOf('?') == -1 ? '?' : '&') + 'ajax=1';
+		options.ajax_edit = options.edit + (options.edit.indexOf('?') == -1 ? '?' : '&') + 'ajax=1';
+		options.ajax_delete = options.delete + (options.delete.indexOf('?') == -1 ? '?' : '&') + 'ajax=1';
 
 		var operation_td = this.find('tbody tr:not(:last-child) td:last-child');
 		operation_td.html('');
@@ -57,7 +57,7 @@
 				data[options.primarykey] = tr.attr('primaryvalue');
 				data[attr] = value;
 
-				$.post(options.edit, data, function(data){
+				$.post(options.ajax_edit, data, function(data){
 					if(input.is('input')){
 						td.html(value);
 					}else{
@@ -87,7 +87,7 @@
 				data[attr] = value;
 			}
 
-			$.post(options.edit, data, function(data){
+			$.post(options.ajax_edit, data, function(data){
 				new_tr.attr('primaryvalue', data[options.primarykey]);
 
 				for(var i = 0; i < options.attr.length; i++){
@@ -111,7 +111,7 @@
 		this.on('click', '.edit', function(e){
 			var button = $(e.target);
 			var tr = button.parent().parent();
-			location.href = options.edit + '&' + options.primarykey + '=' + tr.attr('primaryvalue');
+			location.href = options.edit + (options.edit.indexOf('?') == -1 ? '?' : '&') + options.primarykey + '=' + tr.attr('primaryvalue');
 		});
 
 		this.on('click', '.delete', function(e){
@@ -120,7 +120,7 @@
 			var data = {};
 			data[options.primarykey] = tr.attr('primaryvalue');
 
-			$.post(options.delete, data, function(){
+			$.post(options.ajax_delete, data, function(){
 				tr.remove();
 			});
 		});

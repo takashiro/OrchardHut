@@ -40,6 +40,12 @@ switch($action){
 					}
 				}
 
+				foreach(array('text_color', 'background_color') as $attr){
+					if(isset($_POST[$attr])){
+						$product->$attr = hexdec($_POST[$attr]);
+					}
+				}
+
 				if(isset($_POST['introduction'])){
 					$product->introduction = $_POST['introduction'];
 				}
