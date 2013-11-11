@@ -55,9 +55,20 @@
 				<div class="content">
 					<ul class="mselect">
 					</ul>
-					<p><label>地址：</label>{eval echo Template::tselect('deliveryaddress', Address::Format(), Address::Components());}</p>
-					<p><label>收件人：</label><input type="text" name="addressee" /></p>
-					<p><label>联系电话：</label><input type="text" name="mobile" /></p>
+					<table>
+						<tr>
+							<td><label>地址：</label></td>
+							<td>{eval echo Template::tselect('deliveryaddress', Address::Format(), Address::Components());}</td>
+						</tr>
+						<tr>
+							<td><label>收件人：</label></td>
+							<td><input type="text" name="addressee" /></td>
+							</p>
+						<tr>
+							<td><label>联系电话：</label></td>
+							<td><input type="text" name="mobile" /></td>
+						</tr>
+					</table>
 				</div>
 			</div>
 			<div class="post_buttons">

@@ -16,22 +16,18 @@
 			<table>
 				<thead>
 					<tr>
-						<td>编号</td>
 						<td>物品</td>
-						<td>总价</td>
-						<td>下单时间</td>
-						<td>收件人</td>
+						<td>价格</td>
+						<td>编号</td>
 						<td>状态</td>
 					</tr>
 				</thead>
 				<tbody>
 				<!--{loop $orders $o}-->
 					<tr>
-						<td>$o[id]</td>
 						<td>$o[items]</td>
 						<td>$o[totalprice] $o[priceunit]</td>
-						<td>{eval echo rdate($o['dateline']);}</td>
-						<td>$o[addressee]</td>
+						<td>$o[id]</td>
 						<td>{eval echo Order::$Status[$o['status']];}</td>
 					</tr>
 				<!--{/loop}-->
