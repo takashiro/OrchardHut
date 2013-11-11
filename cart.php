@@ -101,6 +101,9 @@ switch($action){
 							'number' => $p['number'],
 							'subtotal' => $p['subtotal'],
 						));
+
+						$totalamount = $p['amount'] * $p['number'];
+						$db->query("UPDATE LOW_PRIORITY {$tpre}product SET soldout=soldout+$totalamount WHERE id=$p[productid]");
 					}
 				}
 				unset($p);
