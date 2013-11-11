@@ -37,18 +37,21 @@ class Order extends DBObject{
 		parent::insert();
 
 		global $db;
-		$db->select_table('orderdetail');
 		foreach($this->detail as &$d){
 			$d['orderid'] = $this->id;
+			if(is_numeric($d['amountunit'])){
+				$d['amountunit'] = Product::AmountUnits($d['amountunit']);
+			}
 		}
 		unset($d);
+		$db->select_table('orderdetail');
 		$db->INSERTS($this->detail);
 
-		$db->select_table('orderaddresscomponent');
 		foreach($this->address_components as &$c){
 			$c['orderid'] = $this->id;
 		}
 		unset($c);
+		$db->select_table('orderaddresscomponent');
 		$db->INSERTS($this->address_components);
 	}
 
