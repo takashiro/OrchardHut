@@ -20,6 +20,10 @@ switch($action){
 			}
 		}
 
+		if(!$cart){
+			showmsg('您还没有选购哦，请先把商品放入购物车。', 'market.php');
+		}
+
 		if($priceids){
 			$priceids = implode(',', $priceids);
 			$products = $db->fetch_all("SELECT p.*,r.*
