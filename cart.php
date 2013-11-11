@@ -3,6 +3,7 @@
 require_once './core/init.inc.php';
 
 $cart = $priceids = array();
+$total_price = array();
 
 if(!empty($_COOKIE['in_cart'])){
 	$in_cart = explode(',', $_COOKIE['in_cart']);
@@ -32,9 +33,16 @@ foreach($products as &$p){
 	$p['icon'] = $product->getImage('icon');
 	$p['photo'] = $product->getImage('photo');
 	$p['number'] = $cart[$p['id']];
+	$p['subtotal'] = $p['price'] * $p['number'];
+
+	if(array_key_exists($p['priceunit'], $total_price)){
+		$total_price[$p['priceunit']] += $p['subtotal'];
+	}else{
+		$total_price[$p['priceunit']] = $p['subtotal'];
+	}
+
 	$p['priceunit'] = Product::PriceUnits($p['priceunit']);
 	$p['amountunit'] = Product::AmountUnits($p['amountunit']);
-	$p['subtotal'] = $p['price'] * $p['number'];
 }
 unset($p);
 

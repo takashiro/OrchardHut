@@ -2,10 +2,10 @@
 
 <script type="text/javascript" src="./js/cart.js"></script>
 
-<div class="box">
+<div class="box cart">
 	<h1>我的购物车</h1>
 	<div class="content">
-		<ul class="product_list cart">
+		<ul class="product_list">
 			<!--{loop $products $p}-->
 			<li price-id="$p[id]">
 				<div class="icon">
@@ -25,13 +25,39 @@
 					</li>
 					</ul>
 					<div class="subtotal">
-						小计：$p[subtotal] $p[priceunit]
+						小计：<span class="number">$p[subtotal]</span> <span class="unit">$p[priceunit]</span>
 					</div>
 					<button type="button" class="remove"></button>
 				</div>
 			</li>
 			<!--{/loop}-->
 		</ul>
+		<div class="total">
+			<div class="icon"></div>
+			总计：
+			<div class="prices">
+				<!--{loop $total_price $price_unit $price}-->
+				<span class="number" id="total_price">$price</span>
+				<span class="unit">{eval echo Product::PriceUnits($price_unit);}</span>
+				<!--{/loop}-->
+			</div>
+		</div>
+		<div class="lightbox message">
+			<h1>购物留言</h1>
+			<div class="content">
+				<input type="text" name="message" />
+			</div>
+		</div>
+		<div class="lightbox deliveryaddress">
+			<h1>收货地址</h1>
+			<div class="content">
+			</div>
+		</div>
+		<div class="lightbox deliverytime">
+			<h1>收货时间</h1>
+			<div class="content">
+			</div>
+		</div>
 	</div>
 </div>
 

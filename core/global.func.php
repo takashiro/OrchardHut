@@ -2,8 +2,7 @@
 
 //显示一个消息，并跳转到$url_forward
 function showmsg($message, $url_forward = ''){
-	extract($GLOBALS, EXTR_SKIP); //extract() 函数从数组中把变量导入到当前的符号表中。
-	//$GLOBALS — 引用全局作用域中可用的全部变量 EXTR_SKIP 如果有冲突，不覆盖已有的变量。
+	extract($GLOBALS, EXTR_SKIP);
 
 	if(empty($_GET['ajax'])){
 		switch($url_forward){
@@ -35,6 +34,8 @@ function showmsg($message, $url_forward = ''){
 }
 
 function redirect($url){
+	extract($GLOBALS, EXTR_SKIP);
+
 	$url = addslashes($url);
 	include view('redirect');
 	exit;

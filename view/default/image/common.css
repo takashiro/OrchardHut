@@ -112,6 +112,10 @@ button.remove{
 	padding-bottom:50px;
 }
 
+.container .content{
+	background:#FCFCFC;
+}
+
 ul.product_list{
 	background:white;
 	width:100%;
@@ -282,6 +286,19 @@ footer ul.button_list #cart-goods-number{
 	margin:0 10px;
 }
 
+.lightbox{
+	border-bottom:#FCBDBC 1px solid;
+}
+
+.lightbox h1{
+	background:none;
+	font-weight:normal;
+}
+
+.lightbox .content{
+	margin-bottom:10px;
+}
+
 .messagebox{
 	width:470px;
 }
@@ -372,6 +389,11 @@ footer ul.button_list #cart-goods-number{
 .cart{
 	text-align:left;
 	position:relative;
+	background:#FCFCFC;
+}
+
+.cart > h1{
+	text-align:center;
 }
 
 .cart .subtotal{
@@ -382,4 +404,36 @@ footer ul.button_list #cart-goods-number{
 	position:absolute;
 	top:0;
 	right:0;
+}
+
+.cart .total{
+	color:#fe6565;
+	font-weight:bold;
+	line-height:38px;
+	height:38px;
+	position:relative;
+	margin:5px 0;
+	padding:5px 0;
+	padding-left:45px;
+	border-bottom:#FCBDBC 1px solid;
+}
+
+.cart .total .icon{
+	background:#fe6565 url(icon_buyfruit.png) no-repeat;
+	background-position:center center;
+	width:38px;
+	height:38px;
+	border-radius:19px;
+	position:absolute;
+	left:0;
+}
+
+.cart .total .prices{
+	position:absolute;
+	right:10px;
+	top:5px;
+}
+
+.cart .message input{
+	width:98%;
 }

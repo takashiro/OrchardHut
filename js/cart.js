@@ -56,6 +56,11 @@ $(function(){
 		var li = button.parent().parent();
 		var price_id = parseInt(li.attr('price-id'), 10);
 		if(!isNaN(price_id)){
+			var subtotal = parseFloat(li.find('.subtotal .number').html());
+			var total_price = parseFloat($('#total_price').html());
+			total_price -= subtotal;
+			$('#total_price').html(total_price);
+
 			cart_set(price_id, 0);
 			li.remove();
 		}
