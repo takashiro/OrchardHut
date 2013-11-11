@@ -1,9 +1,37 @@
 {template header}
 
+<script type="text/javascript" src="./js/cart.js"></script>
+
 <div class="box">
 	<h1>我的购物车</h1>
 	<div class="content">
-		
+		<ul class="product_list cart">
+			<!--{loop $products $p}-->
+			<li price-id="$p[id]">
+				<div class="icon">
+					<img src="$p[icon]" />
+				</div>
+				<div class="detail">
+					<div class="name">$p[name]</div>
+					<ul class="rule">
+					<li product-id="$p[productid]" price-id="$p[id]">
+						<span class="subtype">$p[subtype]</span>
+						<span class="price">$p[price]</span>
+						<span class="priceunit">$p[priceunit]</span>
+						<span class="amount">$p[amount]</span>
+						<span class="amountunit">$p[amountunit]</span>
+						x
+						<span class="number">$p[number]</span>
+					</li>
+					</ul>
+					<div class="subtotal">
+						小计：$p[subtotal] $p[priceunit]
+					</div>
+					<button type="button" class="remove"></button>
+				</div>
+			</li>
+			<!--{/loop}-->
+		</ul>
 	</div>
 </div>
 

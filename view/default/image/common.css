@@ -65,6 +65,12 @@ input:focus{
 	border: 1px solid #fe6565;
 }
 
+button.remove{
+	width:35px;
+	height:35px;
+	background:url(button_close.png) no-repeat;
+}
+
 #sharebox{
 	display:none;
 }
@@ -361,4 +367,19 @@ footer ul.button_list #cart-goods-number{
 
 .order_input{
 	float:right;
+}
+
+.cart{
+	text-align:left;
+	position:relative;
+}
+
+.cart .subtotal{
+	padding-left:1em;
+}
+
+.cart button.remove{
+	position:absolute;
+	top:0;
+	right:0;
 }

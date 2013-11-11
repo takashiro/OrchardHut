@@ -42,8 +42,6 @@ $(function(){
 			'number' : parseInt(input.val(), 10)
 		};
 
-		$.post('cart.php', data);
-
 		cart_set(data.price_id, data.number);
 	});
 
@@ -52,4 +50,14 @@ $(function(){
 		var number = cart[price_id];
 		$('li[price-id=' + price_id + '] .order_input input').val(number);
 	}
+
+	$('.cart').on('click', 'button.remove', function(e){
+		var button = $(e.target);
+		var li = button.parent().parent();
+		var price_id = parseInt(li.attr('price-id'), 10);
+		if(!isNaN(price_id)){
+			cart_set(price_id, 0);
+			li.remove();
+		}
+	});
 });

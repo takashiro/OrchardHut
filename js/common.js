@@ -1,5 +1,7 @@
 
 function getcookie(Name){
+	Name = cookiepre + Name;
+
 	var search = Name + "=";
 	if(document.cookie.length > 0){
 		offset = document.cookie.indexOf(search);  
@@ -17,6 +19,8 @@ function getcookie(Name){
 }
 
 function setcookie(name, value){
+	name = cookiepre + name;
+
 	var argv = setcookie.arguments;
 	var argc = setcookie.arguments.length;
 	var expires = (argc > 2) ? argv[2] : null;
