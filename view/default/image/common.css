@@ -52,15 +52,22 @@ form label{
 
 input {
 	color:#444;
-	background-color: white;
-	background-size: auto 15px;
-	padding: 8px;
-	border-radius: 8px;
+	background-color:white;
+	background-size:auto 15px;
+	padding:8px;
+	border-radius:8px;
 	border:#ddd 1px solid;
 	width:149px;
 }
 
-input:focus{
+select{
+	color:#444;
+	padding:7px;
+	border-radius:8px;
+	border:#ddd 1px solid;
+}
+
+input:focus, select:focus{
 	outline: none;
 	border: 1px solid #fe6565;
 }
@@ -110,10 +117,6 @@ button.remove{
 .container{
 	margin:0 auto;
 	padding-bottom:50px;
-}
-
-.container .content{
-	background:#FCFCFC;
 }
 
 ul.product_list{
@@ -436,4 +439,14 @@ footer ul.button_list #cart-goods-number{
 
 .cart .message input{
 	width:98%;
+}
+
+.deliveryaddress label{
+	width:120px;
+	display:inline-block;
+	text-align:right;
+}
+
+.cart .post_buttons{
+	margin-top:20px;
 }

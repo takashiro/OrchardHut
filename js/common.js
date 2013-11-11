@@ -88,4 +88,65 @@ $(function(){
 	});
 
 	$('#cart-goods-number').html(cart_number());
+
+	$('.tselect').on('change', 'select', function(e){
+		var cur = $(e.target);
+		var child = cur.next();
+		var tselect = cur.parent();
+
+		var input = tselect.children('.value');
+		var address = [];
+		tselect.children('select').each(function(){
+			address.push($(this).val());
+		});
+		var ext = tselect.children('.ext');
+		if(ext.length > 0){
+			address.push(ext.val());
+		}
+		input.val(address.join(','));
+
+		if(child.length < 1 || !child.is('select')){
+			return false;
+		}
+
+		var div = $($.parseHTML('<div></div>'));
+		if(child.attr('hidden_children') != undefined){
+			div.html(child.attr('hidden_children'));
+		}
+
+		child.children().each(function(){
+			var parentid = $(this).attr('parentid');
+			if(parentid != '0' && parentid != cur.val()){
+				$(this).appendTo(div);
+			}
+		});
+
+		div.children().each(function(){
+			var parentid = $(this).attr('parentid');
+			if(parentid == '0' || parentid == cur.val()){
+				$(this).appendTo(child);
+			}
+		});
+
+		child.attr('hidden_children', div.html());
+		child.val('');
+	});
+
+	$('.tselect .ext').blur(function(e){
+		var ext = $(e.target);
+		var tselect = ext.parent();
+
+		var input = tselect.children('.value');
+		var address = [];
+		tselect.children('select').each(function(){
+			address.push($(this).val());
+		});
+		var ext = tselect.children('.ext');
+		if(ext.length > 0){
+			address.push(ext.val());
+		}
+		input.val(address.join(','));
+	});
+
+	$('.tselect select').change();
 });

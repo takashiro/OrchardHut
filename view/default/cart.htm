@@ -42,22 +42,28 @@
 				<!--{/loop}-->
 			</div>
 		</div>
-		<div class="lightbox message">
-			<h1>购物留言</h1>
-			<div class="content">
-				<input type="text" name="message" />
+
+		<form action="$PHP_SELF" method="post">
+			<div class="lightbox message">
+				<h1>购物留言</h1>
+				<div class="content">
+					<input type="text" name="message" />
+				</div>
 			</div>
-		</div>
-		<div class="lightbox deliveryaddress">
-			<h1>收货地址</h1>
-			<div class="content">
+			<div class="lightbox deliveryaddress">
+				<h1>收货地址</h1>
+				<div class="content">
+					<ul class="mselect">
+					</ul>
+					<p><label>地址：</label>{eval echo Template::tselect('deliveryaddress', Address::Format(), Address::Components());}</p>
+					<p><label>收件人：</label><input type="text" name="addressee" /></p>
+					<p><label>联系电话：</label><input type="text" name="mobile" /></p>
+				</div>
 			</div>
-		</div>
-		<div class="lightbox deliverytime">
-			<h1>收货时间</h1>
-			<div class="content">
+			<div class="post_buttons">
+				<button type="submit">提交订单</button>
 			</div>
-		</div>
+		</form>
 	</div>
 </div>
 

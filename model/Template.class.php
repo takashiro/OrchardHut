@@ -155,6 +155,35 @@ class Template{
 
 		return $str;
 	}
+
+	static public function tselect($name, $formats, $components, $with_ext = true){
+		$html = '<span class="tselect">';
+		$html.= '<input type="hidden" class="value" name="'.$name.'" />';
+
+		$format_components = array();
+		foreach($components as &$c){
+			$format_components[$c['formatid']][$c['id']] = array('name' => $c['name'], 'parentid' => $c['parentid']);
+		}
+		unset($c);
+
+		foreach($formats as &$f){
+			$html.= '<select>';
+			if(isset($format_components[$f['id']])){
+				foreach($format_components[$f['id']] as $id => $c){
+					$html.= '<option value="'.$id.'" parentid="'.$c['parentid'].'">'.$c['name'].'</option>';
+				}
+			}
+			$html.= '</select>';
+		}
+		unset($f);
+
+		if($with_ext){
+			$html.= '<input type="text" class="ext" />';
+		}
+		$html.= '</span>';
+
+		return $html;
+	}
 }
 
 ?>

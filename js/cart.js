@@ -51,7 +51,7 @@ $(function(){
 		$('li[price-id=' + price_id + '] .order_input input').val(number);
 	}
 
-	$('.cart').on('click', 'button.remove', function(e){
+	$('.cart').on('click', '.product_list button.remove', function(e){
 		var button = $(e.target);
 		var li = button.parent().parent();
 		var price_id = parseInt(li.attr('price-id'), 10);
