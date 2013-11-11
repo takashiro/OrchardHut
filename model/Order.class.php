@@ -25,6 +25,16 @@ class Order extends DBObject{
 		parent::__destruct();
 	}
 
+	public function belongToAddress($formatid, $componentid){
+		if($formatid == 0){
+			return true;
+		}
+
+		global $db;
+		$db->select_table('orderaddresscomponent');
+		return $this->id == $db->RESULTF('orderid', array('orderid' => $this->id, 'formatid' => intval($formatid), 'componentid' => intval($componentid)));
+	}
+
 	public function addDetail($d){
 		$this->detail[] = $d;
 	}
