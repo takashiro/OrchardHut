@@ -1,11 +1,6 @@
 body{
 	background:url(body_bg.png);
 	user-select:none;
-	-webkit-touch-callout:none;
-	-webkit-user-select:none;
-	-khtml-user-select:none;
-	-moz-user-select:moz-none;
-	-ms-user-select:none;
 	padding:0;
 	margin:0;
 }
@@ -287,7 +282,7 @@ footer ul.button_list #cart-goods-number{
 .box{
 	border-radius:8px;
 	box-shadow:rgb(116, 116, 116) 0px 0px 8px 0px;
-	margin:40px auto;
+	margin:10px auto;
 	background:white;
 	text-align:center;
 	padding-bottom:10px;
