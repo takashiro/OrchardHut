@@ -31,20 +31,6 @@ function cart_set(price_id, number){
 }
 
 $(function(){
-	$('.order_input input').change(function(e){
-		var input = $(e.target);
-		var numberbox = input.parent();
-		var li = numberbox.parent();
-
-		var data = {
-			'product_id' : li.attr('product-id'),
-			'price_id' : li.attr('price-id'),
-			'number' : parseInt(input.val(), 10)
-		};
-
-		cart_set(data.price_id, data.number);
-	});
-
 	var cart = cart_read();
 	for(var price_id in cart){
 		var number = cart[price_id];

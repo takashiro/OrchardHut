@@ -163,7 +163,11 @@ ul.product_list > li .detail ul.rule li{
 	padding-left:1em;
 	border-bottom:white 2px solid;
 	line-height:40px;
-	height:40px;
+}
+
+ul.product_list > li .detail ul.rule li .subtype{
+	display:block;
+	line-height:1.4em;
 }
 
 ul.product_list > li .detail .more{
@@ -175,6 +179,17 @@ ul.product_list > li .detail .more{
 
 ul.product_list > li .detail .more a{
 	color:#FC7E7C;
+}
+
+ul.product_list > li .detail .more a.disabled{
+	color:#CCCCCC;
+	cursor:text;
+	text-decoration:line-through;
+}
+
+ul.product_list > li .brief{
+	border-bottom:white 2px solid;
+	padding:0 1em;
 }
 
 footer{
