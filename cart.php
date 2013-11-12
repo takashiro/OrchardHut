@@ -2,6 +2,10 @@
 
 require_once './core/init.inc.php';
 
+if(!$_G['user']->isLoggedIn()){
+	redirect('memcp.php');
+}
+
 $actions = array('order', 'deleteaddress');
 $action = isset($_POST['action']) && in_array($_POST['action'], $actions) ? $_POST['action'] : $actions[0];
 
