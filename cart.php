@@ -47,7 +47,7 @@ switch($action){
 			if(!empty($_POST['deliveryaddress'])){
 				$address = explode(',', $_POST['deliveryaddress']);
 			}else{
-				showmsg('请填写收件地址。', 'back');
+				showmsg('请将收件地址填写完整。', 'back');
 			}
 
 
@@ -68,14 +68,18 @@ switch($action){
 			$order->message = isset($_POST['message']) ? trim($_POST['message']) : '';
 
 			foreach(Address::Format() as $format){
+				$componentid = intval(array_shift($address));
+				if(!$componentid){
+					showmsg('请填写完整的收件地址！', 'back');
+				}
+				
 				$order->addAddressComponent(array(
 					'formatid' => $format['id'],
-					'componentid' => intval(array_shift($address)),
+					'componentid' => $componentid,
 				));
-
-				if(!$address){
-					showmsg('非法地址！', 'back');
-				}
+			}
+			if(!$address){
+				showmsg('请填写完整的收件地址！', 'back');
 			}
 
 			$order->userid = $_G['user']->id;
