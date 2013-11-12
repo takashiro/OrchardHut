@@ -147,6 +147,10 @@ ul.product_list > li .icon img{
 	border:0;
 }
 
+ul.product_list > li .detail{
+	min-height:110px;
+}
+
 ul.product_list > li .detail .name{
 	font-weight:bold;
 	border-bottom:white 2px solid;
