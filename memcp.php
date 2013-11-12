@@ -21,7 +21,11 @@ if($action == 'login'){
 		}
 
 		if($result == User::ACTION_SUCCEEDED){
-			redirect($_POST['http_referer']);
+			if(empty($_POST['http_referer'])){
+				redirect('home.php');
+			}else{
+				redirect($_POST['http_referer']);
+			}
 		}else{
 			showmsg('用户名或密码错误。', 'back');
 		}
