@@ -139,6 +139,7 @@ class Product extends DBObject{
 			$attr['icon'] = $this->getImage('icon');
 			$attr['text_color'] = isset($attr['text_color']) ? dechex($attr['text_color']) : 0x000000;
 			$attr['background_color'] = isset($attr['background_color']) ? dechex($attr['background_color']) : 0xFFFFFF;
+			$attr['icon_background'] = isset($attr['icon_background']) ? dechex($attr['icon_background']) : 0xC8E0AA;
 			return $attr;
 		}else{
 			return array(

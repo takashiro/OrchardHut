@@ -40,7 +40,7 @@ switch($action){
 					}
 				}
 
-				foreach(array('text_color', 'background_color') as $attr){
+				foreach(array('text_color', 'background_color', 'icon_background') as $attr){
 					if(isset($_POST[$attr])){
 						$product->$attr = hexdec($_POST[$attr]);
 					}
