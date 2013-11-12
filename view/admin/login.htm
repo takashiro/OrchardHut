@@ -1,23 +1,37 @@
-{template header}
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>$_CONFIG[sitename]管理面板</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="shortcut icon" href="./view/$_G[style]/image/favicon.ico"/>
+<link rel="stylesheet" href="./view/$_G[style]/image/common.css" type="text/css" />
+<link rel="stylesheet" type="text/css" media="screen and (min-width:800px)" href="./view/$_G[style]/image/desktop.css" type="text/css">
+<link rel="stylesheet" href="./view/$_G[style]/image/login.css" type="text/css" />
+<script type="text/javascript" src="./plugin/jquery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="./js/jquery.editlist.js"></script>
+</head>
 
-<style text="text/css">
-@import url(./view/$_G[style]/image/login.css);
-</style>
+<body>
+	<section class="container">
+		<header>
+		</header>
 
-<form action="admin.php" method="post">
-	<div class="login_form">
-		<div class="header">
-			$_CONFIG[sitename] - 管理员登录
-		</div>
-		<label for="account">账号</label><input type="text" id="account" name="account" />
-		<label for="password">密码</label><input type="password" id="password" name="password" />
-		<input type="hidden" name="http_referer" value="{if !empty($_SERVER['HTTP_REFERER'])}$_SERVER[HTTP_REFERER]{/if}" />
-		<div class="post_buttons">
-			<button type="submit" name="action" value="login">登录</button>
-		</div>
-	</div>
-</form>
-
-</section>
+		<form action="admin.php" method="post">
+			<div class="login_form">
+				<div class="header">
+					$_CONFIG[sitename] - 管理员登录
+				</div>
+				<label for="account">账号</label><input type="text" id="account" name="account" />
+				<label for="password">密码</label><input type="password" id="password" name="password" />
+				<input type="hidden" name="http_referer" value="{if !empty($_SERVER['HTTP_REFERER'])}$_SERVER[HTTP_REFERER]{/if}" />
+				<div class="post_buttons">
+					<button type="submit" name="action" value="login">登录</button>
+				</div>
+			</div>
+		</form>
+	</section>
 </body>
 </html>

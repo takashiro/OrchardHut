@@ -27,6 +27,8 @@ if(!$_G['admin']->isLoggedIn()){
 	exit;
 }
 
+$_ADMIN = $_G['admin']->toArray();
+
 //Include the requested module
 $public_mod = array('home', 'memcp');
 $mod = isset($_GET['mod']) ? trim($_GET['mod']) : 'home';
