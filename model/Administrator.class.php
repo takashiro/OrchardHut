@@ -13,6 +13,7 @@ class Administrator extends User{
 		'order_deliver' => 0x4,
 		'editadmin' => 0x8,
 		'market' => 0x10,
+		'announcement' => 0x20,
 	);
 
 	public function __construct($id = 0){

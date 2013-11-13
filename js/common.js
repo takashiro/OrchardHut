@@ -50,6 +50,43 @@ function cart_number(){
 	}
 }
 
+function popup_message(title, message){
+	var popup_message = $('<div></div>');
+	popup_message.addClass('popup_message');
+	
+	var header = $('<header></header>');
+	var h4 = $('<h4></h4>');
+	h4.html(title);
+	var remove_button = $('<button></button>');
+	remove_button.attr('type', 'button');
+	remove_button.addClass('remove');
+	header.append(h4);
+	header.append(remove_button);
+	
+	var content = $('<div></div>');
+	content.addClass('content');
+	content.html(message);
+
+	popup_message.append(header);
+	popup_message.append(content);
+
+	var wrapper = $('<div></div>');
+	wrapper.addClass('popup_message_wrapper');
+	popup_message.appendTo(wrapper);
+
+	remove_button.click(function(){
+		wrapper.remove();
+	});
+
+	wrapper.click(function(){
+		$(this).remove();
+	});
+
+	$('body').append(wrapper);
+
+	wrapper.fadeIn();
+}
+
 $(function(){
 	var button_increase = $.parseHTML('<button class="increase"></button>');
 	var button_decrease = $.parseHTML('<button class="decrease"></button>');

@@ -50,7 +50,7 @@ form label{
 	line-height:2em;
 }
 
-input {
+input, textarea{
 	color: #444;
 	background-color: white;
 	background-size: auto 15px;
@@ -60,9 +60,13 @@ input {
 	width:149px;
 }
 
-input:focus {
-	outline: none;
-	border: 1px solid #fe6565;
+textarea{
+	height:300px;
+}
+
+input:focus, textarea:focus{
+	outline:none;
+	border:#fe6565 1px solid;
 }
 
 #sharebox{
@@ -219,4 +223,18 @@ footer{
 
 .list table td, .edit_list table th{
 	border:#FFC8C8 1px solid;
+}
+
+
+.edit_form table td{
+	border:0;
+	text-align:left;
+}
+
+.edit_form .wide{
+	width:98%;
+}
+
+.edit_form table th{
+	width:15%;
 }

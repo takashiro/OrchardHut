@@ -42,4 +42,11 @@ $(function(){
 			more_button.click();
 		}
 	});
+
+	$('.announcement a').click(function(e){
+		var a = $(e.target);
+		var detail = a.prev();
+		var title = detail.prev();
+		popup_message(title.html(), detail.html());
+	});
 });

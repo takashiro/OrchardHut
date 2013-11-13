@@ -1,0 +1,50 @@
+{template header}
+
+<script type="text/javascript">
+$(function(){
+	$('#announcement_list').editlist({
+		'edit' : '$mod_url&action=edit',
+		'delete' : '$mod_url&action=delete',
+		'attr' : ['title', 'time_start', 'time_end', 'displayorder']
+	});
+});
+</script>
+
+<div class="box">
+	<h1>公告管理</h1>
+	<div class="content">
+		<div id="announcement_list" class="list">
+			<table>
+				<thead>
+					<tr>
+						<td>标题</td>
+						<td>开始时间</td>
+						<td>结束时间</td>
+						<td>显示顺序</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					<!--{loop $announcements $a}-->
+					<tr primaryvalue="$a[id]">
+						<td>$a[title]</td>
+						<td>{eval echo rdate($a['time_start']);}</td>
+						<td>{eval echo rdate($a['time_end']);}</td>
+						<td>$a[displayorder]</td>
+						<td></td>
+					</tr>
+					<!--{/loop}-->
+					<tr>
+						<td><input type="text" /></td>
+						<td><input type="text" /></td>
+						<td><input type="text" /></td>
+						<td><input type="text" style="width:2em" /></td>
+						<td><button type="button" class="add">添加</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{template footer}

@@ -17,6 +17,8 @@ foreach($products as &$p){
 }
 unset($p);
 
+$announcements = Announcement::GetActiveAnnouncements();
+
 include view('market');
 
 ?>

@@ -39,6 +39,7 @@ button{
 	font-size:large;
 	font-weight:bold;
 	cursor:pointer;
+	text-align:center;
 }
 
 form label{
@@ -73,6 +74,11 @@ button.remove{
 	background:url(button_close.png) no-repeat;
 }
 
+.container{
+	margin:0 auto;
+	padding-bottom:50px;
+}
+
 #sharebox{
 	display:none;
 }
@@ -84,11 +90,42 @@ button.remove{
 	position:relative;
 }
 
-.announcement .content{
+.announcement .body{
 	background:url(announcement_bg.jpg);
-	height:210px;
+	height:160px;
 	margin:auto;
-	box-shadow: 0 5px 16px #dc5858;
+	box-shadow:0 5px 16px #dc5858;
+	padding:10px;
+	text-align:center;
+	overflow-x:hidden;
+	overflow-y:auto;
+	color:#999999;
+	font-size:11pt;
+}
+
+.announcement .body h4{
+	margin:0;
+	color:#FD7574;
+	font-family:华文琥珀;
+	font-size:18pt;
+	font-weight:normal;
+	text-align:center;
+	line-height:40px;
+	height:40px;
+}
+
+.announcement .body h4 img{
+	width:40px;
+	height:auto;
+	vertical-align:middle;
+}
+
+.announcement .body .content li{
+	margin:10px 0;
+}
+
+.announcement .body .content li .detail{
+	display:none;
 }
 
 .announcement .sticker_left{
@@ -107,11 +144,6 @@ button.remove{
 	top:3px;
 	right:0;
 	background:url(sticker_right.png) no-repeat;
-}
-
-.container{
-	margin:0 auto;
-	padding-bottom:50px;
 }
 
 ul.product_list{
@@ -478,4 +510,46 @@ footer ul.button_list #cart-goods-number{
 
 .order_list table thead{
 	background:#FCBDBC;
+}
+
+.popup_message_wrapper{
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	background:rgba(255, 220, 220, 0.5);
+	display:none;
+}
+
+.popup_message{
+	background:white url(icon_watermelon.png) repeat-x;
+	background-position:top center;
+	background-size:30px;
+	width:500px;
+	height:350px;
+	border-radius:8px;
+	box-shadow:rgb(116, 116, 116) 0px 0px 8px 0px;
+	padding:8px 10px;
+	margin:50px auto;
+}
+
+.popup_message header{
+	border-bottom:#CCCCCC 1px solid;
+	height:40px;
+	position:relative;
+	line-height:40px;
+}
+
+.popup_message header h4{
+	margin:0;
+}
+
+.popup_message header button.remove{
+	width:30px;
+	height:30px;
+	background-size:30px;
+	position:absolute;
+	right:0;
+	top:0;
 }

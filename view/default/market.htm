@@ -3,7 +3,22 @@
 <script type="text/javascript" src="./js/cart.js"></script>
 <script type="text/javascript" src="./js/market.js"></script>
 
-{template announcement}
+<div class="announcement">
+	<div class="sticker_left"></div>
+	<div class="sticker_right"></div>
+	<div class="body">
+		<h4><img src="./view/$_G[style]/image/icon_watermelon2.png" />$_CONFIG[sitename]公告栏！</h4>
+		<ul class="content">
+			<!--{loop $announcements $a}-->
+			<li>
+				<div class="title">$a[title]</div>
+				<div class="detail">$a[content]</div>
+				<a href="###">点击查看详情</a>
+			</li>
+			<!--{/loop}-->
+		</ul>
+	</div>
+</div>
 
 <ul class="product_list">
 	<!--{loop $products $p}-->

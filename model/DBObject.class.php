@@ -53,6 +53,10 @@ class DBObject{
 		return $this->attr;
 	}
 
+	public function toReadable(){
+		return $this->attr;
+	}
+
 	public function __get($attr){
 		return isset($this->attr[$attr]) ? $this->attr[$attr] : null;
 	}

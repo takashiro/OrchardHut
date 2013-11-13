@@ -1,0 +1,21 @@
+{template header}
+
+<div class="box">
+	<h1>公告管理<!--{if $announcement[id]}--> - $announcement[title]<!--{/if}--></h1>
+	<div class="content">
+		<div class="list edit_form">
+			<form action="###" method="post">
+				<table>
+					<tr><th>标题</th><td><input type="text" name="title" value="$announcement[title]" class="wide" /></td></tr>
+					<tr><th>起止时间</th><td><input type="text" name="time_start" value="$announcement[time_start]" /> 到 <input type="text" name="time_end" value="$announcement[time_end]" /></td></tr>
+					<tr><th>内容</th><td><textarea name="content" class="wide">$announcement[content]</textarea></td></tr>
+				</table>
+				<div class="post_button">
+					<button type="submit">修改</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{template footer}

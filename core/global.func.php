@@ -161,7 +161,6 @@ function rmktime($hour, $minute, $second, $month, $day, $year){
 	return gmmktime($hour, $minute, $second, $month, $day, $year) - $GLOBALS['_CONFIG']['timezone'] * 3600;  //gmmktime() 函数取得 GMT 日期的 UNIX 时间戳
 }
 
-//把用户输入日期时间转为时间戳
 function datetotimestamp($date){
 	$extra = 0;
 	if(strpos($date, '下午') !== false){
@@ -180,7 +179,10 @@ function datetotimestamp($date){
 	return rmktime(0, 0, 0, $date[1], $date[2], $date[0]) + $extra;
 }
 
-//????? common.js也有同名函数
+function rstrtotime($datetime){
+	return strtotime($datetime) - TIMEZONE * 3600;
+}
+
 function randomstr($length, $numeric = 0) {
 	PHP_VERSION < '4.2.0' ? mt_srand((double) microtime() * 1000000) : mt_srand();
 	$seed = base_convert(md5(print_r($_SERVER, 1).microtime()), 16, $numeric ? 10 : 35);
@@ -193,7 +195,6 @@ function randomstr($length, $numeric = 0) {
 	return $hash;
 }
 
-//按单位计算文件大小
 function rfilesize($size){
 	if($size < 1024){
 		return $size.'B';
