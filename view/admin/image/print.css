@@ -1,0 +1,16 @@
+body{
+	font-size:13pt;
+	width:80mm;
+	padding:0;
+	margin:5px;
+}
+
+header{
+	font-size:15pt;
+	text-align:center;
+}
+
+
+dl.orderdetail dd{
+	text-align:right;
+}

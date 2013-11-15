@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>$_CONFIG[sitename]管理面板</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="shortcut icon" href="./view/$_G[style]/image/favicon.ico"/>
+<link rel="stylesheet" href="./view/$_G[style]/image/print.css" type="text/css" />
+</head>
+<body>
+
+<header>$_CONFIG[sitename]</header>
+
+<dl>
+	<dt>订单编号：</dt><dd>$order[id]</dd>
+	<dt>下单时间：</dt><dd>$order[dateline]</dd>
+	<dt>收件人：</dt><dd>$order[addressee]</dd>
+	<dt>联系电话：</dt><dd>$order[mobile]</dd>
+	<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
+<dl>
+
+<dl class="orderdetail">
+	<!--{loop $order['detail'] $d}-->
+	<dt>$d[name] x {eval echo $d['amount'] * $d['number'];} $d[amountunit]</dt><dd>$d[subtotal] $order[priceunit]</dd>
+	<!--{/loop}-->
+	<dt>总计：</dt><dd>$order[totalprice] $order[priceunit]</dd>
+</dl>
+
+<script type="text/javascript">
+window.print();
+</script>
+
+</body>
+</html>

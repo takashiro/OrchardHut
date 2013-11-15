@@ -13,16 +13,39 @@ class Order extends DBObject{
 		if($id > 0){
 			parent::fetchAttributesFromDB('*', 'id='.$id);
 
-			global $db;
-			$db->select_table('orderdetail');
-			$this->detail = $db->MFETCH('*', 'orderid='.$id);
-			$db->select_table('orderaddresscomponent');
-			$this->address_components = $db->MFETCH('*', 'orderid='.$id);
+			global $db, $tpre;
+			$this->detail = $db->fetch_all("SELECT d.*,p.name
+				FROM {$tpre}orderdetail d
+					LEFT JOIN {$tpre}product p ON p.id=d.productid
+				WHERE orderid=$id");
+			$this->address_components = $db->fetch_all("SELECT c.*,g.name
+				FROM {$tpre}orderaddresscomponent c
+					LEFT JOIN {$tpre}addresscomponent g ON g.id=c.componentid
+					LEFT JOIN {$tpre}addressformat f ON f.id=c.formatid
+				WHERE c.orderid=$id ORDER BY f.displayorder");
 		}
 	}
 
 	public function __destruct(){
 		parent::__destruct();
+	}
+
+	public function toReadable(){
+		$attr = parent::toReadable();
+
+		$attr['dateline'] = rdate($attr['dateline']);
+
+		$attr['detail'] = $this->detail;
+
+		$attr['deliveryaddress'] = '';
+		foreach($this->address_components as $c){
+			$attr['deliveryaddress'].= $c['name'].' ';
+		}
+		$attr['deliveryaddress'].= $attr['extaddress'];
+
+		$attr['priceunit'] = Product::PriceUnits($attr['priceunit']);
+
+		return $attr;
 	}
 
 	public function belongToAddress($formatid, $componentid){

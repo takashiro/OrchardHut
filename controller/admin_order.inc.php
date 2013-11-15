@@ -2,7 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'mark_sorted', 'mark_delivered');
+$actions = array('list', 'mark_sorted', 'mark_delivered', 'print');
 $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
 
 switch($action){
@@ -67,7 +67,7 @@ switch($action){
 			unset($o);
 		}
 
-		include view('order');
+		include view('order_list');
 	break;
 
 	case 'mark_sorted':
@@ -96,6 +96,15 @@ switch($action){
 			$order->status = 2;
 		}
 		redirect($mod_url);
+	break;
+
+	case 'print':
+		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
+		if($orderid > 0){
+			$order = new Order($orderid);
+			$order = $order->toReadable();
+			include view('order_print');
+		}
 	break;
 }
 
