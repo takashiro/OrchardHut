@@ -124,14 +124,13 @@ $(function(){
 		input.change();
 	});
 
-	$('#cart-goods-number').html(cart_number());
-
 	$('.tselect').on('change', 'select', function(e){
 		var cur = $(e.target);
 		var child = cur.next();
 		var tselect = cur.parent();
 
 		var input = tselect.children('.value');
+
 		var address = [];
 		tselect.children('select').each(function(){
 			address.push($(this).val());

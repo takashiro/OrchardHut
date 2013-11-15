@@ -50,7 +50,7 @@ form label{
 	line-height:2em;
 }
 
-input, textarea{
+input[type="text"], input[type="password"], textarea{
 	color: #444;
 	background-color: white;
 	background-size: auto 15px;
@@ -153,6 +153,11 @@ footer{
 	margin-bottom:20px;
 }
 
+.box .headactions{
+	text-align:right;
+	margin:0 10px 10px 0;
+}
+
 .box .content{
 	margin:0 10px;
 }
@@ -225,6 +230,9 @@ footer{
 	border:#FFC8C8 1px solid;
 }
 
+.edit_form table{
+	width:100%;
+}
 
 .edit_form table td{
 	border:0;
@@ -236,5 +244,6 @@ footer{
 }
 
 .edit_form table th{
-	width:15%;
+	width:18%;
+	text-align:right;
 }

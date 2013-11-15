@@ -1,0 +1,64 @@
+<!--{template header}-->
+
+<div class="box edit_form">
+	<!--{if $id}-->
+	<h1>编辑管理员权限 - $a[account]</h1>
+	<!--{else}-->
+	<h1>添加新管理员</h1>
+	<!--{/if}-->
+
+	<form action="$mod_url&action=edit" method="post">
+	<input type="hidden" id="id" name="id" value="$a[id]" />
+	<table>
+		<tr>
+			<th><label>姓名：</label></th>
+			<td><input type="text" id="nickname" name="nickname" value="$a[nickname]" /></td>
+		</tr>
+		<tr>
+			<th><label>账号：</label></th>
+			<td><input type="text" id="account" name="account" value="$a[account]" {if $id}readonly="readonly"{/if} /></td>
+		</tr>
+		<tr>
+			<th><label>密码：</label></th>
+			<td><input type="password" id="password" name="password" /></td>
+		</tr>
+		<tr>
+			<th><label>再次确认密码：</label></th>
+			<td><input type="password" id="password2" name="password2" /></td>
+		</tr>
+		<tr>
+			<th><label>全局权限：</label></th>
+			<td>
+				<div class="spanlist permissions">
+					<!--{if $_G['admin']->hasPermission('admin')}--><span title="拥有此权限的管理员可以任意分配自己拥有的权限给其他管理员">{eval echo Template::checkbox('p[admin]', '编辑管理员', $admin->hasPermission('admin'));}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('market')}--><span>{eval echo Template::checkbox('p[market]', '管理商品', $admin->hasPermission('market'));}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('announcement')}--><span>{eval echo Template::checkbox('p[announcement]', '管理公告', $admin->hasPermission('announcement'));}</span><!--{/if}-->
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<th><label>普通权限：</label></th>
+			<td>
+				<div class="spanlist permissions">
+					<!--{if $_G['admin']->hasPermission('order')}--><span>{eval echo Template::checkbox('p[order]', '查看订单', $admin->hasPermission('order'));}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('order_sort')}--><span>{eval echo Template::checkbox('p[order_sort]', '分拣订单', $admin->hasPermission('order_sort'));}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('order_deliver')}--><span>{eval echo Template::checkbox('p[order_deliver]', '派送订单', $admin->hasPermission('order_deliver'));}</span><!--{/if}-->
+				</div>
+			</td>
+		</tr>
+		<!--{if !$_G['admin']->formatid}-->
+		<tr title="选择此项后该管理员的普通权限（全局权限不受限制）限定在指定营业范围内">
+			<th><label>限定管理范围：</label></th>
+			<td>{eval echo Template::tselect('limitation', $address_format, $address_components, false);}</td>
+		</tr>
+		<!--{/if}-->
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">确定<!--{eval echo $id ? '编辑' : '添加';}--></button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->

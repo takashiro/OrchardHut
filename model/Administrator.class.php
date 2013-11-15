@@ -11,7 +11,7 @@ class Administrator extends User{
 		'order' => 0x1,
 		'order_sort' => 0x2,
 		'order_deliver' => 0x4,
-		'editadmin' => 0x8,
+		'admin' => 0x8,
 		'market' => 0x10,
 		'announcement' => 0x20,
 	);
@@ -24,6 +24,20 @@ class Administrator extends User{
 	
 	public function __destruct(){
 		DBObject::__destruct();
+	}
+
+	public function toArray(){
+		if($this->id > 0){
+			return parent::toArray();
+		}else{
+			return array(
+				'id' => 0,
+				'account' => '',
+				'pwmd5' => '',
+				'nickname' => '',
+				'logintime' => '',
+			);
+		}
 	}
 
 	public function login($account = '', $pw = '', $method = 'account'){
@@ -73,14 +87,14 @@ class Administrator extends User{
 	}
 
 	public function isSuperAdmin(){
-		return ($this->attr('permission') & 0x1) == 0x1;
+		return $this->permission == -1;
 	}
 	
 	static public function Register($admin){
 		global $db;
 
 		$attr = array(
-			'username' => raddslashes($admin['username']),
+			'account' => raddslashes($admin['account']),
 			'pwmd5' => rmd5($admin['password']),
 		);
 		
@@ -182,7 +196,7 @@ class Administrator extends User{
 		}
 		
 		$db->select_table('administrator');
-		$db->DELETE('id='.$id.' AND MOD(permission,2)!=1');
+		$db->DELETE('id='.$id.' AND permission!=-1');
 		return $db->affected_rows();
 	}
 }

@@ -51,4 +51,6 @@ $(function(){
 			li.remove();
 		}
 	});
+
+	$('#cart-goods-number').html(cart_number());
 });

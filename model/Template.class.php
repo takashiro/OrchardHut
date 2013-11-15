@@ -140,7 +140,7 @@ class Template{
 	}
 	
 	static public function checkbox($name, $tips, $value){
-		return '<input type="checkbox" id="'.$name.'" name="'.$name.'"'.($value ? ' checked="checked"' : '').' /><span class="checkbox">'.$tips.'</span>';
+		return '<input type="checkbox" id="'.$name.'" name="'.$name.'"'.($value ? ' checked="checked"' : '').' /><label for="'.$name.'">'.$tips.'</label>';
 	}
 
 	static public function split($str, $span, $param = '-'){
