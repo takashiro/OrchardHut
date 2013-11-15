@@ -23,7 +23,7 @@
 
 <dl class="orderdetail">
 	<!--{loop $order['detail'] $d}-->
-	<dt>$d[name] x {eval echo $d['amount'] * $d['number'];} $d[amountunit]</dt><dd>$d[subtotal] $order[priceunit]</dd>
+	<dt>$d[name]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {eval echo $d['amount'] * $d['number'];} $d[amountunit]</dt><dd>$d[subtotal] $order[priceunit]</dd>
 	<!--{/loop}-->
 	<dt>总计：</dt><dd>$order[totalprice] $order[priceunit]</dd>
 </dl>
