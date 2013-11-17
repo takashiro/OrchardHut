@@ -3,6 +3,14 @@
 <div class="box">
 	<h1>订单管理</h1>
 	<div class="content">
+		<form class="quick_search" action="$mod_url" method="post">
+			<dl>
+				<dt>订单送货地址：</dt>
+				<dd>{eval echo Template::tselect('delivery_address', $address_format, $address_components, false);}</dd>
+			</dl>
+			<button type="submit">查找</button>
+		</form>
+
 		<div id="orderlist" class="list">
 			<table>
 				<thead>

@@ -247,3 +247,24 @@ footer{
 	width:18%;
 	text-align:right;
 }
+
+.quick_search{
+	text-align:left;
+}
+
+.quick_search dl{
+	display:inline-block;
+}
+
+.quick_search dl dt{
+	display:inline;
+}
+
+.quick_search dl dd{
+	display:inline;
+	margin:0;
+}
+
+.quick_search button{
+	display:inline-block;
+}

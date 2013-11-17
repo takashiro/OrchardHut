@@ -18,15 +18,43 @@ switch($action){
 
 		$display_status = implode(',', $display_status);
 
+		$order_address = array();
 		if($_G['admin']->formatid > 0){
-			$formatid = $_G['admin']->formatid;
-			$componentid = $_G['admin']->componentid;
-			$orders = $db->fetch_all("SELECT o.* FROM {$tpre}orderaddresscomponent c
-				LEFT JOIN {$tpre}order o ON o.id=c.orderid
-				WHERE c.formatid=$formatid AND c.componentid=$componentid AND o.status IN ($display_status)");
-		}else{
-			$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE status IN ($display_status)");
+			$order_address[] = array(
+				'formatid' => $_G['admin']->formatid,
+				'componentid' => $_G['admin']->componentid,
+			);
 		}
+
+		if(!empty($_POST['delivery_address'])){
+			$address = explode(',', $_POST['delivery_address']);
+			foreach($address as $format_order => $id){
+				$id = intval($id);
+				if($id <= 0){
+					$format_order--;
+					break;
+				}
+
+				$componentid = $id;
+			}
+
+			if($format_order >= 0){
+				$formatid = $db->result_first("SELECT id FROM {$tpre}addressformat ORDER BY displayorder LIMIT $format_order,1");
+
+				$order_address[] = array(
+					'formatid' => $formatid,
+					'componentid' => $componentid,
+				);
+			}
+		}
+
+		$condition = array("status IN ($display_status)");
+		foreach($order_address as $a){
+			$condition[] = "id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE formatid=$a[formatid] AND componentid=$a[componentid])";
+		}
+
+		$condition = implode(' AND ', $condition);
+		$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition");
 
 		if($orders){
 			$orderids = array();
@@ -65,6 +93,40 @@ switch($action){
 				$o['address'] = &$order_addresses[$o['id']];
 			}
 			unset($o);
+		}
+
+		$address_format = Address::Format();
+		$address_components = Address::Components();
+
+		$is_restricted = $_G['admin']->formatid != 0;
+		$reserved = array();
+		if($is_restricted){
+			$find_parent = array();
+			foreach($address_components as $c){
+				$find_parent[$c['id']] = $c['parentid'];
+			}
+
+			$cur = $_G['admin']->componentid;
+			while($cur){
+				$reserved[] = $cur;
+				$cur = $find_parent[$cur];
+			}
+		}
+
+		foreach($address_format as $format){
+			if($is_restricted){
+				foreach($address_components as $i => $c){
+					if($c['formatid'] == $format['id'] && !in_array($c['id'], $reserved)){
+						unset($address_components[$i]);
+					}
+				}
+			}else{
+				array_unshift($address_components, array('id' => 0, 'formatid' => $format['id'], 'name' => '不限', 'parentid' => 0));
+			}
+
+			if($format['id'] == $_G['admin']->formatid){
+				$is_restricted = false;
+			}
 		}
 
 		include view('order_list');
