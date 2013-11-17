@@ -46,7 +46,7 @@ form label{
 	line-height:2em;
 }
 
-input {
+input[type="text"], input[type="password"], textarea{
 	color:#444;
 	background-color:white;
 	background-size:auto 15px;
@@ -61,6 +61,28 @@ select{
 	padding:7px;
 	border-radius:8px;
 	border:#ddd 1px solid;
+}
+
+ul.mselect{
+	background:#F7F7F7;
+	border:#DDDDDD 1px solid;
+	border-radius:6px;
+}
+
+ul.mselect li{
+	cursor:pointer;
+	padding:0.5em 1em;
+	border-bottom:#DDDDDD 1px solid;
+	border-left:#F7F7F7 2px solid;
+}
+
+ul.mselect li:last-child{
+	border-bottom:0 solid;
+}
+
+ul.mselect li.checked{
+	border-left:#FE6565 2px solid;
+	color:#FD6565;
 }
 
 input:focus, select:focus{

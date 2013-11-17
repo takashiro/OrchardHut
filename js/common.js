@@ -184,4 +184,15 @@ $(function(){
 	});
 
 	$('.tselect select').change();
+
+	$('.mselect').on('click', 'li', function(e){
+		var li = $(e.target);
+		var radio = li.children('input');
+		var mselect = li.parent();
+
+		mselect.children('li').removeClass('checked');
+		li.addClass('checked');
+
+		radio.click();
+	});
 });

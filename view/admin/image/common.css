@@ -51,12 +51,12 @@ form label{
 }
 
 input[type="text"], input[type="password"], textarea{
-	color: #444;
+	color:#444;
 	background-color: white;
 	background-size: auto 15px;
 	padding: 8px;
 	border-radius: 8px;
-	border: 1px solid #ddd;
+	border:#ddd 1px solid;
 	width:149px;
 }
 

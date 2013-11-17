@@ -39,21 +39,43 @@ switch($action){
 		}
 
 		if($_POST){
-			if(empty($_POST['addressee'])){
-				showmsg('请填写收件人姓名。', 'back');
-			}
+			$addressid = !empty($_POST['deliveryaddressid']) ? intval($_POST['deliveryaddressid']) : 0;
 
-			if(empty($_POST['mobile']) || !preg_match('/^\d{11}$/', $_POST['mobile'])){
-				showmsg('请填写正确的手机号码。', 'back');
-			}
+			if($addressid <= 0){
+				if(empty($_POST['addressee'])){
+					showmsg('请填写收件人姓名。', 'back');
+				}
 
-			$address = array();
-			if(!empty($_POST['deliveryaddress'])){
-				$address = explode(',', $_POST['deliveryaddress']);
+				if(empty($_POST['mobile']) || !preg_match('/^\d{11}$/', $_POST['mobile'])){
+					showmsg('请填写正确的手机号码。', 'back');
+				}
+
+				$address = array();
+				if(!empty($_POST['deliveryaddress'])){
+					$address = explode(',', $_POST['deliveryaddress']);
+				}else{
+					showmsg('请将收件地址填写完整。', 'back');
+				}
 			}else{
-				showmsg('请将收件地址填写完整。', 'back');
-			}
+				$db->select_table('deliveryaddress');
+				$address = $db->FETCH('*', 'id='.$addressid);
+				if(!$address || $address['userid'] != $_G['user']->id){
+					showmsg('非法操作。该收货地址不存在。');
+				}
 
+				$_POST['addressee'] = $address['addressee'];
+				$_POST['mobile'] = $address['mobile'];
+
+				$extaddress = $address['extaddress'];
+				$address = array();
+
+				$db->select_table('deliveryaddresscomponent');
+				$components = $db->MFETCH('componentid', 'addressid='.$addressid);
+				foreach($components as $c){
+					$address[] = $c['componentid'];
+				}
+				$address[] = $extaddress;
+			}
 
 			$order = new Order;
 
@@ -93,6 +115,27 @@ switch($action){
 			$order->addressee = $_POST['addressee'];
 			$order->mobile = $_POST['mobile'];
 
+			if($addressid <= 0){
+				$delivery_address = array(
+					'userid' => $_G['user']->id,
+					'extaddress' => $order->extaddress,
+					'addressee' => $order->addressee,
+					'mobile' => $order->mobile,
+				);
+				$db->select_table('deliveryaddress');
+				$db->INSERT($delivery_address);
+				$addressid = $db->insert_id();
+
+				$delivery_address_components = $order->getAddressComponents();
+				foreach($delivery_address_components as &$c){
+					unset($c['orderid']);
+					$c['addressid'] = $addressid;
+				}
+				unset($c);
+				$db->select_table('deliveryaddresscomponent');
+				$db->INSERTS($delivery_address_components);
+			}
+
 			foreach($total_price as $unit => $total){
 				$order->clearDetail();
 
@@ -120,36 +163,52 @@ switch($action){
 			}
 
 			rsetcookie('in_cart', '');
-			showmsg('成功提交订单！', 'back');
+			showmsg('成功提交订单！', 'market.php');
 
-		}else{
-			$product = new Product;
-			foreach($products as &$p){
-				$number = $cart[$p['id']];
-				foreach($p as $attr => $value){
-					$product->$attr = $value;
-				}
-				$product->id = $p['productid'];
-				
-				$p = $product->toArray();
-				$p['icon'] = $product->getImage('icon');
-				$p['photo'] = $product->getImage('photo');
-				$p['number'] = $number;
-				$p['subtotal'] = $p['price'] * $p['number'];
-
-				if(array_key_exists($p['priceunit'], $total_price)){
-					$total_price[$p['priceunit']] += $p['subtotal'];
-				}else{
-					$total_price[$p['priceunit']] = $p['subtotal'];
-				}
-
-				$p['priceunit'] = Product::PriceUnits($p['priceunit']);
-				$p['amountunit'] = Product::AmountUnits($p['amountunit']);
-			}
-			unset($p);
-
-			include view('cart');
 		}
+
+		$product = new Product;
+		foreach($products as &$p){
+			$number = $cart[$p['id']];
+			foreach($p as $attr => $value){
+				$product->$attr = $value;
+			}
+			$product->id = $p['productid'];
+			
+			$p = $product->toArray();
+			$p['icon'] = $product->getImage('icon');
+			$p['photo'] = $product->getImage('photo');
+			$p['number'] = $number;
+			$p['subtotal'] = $p['price'] * $p['number'];
+
+			if(array_key_exists($p['priceunit'], $total_price)){
+				$total_price[$p['priceunit']] += $p['subtotal'];
+			}else{
+				$total_price[$p['priceunit']] = $p['subtotal'];
+			}
+
+			$p['priceunit'] = Product::PriceUnits($p['priceunit']);
+			$p['amountunit'] = Product::AmountUnits($p['amountunit']);
+		}
+		unset($p);
+
+		$db->select_table('deliveryaddress');
+		$delivery_addresses = $db->MFETCH('*', 'userid='.$_G['user']->id);
+		
+		foreach($delivery_addresses as &$a){
+			$a['address_text'] = '';
+			$query = $db->query("SELECT c.name
+				FROM {$tpre}deliveryaddresscomponent a
+					LEFT JOIN {$tpre}addresscomponent c ON c.id=a.componentid
+				WHERE a.addressid=$a[id]");
+			while($c = $db->fetch_array($query)){
+				$a['address_text'].= $c['name'].' ';
+			}
+			$a['address_text'].= $a['extaddress'].' '.$a['addressee'].'('.$a['mobile'].')';
+		}
+		unset($a);
+
+		include view('cart');
 	break;
 }
 

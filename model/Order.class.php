@@ -70,6 +70,10 @@ class Order extends DBObject{
 		$this->address_components[] = $c;
 	}
 
+	public function getAddressComponents(){
+		return $this->address_components;
+	}
+
 	public function insert(){
 		$this->dateline = TIMESTAMP;
 

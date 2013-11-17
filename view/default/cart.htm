@@ -54,6 +54,10 @@
 				<h1>收货地址</h1>
 				<div class="content">
 					<ul class="mselect">
+						<!--{loop $delivery_addresses $i $a}-->
+						<li{if $i == 0} class="checked"{/if}><input type="radio" name="deliveryaddressid" value="$a[id]"{if $i == 0} checked="checked"{/if} />$a[address_text]</li>
+						<!--{/loop}-->
+						<li><input type="radio" name="deliveryaddressid" value="0" />使用新地址</li>
 					</ul>
 					<table>
 						<tr>
