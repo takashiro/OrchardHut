@@ -156,9 +156,22 @@ class Template{
 		return $str;
 	}
 
-	static public function tselect($name, $formats, $components, $with_ext = true){
+	static public function tselect($name, $formats, $components, $with_ext = true, $formatid = 0, $componentid = 0){
+		$value = array($componentid);
+		
+		$find_parent = array();
+		foreach($components as $c){
+			$find_parent[$c['id']] = $c['parentid'];
+		}
+
+		$cur = $componentid;
+		while(!empty($find_parent[$cur])){
+			$cur = $find_parent[$cur];
+			array_unshift($value, $cur);
+		}
+
 		$html = '<span class="tselect">';
-		$html.= '<input type="hidden" class="value" name="'.$name.'" />';
+		$html.= '<input type="hidden" class="value" name="'.$name.'" value="'.implode(',', $value).'" />';
 
 		$format_components = array();
 		foreach($components as &$c){
@@ -166,14 +179,16 @@ class Template{
 		}
 		unset($c);
 
+		$vi = 0;
 		foreach($formats as &$f){
 			$html.= '<select>';
 			if(isset($format_components[$f['id']])){
 				foreach($format_components[$f['id']] as $id => $c){
-					$html.= '<option value="'.$id.'" parentid="'.$c['parentid'].'">'.$c['name'].'</option>';
+					@$html.= '<option value="'.$id.'" parentid="'.$c['parentid'].'"'.($id == $value[$vi] ? ' selected="selected"' : '').'>'.$c['name'].'</option>';
 				}
 			}
 			$html.= '</select>';
+			$vi++;
 		}
 		unset($f);
 

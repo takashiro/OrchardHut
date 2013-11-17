@@ -165,7 +165,6 @@ $(function(){
 		});
 
 		child.attr('hidden_children', div.html());
-		child.val('');
 	});
 
 	$('.tselect .ext').blur(function(e){

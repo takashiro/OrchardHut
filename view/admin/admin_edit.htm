@@ -49,7 +49,7 @@
 		<!--{if !$_G['admin']->formatid}-->
 		<tr title="选择此项后该管理员的普通权限（全局权限不受限制）限定在指定营业范围内">
 			<th><label>限定管理范围：</label></th>
-			<td>{eval echo Template::tselect('limitation', $address_format, $address_components, false);}</td>
+			<td>{eval echo Template::tselect('limitation', $address_format, $address_components, false, $admin->formatid, $admin->componentid);}</td>
 		</tr>
 		<!--{/if}-->
 	</table>
