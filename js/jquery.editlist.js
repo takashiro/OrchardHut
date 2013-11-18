@@ -15,16 +15,19 @@
 		options.ajax_edit = options.edit + (options.edit.indexOf('?') == -1 ? '?' : '&') + 'ajax=1';
 		options.ajax_delete = options.delete + (options.delete.indexOf('?') == -1 ? '?' : '&') + 'ajax=1';
 
-		var operation_td = this.find('tbody tr:not(:last-child) td:last-child');
-		operation_td.html('');
-
-		for(var i in options.buttons){
-			var button = $('<button></button>');
-			button.attr('type', 'button');
-			button.attr('class', i);
-			button.html(options.buttons[i]);
-			operation_td.append(button);
+		var display_operations = function(operation_td){
+			operation_td.html('');
+			for(var i in options.buttons){
+				var button = $('<button></button>');
+				button.attr('type', 'button');
+				button.attr('class', i);
+				button.html(options.buttons[i]);
+				operation_td.append(button);
+			}
 		}
+
+		var operation_td = this.find('tbody tr:not(:last-child) td:last-child');
+		display_operations(operation_td);
 
 		if(!options.noedit){
 			this.on('dblclick', 'tbody tr:not(:last-child) td', function(e){
@@ -105,6 +108,8 @@
 
 				empty_tr.find('input,select').val('');
 				new_tr.parent().append(empty_tr);
+
+				display_operations(new_tr.children('td:last-child'));
 			}, 'json');
 		});
 
