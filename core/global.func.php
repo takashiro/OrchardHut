@@ -140,7 +140,7 @@ function view($tpl){
 		$htmpath = S_ROOT.'./view/default/'.$tpl.'.htm';
 	}
 	$tplpath = S_ROOT.'./data/template/'.$_G['style'].'_'.$tpl.'.tpl.php';
-	if(!file_exists($tplpath) || ($_G['config']['refresh_template'] && filemtime($htmpath) > filemtime($tplpath))){
+	if(!file_exists($tplpath) || (!empty($_G['config']['refresh_template']) && filemtime($htmpath) > filemtime($tplpath))){
 		file_put_contents($tplpath, Template::parse_template($htmpath));
 	}
 	return $tplpath;

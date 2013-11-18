@@ -6,7 +6,7 @@ $_G['starttime'] = microtime(true);
 
 define('S_ROOT', dirname(dirname(__FILE__)).'/');
 define('S_VERSION', '1.0');
-error_reporting(0);
+//error_reporting(0);
 set_time_limit(0);
 
 //类自动加载
