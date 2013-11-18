@@ -1,0 +1,53 @@
+{template header}
+
+<script type="text/javascript">
+$(function(){
+	$('#component_list').editlist({
+		'edit' : '$mod_url&data=component&action=edit&parentid=$parentid',
+		'delete' : '$mod_url&data=component&action=delete',
+		'attr' : ['name', 'displayorder']
+	});
+});
+</script>
+
+<div class="box">
+	<h1>地址设置</h1>
+	<div class="headactions">
+		<a href="$mod_url&data=format">[设置地址格式]</a>
+	</div>
+	<div class="content">
+		<ul class="nav">
+			<li><a href="$mod_url&data=component">全部</a></li>
+			<!--{loop $prev_address $a}-->
+			<li><a href="$mod_url&data=component&id=$a[id]">$a[name]</a></li>
+			<!--{/loop}-->
+		</ul>
+		<div id="component_list" class="list">
+			<table>
+				<thead>
+					<tr>
+						<td>地点名称</td>
+						<td>显示顺序</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					<!--{loop $address_components $component}-->
+					<tr primaryvalue="$component[id]">
+						<td>$component[name]</td>
+						<td>$component[displayorder]</td>
+						<td></td>
+					</tr>
+					<!--{/loop}-->
+					<tr>
+						<td><input type="text" /></td>
+						<td><input type="text" /></td>
+						<td><button type="button" class="add">添加</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{template footer}

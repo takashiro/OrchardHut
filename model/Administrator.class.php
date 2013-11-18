@@ -14,6 +14,7 @@ class Administrator extends User{
 		'admin' => 0x8,
 		'market' => 0x10,
 		'announcement' => 0x20,
+		'address' => 0x40,
 	);
 
 	public function __construct($id = 0){

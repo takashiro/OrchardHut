@@ -33,6 +33,7 @@
 					<!--{if $_G['admin']->hasPermission('admin')}--><span title="拥有此权限的管理员可以任意分配自己拥有的权限给其他管理员">{eval echo Template::checkbox('p[admin]', '编辑管理员', $admin->hasPermission('admin'));}</span><!--{/if}-->
 					<!--{if $_G['admin']->hasPermission('market')}--><span>{eval echo Template::checkbox('p[market]', '管理商品', $admin->hasPermission('market'));}</span><!--{/if}-->
 					<!--{if $_G['admin']->hasPermission('announcement')}--><span>{eval echo Template::checkbox('p[announcement]', '管理公告', $admin->hasPermission('announcement'));}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('address')}--><span>{eval echo Template::checkbox('p[address]', '管理地址', $admin->hasPermission('address'));}</span><!--{/if}-->
 				</div>
 			</td>
 		</tr>

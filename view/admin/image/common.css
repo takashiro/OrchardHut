@@ -268,3 +268,15 @@ footer{
 .quick_search button{
 	display:inline-block;
 }
+
+ul.nav{
+	text-align:left;
+}
+
+ul.nav li{
+	margin:0 0 0 10px;
+	display:inline-block;
+	background:url(arrow_right.png) no-repeat;
+	background-position:center left;
+	padding-left:15px;
+}

@@ -1,0 +1,48 @@
+{template header}
+
+<script type="text/javascript">
+$(function(){
+	$('#format_list').editlist({
+		'edit' : '$mod_url&data=format&action=edit',
+		'delete' : '$mod_url&data=format&action=delete',
+		'attr' : ['name', 'displayorder'],
+		'buttons' : {'delete' : '删除'}
+	});
+});
+</script>
+
+<div class="box">
+	<h1>地址格式设置</h1>
+	<div class="headactions">
+		<a href="$mod_url&data=component">[设置地址候选项]</a>
+	</div>
+	<div class="content">
+		<div id="format_list" class="list">
+			<table>
+				<thead>
+					<tr>
+						<td>格式名称</td>
+						<td>显示顺序</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					<!--{loop $address_format $format}-->
+					<tr primaryvalue="$format[id]">
+						<td>$format[name]</td>
+						<td>$format[displayorder]</td>
+						<td></td>
+					</tr>
+					<!--{/loop}-->
+					<tr>
+						<td><input type="text" /></td>
+						<td><input type="text" style="width:2em" /></td>
+						<td><button type="button" class="add">添加</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{template footer}
