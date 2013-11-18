@@ -65,15 +65,19 @@ if($data == 'format'){
 					'displayorder' => intval($_POST['displayorder']),
 					'parentid' => intval($_GET['parentid']),
 				);
-
-				$parent_format = $db->RESULTF('formatid', 'id='.$component['parentid']);
 				
-				$format = Address::Format();
-				while($format && $format[0]['id'] != $parent_format){
-					array_shift($format);
-				}
-				if(array_key_exists(1, $format)){
-					$component['formatid'] = $format[1]['id'];
+				if($component['parentid'] > 0){
+					$parent_format = $db->RESULTF('formatid', 'id='.$component['parentid']);
+					$format = Address::Format();
+					while($format && $format[0]['id'] != $parent_format){
+						array_shift($format);
+					}
+					if(array_key_exists(1, $format)){
+						$component['formatid'] = $format[1]['id'];
+					}
+				}else{
+					$db->select_table('addressformat');
+					$component['formatid'] = $db->RESULTF('id', '1 ORDER BY displayorder LIMIT 1');
 				}
 
 				$db->select_table('addresscomponent');
@@ -84,9 +88,26 @@ if($data == 'format'){
 			echo json_encode($component);
 
 		}elseif($action == 'delete'){
-			$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
-			$db->DELETE('id='.$id);
-			echo $db->affected_rows();
+			$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
+			$affected_rows = 0;
+
+			if($id > 0){
+				$delete_id = array($id);
+
+				while($delete_id){
+					$delete_id = implode(',', $delete_id);
+					$db->DELETE("id IN ($delete_id)");
+					$affected_rows += $db->affected_rows();
+
+					$nodes = $db->MFETCH('id', "parentid IN ($delete_id)");
+					$delete_id = array();
+					foreach($nodes as $n){
+						$delete_id[] = $n['id'];
+					}
+				}
+			}
+
+			echo $affected_rows;
 		}
 
 		exit;
