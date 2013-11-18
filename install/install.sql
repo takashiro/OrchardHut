@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 17, 2013 at 04:59 PM
+-- Generation Time: Nov 18, 2013 at 01:38 PM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
   `name` varchar(30) NOT NULL,
   `formatid` mediumint(8) unsigned NOT NULL,
   `parentid` mediumint(8) unsigned NOT NULL,
+  `displayorder` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

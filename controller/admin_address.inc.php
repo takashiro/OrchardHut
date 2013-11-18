@@ -103,7 +103,7 @@ if($data == 'format'){
 	}
 	$prev_address = array_reverse($prev_address);
 
-	$address_components = $db->MFETCH('*', 'parentid='.$parentid);
+	$address_components = $db->MFETCH('*', 'parentid='.$parentid.' ORDER BY displayorder,id');
 
 	include view('address_component');
 }

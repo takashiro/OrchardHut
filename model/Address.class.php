@@ -16,7 +16,7 @@ class Address{
 		if(self::$Components == null){
 			global $db;
 			$db->select_table('addresscomponent');
-			self::$Components = $db->MFETCH('*');
+			self::$Components = $db->MFETCH('*', '1 ORDER BY displayorder,id');
 		}
 		return self::$Components;
 	}
