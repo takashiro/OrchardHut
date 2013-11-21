@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 18, 2013 at 01:38 PM
+-- Generation Time: Nov 21, 2013 at 12:52 PM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -231,8 +231,10 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   `nickname` varchar(50) NOT NULL,
   `realname` varchar(50) NOT NULL,
   `regtime` int(11) unsigned NOT NULL,
+  `qqopenid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`),
+  UNIQUE KEY `qqopenid` (`qqopenid`),
   UNIQUE KEY `mobile` (`mobile`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

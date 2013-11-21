@@ -8,6 +8,11 @@
 			<div class="account">$_USER[account]</div>
 			<ul class="operation">
 				<li><a href="memcp.php">修改个人信息</a></li>
+				<!--{if $_G['user']->qqopenid}-->
+				<li><a href="qqconnect.php?action=unbind">解绑QQ</a></li>
+				<!--{else}-->
+				<li><a href="qqconnect.php">绑定QQ</a></li>
+				<!--{/if}-->
 				<li><a href="memcp.php?action=logout">退出</a></li>
 			</ul>
 		</div>
