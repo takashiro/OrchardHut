@@ -64,6 +64,10 @@ if(!empty($_CONFIG['cookiepre'])){
 			$cookie[substr($k, $cookiepre_length)] = $v;
 		}
 	}
+
+	$session_name = session_name();
+	$cookie[$session_name] = $_COOKIE[$session_name];
+
 	$_COOKIE = $cookie;
 	unset($cookie);
 }

@@ -104,10 +104,15 @@ class DBObject{
 		$db->DELETE('id='.$id);
 	}
 
-	static public function Exist($id){
+	static public function Exist($id, $field = ''){
 		global $db;
+
+		if(!$field){
+			$field = static::PRIMARY_KEY;
+		}
+
 		$db->select_table(static::TABLE_NAME);
-		return $db->RESULTF(static::PRIMARY_KEY, '`'.static::PRIMARY_KEY.'`=\''.$id.'\'');
+		return $db->RESULTF($field, '`'.$field.'`=\''.$id.'\' LIMIT 1');
 	}
 
 	static public function Count(){

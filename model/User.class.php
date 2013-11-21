@@ -31,8 +31,9 @@ class User extends DBObject{
 					return false;
 				}
 
-				$cookie = array(
+				@$cookie = array(
 					'id' => intval($cookie['id']),
+					'account' => $cookie['account'],
 					static::AUTH_FIELD => $cookie[static::AUTH_FIELD],
 				);
 				parent::fetchAttributesFromDB('*', $cookie);
@@ -62,7 +63,12 @@ class User extends DBObject{
 
 		return false;
 	}
-	
+
+	public function force_login(){
+		$cookie = array('id' => $this->attr['id'], static::AUTH_FIELD => $this->attr(static::AUTH_FIELD), 'loginip' => self::ip());
+		rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
+	}
+
 	public function logout(){
 		rsetcookie(static::COOKIE_VAR);
 		return true;
@@ -97,6 +103,14 @@ class User extends DBObject{
 			$onlineip = $_SERVER['REMOTE_ADDR'];
 		}
 		return $onlineip;
+	}
+
+	public function toArray(){
+		$attr = parent::toArray();
+		if(!empty($attr['nickname'])){
+			$attr['account'] = &$attr['nickname'];
+		}
+		return $attr;
 	}
 
 	public static function Register($user){

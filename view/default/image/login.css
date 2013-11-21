@@ -24,3 +24,16 @@
 .login_form input{
 	margin:10px auto;
 }
+
+.login_api{
+	line-height:30px;
+}
+
+.qqconnect_login{
+	display:inline-block;
+	width:76px;
+	height:24px;
+	background:url(qqconnect.png) no-repeat;
+	background-position:-139px -29px;
+	vertical-align:middle;
+}
