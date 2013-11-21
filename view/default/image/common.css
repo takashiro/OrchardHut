@@ -369,7 +369,7 @@ footer ul.button_list #cart-goods-number{
 }
 
 .messagebox{
-	width:470px;
+	width:100%;
 }
 
 .messagebox h1{
@@ -548,12 +548,11 @@ footer ul.button_list #cart-goods-number{
 	background:white url(icon_watermelon.png) repeat-x;
 	background-position:top center;
 	background-size:30px;
-	width:500px;
-	height:350px;
 	border-radius:8px;
 	box-shadow:rgb(116, 116, 116) 0px 0px 8px 0px;
 	padding:8px 10px;
 	margin:50px auto;
+	min-height:200px;
 }
 
 .popup_message header{
