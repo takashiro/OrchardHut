@@ -35,7 +35,7 @@ button{
 	border-radius:10px;
 	display:inline-block;
 	text-decoration:none;
-	padding:15px;
+	padding:14px;
 	font-size:large;
 	font-weight:bold;
 	cursor:pointer;
@@ -98,7 +98,7 @@ button.remove{
 
 .container{
 	margin:0 auto;
-	padding-bottom:50px;
+	padding-bottom:120px;
 }
 
 #sharebox{
