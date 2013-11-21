@@ -6,8 +6,13 @@ if(!$_G['user']->isLoggedIn()){
 	redirect('memcp.php');
 }
 
+$limit = 10;
+$offset = ($page - 1) * $limit;
+
 $db->select_table('order');
-$orders = $db->MFETCH('*', 'userid='.$_G['user']->id.' AND status<2 ORDER BY dateline DESC');
+$condition = 'userid='.$_G['user']->id;
+$orders = $db->MFETCH('*', $condition." ORDER BY id DESC LIMIT $offset,$limit");
+$pagenum = $db->RESULTF('COUNT(*)', $condition);
 
 if($orders){
 	$orderids = array();

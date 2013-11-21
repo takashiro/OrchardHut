@@ -47,6 +47,8 @@ if($action == 'login'){
 			showmsg('用户名不能少于4个字，不能多于50字。', 'back');
 		}elseif($uid == User::INVALID_PASSWORD){
 			showmsg('密码长度不能少于6位。', 'back');
+		}elseif($uid == User::DUPLICATED_ACCOUNT){
+			showmsg('该用户名已经被注册，请更换一个用户名。', 'back');
 		}else{
 			showmsg('未知错误。', 'back');
 		}

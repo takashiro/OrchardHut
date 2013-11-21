@@ -123,6 +123,11 @@ class User extends DBObject{
 		);
 
 		$db->select_table('user');
+
+		if($db->RESULTF('id', array('account' => $user['account'])) > 0){
+			return self::DUPLICATED_ACCOUNT;
+		}
+
 		$db->INSERT($user);
 		return $db->insert_id();
 	}
@@ -255,6 +260,7 @@ class User extends DBObject{
 
 	const INVALID_ACCOUNT = -1;
 	const INVALID_PASSWORD = -2;
+	const DUPLICATED_ACCOUNT = -3;
 
 	const ACTION_SUCCEEDED = 1;
 	const ACTION_FAILED = 0;

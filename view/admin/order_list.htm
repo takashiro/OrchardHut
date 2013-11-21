@@ -6,7 +6,9 @@
 		<form class="quick_search" action="$mod_url" method="post">
 			<dl>
 				<dt>订单送货地址：</dt>
-				<dd>{eval echo Template::tselect('delivery_address', $address_format, $address_components, false);}</dd>
+				<dd>{eval echo Template::tselect('delivery_address', $address_format, $address_components, false, $formatid, $componentid);}</dd>
+				<dt>是否历史订单：</dt>
+				<dd>{eval echo Template::radio('completed_order', array(1 => '是', 0 => '否'), $completed_order);}</dd>
 			</dl>
 			<button type="submit">查找</button>
 		</form>
@@ -56,5 +58,7 @@
 		</div>
 	</div>
 </div>
+
+{eval echo Template::mpage($pagenum, $page, $limit, $mod_url.'&completed_order='.$completed_order.'&delivery_address='.$delivery_address);}
 
 {template footer}

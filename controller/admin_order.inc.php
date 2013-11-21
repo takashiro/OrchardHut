@@ -7,16 +7,26 @@ $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) 
 
 switch($action){
 	case 'list':
-		$display_status = array();
-		if($_G['admin']->hasPermission('order_sort')){
-			$display_status[] = 0;
-		}
+		$condition = array();
 
-		if($_G['admin']->hasPermission('order_deliver')){
-			$display_status[] = 1;
-		}
+		if(empty($_REQUEST['completed_order'])){
+			$completed_order = 0;
 
-		$display_status = implode(',', $display_status);
+			$display_status = array();
+			if($_G['admin']->hasPermission('order_sort')){
+				$display_status[] = 0;
+			}
+
+			if($_G['admin']->hasPermission('order_deliver')){
+				$display_status[] = 1;
+			}
+
+			$display_status = implode(',', $display_status);
+			$condition[] = "status IN ($display_status)";
+		}else{
+			$completed_order = 1;
+			$condition[] = 'status>=2';
+		}
 
 		$order_address = array();
 		if($_G['admin']->formatid > 0){
@@ -26,8 +36,10 @@ switch($action){
 			);
 		}
 
-		if(!empty($_POST['delivery_address'])){
-			$address = explode(',', $_POST['delivery_address']);
+		$formatid = $componentid = 0;
+		if(!empty($_REQUEST['delivery_address'])){
+			$delivery_address = $_REQUEST['delivery_address'];
+			$address = explode(',', $delivery_address);
 			foreach($address as $format_order => $id){
 				$id = intval($id);
 				if($id <= 0){
@@ -46,15 +58,20 @@ switch($action){
 					'componentid' => $componentid,
 				);
 			}
+		}else{
+			$delivery_address = '0,0';
 		}
 
-		$condition = array("status IN ($display_status)");
 		foreach($order_address as $a){
 			$condition[] = "id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE formatid=$a[formatid] AND componentid=$a[componentid])";
 		}
 
 		$condition = implode(' AND ', $condition);
-		$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition");
+
+		$limit = 20;
+		$offset = ($page - 1) * $limit;
+		$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition LIMIT $offset,$limit");
+		$pagenum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE $condition");
 
 		if($orders){
 			$orderids = array();

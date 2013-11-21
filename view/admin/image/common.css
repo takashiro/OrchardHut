@@ -280,3 +280,20 @@ ul.nav li{
 	background-position:center left;
 	padding-left:15px;
 }
+
+.mpage{
+	margin:10px 0;
+}
+
+.mpage a{
+	background:white;
+	border-radius:8px;
+	margin:3px;
+	padding:3px 9px;
+	box-shadow:rgb(116, 116, 116) 0px 0px 8px 0px;
+}
+
+.mpage a.current{
+	color:gray;
+	cursor:default;
+}

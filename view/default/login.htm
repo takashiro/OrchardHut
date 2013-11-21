@@ -4,17 +4,99 @@
 @import url(./view/$_G[style]/image/login.css);
 </style>
 
-<form action="memcp.php" method="post" onkeydown="if(event.keyCode==13){return false;}">
+<script type="text/javascript">
+var action = 'login';
+var no_alert = false;
+
+$(function(){
+	$('#login_form').submit(function(e){
+		var data = {};
+		var arr = $(e.target).serializeArray();
+		for(var i = 0; i < arr.length; i++){
+			data[arr[i].name] = arr[i].value;
+		}
+
+		var invalid_message = '';
+
+		if(data.account == ''){
+			invalid_message += '请填写用户名。';
+		}else if(data.account.length < 4 || data.account.length > 15){
+			invalid_message += '用户名长度应在4 - 15个字符之间。';
+		}
+
+		if(data.password == ''){
+			invalid_message += '请填写密码。';
+		}else if(data.password.length < 6){
+			invalid_message += '密码至少6位。';
+		}
+
+		if(action == 'register'){
+			if(data.password2 == undefined || data.password2 == ''){
+				invalid_message += '请再次输入密码进行确认。';
+			}else if(data.password2 != data.password){
+				invalid_message += '您两次输入的密码不一致。';
+			}
+		}
+
+		if(invalid_message != ''){
+			e.preventDefault();
+
+			if(no_alert){
+				no_alert = false;
+			}else{
+				alert(invalid_message);
+			}
+		}
+	});
+
+	$('#login_button').click(function(){
+		if(action != 'login'){
+			action = 'login';
+			no_alert = true;
+
+			$('#action_text').html('登录');
+
+			$('.for_register').each(function(){
+				$(this).attr('hidden_html', $(this).html());
+				$(this).html('');
+			});
+		}
+	});
+
+	$('#register_button').click(function(){
+		if(action != 'register'){
+			action = 'register';
+			no_alert = true;
+
+			$('#action_text').html('注册');
+
+			$('.for_register').each(function(){
+				$(this).html($(this).attr('hidden_html'));
+			});
+		}
+	});
+
+	$('.for_register').each(function(){
+		$(this).attr('hidden_html', $(this).html());
+		$(this).html('');
+	});
+});
+</script>
+
+<form id="login_form" action="memcp.php" method="post" onkeydown="if(event.keyCode==13){return false;}">
 	<div class="login_form">
 		<div class="header">
-			$_CONFIG[sitename] - 用户登录
+			$_CONFIG[sitename] - 用户<span id="action_text">登录</span>
 		</div>
 		<label for="account">账号</label><input type="text" id="account" name="account" />
 		<label for="password">密码</label><input type="password" id="password" name="password" />
+		<div class="for_register">
+			<label for="password2">再次确认密码</label><input type="password" id="password2" name="password2" />
+		</div>
 		<input type="hidden" name="http_referer" value="{if !empty($_SERVER['HTTP_REFERER'])}$_SERVER[HTTP_REFERER]{/if}" />
 		<div class="post_buttons">
-			<button type="submit" name="action" value="login">登录</button>
-			<button type="submit" name="action" value="register">注册</button>
+			<button type="submit" id="login_button" name="action" value="login">登录</button>
+			<button type="submit" id="register_button" name="action" value="register">注册</button>
 		</div>
 	</div>
 </form>
