@@ -48,7 +48,7 @@ define('TIMEZONE', $_CONFIG['timezone']);
 
 //Handle Request
 if(!empty($_GET['confirm'])){
-	$_SERVER['HTTP_REFERER'] = $_COOKIE['http_referer'];
+	isset($_COOKIE['http_referer']) && $_SERVER['HTTP_REFERER'] = $_COOKIE['http_referer'];
 	rsetcookie('http_referer');
 	if(!empty($_GET['confirm_key'])){
 		$_POST = unserialize($_COOKIE['postdata_'.$_GET['confirm_key']]);
@@ -66,7 +66,7 @@ if(!empty($_CONFIG['cookiepre'])){
 	}
 
 	$session_name = session_name();
-	$cookie[$session_name] = $_COOKIE[$session_name];
+	array_key_exists($session_name, $_COOKIE) && $cookie[$session_name] = $_COOKIE[$session_name];
 
 	$_COOKIE = $cookie;
 	unset($cookie);
