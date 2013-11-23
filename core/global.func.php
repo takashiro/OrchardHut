@@ -42,7 +42,7 @@ function redirect($url){
 }
 
 //设置一个cookie, $extexpiry是有效时间长度
-function rsetcookie($varname, $value = '', $extexpiry = 0){
+function rsetcookie($varname, $value = '', $extexpiry = -1){
 	global $_G;
 	$varname = $_G['config']['cookiepre'].$varname;
 	if(!$value){

@@ -23,7 +23,7 @@ function setcookie(name, value){
 
 	var argv = setcookie.arguments;
 	var argc = setcookie.arguments.length;
-	var expires = (argc > 2) ? argv[2] : null;
+	var expires = (argc > 2) ? argv[2] : 9999;
 	if(expires != null){
 		var LargeExpDate = new Date ();
 		LargeExpDate.setTime(LargeExpDate.getTime() + (expires*1000*3600*24));        

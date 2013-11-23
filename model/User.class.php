@@ -23,17 +23,12 @@ class User extends DBObject{
 			if(!empty($_COOKIE[static::COOKIE_VAR])){
 				$cookie = $this->decodeCookie($_COOKIE[static::COOKIE_VAR]);
 
-				if(!is_array($cookie) || !isset($cookie['id']) || !isset($cookie[static::AUTH_FIELD]) || !isset($cookie['loginip'])){
-					return false;
-				}
-
-				if($cookie['loginip'] != self::ip()){
+				if(!is_array($cookie) || !isset($cookie['id']) || !isset($cookie[static::AUTH_FIELD])){
 					return false;
 				}
 
 				@$cookie = array(
 					'id' => intval($cookie['id']),
-					'account' => $cookie['account'],
 					static::AUTH_FIELD => $cookie[static::AUTH_FIELD],
 				);
 				parent::fetchAttributesFromDB('*', $cookie);
@@ -53,7 +48,7 @@ class User extends DBObject{
 			parent::fetchAttributesFromDB('*', $condition);
 
 			if($this->isLoggedIn()){
-				$cookie = array('id' => $this->attr['id'], static::AUTH_FIELD => $this->attr(static::AUTH_FIELD), 'loginip' => self::ip());
+				$cookie = array('id' => $this->attr['id'], static::AUTH_FIELD => $this->attr(static::AUTH_FIELD));
 				rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
 				return true;
 			}else{
