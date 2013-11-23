@@ -26,6 +26,7 @@
 						<td>价格</td>
 						<td>状态</td>
 						<td>操作</td>
+						<td>留言</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -49,6 +50,7 @@
 						<td>
 							<a href="$mod_url&action=print&orderid=$o[id]" target="_blank">[打印]</a>
 						</td>
+						<td style="width:10%;"><div style="font-size:9pt;max-height:100px;overflow-y:auto;">$o[message]</div></td>
 					</tr>
 					<!--{/loop}-->
 					<tr>
