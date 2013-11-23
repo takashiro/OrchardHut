@@ -587,3 +587,30 @@ footer ul.button_list #cart-goods-number{
 	color:gray;
 	cursor:default;
 }
+
+.edit_form{
+	
+}
+
+.edit_form table{
+	width:100%;
+}
+
+.edit_form table th{
+	width:30%;
+	text-align:right;
+}
+
+.edit_form table td{
+	text-align:left;
+}
+
+.edit_form .tips{
+	color:#CCCCCC;
+	font-size:10pt;
+	text-align:left;
+}
+
+.edit_form tr:hover .tips{
+	color:black;
+}

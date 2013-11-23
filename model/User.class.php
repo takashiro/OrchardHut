@@ -75,11 +75,11 @@ class User extends DBObject{
 
 	public function changePassword($oldpw, $newpw, $newpw2 = ''){
 		if($newpw2 && $newpw2 != $newpw){
-			return -2;
+			return self::PASSWORD2_WRONG;
 		}
 
 		if(rmd5($oldpw) != $this->pwmd5){
-			return -1;
+			return self::OLD_PASSWORD_WRONG;
 		}
 
 		$this->pwmd5 = rmd5($newpw);
@@ -273,6 +273,9 @@ class User extends DBObject{
 
 	const ACTION_SUCCEEDED = 1;
 	const ACTION_FAILED = 0;
+
+	const PASSWORD2_WRONG = -1;
+	const OLD_PASSWORD_WRONG = -2;
 }
 
 ?>
