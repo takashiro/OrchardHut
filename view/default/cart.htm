@@ -5,14 +5,14 @@
 	<div class="content">
 		<ul class="product_list">
 			<!--{loop $products $p}-->
-			<li price-id="$p[id]">
+			<li price-id="$p[priceid]">
 				<div class="icon">
 					<img src="$p[icon]" />
 				</div>
 				<div class="detail" style="background:#$p[background_color]">
 					<div class="name" style="color:#$p[text_color];">$p[name]</div>
 					<ul class="rule">
-						<li product-id="$p[productid]" price-id="$p[id]">
+						<li product-id="$p[productid]" price-id="$p[priceid]">
 							<span class="subtype" style="color:#$p[text_color];">$p[subtype]</span>
 							<span class="price" style="color:#$p[text_color];">$p[price]</span>
 							<span class="priceunit">$p[priceunit]</span>

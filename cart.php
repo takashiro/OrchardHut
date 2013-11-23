@@ -30,7 +30,7 @@ switch($action){
 
 		if($priceids){
 			$priceids = implode(',', $priceids);
-			$products = $db->fetch_all("SELECT p.*,r.*
+			$products = $db->fetch_all("SELECT p.*,r.*,r.id AS priceid
 				FROM {$tpre}productprice r
 					LEFT JOIN {$tpre}product p ON p.id=r.productid
 				WHERE r.id IN ($priceids)");
