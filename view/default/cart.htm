@@ -45,7 +45,7 @@
 			<div class="lightbox message">
 				<h1>购物留言</h1>
 				<div class="content">
-					<input type="text" name="message" />
+					<input type="text" name="message" placeholder="你有什么想告诉我们的吗？" />
 				</div>
 			</div>
 			<div class="lightbox deliveryaddress">
@@ -53,7 +53,7 @@
 				<div class="content">
 					<ul class="mselect">
 						<!--{loop $delivery_addresses $i $a}-->
-						<li{if $i == 0} class="checked"{/if}><input type="radio" name="deliveryaddressid" value="$a[id]"{if $i == 0} checked="checked"{/if} />$a[address_text]</li>
+						<li{if $i == 0} class="checked"{/if}><input type="radio" name="deliveryaddressid" value="$a[id]"{if $i == 0} checked="checked"{/if} />$a[address_text]<a href="###" class="remove">x</a></li>
 						<!--{/loop}-->
 						<li><input type="radio" name="deliveryaddressid" value="0" />使用新地址</li>
 					</ul>
@@ -63,12 +63,12 @@
 							<td>{eval echo Template::tselect('deliveryaddress', Address::Format(), Address::Components());}</td>
 						</tr>
 						<tr>
-							<td><label>收件人：</label></td>
-							<td><input type="text" name="addressee" /></td>
+							<td><label>收货人：</label></td>
+							<td><input type="text" name="addressee" placeholder="请输入收货人姓名" /></td>
 							</p>
 						<tr>
 							<td><label>联系电话：</label></td>
-							<td><input type="text" name="mobile" /></td>
+							<td><input type="text" name="mobile" placeholder="请输入有效的联系电话" /></td>
 						</tr>
 					</table>
 				</div>

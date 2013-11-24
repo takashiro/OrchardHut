@@ -513,6 +513,10 @@ footer ul.button_list #cart-goods-number{
 	text-align:right;
 }
 
+.deliveryaddress ul li{
+	position:relative;
+}
+
 .cart .post_buttons{
 	margin-top:20px;
 }
@@ -613,4 +617,11 @@ footer ul.button_list #cart-goods-number{
 
 .edit_form tr:hover .tips{
 	color:black;
+}
+
+a.remove{
+	position:absolute;
+	right:10px;
+	font-family:Arial;
+	padding:2px 8px;
 }

@@ -210,6 +210,20 @@ switch($action){
 
 		include view('cart');
 	break;
+
+	case 'deleteaddress':
+		$address_id = !empty($_POST['address_id']) ? intval($_POST['address_id']) : 0;
+		$affected_rows = 0;
+		if($address_id > 0){
+			$db->query("DELETE FROM {$tpre}deliveryaddress WHERE id=$address_id AND userid=$_USER[id]");
+			$affected_rows = $db->affected_rows();
+			if($affected_rows > 0){
+				$db->query("DELETE FROM {$tpre}deliveryaddresscomponent WHERE addressid=$address_id");
+				$affected_rows += $db->affected_rows();
+			}
+		}
+		echo $affected_rows;
+	break;
 }
 
 ?>

@@ -53,4 +53,20 @@ $(function(){
 	});
 
 	$('#cart-goods-number').html(cart_number());
+
+	$('.deliveryaddress').on('click', 'ul li a.remove', function(e){
+		if(confirm('您确认要删除该收货地址吗？')){
+			var button = $(e.target);
+			var li = button.parent();
+			var address_id = li.children('input').val();
+
+			var data = {
+				'action' : 'deleteaddress',
+				'address_id' : address_id
+			};
+			$.post('cart.php', data, function(response){
+				li.remove();
+			});
+		}
+	});
 });
