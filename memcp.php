@@ -20,7 +20,7 @@ if($action == 'login'){
 		$result = USER::ACTION_FAILED;
 
 		$methods = array('account');
-		$method = !empty($_POST['method']) && in_array($_POST['method']) ? $_POST['method'] : $methods[0];
+		$method = !empty($_POST['method']) && in_array($_POST['method'], $methods) ? $_POST['method'] : $methods[0];
 
 		if(!empty($_POST['account']) && !empty($_POST['password'])){
 			$result = $_G['user']->login($_POST['account'], $_POST['password'], $method) ? User::ACTION_SUCCEEDED : User::ACTION_FAILED;
@@ -47,7 +47,7 @@ if($action == 'login'){
 	if($_POST){
 		$uid = User::Register($_POST);
 		if($uid > 0){
-			$_G['user']->login($_POST['account'], $_POST['password']);
+			$_G['user']->login($_POST['account'], $_POST['password'], 'account');
 			redirect('market.php');
 		}elseif($uid == User::INVALID_ACCOUNT){
 			showmsg('用户名不能少于4个字，不能多于50字。', 'back');
