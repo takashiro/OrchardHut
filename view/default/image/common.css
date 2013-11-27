@@ -188,6 +188,7 @@ ul.product_list > li .icon{
 	position:absolute;
 	left:0;
 	height:100%;
+	cursor:pointer;
 }
 
 ul.product_list > li .icon img{
@@ -204,6 +205,7 @@ ul.product_list > li .detail .name{
 	font-weight:bold;
 	border-bottom:white 2px solid;
 	padding-left:1em;
+	cursor:pointer;
 }
 
 ul.product_list > li .detail .soldout{
@@ -238,6 +240,10 @@ ul.product_list > li .detail .more a.disabled{
 	color:#CCCCCC;
 	cursor:text;
 	text-decoration:line-through;
+}
+
+ul.product_list > li .detail .photo, ul.product_list > li .detail .introduction{
+	display:none;
 }
 
 ul.product_list > li .brief{

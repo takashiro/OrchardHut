@@ -49,4 +49,16 @@ $(function(){
 		var title = detail.prev();
 		popup_message(title.html(), detail.html());
 	});
+
+	$('.product_list').on('click', '.icon, .name', function(e){
+		var target = $(this);
+		var detail = target.is('.icon') ? target.next() : target.parent();
+		var photo = detail.children('.photo');
+		var introduction = detail.children('.introduction');
+		var name = detail.children('.name');
+
+		var title = name.html();
+		var message = photo.html() + '<div>' + introduction.html() + '</div>';
+		popup_message(title, message);
+	});
 });
