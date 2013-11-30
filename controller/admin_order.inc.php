@@ -2,7 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'mark_sorted', 'mark_delivered', 'print');
+$actions = array('list', 'mark_sorted', 'mark_delivered', 'print', 'delete');
 $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
 
 switch($action){
@@ -183,6 +183,18 @@ switch($action){
 			$order = new Order($orderid);
 			$order = $order->toReadable();
 			include view('order_print');
+		}
+	break;
+
+	case 'delete':
+		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
+		if($orderid > 0){
+			if(empty($_GET['confirm'])){
+				showmsg('您确认删除该订单吗？', 'confirm');
+			}
+
+			Order::Delete($orderid);
+			redirect($_COOKIE['http_referer']);
 		}
 	break;
 }
