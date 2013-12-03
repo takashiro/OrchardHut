@@ -227,6 +227,10 @@ footer{
 	background:background:url(footer_bg.jpg) repeat-x;
 }
 
+.list table tbody tr:hover{
+	background:#FFE1E1;
+}
+
 .list table td, .edit_list table th{
 	border:#FFC8C8 1px solid;
 }
@@ -259,11 +263,13 @@ footer{
 
 .quick_search dl dt{
 	display:inline;
+	margin-left:0.5em;
 }
 
 .quick_search dl dd{
 	display:inline;
 	margin:0;
+	margin-right:0.5em;
 }
 
 .quick_search button{
