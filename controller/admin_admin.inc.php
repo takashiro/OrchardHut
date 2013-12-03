@@ -31,6 +31,10 @@ switch($action){
 					'password' => $_POST['password'],
 				);
 				$new_id = Administrator::Register($new_admin);
+				if($new_id <= 0){
+					showmsg('您输入的登录名已经被使用，请重新输入一个登录用户名。', 'back');
+				}
+
 				$admin = new Administrator($new_id);
 			}
 

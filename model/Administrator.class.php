@@ -94,12 +94,17 @@ class Administrator extends User{
 	static public function Register($admin){
 		global $db;
 
-		$attr = array(
+		@$attr = array(
 			'account' => raddslashes($admin['account']),
 			'pwmd5' => rmd5($admin['password']),
 		);
-		
+
 		$db->select_table('administrator');
+
+		if($db->RESULTF('id', array('account' => $attr['account'])) > 0){
+			return self::DUPLICATED_ACCOUNT;
+		}
+
 		$db->INSERT($attr);
 		
 		return $db->insert_id();
@@ -200,6 +205,8 @@ class Administrator extends User{
 		$db->DELETE('id='.$id.' AND permission!=-1');
 		return $db->affected_rows();
 	}
+
+	const DUPLICATED_ACCOUNT = -1;
 }
 
 ?>
