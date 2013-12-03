@@ -5,6 +5,8 @@
 	<div class="content">
 		<form class="quick_search" action="$mod_url" method="post">
 			<dl>
+				<dt>订单号：</dt>
+				<dd><input type="text" name="orderid" style="width:3em" /></dd>
 				<dt>订单送货地址：</dt>
 				<dd>{eval echo Template::tselect('delivery_address', $address_format, $address_components, false, $formatid, $componentid);}</dd>
 				<dt>是否历史订单：</dt>
@@ -17,6 +19,7 @@
 			<table>
 				<thead>
 					<tr>
+						<td>编号</td>
 					<!--{loop Address::Format() $f}-->
 						<td>$f[name]</td>
 					<!--{/loop}-->
@@ -25,13 +28,15 @@
 						<td>物品</td>
 						<td>价格</td>
 						<td>状态</td>
-						<td>操作</td>
+						<td width="100">时间</td>
+						<td width="50">操作</td>
 						<td>留言</td>
 					</tr>
 				</thead>
 				<tbody>
 					<!--{loop $orders $o}-->
 					<tr primaryvalue="$o[id]">
+						<td>$o[id]</td>
 						<!--{loop Address::Format() $format}-->
 							<td>{eval echo $o['address'][$format['id']];}</td>
 						<!--{/loop}-->
@@ -47,6 +52,7 @@
 							<div><a href="{$mod_url}&action=mark_delivered&orderid=$o[id]" title="将订单标记为已签收">[已签收]</a></div>
 							<!--{/if}-->
 						</td>
+						<td>{eval echo rdate($o['dateline']);}</td>
 						<td>
 							<a href="$mod_url&action=print&orderid=$o[id]" target="_blank">[打印]</a>
 							<!--{if $o['status'] == 0}-->

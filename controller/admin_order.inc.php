@@ -9,23 +9,32 @@ switch($action){
 	case 'list':
 		$condition = array();
 
-		if(empty($_REQUEST['completed_order'])){
+		$display_status = array();
+		if($_G['admin']->hasPermission('order_sort')){
+			$display_status[] = 0;
+		}
+
+		if($_G['admin']->hasPermission('order_deliver')){
+			$display_status[] = 1;
+		}
+
+		if(!empty($_REQUEST['orderid'])){
+			$condition[] = 'id='.intval($_REQUEST['orderid']);
 			$completed_order = 0;
 
-			$display_status = array();
-			if($_G['admin']->hasPermission('order_sort')){
-				$display_status[] = 0;
-			}
-
-			if($_G['admin']->hasPermission('order_deliver')){
-				$display_status[] = 1;
-			}
-
+			$display_status[] = 2;
 			$display_status = implode(',', $display_status);
 			$condition[] = "status IN ($display_status)";
 		}else{
-			$completed_order = 1;
-			$condition[] = 'status>=2';
+			if(empty($_REQUEST['completed_order'])){
+				$completed_order = 0;
+
+				$display_status = implode(',', $display_status);
+				$condition[] = "status IN ($display_status)";
+			}else{
+				$completed_order = 1;
+				$condition[] = 'status>=2';
+			}
 		}
 
 		$order_address = array();
@@ -160,7 +169,8 @@ switch($action){
 		if($order->status == 0){
 			$order->status = 1;
 		}
-		redirect($mod_url);
+
+		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
 	case 'mark_delivered':
@@ -174,7 +184,8 @@ switch($action){
 		if($order->status == 1){
 			$order->status = 2;
 		}
-		redirect($mod_url);
+		
+		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
 	case 'print':
