@@ -1,8 +1,13 @@
+
 body{
 	background:url(body_bg.png);
 	user-select:none;
 	padding:0;
 	margin:0;
+}
+
+body, footer{
+	min-width:316px;
 }
 
 body, button, input, select, textarea{
@@ -204,7 +209,7 @@ ul.product_list > li .detail{
 ul.product_list > li .detail .name{
 	font-weight:bold;
 	border-bottom:white 2px solid;
-	padding-left:1em;
+	padding-left:0.5em;
 	cursor:pointer;
 }
 
@@ -215,9 +220,10 @@ ul.product_list > li .detail .soldout{
 }
 
 ul.product_list > li .detail ul.rule li{
-	padding-left:1em;
+	padding-left:0.5em;
 	border-bottom:white 2px solid;
 	line-height:40px;
+	position:relative;
 }
 
 ul.product_list > li .detail ul.rule li .subtype{
@@ -227,7 +233,7 @@ ul.product_list > li .detail ul.rule li .subtype{
 
 ul.product_list > li .detail .more{
 	text-align:right;
-	padding:0 1em;
+	padding:0 0.5em;
 	font-weight:bold;
 	font-size:11pt;
 }
@@ -248,7 +254,7 @@ ul.product_list > li .detail .photo, ul.product_list > li .detail .introduction{
 
 ul.product_list > li .brief{
 	border-bottom:white 2px solid;
-	padding:0 1em;
+	padding:0 0.5em;
 }
 
 footer{
@@ -269,10 +275,12 @@ footer ul.button_list{
 	background-attachment: scroll;
 	background-clip: border-box;
 	background-color: rgba(0, 0, 0, 0);
+	height:53px;
+	overflow:hidden;
 }
 
 footer ul.button_list li{
-	width:24%;
+	width:23%;
 	display:inline-block;
 	border-right:#e54c4c 1px solid;
 }
@@ -294,11 +302,10 @@ footer ul.button_list li:hover{
 	background:url(icon_activebg.jpg) repeat-x;
 	background-color:#fe6565;
 	background-size:auto 54px;
-
 }
 
 footer ul.button_list li a:hover{
-	text-shadow: 0 0 4px #ffcccc;
+	text-shadow:0 0 4px #ffcccc;
 }
 
 footer ul.button_list #myorder a{
@@ -458,7 +465,9 @@ footer ul.button_list #cart-goods-number{
 }
 
 .order_input{
-	float:right;
+	position:absolute;
+	right:0em;
+	bottom:3px;
 }
 
 .cart{
