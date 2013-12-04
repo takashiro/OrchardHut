@@ -31,9 +31,8 @@
 
 .qqconnect_login{
 	display:inline-block;
-	width:76px;
+	width:120px;
 	height:24px;
 	background:url(qqconnect.png) no-repeat;
-	background-position:-139px -29px;
 	vertical-align:middle;
 }

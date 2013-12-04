@@ -13,9 +13,18 @@
 	border:#ccc 1px solid;
 	box-shadow:0 0 10px rgba(20, 20, 20, 0.1);
 	border-radius:6px;
-	padding:1px;
+	padding:3px;
 	opacity:0.6;
 	transition:0.2s linear;
+	text-align:center;
+}
+
+#sharebox img{
+	vertical-align:middle;
+}
+
+#sharebox p{
+	margin:0;
 }
 
 #sharebox:hover{
