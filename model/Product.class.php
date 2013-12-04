@@ -71,6 +71,8 @@ class Product extends DBObject{
 				foreach($prices as &$p){
 					$p['priceunit'] = self::PriceUnits($p['priceunit']);
 					$p['amountunit'] = self::AmountUnits($p['amountunit']);
+					$p['price'] = floatval($p['price']);
+					$p['amount'] = floatval($p['amount']);
 				}
 			}
 			return $prices;
