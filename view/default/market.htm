@@ -36,7 +36,7 @@
 					<span class="priceunit">$r[priceunit]</span>
 					<span class="amount" style="color:#$p[text_color];">$r[amount]</span>
 					<span class="amountunit" style="color:#$p[text_color];">$r[amountunit]</span>
-					<div class="order_input numberbox"></div>
+					<div class="order_input numberbox"><!--{if $r['amount'] > 1}--><div class="unit">x{$r[amount]}</div><!--{/if}--></div>
 				</li>
 			<!--{/loop}-->
 			</ul>

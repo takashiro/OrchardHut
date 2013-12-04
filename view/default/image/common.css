@@ -428,7 +428,7 @@ footer ul.button_list #cart-goods-number{
 }
 
 .numberbox{
-	width:120px;
+	width:130px;
 	text-align:center;
 	height:35px;
 }
@@ -451,7 +451,7 @@ footer ul.button_list #cart-goods-number{
 }
 
 .numberbox input{
-	width:35px;
+	width:45px;
 	color:#fe6565;
 	font-size:18px;
 	font-weight:bold;
@@ -466,8 +466,17 @@ footer ul.button_list #cart-goods-number{
 
 .order_input{
 	position:absolute;
-	right:0em;
+	right:0;
 	bottom:3px;
+}
+
+.order_input .unit{
+	position:absolute;
+	top:2px;
+	right:45px;
+	color:#FFA5A5;
+	font-size:10pt;
+	font-weight:bold;
 }
 
 .cart{
