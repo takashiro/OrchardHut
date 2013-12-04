@@ -45,7 +45,7 @@ if($action == 'login'){
 			}
 
 			$user->force_login();
-			redirect('market.php');
+			showmsg('您成功通过QQ登录本站！', 'market.php');
 		}
 	}else{
 		$qc->qq_login();

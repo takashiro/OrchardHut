@@ -21,7 +21,14 @@ var cookiepre = '$_CONFIG[cookiepre]';
 	<section class="container">
 		<header>
 			<div id="sharebox" data-id="share-box">
-				<p><a href="qqconnect.php"><img src="./view/$_G[style]/image/qqconnect_small.png" /></a></p>
+				<p>
+				<!--{if $_G['user']->isLoggedIn()}-->
+					<a href="home.php">$_USER[account]</a>
+					<a href="memcp.php?action=logout">[退出]</a>
+				<!--{else}-->
+					<a href="qqconnect.php"><img src="./view/$_G[style]/image/qqconnect_small.png" /></a>
+				<!--{/if}-->
+				</p>
 				<p>
 					<span>关注我们</span>
 					<a id="renren" href="###" target="_blank"><img src="./view/$_G[style]/image/renren_logo.png" /></a>
