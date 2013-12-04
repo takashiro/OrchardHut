@@ -43,6 +43,13 @@ class Product extends DBObject{
 			}
 
 			$this->$attr = 1;
+			if($attr == 'icon'){
+				if($ext == 'png'){
+					$image = imagecreatefrompng($dest_path);
+				}
+				$rgb = imagecolorsforindex($image, imagecolorat($image, 0, 0));
+				$this->icon_background = ($rgb['red'] << 16) + ($rgb['green'] << 8) + $rgb['blue'];
+			}
 
 			return true;
 		}
