@@ -50,7 +50,7 @@ switch($action){
 			}
 
 			if(!empty($_POST['nickname'])){
-				$admin->name = trim($_POST['nickname']);
+				$admin->nickname = trim($_POST['nickname']);
 			}
 
 			if(!empty($_POST['formatid'])){
@@ -113,6 +113,7 @@ switch($action){
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
 		$admins = $db->MFETCH('*', "1 LIMIT $offset,$limit");
+		$pagenum = $db->RESULTF('COUNT(*)');
 		include view('admin_list');
 	break;
 }

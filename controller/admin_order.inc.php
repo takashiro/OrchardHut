@@ -159,7 +159,7 @@ switch($action){
 	break;
 
 	case 'mark_sorted':
-		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort')) exit('permission denied');
+		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
 		if(!$order->belongToAddress($_G['admin']->formatid, $_G['admin']->componentid)){
@@ -174,7 +174,7 @@ switch($action){
 	break;
 
 	case 'mark_delivered':
-		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver')) exit('permission denied');
+		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
 		if(!$order->belongToAddress($_G['admin']->formatid, $_G['admin']->componentid)){

@@ -6,15 +6,16 @@ class Administrator extends User{
 	const AUTH_FIELD = 'account';
 	const COOKIE_VAR = 'rcadmininfo';
 
-	static private $Permission = array(  
+	static private $Permission = array(
 		'all' => 0,
-		'order' => 0x1,
-		'order_sort' => 0x2,
-		'order_deliver' => 0x4,
+		'order_deliver' => 0x1,
+		'order_sort_w' => 0x2,
+		'order_deliver_w' => 0x4,
 		'admin' => 0x8,
 		'market' => 0x10,
 		'announcement' => 0x20,
 		'address' => 0x40,
+		'order_sort' => 0x80,
 	);
 
 	public function __construct($id = 0){
@@ -78,6 +79,7 @@ class Administrator extends User{
 			$this->logged = true;
 			$cookie = array('id' => $this->attr['id'], 'loginip' => self::ip());
 			rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
+			$this->logintime = TIMESTAMP;
 
 			return true;
 		}
@@ -139,6 +141,15 @@ class Administrator extends User{
 		if(isset(self::$Permission[$permission])){
 			return ($this->attr('permission') & self::$Permission[$permission]) == self::$Permission[$permission];
 		}else{
+			$strlen = strlen($permission) + 1;
+			foreach(self::$Permission as $perm => $pbit){
+				if(substr($perm, 0, $strlen) == $permission.'_'){
+					if($this->hasPermission($perm)){
+						return true;
+					}
+				}
+			}
+
 			return false;
 		}
 	}
@@ -155,6 +166,7 @@ class Administrator extends User{
 				}else{
 					$this->attr['permission'] &= ~self::$Permission[$permission];
 				}
+
 				return true;
 			}else{
 				return false;

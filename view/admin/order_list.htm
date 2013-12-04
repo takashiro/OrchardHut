@@ -46,9 +46,9 @@
 						<td>$o[totalprice] $o[priceunit]</td>
 						<td>
 							{eval echo Order::$Status[$o['status']];}
-							<!--{if $o['status'] == 0 && $_G['admin']->hasPermission('order_sort')}-->
+							<!--{if $o['status'] == 0 && $_G['admin']->hasPermission('order_sort_w')}-->
 							<div><a href="{$mod_url}&action=mark_sorted&orderid=$o[id]" title="将订单标记为已打包">[已打包]</a></div>
-							<!--{elseif $o['status'] == 1 && $_G['admin']->hasPermission('order_deliver')}-->
+							<!--{elseif $o['status'] == 1 && $_G['admin']->hasPermission('order_deliver_w')}-->
 							<div><a href="{$mod_url}&action=mark_delivered&orderid=$o[id]" title="将订单标记为已签收">[已签收]</a></div>
 							<!--{/if}-->
 						</td>
