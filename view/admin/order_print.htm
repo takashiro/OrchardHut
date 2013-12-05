@@ -11,7 +11,9 @@
 </head>
 <body>
 
-<header>$_CONFIG[sitename]</header>
+<header>
+	<img src="./view/default/image/print_logo.png" />
+</header>
 
 <dl>
 	<dt>订单编号：</dt><dd>$order[id]</dd>
@@ -31,6 +33,10 @@
 <dl>
 	<dt>用户留言：</dt><dd>$order[message]</dd>
 </dl>
+
+<footer>
+	<img src="./view/default/image/print_qrcode.png" />
+</footer>
 
 <script type="text/javascript">
 window.print();

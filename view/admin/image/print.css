@@ -8,9 +8,22 @@ body{
 header{
 	font-size:15pt;
 	text-align:center;
+	border-bottom:black 1px dotted;
 }
 
+header img{
+	width:80%;
+}
 
 dl.orderdetail dd{
 	text-align:right;
+}
+
+footer{
+	border-top:black 1px dotted;
+	text-align:center;
+}
+
+footer img{
+	width:60%;
 }
