@@ -104,19 +104,31 @@ switch($action){
 
 			$order->message = isset($_POST['message']) ? trim($_POST['message']) : '';
 
+			$address_component = array();
+			$length = count($address);
+			for($i = 1; $i < $length; $i++){
+				$address_component[] = intval(array_shift($address));
+			}
+
+			$db->select_table('addresscomponent');
+			$address_component = $db->MFETCH('formatid,id', 'id IN ('.implode(',', $address_component).')');
+			
+			//Validate Address Components
+			$format2component = array();
+			foreach($address_component as $c){
+				$format2component[$c['formatid']] = $c['id'];
+			}
 			foreach(Address::Format() as $format){
-				$componentid = intval(array_shift($address));
-				if(!$componentid){
+				if(!array_key_exists($format['id'], $format2component)){
 					showmsg('请填写完整的收件地址！', 'back');
 				}
-				
-				$order->addAddressComponent(array(
-					'formatid' => $format['id'],
-					'componentid' => $componentid,
-				));
 			}
-			if(!$address){
-				showmsg('请填写完整的收件地址！', 'back');
+
+			foreach($address_component as $component){
+				$order->addAddressComponent(array(
+					'formatid' => $component['formatid'],
+					'componentid' => $component['id'],
+				));
 			}
 
 			$order->userid = $_G['user']->id;
@@ -212,7 +224,9 @@ switch($action){
 			$query = $db->query("SELECT c.name
 				FROM {$tpre}deliveryaddresscomponent a
 					LEFT JOIN {$tpre}addresscomponent c ON c.id=a.componentid
-				WHERE a.addressid=$a[id]");
+					LEFT JOIN {$tpre}addressformat f ON f.id=a.formatid
+				WHERE a.addressid=$a[id]
+				ORDER BY f.displayorder");
 			while($c = $db->fetch_array($query)){
 				$a['address_text'].= $c['name'].' ';
 			}
