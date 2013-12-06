@@ -93,7 +93,7 @@ class DBObject{
 	public function deleteFromDB(){
 		global $db;
 		$db->select_table(static::TABLE_NAME);
-		$db->DELETE('id='.$this->id);
+		$db->DELETE(array(static::PRIMARY_KEY => $this->attr(static::PRIMARY_KEY)));
 		$this->attr = $this->oattr = array();
 	}
 
@@ -101,7 +101,7 @@ class DBObject{
 		global $db;
 		$id = intval($id);
 		$db->select_table(static::TABLE_NAME);
-		$db->DELETE('id='.$id);
+		$db->DELETE(static::PRIMARY_KEY.'='.$id);
 	}
 
 	static public function Exist($id, $field = ''){
