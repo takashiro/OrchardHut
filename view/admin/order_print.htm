@@ -7,13 +7,39 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="shortcut icon" href="./view/$_G[style]/image/favicon.ico"/>
-<link rel="stylesheet" href="./view/$_G[style]/image/print.css" type="text/css" />
+<style type="text/css">
+body{
+	font-size:small;
+	width:42mm;
+	padding:0;
+	margin:5px;
+	font-family:宋体;
+	font-weight:bold;
+}
+
+.header{
+	font-size:15pt;
+	text-align:center;
+	border-bottom:black 3px dotted;
+}
+
+dl.orderdetail dd{
+	text-align:right;
+}
+
+.footer{
+	border-top:black 3px dotted;
+	text-align:center;
+	overflow:hidden;
+	padding-top:5px;
+}
+</style>
 </head>
 <body>
 
-<header>
-	<img src="./view/default/image/print_logo.png" />
-</header>
+<div class="header">
+	<img src="./view/default/image/print_logo.gif" />
+</div>
 
 <dl>
 	<dt>订单编号：</dt><dd>$order[id]</dd>
@@ -34,9 +60,9 @@
 	<dt>用户留言：</dt><dd>$order[message]</dd>
 </dl>
 
-<footer>
-	<img src="./view/default/image/print_qrcode.png" />
-</footer>
+<div class="footer">
+	<img src="./view/default/image/print_qrcode.gif" />
+</div>
 
 <script type="text/javascript">
 window.print();

@@ -30,7 +30,7 @@ $(function(){
 				<tr><th>名称</th><td><input type="text" name="name" value="$product[name]" /></td></tr>
 				<tr><th>介绍</th><td><textarea name="introduction">$product[introduction]</textarea></td></tr>
 				<tr>
-					<th>缩略图</th>
+					<th>图标</th>
 					<td>
 						<!--{if $product['icon']}-->
 						<img src="$product[icon]" width="110" /><br />
@@ -39,7 +39,7 @@ $(function(){
 					</td>
 				</tr>
 				<tr>
-					<th>照片</th>
+					<th>实物照片</th>
 					<td>
 						<!--{if $product['photo']}-->
 						<img src="$product[photo]" /><br />
