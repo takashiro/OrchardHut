@@ -91,14 +91,13 @@ switch($action){
 
 			$orderids = implode(',', $orderids);
 
-			$details = $db->fetch_all("SELECT p.name,d.subtype,d.amount,d.amountunit,d.number,d.orderid
+			$details = $db->fetch_all("SELECT d.productname,d.subtype,d.amount,d.amountunit,d.number,d.orderid
 				FROM {$tpre}orderdetail d
-					LEFT JOIN {$tpre}product p ON p.id=d.productid
 				WHERE d.orderid IN ($orderids)");
 
 			$order_details = array();
 			foreach($details as &$d){
-				$order_details[$d['orderid']][] = $d['name'].(!empty($d['subtype']) ? '('.$d['subtype'].')' : '').' '.($d['amount'] * $d['number']).$d['amountunit'];
+				$order_details[$d['orderid']][] = $d['productname'].(!empty($d['subtype']) ? '('.$d['subtype'].')' : '').' '.($d['amount'] * $d['number']).$d['amountunit'];
 			}
 			unset($d);
 

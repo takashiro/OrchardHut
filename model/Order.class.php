@@ -14,10 +14,7 @@ class Order extends DBObject{
 			parent::fetchAttributesFromDB('*', 'id='.$id);
 
 			global $db, $tpre;
-			$this->detail = $db->fetch_all("SELECT d.*,p.name
-				FROM {$tpre}orderdetail d
-					LEFT JOIN {$tpre}product p ON p.id=d.productid
-				WHERE orderid=$id");
+			$this->detail = $db->fetch_all("SELECT * FROM {$tpre}orderdetail d WHERE orderid=$id");
 			$this->address_components = $db->fetch_all("SELECT c.*,g.name
 				FROM {$tpre}orderaddresscomponent c
 					LEFT JOIN {$tpre}addresscomponent g ON g.id=c.componentid

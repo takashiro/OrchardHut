@@ -157,6 +157,7 @@ switch($action){
 					if($p['priceunit'] == $unit){
 						$order->addDetail(array(
 							'productid' => $p['productid'],
+							'productname' => $p['name'],
 							'subtype' => $p['subtype'],
 							'amount' => $p['amount'],
 							'amountunit' => $p['amountunit'],
