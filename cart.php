@@ -34,6 +34,17 @@ switch($action){
 				FROM {$tpre}productprice r
 					LEFT JOIN {$tpre}product p ON p.id=r.productid
 				WHERE r.id IN ($priceids)");
+
+			//Remove deleted product prices from the shopping cart and update cookie
+			$filtered_cart = array();
+			$in_cart = array();
+			foreach($products as $p){
+				$filtered_cart[$p['priceid']] = $cart[$p['priceid']];
+				$in_cart[] = $p['priceid'].'='.$cart[$p['priceid']];
+			}
+			$cart = &$filtered_cart;
+			$in_cart = implode(',', $in_cart);
+			rsetcookie('in_cart', $in_cart);
 		}else{
 			$products = array();
 		}
