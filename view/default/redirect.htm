@@ -9,7 +9,13 @@
 </head>
 <body>
 <script type="text/javascript">
-location.href = '$url';
+var url = '$url';
+if(url.indexOf('?') >= 0){
+	url += '&';
+}else{
+	url += '?';
+}
+location.href = url + 'timestamp={TIMESTAMP}';
 </script>
 </body>
 </html>
