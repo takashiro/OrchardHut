@@ -13,7 +13,7 @@ if($_G['user']->isLoggedIn()){
 
 if($action == 'login'){
 	if($_G['user']->isLoggedIn()){
-		redirect('home.php');
+		showmsg('您已登录，不需要再次登录。', 'home.php');
 	}
 
 	if($_POST){
@@ -28,9 +28,9 @@ if($action == 'login'){
 
 		if($result == User::ACTION_SUCCEEDED){
 			if(empty($_POST['http_referer'])){
-				redirect('home.php');
+				showmsg('登录成功！', 'home.php');
 			}else{
-				redirect($_POST['http_referer']);
+				showmsg('登录成功！', $_POST['http_referer']);
 			}
 		}else{
 			showmsg('用户名或密码错误。', 'back');

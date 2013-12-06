@@ -26,7 +26,7 @@
 				</div>
 				<label for="account">账号</label><input type="text" id="account" name="account" />
 				<label for="password">密码</label><input type="password" id="password" name="password" />
-				<input type="hidden" name="http_referer" value="{if !empty($_SERVER['HTTP_REFERER'])}$_SERVER[HTTP_REFERER]{/if}" />
+				<input type="hidden" name="http_referer" value="{if !empty($_GET['http_referer'])}$_GET[http_referer]{/if}" />
 				<div class="post_buttons">
 					<button type="submit" name="action" value="login">登录</button>
 				</div>

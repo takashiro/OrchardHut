@@ -84,7 +84,7 @@ $(function(){
 });
 </script>
 
-<form id="login_form" action="memcp.php" method="post" onkeydown="if(event.keyCode==13){return false;}">
+<form id="login_form" action="memcp.php?action=login" method="post" onkeydown="if(event.keyCode==13){return false;}">
 	<div class="login_form">
 		<div class="header">
 			$_CONFIG[sitename] - 用户<span id="action_text">登录</span>
@@ -94,7 +94,7 @@ $(function(){
 		<div class="for_register">
 			<label for="password2">再次确认密码</label><input type="password" id="password2" name="password2" />
 		</div>
-		<input type="hidden" name="http_referer" value="{if !empty($_SERVER['HTTP_REFERER'])}$_SERVER[HTTP_REFERER]{/if}" />
+		<input type="hidden" name="http_referer" value="{if !empty($_GET['http_referer'])}$_GET[http_referer]{/if}" />
 		<div class="post_buttons">
 			<button type="submit" id="login_button" name="action" value="login">登录</button>
 			<button type="submit" id="register_button" name="action" value="register">注册</button>
