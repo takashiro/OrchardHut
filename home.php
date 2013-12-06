@@ -25,6 +25,22 @@ case 'delete':
 	showmsg('该订单不存在！', 'back');
 	break;
 
+case 'mark_delivered':
+	if(empty($_GET['confirm'])){
+		showmsg('您确认已经收到订单吗？', 'confirm');
+	}
+
+	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
+	if($orderid > 0){
+		$db->query("UPDATE {$tpre}order SET status=2 WHERE id=$orderid AND userid=$_USER[id] AND status=1");
+		if($db->affected_rows() > 0){
+			showmsg('成功确认收货！欢迎再光临'.$_CONFIG['sitename'].'！', 'home.php');
+		}
+	}
+
+	showmsg('该订单不存在！', 'back');
+	break;
+
 default:
 	$limit = 10;
 	$offset = ($page - 1) * $limit;
@@ -41,14 +57,13 @@ default:
 		}
 		unset($o);
 
-		$details = $db->fetch_all("SELECT p.name,d.subtype,d.amount,d.amountunit,d.number,d.orderid
+		$details = $db->fetch_all("SELECT d.productname,d.subtype,d.amount,d.amountunit,d.number,d.orderid
 			FROM {$tpre}orderdetail d
-				LEFT JOIN {$tpre}product p ON p.id=d.productid
 			WHERE d.orderid IN (".implode(',', $orderids).')');
 
 		$order_details = array();
 		foreach($details as &$d){
-			$order_details[$d['orderid']][] = $d['name'].(!empty($d['subtype']) ? '('.$d['subtype'].')' : '').' '.($d['amount'] * $d['number']).$d['amountunit'];
+			$order_details[$d['orderid']][] = $d['productname'].(!empty($d['subtype']) ? '('.$d['subtype'].')' : '').' '.($d['amount'] * $d['number']).$d['amountunit'];
 		}
 		unset($d);
 
