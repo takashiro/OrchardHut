@@ -25,6 +25,15 @@ $(function(){
 			var brief = $($.parseHTML('<div></div>'));
 			brief.addClass('brief');
 			brief.html('多个品种可选');
+			var rule_li = rule.children();
+			if(rule_li.length == 2){
+				if(rule_li.eq(0).children('.subtype').html() == '' && rule_li.eq(1).children('.subtype').html() == ''){
+					brief.html('');
+					brief.append(rule_li.eq(0).children('span').clone());
+					brief.append($.parseHTML('<span class="split"> / </span>'));
+					brief.append(rule_li.eq(1).children('span').clone());
+				}
+			}
 			rule.before(brief);
 
 			more_button.click(function(){
