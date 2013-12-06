@@ -2,10 +2,10 @@
 -- version 3.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Nov 21, 2013 at 12:52 PM
--- Server version: 5.5.24-log
--- PHP Version: 5.3.13
+-- 主机: localhost
+-- 生成日期: 2013 年 12 月 06 日 13:59
+-- 服务器版本: 5.5.24-log
+-- PHP 版本: 5.3.13
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `orchardhut`
+-- 数据库: `orchardhut`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_addresscomponent`
+-- 表的结构 `hut_addresscomponent`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_addressformat`
+-- 表的结构 `hut_addressformat`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_addressformat` (
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `hut_addressformat` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_administrator`
+-- 表的结构 `hut_administrator`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_administrator` (
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `hut_administrator` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_announcement`
+-- 表的结构 `hut_announcement`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_announcement` (
@@ -86,7 +86,20 @@ CREATE TABLE IF NOT EXISTS `hut_announcement` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_deliveryaddress`
+-- 表的结构 `hut_authkey`
+--
+
+CREATE TABLE IF NOT EXISTS `hut_authkey` (
+  `user` varchar(32) NOT NULL,
+  `key` varchar(32) NOT NULL,
+  `expiry` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`user`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `hut_deliveryaddress`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
@@ -102,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_deliveryaddresscomponent`
+-- 表的结构 `hut_deliveryaddresscomponent`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_deliveryaddresscomponent` (
@@ -115,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddresscomponent` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_order`
+-- 表的结构 `hut_order`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_order` (
@@ -136,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_orderaddresscomponent`
+-- 表的结构 `hut_orderaddresscomponent`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_orderaddresscomponent` (
@@ -149,13 +162,14 @@ CREATE TABLE IF NOT EXISTS `hut_orderaddresscomponent` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_orderdetail`
+-- 表的结构 `hut_orderdetail`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `orderid` mediumint(8) unsigned NOT NULL,
   `productid` mediumint(8) unsigned NOT NULL,
+  `productname` varchar(50) NOT NULL,
   `subtype` varchar(50) NOT NULL,
   `amount` int(11) unsigned NOT NULL,
   `amountunit` varchar(30) NOT NULL,
@@ -168,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_product`
+-- 表的结构 `hut_product`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_product` (
@@ -188,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `hut_product` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_productprice`
+-- 表的结构 `hut_productprice`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_productprice` (
@@ -206,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `hut_productprice` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_productunit`
+-- 表的结构 `hut_productunit`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_productunit` (
@@ -219,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `hut_productunit` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hut_user`
+-- 表的结构 `hut_user`
 --
 
 CREATE TABLE IF NOT EXISTS `hut_user` (
@@ -232,11 +246,13 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   `realname` varchar(50) NOT NULL,
   `regtime` int(11) unsigned NOT NULL,
   `qqopenid` varchar(32) DEFAULT NULL,
+  `wxopenid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`),
   UNIQUE KEY `qqopenid` (`qqopenid`),
   UNIQUE KEY `mobile` (`mobile`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `wxopenid` (`wxopenid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
