@@ -8,7 +8,7 @@ $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET
 switch($action){
 	case 'list':
 		$db->select_table('product');
-		$products = $db->MFETCH('*');
+		$products = $db->MFETCH('*', '1 ORDER BY type,hide,displayorder');
 		include view('market');
 	break;
 
@@ -38,6 +38,14 @@ switch($action){
 					if(array_key_exists($typeid, $types)){
 						$product->type = $typeid;
 					}
+				}
+
+				if(isset($_POST['displayorder'])){
+					$product->displayorder = intval($_POST['displayorder']);
+				}
+
+				if(isset($_POST['hide'])){
+					$product->hide = !empty($_POST['hide']);
 				}
 
 				foreach(array('text_color', 'background_color', 'icon_background') as $attr){

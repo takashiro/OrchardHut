@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 12 月 06 日 13:59
+-- 生成日期: 2013 年 12 月 07 日 06:50
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.3.13
 
@@ -196,6 +196,8 @@ CREATE TABLE IF NOT EXISTS `hut_product` (
   `text_color` mediumint(8) unsigned NOT NULL DEFAULT '16777215',
   `background_color` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `icon_background` mediumint(8) unsigned NOT NULL DEFAULT '13164714',
+  `displayorder` tinyint(4) NOT NULL,
+  `hide` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

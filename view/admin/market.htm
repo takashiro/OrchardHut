@@ -5,7 +5,7 @@ $(function(){
 	$('#productlist').editlist({
 		'edit' : '$mod_url&action=edit',
 		'delete' : '$mod_url&action=delete',
-		'attr' : ['name', 'type']
+		'attr' : ['name', 'type', 'displayorder', 'hide']
 	});
 });
 </script>
@@ -19,6 +19,8 @@ $(function(){
 					<tr>
 						<td>名称</td>
 						<td>类型</td>
+						<td>显示顺序</td>
+						<td>隐藏</td>
 						<td>操作</td>
 					</tr>
 				</thead>
@@ -27,12 +29,16 @@ $(function(){
 					<tr primaryvalue="$p[id]">
 						<td>$p[name]</td>
 						<td realvalue="$p[type]">{eval echo Product::Types($p['type']);}</td>
+						<td>$p[displayorder]</td>
+						<td realvalue="$p[hide]"><!--{if $p['hide']}-->是<!--{else}-->否<!--{/if}--></td>
 						<td></td>
 					</tr>
 					<!--{/loop}-->
 					<tr>
 						<td><input type="text" /></td>
 						<td>{eval echo Template::select('', Product::Types());}</td>
+						<td><input type="text" /></td>
+						<td>{eval echo Template::select('', array('否', '是'))}</td>
 						<td><button type="button" class="add">添加</button></td>
 					</tr>
 				</tbody>
