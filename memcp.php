@@ -66,8 +66,16 @@ if($action == 'login'){
 	if($_POST){
 		if(isset($_POST['mobile'])){
 			$mobile = trim($_POST['mobile']);
-			if($mobile != '' && !User::IsMobile($mobile)){
-				showmsg('请输入正确的手机号码', 'back');
+			if($mobile != ''){
+				if(!User::IsMobile($mobile)){
+					showmsg('请输入正确的手机号码', 'back');
+				}
+
+				if(User::Exist($mobile, 'mobile')){
+					showmsg('您输入的手机号码已被使用，请重新输入。', 'back');
+				}
+			}else{
+				$mobile = NULL;
 			}
 
 			$_G['user']->mobile = $mobile;
@@ -75,8 +83,16 @@ if($action == 'login'){
 
 		if(isset($_POST['email'])){
 			$email = trim($_POST['email']);
-			if($email != '' && !User::IsEmail($email)){
-				showmsg('请输入正确的电子邮箱地址。', 'back');
+			if($email != ''){
+				if(!User::IsEmail($email)){
+					showmsg('请输入正确的电子邮箱地址。', 'back');
+				}
+
+				if(User::Exist($email, 'email')){
+					showmsg('您输入的邮箱已被使用，请重新输入。', 'back');
+				}
+			}else{
+				$email = NULL;
 			}
 
 			$_G['user']->email = $email;
