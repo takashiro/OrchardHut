@@ -1,0 +1,40 @@
+<!--{template header}-->
+
+<div class="box edit_form">
+	<h1>编辑个人信息</h1>
+
+	<form action="$mod_url&action=edit" method="post">
+	<table>
+		<tr>
+			<th><label>姓名：</label></th>
+			<td><input type="text" id="nickname" name="nickname" value="$_ADMIN[nickname]" /></td>
+		</tr>
+		<tr>
+			<th><label>账号：</label></th>
+			<td><input type="text" id="account" name="account" value="$_ADMIN[account]" readonly="readonly" /></td>
+		</tr>
+		<tr>
+			<th><label>旧密码：</label></th>
+			<td>
+				<input type="password" id="old_password" name="old_password" />
+				<span class="tips">若不修改密码，此处请留空。</span>
+			</td>
+		</tr>
+		<tr>
+			<th><label>新密码：</label></th>
+			<td><input type="password" id="password" name="password" /></td>
+		</tr>
+		<tr>
+			<th><label>再次确认新密码：</label></th>
+			<td><input type="password" id="password2" name="password2" /></td>
+		</tr>
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">确定修改</button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->

@@ -83,7 +83,7 @@ $pagenum = 0;
 
 $_G['user'] = new User;
 $_G['user']->login();
-$_USER = $_G['user']->toArray();
+$_USER = $_G['user']->toReadable();
 
 //Debug模式
 if(!empty($_CONFIG['debugmode'])){

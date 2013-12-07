@@ -100,8 +100,8 @@ class User extends DBObject{
 		return $onlineip;
 	}
 
-	public function toArray(){
-		$attr = parent::toArray();
+	public function toReadable(){
+		$attr = parent::toReadable();
 		if(!empty($attr['nickname'])){
 			$attr['account'] = &$attr['nickname'];
 		}

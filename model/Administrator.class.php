@@ -117,7 +117,7 @@ class Administrator extends User{
 			return -3;
 		}elseif(rmd5($old) != $this->attr('pwmd5')){
 			return -1;
-		}elseif($new != $new2){
+		}elseif($new2 && $new != $new2){
 			return -2;
 		}
 		
