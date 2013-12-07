@@ -1,5 +1,12 @@
 <!--{template header}-->
 
+<script type="text/javascript" src="./js/jquery.clock.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#clock').clock({'timestamp':{TIMESTAMP}, 'format':'Y-m-d H:i:s'});
+});
+</script>
+
 <div class="box edit_form">
 	<h1>系统设置</h1>
 	<div class="headactions">
@@ -32,8 +39,11 @@
 			<td><input type="text" name="system[timezone]" value="$_CONFIG[timezone]" /></td>
 		</tr>
 		<tr>
-			<th><label>时间修正（单位：s）：</label></th>
-			<td><input type="text" name="system[timefix]" value="$_CONFIG[timefix]" /></td>
+			<th><label>时间修正：</label></th>
+			<td>
+				<input type="text" name="system[timefix]" value="$_CONFIG[timefix]" />
+				<span class="tips">单位：s，当前时间：<span id="clock">{eval echo rdate(TIMESTAMP);}</span></span>
+			</td>
 		</tr>
 		<tr>
 			<th><label>cookie前缀：</label></th>

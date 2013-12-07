@@ -66,6 +66,13 @@ textarea{
 	height:200px;
 }
 
+select{
+	color:#444;
+	padding:7px;
+	border-radius:8px;
+	border:#ddd 1px solid;
+}
+
 input:focus, textarea:focus{
 	outline:none;
 	border:#fe6565 1px solid;
