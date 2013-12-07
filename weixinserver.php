@@ -36,19 +36,19 @@ if($request['MsgType'] == 'event'){
 	}
 
 	if($bind){
-		$weixin->replyTextMessage("若您未登录，<a href=\"http://ts19920424.gotoip3.com/memcp.php?action=login\">点击登录已有账号</a>，然后回复【已绑定】或【ybd】。");
+		$weixin->replyTextMessage("若您未登录，<a href=\"http://ts19920424.gotoip3.com/memcp.php?action=login\">点击登录已有账号</a>，然后回复【已登录】或【ydl】。");
 	}
 
-	$keywords = array('已绑定', 'ybd', 'yibangding', 'binded');
-	$binded = false;
+	$keywords = array('已登录', 'ydl', 'yidenglu', 'loggedin');
+	$loggedin = false;
 	foreach($keywords as $keyword){
 		if($request['Content'] == $keyword){
-			$binded = true;
+			$loggedin = true;
 			break;
 		}
 	}
 
-	if($binded){
+	if($loggedin){
 		$user = $request['FromUserName'];
 		$key = Authkey::Generate($user);
 		$weixin->replyTextMessage("<a href=\"http://ts19920424.gotoip3.com/weixinconnect.php?action=bind&user=$user&key=$key\">点击进入商城</a>");

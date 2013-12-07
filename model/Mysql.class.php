@@ -207,7 +207,11 @@ class Mysql {
 
 		$sql = array();
 		foreach($node as $k => $v){
-			$sql[] = "`$k`='$v'";
+			if($v !== NULL){
+				$sql[] = "`$k`='$v'";
+			}else{
+				$sql[] = "`$k`=NULL";
+			}
 		}
 		$sql = implode(',', $sql);
 		$priority = '' ? '' : 'LOW_PRIORITY';

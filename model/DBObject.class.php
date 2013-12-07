@@ -16,7 +16,7 @@ class DBObject{
 		if($id > 0){
 			if($this->oattr){
 				foreach($this->oattr as $key => $value){
-					if($value != $this->attr[$key]){
+					if($value !== $this->attr[$key]){
 						$this->update[$key] = $this->attr[$key];
 					}
 				}

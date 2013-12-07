@@ -25,9 +25,15 @@ if($action == 'login'){
 		$open_id = $_GET['user'];
 		$user->fetchAttributesFromDB('*', array('wxopenid' => $open_id));
 		if($user->id <= 0){
+			$user->fetchAttributesFromDB('*', array('account' => $open_id));
+			if($user->id > 0){
+				$user->wxopenid = $open_id;
+			}
+		}
+		if($user->id <= 0){
 			$user->account = $open_id;
 			$user->pwmd5 = '';
-			$user->qqopenid = $open_id;
+			$user->wxopenid = $open_id;
 			$user->nickname = '微信用户';
 
 			$user->insert();
@@ -65,7 +71,11 @@ if($action == 'login'){
 
 }else{
 	if($_G['user']->isLoggedIn()){
-		$_G['user']->wxopenid = '';
+		if($_G['user']->account == $_G['user']->wxopenid){
+			showmsg('您的账号是通过微信登录自动注册的，需要先设定本站登录账号和密码才能解绑，否则会造成您的账号无法再次登录。', 'memcp.php');
+		}
+
+		$db->query("UPDATE {$tpre}user SET wxopenid=NULL WHERE id=$_USER[id]");
 		showmsg('成功解除该账号已绑定的微信账号！', 'refresh');
 	}else{
 		showmsg('请先登录，否则无法绑定。', 'memcp.php');
