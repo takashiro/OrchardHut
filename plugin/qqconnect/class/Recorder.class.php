@@ -15,8 +15,7 @@ class Recorder{
         $this->error = new ErrorCase();
 
         //-------读取配置文件
-        $incFileContents = file_get_contents(ROOT."comm/inc.php");
-        $this->inc = json_decode($incFileContents);
+        $this->inc = readdata('qqconnect');
         if(empty($this->inc)){
             $this->error->showError("20001");
         }

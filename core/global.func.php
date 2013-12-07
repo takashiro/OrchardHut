@@ -95,7 +95,6 @@ function multi($totalnum, $limit, $curpage, $baseurl){
 	return $html;
 }
 
-
 function writecache($file, $data){
 	return file_put_contents(S_ROOT.'./data/cache/'.$file.'.php', '<?php return '.var_export($data, true).';?>');
 }
@@ -103,6 +102,19 @@ function writecache($file, $data){
 function readcache($file){
 	if(file_exists(S_ROOT.'./data/cache/'.$file.'.php')){
 		return include S_ROOT.'./data/cache/'.$file.'.php';
+	}else{
+		return NULL;
+	}
+}
+
+function writedata($file, $data){
+	return file_put_contents(S_ROOT.'./data/'.$file.'.inc.php', '<?php return '.var_export($data, true).';?>');
+}
+
+function readdata($file){
+	$file = S_ROOT.'./data/'.$file.'.inc.php';
+	if(file_exists($file)){
+		return include $file;
 	}else{
 		return NULL;
 	}
