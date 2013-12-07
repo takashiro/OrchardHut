@@ -30,7 +30,7 @@ li{
 }
 
 button{
-	width:100px;
+	width:70px;
 	background-color:#fe6565;
 	background:url(button_bg.jpg) repeat;
 	box-shadow:0 1px 3px #ccc;
@@ -40,8 +40,8 @@ button{
 	border-radius:10px;
 	display:inline-block;
 	text-decoration:none;
-	padding:0.4em 0.5em;
-	font-size:large;
+	padding:0.3em 0.4em;
+	font-size:11pt;
 	font-weight:bold;
 	cursor:pointer;
 	margin:0.1em 0.2em;
