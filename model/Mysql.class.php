@@ -250,7 +250,7 @@ class Mysql {
 		return $this->query("$action $extra INTO `{$this->tpre}{$this->tablename}` (`$fields`) VALUES $values");
 	}
 		
-	function DELETE($condition){
+	function DELETE($condition, $priority = 'LOW_PRIORITY'){
 		if(is_array($condition)){
 			$condition = self::ToCondition($condition);
 		}
@@ -258,7 +258,7 @@ class Mysql {
 		if($condition == '1'){
 			return $this->query("TRUNCATE `{$this->tpre}{$this->tablename}`");
 		}else{
-			return $this->query("DELETE FROM `{$this->tpre}{$this->tablename}` WHERE $condition");
+			return $this->query("DELETE $priority FROM `{$this->tpre}{$this->tablename}` WHERE $condition");
 		}
 	}
 
