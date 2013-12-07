@@ -24,14 +24,12 @@ if($action == 'edit'){
 			if($result === -1){
 				showmsg('您输入的旧密码不正确，请重新输入。', 'back');
 			}
-
-			$account = $_G['admin']->account;
-			$_G['admin']->logout();
-			$_G['admin']->login($account, $_POST['password']);
 		}
 
 		showmsg('成功修改个人信息！', 'refresh');
 	}
+
+	$_ADMIN = $_G['admin']->toArray();
 
 	include view('memcp_edit');
 

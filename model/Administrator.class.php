@@ -121,8 +121,7 @@ class Administrator extends User{
 			return -2;
 		}
 		
-		$this->attr('pwmd5', rmd5($new));
-		rsetcookie(static::COOKIE_VAR);
+		$this->pwmd5 = rmd5($new);
 
 		return true;
 	}
