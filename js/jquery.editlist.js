@@ -30,7 +30,7 @@
 		display_operations(operation_td);
 
 		if(!options.noedit){
-			this.on('dblclick', 'tbody tr:not(:last-child) td', function(e){
+			this.on('dblclick', 'tbody tr:not(:last-child) td:not(:last-child)', function(e){
 				var td = $(e.target);
 
 				var index = td.index();
