@@ -68,7 +68,7 @@ if($action == 'login'){
 		showmsg('您确定要解除与QQ的绑定吗？', 'confirm');
 	}
 
-	$db->query("UPDATE {$tpre}user SET qqopenid=NULL WHERE id=$_USER[id]");
+	$_G['user']->qqopenid = NULL;
 
 	showmsg('成功解除与QQ的绑定。', 'home.php');
 }

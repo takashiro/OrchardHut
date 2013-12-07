@@ -40,10 +40,10 @@ class Recorder{
     }
 
     public function readInc($name){
-        if(empty($this->inc->$name)){
+        if(empty($this->inc[$name])){
             return null;
         }else{
-            return $this->inc->$name;
+            return $this->inc[$name];
         }
     }
 
