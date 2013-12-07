@@ -192,6 +192,16 @@ switch($action){
 		if($orderid > 0){
 			$order = new Order($orderid);
 			$order = $order->toReadable();
+			if(!empty($_CONFIG['ticket_tips'])){
+				$tips = explode("\n", $_CONFIG['ticket_tips']);
+				if(count($tips) > 0){
+					$tips = $tips[array_rand($tips)];
+				}else{
+					$tips = $tips[0];
+				}
+			}else{
+				$tips = '';
+			}
 			include view('order_print');
 		}
 	break;
