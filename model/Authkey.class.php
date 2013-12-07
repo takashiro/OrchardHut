@@ -9,7 +9,13 @@ class Authkey extends DBObject{
 	}
 
 	public function isExpired(){
-		return $this->expiry < TIMESTAMP;
+		if($this->expiry < TIMESTAMP){
+			if($this->user){
+				$this->deleteFromDB();
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public function match($key){
