@@ -37,7 +37,7 @@ $(function(){
 		$('li[price-id=' + price_id + '] .order_input input').val(number);
 	}
 
-	$('.cart').on('click', '.product_list button.remove', function(e){
+	$('.cart .product_list button.remove').click(function(e){
 		var button = $(e.target);
 		var li = button.parent().parent();
 		var price_id = parseInt(li.attr('price-id'), 10);
@@ -54,7 +54,7 @@ $(function(){
 
 	$('#cart-goods-number').html(cart_number());
 
-	$('.deliveryaddress').on('click', 'ul li a.remove', function(e){
+	$('.deliveryaddress ul li a.remove').click(function(e){
 		if(confirm('您确认要删除该收货地址吗？')){
 			var button = $(e.target);
 			var li = button.parent();
