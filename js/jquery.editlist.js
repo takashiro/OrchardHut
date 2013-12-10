@@ -46,6 +46,7 @@
 
 				td.html('');
 				td.append(input);
+				input.focus();
 			});
 
 			this.on('blur', 'tbody tr:not(:last-child) td input, tbody tr:not(:last-child) td select', function(e){

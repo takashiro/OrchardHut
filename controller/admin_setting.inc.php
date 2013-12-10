@@ -21,6 +21,7 @@ case 'system':
 		'log_error' => !empty($config['log_error']),
 		'refresh_template' => !empty($config['refresh_template']),
 		'ticket_tips' => $config['ticket_tips'],
+		'head_element' => htmlspecialchars_decode(stripslashes($config['head_element'])),
 	);
 
 	if($_POST){

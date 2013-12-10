@@ -245,27 +245,26 @@ function riconv($in, $out, $str){
 
 //用配置文件中的数值进行MD5加密
 function rmd5($str){
-	return md5($str.$GLOBALS['_G']['config']['salt']);  //salt?????
+	return md5($str.$GLOBALS['_G']['config']['salt']);
 }
 
 //写日志
 function writelog($logfile, $data){
-	$logfile = S_ROOT.'./data/log/'.rdate(TIMESTAMP, 'Ymd').'_'.$logfile.'.log.do';
+	$logfile = S_ROOT.'./data/log/'.rdate(TIMESTAMP, 'Ymd').'_'.$logfile.'.log.php';
 
-	$need_prefix = !file_exists($logfile); //?????
+	$need_prefix = !file_exists($logfile);
 
 	if(is_array($data)){
 		foreach($data as $k => $v){
 			$data[$k] = User::ip()."\t".TIMESTAMP."\t".$v;
 		}
-		$data = implode("\r\n", $data); //implode() 函数把数组元素组合为一个字符串。
+		$data = implode("\r\n", $data);
 	}else{
 		$data = User::ip()."\t".TIMESTAMP."\t".$data;
 	}
 
 	$fp = fopen($logfile, 'a');
 	flock($fp, LOCK_EX); 
-	// flock() 函数锁定或释放文件。要取得独占锁定（写入的程序），将 lock 设为 LOCK_EX
 	if($need_prefix){
 		fwrite($fp, '<?php exit;?>');
 	}

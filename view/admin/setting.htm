@@ -62,6 +62,12 @@ $(function(){
 				{eval echo Template::checkbox('system[refresh_template]', '自动刷新模板', !empty($_CONFIG[refresh_template]));}
 			</td>
 		</tr>
+		<tr>
+			<th><label>头部附加代码：</label></th>
+			<td>
+				<textarea name="system[head_element]">$_CONFIG[head_element]</textarea>
+			</td>
+		</tr>
 	</table>
 	<!--{elseif $type == 'qqconnect'}-->
 	<h2>QQ互联</h2>

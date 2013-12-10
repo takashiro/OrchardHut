@@ -74,7 +74,8 @@ if(!empty($_CONFIG['cookiepre'])){
 
 //转义处理
 foreach(array('_POST', '_GET', '_COOKIE') as $request){
-	${$request} = rhtmlspecialchars(raddslashes(${$request}));
+	get_magic_quotes_gpc() || ${$request} = raddslashes(${$request});
+	${$request} = rhtmlspecialchars(${$request});
 }
 
 //常用变量处理

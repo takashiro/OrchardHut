@@ -30,7 +30,7 @@ if($request['MsgType'] == 'event'){
 	}
 
 	if($bind){
-		$weixin->replyTextMessage("若您未登录，<a href=\"http://ts19920424.gotoip3.com/memcp.php?action=login\">点击登录已有账号</a>，然后回复【已登录】或【ydl】。");
+		$weixin->replyTextMessage("若您未登录，<a href=\"{$_G[root_url]}memcp.php?action=login\">点击登录已有账号</a>，然后回复【已登录】或【ydl】。");
 	}
 
 	$keywords = array('已登录', 'ydl', 'yidenglu', 'loggedin');
@@ -45,7 +45,7 @@ if($request['MsgType'] == 'event'){
 	if($loggedin){
 		$user = $request['FromUserName'];
 		$key = Authkey::Generate($user);
-		$weixin->replyTextMessage("<a href=\"http://ts19920424.gotoip3.com/weixinconnect.php?action=bind&user=$user&key=$key\">点击进入商城</a>");
+		$weixin->replyTextMessage("<a href=\"{$_G[root_url]}weixinconnect.php?action=bind&user=$user&key=$key\">点击进入商城</a>");
 	}
 
 	$keywords = array('购买', '商城', 'gm', 'sc', 'goumai', 'shangcheng');
@@ -60,7 +60,7 @@ if($request['MsgType'] == 'event'){
 	if($enter_shop){
 		$user = $request['FromUserName'];
 		$key = Authkey::Generate($user);
-		$weixin->replyTextMessage("<a href=\"http://ts19920424.gotoip3.com/weixinconnect.php?action=login&user=$user&key=$key\">点击进入商城</a>");
+		$weixin->replyTextMessage("<a href=\"{$_G[root_url]}weixinconnect.php?action=login&user=$user&key=$key\">点击进入商城</a>");
 	}
 
 

@@ -184,7 +184,7 @@ class Template{
 			$html.= '<select>';
 			if(isset($format_components[$f['id']])){
 				foreach($format_components[$f['id']] as $id => $c){
-					@$html.= '<option value="'.$id.'" parentid="'.$c['parentid'].'"'.($id == $value[$vi] ? ' selected="selected"' : '').'>'.$c['name'].'</option>';
+					@$html.= '<option value="'.$id.'" parentid="'.$c['parentid'].'"'.(isset($value[$vi]) && $id == $value[$vi] ? ' selected="selected"' : '').'>'.$c['name'].'</option>';
 				}
 			}
 			$html.= '</select>';
