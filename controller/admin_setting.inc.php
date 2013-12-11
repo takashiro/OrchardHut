@@ -7,7 +7,7 @@ $type = !empty($_GET['type']) && in_array($_GET['type'], $types) ? $_GET['type']
 
 switch($type){
 case 'system':
-	@$config = $_POST['system'];
+	@$config = !empty($_POST['system']) ? $_POST['system'] : null;
 
 	@$config = array(
 		'sitename' => $config['sitename'],
