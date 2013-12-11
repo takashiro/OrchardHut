@@ -23,6 +23,7 @@
 						</li>
 					</ul>
 					<div class="subtotal">
+						<div class="money_icon" style="background:#$p[icon_background]">￥</div>
 						小计：<span class="number">$p[subtotal]</span> <span class="unit">$p[priceunit]</span>
 					</div>
 					<button type="button" class="remove"></button>
@@ -36,7 +37,7 @@
 			<div class="prices">
 				<!--{loop $total_price $price_unit $price}-->
 				<span class="number" id="total_price">$price</span>
-				<span class="unit">{eval echo Product::PriceUnits($price_unit);}</span>
+				<span class="unit">{echo Product::PriceUnits($price_unit)}</span>
 				<!--{/loop}-->
 			</div>
 		</div>
@@ -60,7 +61,7 @@
 					<table>
 						<tr>
 							<td><label>地址：</label></td>
-							<td>{eval echo Template::tselect('deliveryaddress', Address::Format(), Address::Components());}</td>
+							<td>{echo Template::tselect('deliveryaddress', Address::Format(), Address::Components())}</td>
 						</tr>
 						<tr>
 							<td><label>收货人：</label></td>

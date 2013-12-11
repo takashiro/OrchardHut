@@ -555,11 +555,11 @@ footer ul.button_list #cart-goods-number{
 }
 
 .order_list table th, .order_list table td{
-	border:#FCBDBC 1px solid;;
+	border:#DDDDDD 1px solid;;
 }
 
 .order_list table thead{
-	background:#FCBDBC;
+	background:#F7F7F7;
 }
 
 .popup_message_wrapper{
@@ -648,4 +648,15 @@ a.remove{
 	right:10px;
 	font-family:Arial;
 	padding:2px 8px;
+}
+
+.money_icon{
+	display:inline-block;
+	width:24px;
+	height:24px;
+	border-radius:12px;
+	background:black;
+	color:white;
+	text-align:center;
+	line-height:24px;
 }

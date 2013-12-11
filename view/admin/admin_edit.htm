@@ -30,10 +30,10 @@
 			<th><label>全局权限：</label></th>
 			<td>
 				<div class="spanlist permissions">
-					<!--{if $_G['admin']->hasPermission('admin')}--><span title="拥有此权限的管理员可以任意分配自己拥有的权限给其他管理员">{eval echo Template::checkbox('p[admin]', '编辑管理员', $admin->hasPermission('admin'));}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('market')}--><span>{eval echo Template::checkbox('p[market]', '管理商品', $admin->hasPermission('market'));}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('announcement')}--><span>{eval echo Template::checkbox('p[announcement]', '管理公告', $admin->hasPermission('announcement'));}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('address')}--><span>{eval echo Template::checkbox('p[address]', '管理地址', $admin->hasPermission('address'));}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('admin')}--><span title="拥有此权限的管理员可以任意分配自己拥有的权限给其他管理员">{echo Template::checkbox('p[admin]', '编辑管理员', $admin->hasPermission('admin'))}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('market')}--><span>{echo Template::checkbox('p[market]', '管理商品', $admin->hasPermission('market'))}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('announcement')}--><span>{echo Template::checkbox('p[announcement]', '管理公告', $admin->hasPermission('announcement'))}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('address')}--><span>{echo Template::checkbox('p[address]', '管理地址', $admin->hasPermission('address'))}</span><!--{/if}-->
 				</div>
 			</td>
 		</tr>
@@ -41,23 +41,23 @@
 			<th><label>普通权限：</label></th>
 			<td>
 				<div class="spanlist permissions">
-					<!--{if $_G['admin']->hasPermission('order_sort')}--><span>{eval echo Template::checkbox('p[order_sort]', '查看待分拣订单', $admin->hasPermission('order_sort'));}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('order_sort_w')}--><span>{eval echo Template::checkbox('p[order_sort_w]', '分拣订单', $admin->hasPermission('order_sort_w'));}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('order_deliver')}--><span>{eval echo Template::checkbox('p[order_deliver]', '查看待派送订单', $admin->hasPermission('order_deliver'));}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('order_deliver_w')}--><span>{eval echo Template::checkbox('p[order_deliver_w]', '派送订单', $admin->hasPermission('order_deliver_w'));}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('order_sort')}--><span>{echo Template::checkbox('p[order_sort]', '查看待分拣订单', $admin->hasPermission('order_sort'))}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('order_sort_w')}--><span>{echo Template::checkbox('p[order_sort_w]', '分拣订单', $admin->hasPermission('order_sort_w'))}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('order_deliver')}--><span>{echo Template::checkbox('p[order_deliver]', '查看待派送订单', $admin->hasPermission('order_deliver'))}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('order_deliver_w')}--><span>{echo Template::checkbox('p[order_deliver_w]', '派送订单', $admin->hasPermission('order_deliver_w'))}</span><!--{/if}-->
 				</div>
 			</td>
 		</tr>
 		<!--{if !$_G['admin']->formatid}-->
 		<tr title="选择此项后该管理员的普通权限（全局权限不受限制）限定在指定营业范围内">
 			<th><label>限定管理范围：</label></th>
-			<td>{eval echo Template::tselect('limitation', $address_format, $address_components, false, $admin->formatid, $admin->componentid);}</td>
+			<td>{echo Template::tselect('limitation', $address_format, $address_components, false, $admin->formatid, $admin->componentid)}</td>
 		</tr>
 		<!--{/if}-->
 	</table>
 
 	<div class="post_buttons">
-		<button type="submit">确定<!--{eval echo $id ? '编辑' : '添加';}--></button>
+		<button type="submit">确定<!--{echo $id ? '编辑' : '添加'}--></button>
 	</div>
 
 	</form>

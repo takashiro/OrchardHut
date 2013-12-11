@@ -8,9 +8,9 @@
 				<dt>订单号：</dt>
 				<dd><input type="text" name="orderid" style="width:3em" /></dd>
 				<dt>订单送货地址：</dt>
-				<dd>{eval echo Template::tselect('delivery_address', $address_format, $address_components, false, $formatid, $componentid);}</dd>
+				<dd>{echo Template::tselect('delivery_address', $address_format, $address_components, false, $formatid, $componentid)}</dd>
 				<dt>是否历史订单：</dt>
-				<dd>{eval echo Template::radio('completed_order', array(1 => '是', 0 => '否'), $completed_order);}</dd>
+				<dd>{echo Template::radio('completed_order', array(1 => '是', 0 => '否'), $completed_order)}</dd>
 			</dl>
 			<button type="submit">查找</button>
 		</form>
@@ -38,21 +38,21 @@
 					<tr primaryvalue="$o[id]">
 						<td>$o[id]</td>
 						<!--{loop Address::Format() $format}-->
-							<td>{eval echo $o['address'][$format['id']];}</td>
+							<td>{echo $o['address'][$format['id']]}</td>
 						<!--{/loop}-->
 						<td>$o[extaddress]</td>
 						<td>$o[addressee]<br />$o[mobile]</td>
 						<td>$o[items]</td>
 						<td>$o[totalprice] $o[priceunit]</td>
 						<td>
-							{eval echo Order::$Status[$o['status']];}
+							{echo Order::$Status[$o['status']]}
 							<!--{if $o['status'] == 0 && $_G['admin']->hasPermission('order_sort_w')}-->
 							<div><a href="{$mod_url}&action=mark_sorted&orderid=$o[id]" title="将订单标记为已打包">[已打包]</a></div>
 							<!--{elseif $o['status'] == 1 && $_G['admin']->hasPermission('order_deliver_w')}-->
 							<div><a href="{$mod_url}&action=mark_delivered&orderid=$o[id]" title="将订单标记为已签收">[已签收]</a></div>
 							<!--{/if}-->
 						</td>
-						<td>{eval echo rdate($o['dateline']);}</td>
+						<td>{echo rdate($o['dateline'])}</td>
 						<td>
 							<a href="$mod_url&action=print&orderid=$o[id]" target="_blank">[打印]</a>
 							<!--{if $o['status'] == 0}-->
@@ -70,6 +70,6 @@
 	</div>
 </div>
 
-{eval echo Template::mpage($pagenum, $page, $limit, $mod_url.'&completed_order='.$completed_order.'&delivery_address='.$delivery_address);}
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&completed_order='.$completed_order.'&delivery_address='.$delivery_address)}
 
 {template footer}

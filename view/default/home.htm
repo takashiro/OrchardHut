@@ -29,8 +29,8 @@
 						<td>$o[items]</td>
 						<td>{$o[totalprice]}{$o[priceunit]}</td>
 						<td>$o[id]</td>
-						<td>{eval echo Order::$Status[$o['status']];}</td>
-						<td><!--{if $o['status'] == 0}--><a href="home.php?action=delete&orderid=$o[id]">[取消订单]</a><!--{elseif $o['status'] == 1}--><a href="home.php?action=mark_delivered&orderid=$o[id]">[确认收货]</a><!--{/if}--></td>
+						<td>{echo Order::$Status[$o['status']]}</td>
+						<td><!--{if $o['status'] == 0}--><a href="home.php?action=delete&orderid=$o[id]">[取消]</a><!--{elseif $o['status'] == 1}--><a href="home.php?action=mark_delivered&orderid=$o[id]">[签收]</a><!--{/if}--></td>
 					</tr>
 				<!--{/loop}-->
 				</tbody>

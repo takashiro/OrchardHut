@@ -28,8 +28,8 @@ $(function(){
 					<!--{loop $announcements $a}-->
 					<tr primaryvalue="$a[id]">
 						<td>$a[title]</td>
-						<td>{eval echo rdate($a['time_start']);}</td>
-						<td>{eval echo rdate($a['time_end']);}</td>
+						<td>{echo rdate($a['time_start'])}</td>
+						<td>{echo rdate($a['time_end'])}</td>
 						<td>$a[displayorder]</td>
 						<td></td>
 					</tr>

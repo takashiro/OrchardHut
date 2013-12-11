@@ -44,7 +44,7 @@ $(function(){
 			<th><label>时间修正：</label></th>
 			<td>
 				<input type="text" name="system[timefix]" value="$_CONFIG[timefix]" />
-				<span class="tips">单位：s，当前时间：<span id="clock">{eval echo rdate(TIMESTAMP);}</span></span>
+				<span class="tips">单位：s，当前时间：<span id="clock">{echo rdate(TIMESTAMP)}</span></span>
 			</td>
 		</tr>
 		<tr>
@@ -53,15 +53,15 @@ $(function(){
 		</tr>
 		<tr>
 			<th><label>界面风格：</label></th>
-			<td>{eval echo Template::select('system[style]', $_G['stylelist'], $_CONFIG['style']);}</td>
+			<td>{echo Template::select('system[style]', $_G['stylelist'], $_CONFIG['style'])}</td>
 		</tr>
 		<tr>
 			<th><label>其他配置：</label></th>
 			<td>
-				{eval echo Template::checkbox('system[debugmode]', '开发模式', !empty($_CONFIG[debugmode]));}
-				{eval echo Template::checkbox('system[log_request]', '访问记录', !empty($_CONFIG[log_request]));}
-				{eval echo Template::checkbox('system[log_error]', '错误记录', !empty($_CONFIG[log_error]));}
-				{eval echo Template::checkbox('system[refresh_template]', '自动刷新模板', !empty($_CONFIG[refresh_template]));}
+				{echo Template::checkbox('system[debugmode]', '开发模式', !empty($_CONFIG[debugmode]))}
+				{echo Template::checkbox('system[log_request]', '访问记录', !empty($_CONFIG[log_request]))}
+				{echo Template::checkbox('system[log_error]', '错误记录', !empty($_CONFIG[log_error]))}
+				{echo Template::checkbox('system[refresh_template]', '自动刷新模板', !empty($_CONFIG[refresh_template]))}
 			</td>
 		</tr>
 		<tr>
@@ -98,7 +98,7 @@ $(function(){
 		</tr>
 		<tr>
 			<th><label>报告错误：</label></th>
-			<td>{eval echo Template::radio('qqconnect[errorReport]', array('否', '是'), $qqconnect['errorReport']);}</td>
+			<td>{echo Template::radio('qqconnect[errorReport]', array('否', '是'), $qqconnect['errorReport'])}</td>
 		</tr>
 		<tr>
 			<th><label>存储方式：</label></th>

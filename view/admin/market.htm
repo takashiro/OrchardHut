@@ -28,7 +28,7 @@ $(function(){
 					<!--{loop $products $p}-->
 					<tr primaryvalue="$p[id]">
 						<td>$p[name]</td>
-						<td realvalue="$p[type]">{eval echo Product::Types($p['type']);}</td>
+						<td realvalue="$p[type]">{echo Product::Types($p['type'])}</td>
 						<td>$p[displayorder]</td>
 						<td realvalue="$p[hide]"><!--{if $p['hide']}-->是<!--{else}-->否<!--{/if}--></td>
 						<td></td>
@@ -36,7 +36,7 @@ $(function(){
 					<!--{/loop}-->
 					<tr>
 						<td><input type="text" /></td>
-						<td>{eval echo Template::select('', Product::Types());}</td>
+						<td>{echo Template::select('', Product::Types())}</td>
 						<td><input type="text" /></td>
 						<td>{eval echo Template::select('', array('否', '是'))}</td>
 						<td><button type="button" class="add">添加</button></td>
