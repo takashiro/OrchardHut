@@ -84,7 +84,7 @@ input:focus, textarea:focus{
 
 .container{
 	margin:0 auto;
-	padding-bottom:50px;
+	padding-bottom:10px;
 }
 
 header{
@@ -134,10 +134,10 @@ footer{
 	width:100%;
 	text-align:center;
 	padding-top:5px;
-	position:fixed;
-	left:0;
-	bottom:0;
 	font-size:small;
+	color:#FFFFFF;
+	text-shadow:rgb(116, 116, 116) 0px 0px 8px;
+	margin-bottom:5px;
 }
 
 .post_buttons{
@@ -230,7 +230,8 @@ footer{
 }
 
 .list table thead{
-	background:#FFC8C8;
+	background:#F7F7F7;
+	font-weight:bold;
 }
 
 .list table thead tr{
@@ -238,11 +239,12 @@ footer{
 }
 
 .list table tbody tr:hover{
-	background:#FFE1E1;
+	background:#F7F7F7;
+	color:#777777;
 }
 
 .list table td, .edit_list table th{
-	border:#FFC8C8 1px solid;
+	border:#DDDDDD 1px solid;
 }
 
 .edit_form table{

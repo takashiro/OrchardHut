@@ -1,0 +1,37 @@
+<!--{template header}-->
+
+<script type="text/javascript">
+$(function(){
+	$('#autoreply_list').editlist({
+		'edit' : '$mod_url&type=autoreply&action=edit',
+		'delete' : '$mod_url&type=autoreply&action=delete',
+		'attr' : ['keyword', 'reply'],
+		'buttons' : {'delete':'删除'}
+	});
+});
+</script>
+
+<div class="box">
+	<h1>自动回复设置</h1>
+	<div class="headactions">
+		{template setting_menu}
+	</div>
+
+	<div id="autoreply_list" class="list">
+		<table>
+			<thead><tr><td>关键词</td><td>回复内容</td><td>操作</td></tr></thead>
+			<tbody>
+				<!--{loop $autoreply $r}-->
+				<tr primaryvalue="$r[id]"><td>$r[keyword]</td><td>$r[reply]</td><td></td></tr>
+				<!--{/loop}-->
+				<tr>
+					<td><textarea></textarea></td>
+					<td><textarea></textarea></td>
+					<td><button type="button" class="add">添加</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--{template footer}-->

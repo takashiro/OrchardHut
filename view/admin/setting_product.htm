@@ -1,0 +1,41 @@
+<!--{template header}-->
+
+<script type="text/javascript">
+$(function(){
+	$('#unit_list').editlist({
+		'edit' : '$mod_url&type=product&op=unit&action=edit',
+		'delete' : '$mod_url&type=product&op=unit&action=delete',
+		'attr' : ['name', 'type']
+	});
+});
+</script>
+
+<div class="box">
+	<h1>商品相关设置</h1>
+	<div class="headactions">
+		{template setting_menu}
+	</div>
+
+	<h2>商品单位设置</h2>
+	<div id="unit_list" class="list">
+		<table>
+			<thead><tr><td>名称</td><td>类型</td><td>操作</td></tr></thead>
+			<tbody>
+				<!--{loop $product_units $u}-->
+				<tr primaryvalue="$u[id]">
+					<td>$u[name]</td>
+					<td realvalue="$u[type]"><!--{if $u['type'] == 1}-->价格<!--{else}-->数量<!--{/if}--></td>
+					<td></td>
+				</tr>
+				<!--{/loop}-->
+				<tr>
+					<td><input type="text" /></td>
+					<td>{echo Template::select('', array(1 => '价格', '数量'))}</td>
+					<td><button type="button" class="add">添加</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--{template footer}-->

@@ -1,0 +1,76 @@
+<!--{template header}-->
+
+<script type="text/javascript" src="./js/jquery.clock.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#clock').clock({'timestamp':{TIMESTAMP}, 'format':'Y-m-d H:i:s'});
+});
+</script>
+
+<div class="box edit_form">
+	<h1>系统设置</h1>
+	{template setting_menu}
+
+	<form action="$mod_url&type=system" method="post">
+	
+	<h2>个性化</h2>
+	<table>
+		<tr>
+			<th><label>站点名称：</label></th>
+			<td><input type="text" name="system[sitename]" value="$_CONFIG[sitename]" /></td>
+		</tr>
+		<tr>
+			<th><label>小票箴言：</label></th>
+			<td>
+				<textarea name="system[ticket_tips]">$_CONFIG[ticket_tips]</textarea>
+				<span class="tips">每行一条，系统随机选择一条打印</span>
+			</td>
+		</tr>
+	</table>
+
+	<h2>开发选项</h2>
+	<table>
+		<tr>
+			<th><label>时区设置：</label></th>
+			<td><input type="text" name="system[timezone]" value="$_CONFIG[timezone]" /></td>
+		</tr>
+		<tr>
+			<th><label>时间修正：</label></th>
+			<td>
+				<input type="text" name="system[timefix]" value="$_CONFIG[timefix]" />
+				<span class="tips">单位：s，当前时间：<span id="clock">{echo rdate(TIMESTAMP)}</span></span>
+			</td>
+		</tr>
+		<tr>
+			<th><label>cookie前缀：</label></th>
+			<td><input type="text" name="system[cookiepre]" value="$_CONFIG[cookiepre]" /></td>
+		</tr>
+		<tr>
+			<th><label>界面风格：</label></th>
+			<td>{echo Template::select('system[style]', $_G['stylelist'], $_CONFIG['style'])}</td>
+		</tr>
+		<tr>
+			<th><label>其他配置：</label></th>
+			<td>
+				{echo Template::checkbox('system[debugmode]', '开发模式', !empty($_CONFIG[debugmode]))}
+				{echo Template::checkbox('system[log_request]', '访问记录', !empty($_CONFIG[log_request]))}
+				{echo Template::checkbox('system[log_error]', '错误记录', !empty($_CONFIG[log_error]))}
+				{echo Template::checkbox('system[refresh_template]', '自动刷新模板', !empty($_CONFIG[refresh_template]))}
+			</td>
+		</tr>
+		<tr>
+			<th><label>头部附加代码：</label></th>
+			<td>
+				<textarea name="system[head_element]">$_CONFIG[head_element]</textarea>
+			</td>
+		</tr>
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">修改设置</button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->

@@ -1,0 +1,47 @@
+<!--{template header}-->
+
+<div class="box edit_form">
+	<h1>微信公众平台设置</h1>
+	{template setting_menu}
+
+	<form action="$mod_url&type=wxconnect" method="post">
+
+	<table>
+		<tr>
+			<th><label>公众账号：</label></th>
+			<td><input type="text" name="wxconnect[account]" value="$wxconnect[account]" /></td>
+		</tr>
+		<tr>
+			<th><label>回调URL：</label></th>
+			<td>{$_G[root_url]}weixinserver.php</td>
+		</tr>
+		<tr>
+			<th><label>Token：</label></th>
+			<td><input type="text" name="wxconnect[token]" value="$wxconnect[token]" /></td>
+		</tr>
+		<tr>
+			<th><label>关注提示文字：</label></th>
+			<td><textarea name="wxconnect[subscribe_text]" class="wide">$wxconnect[subscribe_text]</textarea></td>
+		</tr>
+		<tr>
+			<th><label>进入网站关键词：</label></th>
+			<td><textarea name="wxconnect[entershop_keyword]" class="wide">$wxconnect[entershop_keyword]</textarea></td>
+		</tr>
+		<tr>
+			<th><label>绑定账号关键词：</label></th>
+			<td><textarea name="wxconnect[bind_keyword]" class="wide">$wxconnect[bind_keyword]</textarea></td>
+		</tr>
+		<tr>
+			<th><label>确认绑定账号关键词：</label></th>
+			<td><textarea name="wxconnect[bind2_keyword]" class="wide">$wxconnect[bind2_keyword]</textarea></td>
+		</tr>
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">修改设置</button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->
