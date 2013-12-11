@@ -36,7 +36,7 @@
 				var index = td.index();
 				var tbody = td.parent().parent();
 
-				var input = tbody.children(':last-child').children().eq(index).find('input,select').clone();
+				var input = tbody.children(':last-child').children().eq(index).find('input,select,textarea').clone();
 
 				if(td.attr('realvalue')){
 					input.val(td.attr('realvalue'));
@@ -49,7 +49,7 @@
 				input.focus();
 			});
 
-			this.on('blur', 'tbody tr:not(:last-child) td input, tbody tr:not(:last-child) td select', function(e){
+			this.on('blur', 'tbody tr:not(:last-child) td input, tbody tr:not(:last-child) td textarea, tbody tr:not(:last-child) td select', function(e){
 				var input = $(e.target);
 				var td = input.parent();
 				var tr = td.parent();
@@ -62,14 +62,12 @@
 				data[attr] = value;
 
 				$.post(options.ajax_edit, data, function(data){
-					if(input.is('input')){
-						td.html(value);
-					}else{
+					if(input.is('select')){
 						td.attr('realvalue', value);
 						td.html(input.children(':selected').html());
+					}else{
+						td.html(value);
 					}
-
-					tbody
 
 				}, 'json');
 			});
@@ -85,7 +83,7 @@
 			for(var i = 0; i < options.attr.length; i++){
 				var attr = options.attr[i];
 				var td = new_tr.children().eq(i);
-				var input = td.find('input,select');
+				var input = td.find('input,select,textarea');
 				var value = input.val();
 				
 				data[attr] = value;
@@ -98,12 +96,12 @@
 					var attr = options.attr[i];
 					var td = new_tr.children().eq(i);
 					var input = td.find('input,select');
-					if(input.is('input')){
-						td.html(data[attr]);
-					}else{
+					if(input.is('select')){
 						input.val(data[attr]);
 						td.html(input.find(':selected').html());
 						td.attr('realvalue', data[attr]);
+					}else{
+						td.html(data[attr]);
 					}
 				}
 

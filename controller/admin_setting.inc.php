@@ -2,7 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$types = array('system', 'qqconnect', 'wxconnect');
+$types = array('system', 'qqconnect', 'wxconnect', 'autoreply');
 $type = !empty($_GET['type']) && in_array($_GET['type'], $types) ? $_GET['type'] : $types[0];
 
 switch($type){
@@ -65,7 +65,7 @@ case 'qqconnect':
 
 case 'wxconnect':
 	$wxconnect = readdata('wxconnect');
-	foreach(array('account', 'token', 'subscribe_text', 'help_text') as $var){
+	foreach(array('account', 'token', 'subscribe_text', 'entershop_keyword', 'bind_keyword', 'bind2_keyword') as $var){
 		isset($wxconnect[$var]) || $wxconnect[$var] = '';
 		isset($_POST['wxconnect'][$var]) && $wxconnect[$var] = $_POST['wxconnect'][$var];
 	}
@@ -75,6 +75,59 @@ case 'wxconnect':
 		showmsg('成功修改账户互联设置！', 'refresh');
 	}
 
+	break;
+
+case 'autoreply':
+	$db->select_table('autoreply');
+
+	$action = &$_GET['action'];
+	switch($action){
+	case 'edit':
+		$autoreply = array();
+		
+		if(!empty($_POST['keyword'])){
+			$autoreply['keyword'] = $_POST['keyword'];
+			$autoreply['keyword'] = explode("\n", $autoreply['keyword']);
+			foreach ($autoreply['keyword'] as &$word) {
+				$word = trim($word);
+			}
+			unset($word);
+			$autoreply['keyword'] = implode("\n", $autoreply['keyword']);
+		}
+
+		if(!empty($_POST['reply'])){
+			$autoreply['reply'] = addslashes(htmlspecialchars_decode(stripslashes(trim($_POST['reply']))));
+		}
+
+		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+		if($id > 0){
+			$db->UPDATE($autoreply, 'id='.$id);
+			$autoreply['id'] = $id;
+		}else{
+			$db->INSERT($autoreply);
+			$autoreply['id'] = $db->insert_id();
+		}
+
+		Autoreply::RefreshCache();
+
+		echo json_encode($autoreply);
+		exit;
+
+	case 'delete':
+		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+		if($id > 0){
+			Autoreply::RefreshCache();
+
+			$db->DELETE('id='.$id);
+			echo $db->affected_rows();
+		}else{
+			echo 0;
+		}
+		exit;
+
+	default:
+		$autoreply = $db->MFETCH('*');
+	}
 	break;
 }
 

@@ -47,7 +47,7 @@ class WeixinServer{
 		$xml = "<xml>
 			<ToUserName><![CDATA[$to_user]]></ToUserName>
 			<FromUserName><![CDATA[$from_user]]></FromUserName>
-			<CreateTime>{TIMESTAMP}</CreateTime>
+			<CreateTime>".TIMESTAMP."</CreateTime>
 			<MsgType><![CDATA[text]]></MsgType>
 			<Content><![CDATA[$content]]></Content>
 		</xml>";

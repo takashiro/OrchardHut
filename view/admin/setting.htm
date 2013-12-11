@@ -13,9 +13,11 @@ $(function(){
 		<a href="$mod_url&type=system">[系统选项]</a>
 		<a href="$mod_url&type=qqconnect">[QQ互联]</a>
 		<a href="$mod_url&type=wxconnect">[微信公众平台]</a>
+		<a href="$mod_url&type=autoreply">[自动回复]</a>
 	</div>
 
 	<form action="$mod_url&type=$type" method="post">
+	
 	<!--{if $type == 'system'}-->
 	<h2>个性化</h2>
 	<table>
@@ -69,7 +71,13 @@ $(function(){
 			</td>
 		</tr>
 	</table>
+
+	<div class="post_buttons">
+		<button type="submit">修改设置</button>
+	</div>
+
 	<!--{elseif $type == 'qqconnect'}-->
+	
 	<h2>QQ互联</h2>
 	<table>
 		<tr>
@@ -114,6 +122,10 @@ $(function(){
 		</tr>
 	</table>
 
+	<div class="post_buttons">
+		<button type="submit">修改设置</button>
+	</div>
+
 	<!--{elseif $type == 'wxconnect'}-->
 	<h2>微信公众平台</h2>
 	<table>
@@ -134,15 +146,53 @@ $(function(){
 			<td><textarea name="wxconnect[subscribe_text]" class="wide">$wxconnect[subscribe_text]</textarea></td>
 		</tr>
 		<tr>
-			<th><label>帮助文字：</label></th>
-			<td><textarea name="wxconnect[help_text]" class="wide">$wxconnect[help_text]</textarea></td>
+			<th><label>进入网站关键词：</label></th>
+			<td><textarea name="wxconnect[entershop_keyword]" class="wide">$wxconnect[entershop_keyword]</textarea></td>
+		</tr>
+		<tr>
+			<th><label>绑定账号关键词：</label></th>
+			<td><textarea name="wxconnect[bind_keyword]" class="wide">$wxconnect[bind_keyword]</textarea></td>
+		</tr>
+		<tr>
+			<th><label>确认绑定账号关键词：</label></th>
+			<td><textarea name="wxconnect[bind2_keyword]" class="wide">$wxconnect[bind2_keyword]</textarea></td>
 		</tr>
 	</table>
-	<!--{/if}-->
 
 	<div class="post_buttons">
 		<button type="submit">修改设置</button>
 	</div>
+
+	<!--{elseif $type == 'autoreply'}-->
+	<script type="text/javascript">
+	$(function(){
+		$('#autoreply_list').editlist({
+			'edit' : '$mod_url&type=autoreply&action=edit',
+			'delete' : '$mod_url&type=autoreply&action=delete',
+			'attr' : ['keyword', 'reply'],
+			'buttons' : {'delete':'删除'}
+		});
+	});
+	</script>
+
+	<h2>自动回复</h2>
+	<div id="autoreply_list" class="list">
+		<table>
+			<thead><tr><td>关键词</td><td>回复内容</td><td>操作</td></tr></thead>
+			<tbody>
+				<!--{loop $autoreply $r}-->
+				<tr primaryvalue="$r[id]"><td>$r[keyword]</td><td>$r[reply]</td><td></td></tr>
+				<!--{/loop}-->
+				<tr>
+					<td><textarea></textarea></td>
+					<td><textarea></textarea></td>
+					<td><button type="button" class="add">添加</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!--{/if}-->
 
 	</form>
 </div>

@@ -69,6 +69,7 @@ default:
 
 		foreach($orders as &$o){
 			$o['items'] = implode('<br />', $order_details[$o['id']]);
+			$o['totalprice'] = floatval($o['totalprice']);
 			$o['priceunit'] = Product::PriceUnits($o['priceunit']);
 		}
 		unset($o);
