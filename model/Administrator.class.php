@@ -46,10 +46,10 @@ class Administrator extends User{
 	public function login($account = '', $pw = '', $method = 'account'){
 		global $db, $tpre, $_G;
 		if(!$account){//Login by Cookie
-			$cookie_var = !empty($_COOKIE[static::COOKIE_VAR]) ? $_COOKIE[static::COOKIE_VAR] : (!empty($_POST[static::COOKIE_VAR]) ? $_POST[static::COOKIE_VAR] : '');
+			$cookie_var = !empty($_COOKIE[static::COOKIE_VAR]) ? $_COOKIE[static::COOKIE_VAR] : '';
 			if(!empty($cookie_var)){
 				$cookie = $this->decodeCookie($cookie_var);
-				if(!array_key_exists('id', $cookie) || !array_key_exists('loginip', $cookie)){
+				if(!isset($cookie['id']) || !isset($cookie['loginip'])){
 					return false;
 				}
 
@@ -62,27 +62,26 @@ class Administrator extends User{
 				);
 
 				DBObject::fetchAttributesFromDB('*', $cookie);
-				return $this->isLoggedIn();
 			}
+			return $this->isLoggedIn();
+
 		}elseif($pw){
 			$condition = array(
-				'account' => $account,
+				$method => $account,
 				'pwmd5' => rmd5($pw),
 			);
 
 			DBObject::fetchAttributesFromDB('*', $condition);
-		}
 
-		if($this->id <= 0){
-			$this->logout();
-			return false;
-		}else{
-			$this->logged = true;
-			$cookie = array('id' => $this->attr['id'], 'loginip' => self::ip());
-			rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
-			$this->logintime = TIMESTAMP;
-
-			return true;
+			if($this->isLoggedIn()){
+				$this->logged = true;
+				$cookie = array('id' => $this->attr['id'], 'loginip' => self::ip());
+				rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
+				$this->logintime = TIMESTAMP;
+				return true;
+			}else{
+				return false;
+			}
 		}
 	}
 
