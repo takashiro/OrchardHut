@@ -3,7 +3,11 @@
 class Order extends DBObject{
 	const TABLE_NAME = 'order';
 
-	public static $Status = array('待出库', '开始派送', '已签收');
+	public static $Status = array('待出库', '配送中', '已签收', '已拒收');
+	const Unsorted = 0;
+	const Delivering = 1;
+	const Received = 2;
+	const Rejected = 3;
 
 	private $detail = array();
 	private $address_components = array();

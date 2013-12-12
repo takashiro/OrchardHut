@@ -2,7 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'mark_sorted', 'mark_delivered', 'print', 'delete');
+$actions = array('list', 'mark_delivering', 'mark_received', 'mark_rejected', 'print', 'delete');
 $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
 
 switch($action){
@@ -157,7 +157,7 @@ switch($action){
 		include view('order_list');
 	break;
 
-	case 'mark_sorted':
+	case 'mark_delivering':
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
@@ -165,14 +165,14 @@ switch($action){
 			exit('permission denied');
 		}
 
-		if($order->status == 0){
-			$order->status = 1;
+		if($order->status == Order::Unsorted){
+			$order->status = Order::Delivering;
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
-	case 'mark_delivered':
+	case 'mark_received':
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
@@ -180,8 +180,23 @@ switch($action){
 			exit('permission denied');
 		}
 
-		if($order->status == 1){
-			$order->status = 2;
+		if($order->status == Order::Delivering){
+			$order->status = Order::Received;
+		}
+		
+		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
+	break;
+
+	case 'mark_rejected':
+		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
+		$order = new Order($_GET['orderid']);
+
+		if(!$order->belongToAddress($_G['admin']->formatid, $_G['admin']->componentid)){
+			exit('permission denied');
+		}
+
+		if($order->status == Order::Delivering){
+			$order->status = Order::Rejected;
 		}
 		
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
