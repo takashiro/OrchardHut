@@ -280,6 +280,7 @@ footer{
 
 .quick_search dl{
 	display:inline-block;
+	margin:0.2em 0.5em;
 }
 
 .quick_search dl dt{

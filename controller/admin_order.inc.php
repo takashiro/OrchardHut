@@ -9,33 +9,55 @@ switch($action){
 	case 'list':
 		$condition = array();
 
-		$display_status = array();
-		if($_G['admin']->hasPermission('order_sort')){
-			$display_status[] = 0;
+		if(!empty($_POST['display_status']) && is_array($_POST['display_status'])){
+			$display_status = $_POST['display_status'];
+		}elseif(!empty($_GET['display_status'])){
+			$display_status = array();
+			foreach(explode(',', $_GET['display_status']) as $status){
+				$display_status[$status] = true;
+			}
+		}else{
+			$display_status = Order::$Status;
 		}
 
-		if($_G['admin']->hasPermission('order_deliver')){
-			$display_status[] = 1;
+		if(!$_G['admin']->hasPermission('order_sort')){
+			unset($display_status[0]);
+		}
+
+		if(!$_G['admin']->hasPermission('order_deliver')){
+			unset($display_status[1]);
 		}
 
 		if(!empty($_REQUEST['orderid'])){
 			$condition[] = 'id='.intval($_REQUEST['orderid']);
-			$completed_order = 0;
+			$display_status[2] = $display_status[3] = true;
 
-			$display_status[] = 2;
-			$display_status = implode(',', $display_status);
-			$condition[] = "status IN ($display_status)";
+			$time_start = '';
+			$time_end = '';
 		}else{
-			if(empty($_REQUEST['completed_order'])){
-				$completed_order = 0;
-
-				$display_status = implode(',', $display_status);
-				$condition[] = "status IN ($display_status)";
+			if(isset($_REQUEST['time_start'])){
+				$time_start = empty($_REQUEST['time_start']) ? '' : strtotime($_REQUEST['time_start']);
 			}else{
-				$completed_order = 1;
-				$condition[] = 'status>=2';
+				$time_start = rmktime(17, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+			}
+			if(isset($_REQUEST['time_end'])){
+				$time_end = empty($_REQUEST['time_end']) ? '' : strtotime($_REQUEST['time_end']);
+			}else{
+				$time_end = TIMESTAMP;
+			}
+			
+			if($time_start !== ''){
+				$condition[] = 'dateline>='.$time_start;
+				$time_start = rdate($time_start, 'Y-m-d H:i');
+			}
+
+			if($time_end !== ''){
+				$condition[] = 'dateline<='.$time_end;
+				$time_end = rdate($time_end, 'Y-m-d H:i');
 			}
 		}
+		$display_status = array_keys($display_status);
+		$condition[] = 'status IN ('.implode(',', $display_status).')';
 
 		$order_address = array();
 		if($_G['admin']->formatid > 0){
@@ -81,6 +103,16 @@ switch($action){
 		$offset = ($page - 1) * $limit;
 		$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition LIMIT $offset,$limit");
 		$pagenum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE $condition");
+		
+		$stat = array();
+		if(!empty($_REQUEST['stat']['totalprice'])){
+			$stat['totalprice'] = $db->result_first("SELECT SUM(totalprice) FROM {$tpre}order WHERE $condition");
+		}
+
+		$stat_query = '';
+		foreach($stat as $field => $value){
+			$stat_query.= '&stat['.$field.']=1';
+		}
 
 		if($orders){
 			$orderids = array();
@@ -154,6 +186,23 @@ switch($action){
 			}
 		}
 
+		$available_status = Order::$Status;
+		if(!$_G['admin']->hasPermission('order_sort')){
+			unset($available_status[0]);
+		}
+		if(!$_G['admin']->hasPermission('order_deliver')){
+			unset($available_status[1]);
+		}
+
+		foreach($available_status as &$checked){
+			$checked = false;
+		}
+		unset($checked);
+
+		foreach($display_status as $status){
+			$available_status[$status] = true;
+		}
+
 		include view('order_list');
 	break;
 
@@ -165,7 +214,7 @@ switch($action){
 			exit('permission denied');
 		}
 
-		if($order->status == Order::Unsorted){
+		if($order->status == Order::Unsorted || $_G['admin']->isSuperAdmin()){
 			$order->status = Order::Delivering;
 		}
 
@@ -180,7 +229,7 @@ switch($action){
 			exit('permission denied');
 		}
 
-		if($order->status == Order::Delivering){
+		if($order->status == Order::Delivering || $_G['admin']->isSuperAdmin()){
 			$order->status = Order::Received;
 		}
 		
@@ -195,7 +244,7 @@ switch($action){
 			exit('permission denied');
 		}
 
-		if($order->status == Order::Delivering){
+		if($order->status == Order::Delivering || $_G['admin']->isSuperAdmin()){
 			$order->status = Order::Rejected;
 		}
 		

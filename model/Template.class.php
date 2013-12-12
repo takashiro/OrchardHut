@@ -139,7 +139,7 @@ class Template{
 		return $html;
 	}
 	
-	static public function checkbox($name, $tips, $value){
+	static public function checkbox($name, $tips, $value = false){
 		return '<input type="checkbox" id="'.$name.'" name="'.$name.'"'.($value ? ' checked="checked"' : '').' /><label for="'.$name.'">'.$tips.'</label>';
 	}
 

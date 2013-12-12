@@ -1,5 +1,29 @@
 {template header}
 
+<script type="text/javascript" src="./plugin/datetimepicker/jquery.datetimepicker.min.js"></script>
+<style type="text/css">@import url(./plugin/datetimepicker/jquery.datetimepicker.css);</style>
+<script type="text/javascript">
+$(function(){
+	$('input.datetime').datetimepicker({
+		lang : 'cn',
+		i18n : {
+			cn : {
+				months : [
+					'1月','2月','3月','4月',
+					'5月','6月','7月','8月',
+					'9月','10月','11月','12月',
+				],
+				dayOfWeek : [
+					"日", "一", "二", "三", 
+					"四", "五", "六",
+				]
+			}
+		},
+		format : 'Y-m-d H:i',
+	});
+});
+</script>
+
 <div class="box">
 	<h1>订单管理</h1>
 	<div class="content">
@@ -7,10 +31,20 @@
 			<dl>
 				<dt>订单号：</dt>
 				<dd><input type="text" name="orderid" style="width:3em" /></dd>
+				<dt>时间：</dt>
+				<dd><input type="text" name="time_start" class="datetime" value="$time_start" /> - <input type="text" name="time_end" class="datetime" value="$time_end" /></dd>
+				<dt>统计：</dt>
+				<dd>{echo Template::checkbox('stat[totalprice]', '总价格', isset($stat['totalprice']))}</dd>
+			</dl>
+			<dl>
 				<dt>订单送货地址：</dt>
 				<dd>{echo Template::tselect('delivery_address', $address_format, $address_components, false, $formatid, $componentid)}</dd>
-				<dt>是否历史订单：</dt>
-				<dd>{echo Template::radio('completed_order', array(1 => '是', 0 => '否'), $completed_order)}</dd>
+				<dt>订单状态：</dt>
+				<dd>
+					<!--{loop $available_status $id $checked}-->
+					{echo Template::checkbox("display_status[$id]", Order::$Status[$id], $checked)}
+					<!--{/loop}-->
+				</dd>
 			</dl>
 			<button type="submit">查找</button>
 		</form>
@@ -63,14 +97,21 @@
 						<td style="width:10%;"><div style="font-size:9pt;max-height:100px;overflow-y:auto;">$o[message]</div></td>
 					</tr>
 					<!--{/loop}-->
+					<!--{if !empty($stat)}-->
 					<tr>
+							<td>总计</td>
+							<td colspan="{echo count(Address::Format()) + 1}"></td>
+							<td colspan="2">$pagenum 个订单</td>
+							<td>$stat[totalprice] 元</td>
+							<td colspan="4"></td>
 					</tr>
+					<!--{/if}-->
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
 
-{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&completed_order='.$completed_order.'&delivery_address='.$delivery_address)}
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&display_status='.implode(',', $display_status).'&delivery_address='.$delivery_address.'&time_start='.$time_start.'&time_end='.$time_end.$stat_query)}
 
 {template footer}

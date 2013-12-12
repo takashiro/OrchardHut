@@ -49,11 +49,8 @@ class Administrator extends User{
 			$cookie_var = !empty($_COOKIE[static::COOKIE_VAR]) ? $_COOKIE[static::COOKIE_VAR] : '';
 			if(!empty($cookie_var)){
 				$cookie = $this->decodeCookie($cookie_var);
-				if(!isset($cookie['id']) || !isset($cookie['loginip'])){
-					return false;
-				}
 
-				if($cookie['loginip'] != self::ip()){
+				if(!isset($cookie['id']) || !isset($cookie['loginip'])){
 					return false;
 				}
 
