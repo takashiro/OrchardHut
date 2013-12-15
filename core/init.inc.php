@@ -45,6 +45,7 @@ $db->connect($_CONFIG['db']);
 $_G['timestamp'] = time() + intval($_CONFIG['timefix']);
 define('TIMESTAMP', $_G['timestamp']);
 define('TIMEZONE', $_CONFIG['timezone']);
+$timestamp = TIMESTAMP;
 
 //Handle Request
 if(!empty($_GET['confirm'])){

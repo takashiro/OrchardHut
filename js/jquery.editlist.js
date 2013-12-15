@@ -38,6 +38,10 @@
 
 				var input = tbody.children(':last-child').children().eq(index).find('input,select,textarea').clone();
 
+				if(input.length == 0){
+					return false;
+				}
+
 				if(td.attr('realvalue')){
 					input.val(td.attr('realvalue'));
 				}else{
@@ -56,6 +60,10 @@
 				var index = td.index();
 				var attr = options.attr[index];
 				var value = input.val();
+
+				if(attr == ''){
+					return false;
+				}
 
 				var data = {};
 				data[options.primarykey] = tr.attr('primaryvalue');

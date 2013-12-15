@@ -18,7 +18,7 @@ case 'delete':
 	if($orderid > 0){
 		$db->query("DELETE FROM {$tpre}order WHERE id=$orderid AND userid=$_USER[id] AND status=0");
 		if($db->affected_rows() > 0){
-			showmsg('成功取消该订单！', 'refresh');
+			showmsg('成功取消该订单！', 'home.php');
 		}
 	}
 

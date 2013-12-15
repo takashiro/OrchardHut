@@ -192,7 +192,28 @@ function datetotimestamp($date){
 }
 
 function rstrtotime($datetime){
-	return strtotime($datetime) - TIMEZONE * 3600;
+	$datetime = explode(' ', $datetime);
+	$date = explode('-', $datetime[0]);
+	isset($date[1]) || $date[1] = 1;
+	isset($date[2]) || $date[2] = 1;
+
+	foreach($date as &$d){
+		$d = intval($d);
+	}
+
+	if(isset($datetime[1])){
+		$time = explode(':', $datetime[1]);
+		isset($time[1]) || $time[1] = 0;
+		isset($time[2]) || $time[2] = 0;
+
+		foreach($time as &$t){
+			$t = intval($t);
+		}
+	}else{
+		$time = array(0, 0, 0);
+	}
+
+	return rmktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
 }
 
 function randomstr($length, $numeric = 0) {

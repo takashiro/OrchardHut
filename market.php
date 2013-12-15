@@ -13,7 +13,7 @@ foreach($products as &$p){
 		$product->$attr = $value;
 	}
 	$p = $product->toArray();
-	$p['rule'] = $product->getPrices(true);
+	$p['rule'] = $product->getFilteredPrices();
 }
 unset($p);
 

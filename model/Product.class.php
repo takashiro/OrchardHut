@@ -69,11 +69,45 @@ class Product extends DBObject{
 		}
 	}
 
+	public function getFilteredPrices(){
+		if($this->id <= 0){
+			return array();
+		}
+
+		global $db, $tpre;
+		$productid = $this->id;
+		$now = TIMESTAMP;
+
+		$prices = array();
+
+		$query = $db->query("SELECT c.*,p.*,c.id AS is_countdown
+			FROM {$tpre}productprice p
+				LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
+			WHERE p.productid=$productid AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))");
+		while($p = $db->fetch_array($query)){
+			$prices[$p['id']] = $p;
+		}
+
+		foreach($prices as &$p){
+			$p['priceunit'] = self::PriceUnits($p['priceunit']);
+			$p['amountunit'] = self::AmountUnits($p['amountunit']);
+			$p['price'] = floatval($p['price']);
+			$p['amount'] = floatval($p['amount']);
+			unset($prices[$p['masked_priceid']]);
+		}
+		unset($p);
+
+		return $prices;
+	}
+
 	public function getPrices($to_readable = false){
 		if($this->id > 0){
-			global $db;
-			$db->select_table('productprice');
-			$prices = $db->MFETCH('*', 'productid='.$this->id);
+			global $db, $tpre;
+			$productid = $this->id;
+			$prices = $db->fetch_all("SELECT p.*
+				FROM {$tpre}productprice p
+					LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
+				WHERE p.productid=$productid AND c.id IS NULL");
 			if($to_readable){
 				foreach($prices as &$p){
 					$p['priceunit'] = self::PriceUnits($p['priceunit']);
@@ -137,6 +171,80 @@ class Product extends DBObject{
 		$id = intval($id);
 		global $db;
 		$db->select_table('productprice');
+		$db->DELETE(array('id' => $id, 'productid' => $this->id));
+		return $db->affected_rows();
+	}
+
+	public function getCountdowns($to_readable = false){
+		if($this->id > 0){
+			global $db, $tpre;
+			$productid = $this->id;
+			$prices = $db->fetch_all("SELECT p.*,c.*
+				FROM {$tpre}productprice p
+					LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
+				WHERE p.productid=$productid AND c.id IS NOT NULL");
+			if($to_readable){
+				foreach($prices as &$p){
+					$p['priceunit'] = self::PriceUnits($p['priceunit']);
+					$p['amountunit'] = self::AmountUnits($p['amountunit']);
+					$p['price'] = floatval($p['price']);
+					$p['amount'] = floatval($p['amount']);
+				}
+			}
+			return $prices;
+		}else{
+			return array();
+		}
+	}
+
+	public function editCountdown($countdown){
+		@$id = intval($countdown['id']);
+
+		$price = $this->editPrice($countdown);
+
+		global $db;
+		$db->select_table('productcountdown');
+		if($id > 0){
+			$update = array();
+
+			if(isset($countdown['masked_priceid'])){
+				$update['masked_priceid'] = intval($countdown['masked_priceid']);
+			}
+
+			if(isset($countdown['start_time'])){
+				$update['start_time'] = rstrtotime($countdown['start_time']);
+			}
+
+			if(isset($countdown['end_time'])){
+				$update['end_time'] = rstrtotime($countdown['end_time']);
+			}
+
+			$db->UPDATE($update, array('id' => $id));
+			return array_merge($price, $update);
+		}else if(!empty($price['id'])){
+			@$countdown = array(
+				'id' => $price['id'],
+				'masked_priceid' => intval($countdown['masked_priceid']),
+				'start_time' => rstrtotime($countdown['start_time']),
+				'end_time' => rstrtotime($countdown['end_time']),
+			);
+			$db->INSERT($countdown);
+
+			$countdown['start_time'] = rdate($countdown['start_time']);
+			$countdown['end_time'] = rdate($countdown['end_time']);
+
+			return array_merge($price, $countdown);
+		}
+
+		return $price;
+	}
+
+	public function deleteCountdown($id){
+		$this->deletePrice($id);
+
+		$id = intval($id);
+		global $db;
+		$db->select_table('productcountdown');
 		$db->DELETE(array('id' => $id, 'productid' => $this->id));
 		return $db->affected_rows();
 	}

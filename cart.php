@@ -29,7 +29,14 @@ switch($action){
 			$products = $db->fetch_all("SELECT p.*,r.*,r.id AS priceid
 				FROM {$tpre}productprice r
 					LEFT JOIN {$tpre}product p ON p.id=r.productid
-				WHERE r.id IN ($priceids) AND p.hide=0");
+					LEFT JOIN {$tpre}productcountdown c ON c.id=r.id
+				WHERE r.id IN ($priceids)
+					AND p.hide=0
+					AND (c.id IS NULL OR (c.start_time<=$timestamp AND c.end_time>=$timestamp))
+					AND r.id NOT IN (SELECT masked_priceid
+									FROM {$tpre}productcountdown c
+										LEFT JOIN {$tpre}productprice m ON m.id=c.id
+									WHERE m.productid=r.productid AND c.start_time<=$timestamp AND c.end_time>=$timestamp)");
 
 			//Remove deleted product prices from the shopping cart and update cookie
 			$filtered_cart = array();

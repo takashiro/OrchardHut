@@ -2,7 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'edit', 'delete', 'editprice', 'deleteprice');
+$actions = array('list', 'edit', 'delete', 'editprice', 'deleteprice', 'editcountdown', 'deletecountdown');
 $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET['action'] : $actions[0];
 
 switch($action){
@@ -71,6 +71,7 @@ switch($action){
 		}else{
 			$product = new Product($productid);
 			$prices = $product->getPrices();
+			$countdowns = $product->getCountdowns();
 			$product = $product->toArray();
 			include view('market_edit');
 		}
@@ -94,6 +95,18 @@ switch($action){
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->deletePrice($_POST['id']));
+	break;
+
+	case 'editcountdown':
+		$product = new Product;
+		$product->id = intval($_GET['productid']);
+		echo json_encode($product->editCountdown($_POST));
+	break;
+
+	case 'deletecountdown':
+		$product = new Product;
+		$product->id = intval($_GET['productid']);
+		echo json_encode($product->deleteCountdown($_POST['id']));
 	break;
 }
 

@@ -9,7 +9,14 @@ $(function(){
 	$('#price_list').editlist({
 		'edit' : '$mod_url&action=editprice&productid=$product[id]',
 		'delete' : '$mod_url&action=deleteprice&productid=$product[id]',
-		'attr' : ['subtype', 'price', 'priceunit', 'amount', 'amountunit'],
+		'attr' : ['', 'subtype', 'price', 'priceunit', 'amount', 'amountunit'],
+		'buttons' : {'delete':'删除'}
+	});
+
+	$('#countdown_list').editlist({
+		'edit' : '$mod_url&action=editcountdown&productid=$product[id]',
+		'delete' : '$mod_url&action=deletecountdown&productid=$product[id]',
+		'attr' : ['masked_priceid', 'subtype', 'price', 'priceunit', 'amount', 'amountunit', 'start_time', 'end_time'],
 		'buttons' : {'delete':'删除'}
 	});
 
@@ -56,11 +63,15 @@ $(function(){
 			</div>
 		</form>
 	</div>
+</div>
 
-	<div id="price_list" class="list edit_list">
+<div class="box">
+	<h1>价格管理</h1>
+	<div id="price_list" class="content list edit_list">
 		<table>
 			<thead>
 				<tr>
+					<td>价格编号</td>
 					<td>说明</td>
 					<td>价格</td>
 					<td>价格单位</td>
@@ -72,6 +83,7 @@ $(function(){
 			<tbody>
 				<!--{loop $prices $p}-->
 				<tr primaryvalue="$p[id]">
+					<td>$p[id]</td>
 					<td>$p[subtype]</td>
 					<td>$p[price]</td>
 					<td realvalue="$p[priceunit]">{echo Product::PriceUnits($p['priceunit'])}</td>
@@ -81,11 +93,59 @@ $(function(){
 				</tr>
 				<!--{/loop}-->
 				<tr>
+					<td></td>
 					<td><input type="text" /></td>
-					<td><input type="text" class="number" value="1" /></td>
+					<td><input type="text" class="number narrow" value="1" /></td>
 					<td>{echo Template::select('', Product::PriceUnits())}</td>
-					<td><input type="text" class="number" value="1" /></td>
+					<td><input type="text" class="number narrow" value="1" /></td>
 					<td>{echo Template::select('', Product::AmountUnits())}</td>
+					<td><button type="button" class="add">添加</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="box">
+	<h1>特价管理</h1>
+	<div id="countdown_list" class="content list edit_list">
+		<table>
+			<thead>
+				<tr>
+					<td>原价编号</td>
+					<td>说明</td>
+					<td>价格</td>
+					<td>价格单位</td>
+					<td>数量</td>
+					<td>数量单位</td>
+					<td>开始时间</td>
+					<td>结束时间</td>
+					<td>操作</td>
+				</tr>
+			</thead>
+			<tbody>
+				<!--{loop $countdowns $p}-->
+				<tr primaryvalue="$p[id]">
+					<td>$p[masked_priceid]</td>
+					<td>$p[subtype]</td>
+					<td>$p[price]</td>
+					<td realvalue="$p[priceunit]">{echo Product::PriceUnits($p['priceunit'])}</td>
+					<td>$p[amount]</td>
+					<td realvalue="$p[amountunit]">{echo Product::AmountUnits($p['amountunit'])}</td>
+					<td>{echo rdate($p['start_time'])}</td>
+					<td>{echo rdate($p['end_time'])}</td>
+					<td></td>
+				</tr>
+				<!--{/loop}-->
+				<tr>
+					<td><input type="text" class="narrow" /></td>
+					<td><input type="text" /></td>
+					<td><input type="text" class="number narrow" value="1" /></td>
+					<td>{echo Template::select('', Product::PriceUnits())}</td>
+					<td><input type="text" class="number narrow" value="1" /></td>
+					<td>{echo Template::select('', Product::AmountUnits())}</td>
+					<td><input type="text" /></td>
+					<td><input type="text" /></td>
 					<td><button type="button" class="add">添加</button></td>
 				</tr>
 			</tbody>

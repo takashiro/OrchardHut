@@ -31,7 +31,7 @@
 			<ul class="rule">
 			<!--{loop $p['rule'] $r}-->
 				<li product-id="$p[id]" price-id="$r[id]">
-					<span class="subtype" style="color:#$p[text_color];">$r[subtype]</span>
+					<span class="subtype" style="color:#$p[text_color];">$r[subtype]<!--{if $r['is_countdown']}--><div class="countdown" style="background:#$p[text_color]">降</div><!--{/if}--></span>
 					<span class="price" style="color:#$p[text_color];">$r[price]</span><span class="priceunit">$r[priceunit]</span><span class="amount" style="color:#$p[text_color];">$r[amount]</span><span class="amountunit" style="color:#$p[text_color];">$r[amountunit]</span>
 					<div class="order_input numberbox"><!--{if $r['amount'] > 1}--><div class="unit">x{$r[amount]}</div><!--{/if}--></div>
 				</li>

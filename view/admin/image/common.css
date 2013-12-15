@@ -260,6 +260,10 @@ footer{
 	width:95%;
 }
 
+input.narrow{
+	width:3em;
+}
+
 .edit_form table th{
 	width:18%;
 	text-align:right;

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 12 月 07 日 06:50
+-- 生成日期: 2013 年 12 月 15 日 10:27
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.3.13
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- 表的结构 `hut_addresscomponent`
 --
 
+DROP TABLE IF EXISTS `hut_addresscomponent`;
 CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
 -- 表的结构 `hut_addressformat`
 --
 
+DROP TABLE IF EXISTS `hut_addressformat`;
 CREATE TABLE IF NOT EXISTS `hut_addressformat` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `displayorder` tinyint(3) NOT NULL,
@@ -54,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `hut_addressformat` (
 -- 表的结构 `hut_administrator`
 --
 
+DROP TABLE IF EXISTS `hut_administrator`;
 CREATE TABLE IF NOT EXISTS `hut_administrator` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `account` varchar(15) NOT NULL,
@@ -72,6 +75,7 @@ CREATE TABLE IF NOT EXISTS `hut_administrator` (
 -- 表的结构 `hut_announcement`
 --
 
+DROP TABLE IF EXISTS `hut_announcement`;
 CREATE TABLE IF NOT EXISTS `hut_announcement` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL,
@@ -89,6 +93,7 @@ CREATE TABLE IF NOT EXISTS `hut_announcement` (
 -- 表的结构 `hut_authkey`
 --
 
+DROP TABLE IF EXISTS `hut_authkey`;
 CREATE TABLE IF NOT EXISTS `hut_authkey` (
   `user` varchar(32) NOT NULL,
   `key` varchar(32) NOT NULL,
@@ -99,9 +104,24 @@ CREATE TABLE IF NOT EXISTS `hut_authkey` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `hut_autoreply`
+--
+
+DROP TABLE IF EXISTS `hut_autoreply`;
+CREATE TABLE IF NOT EXISTS `hut_autoreply` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `keyword` text NOT NULL,
+  `reply` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `hut_deliveryaddress`
 --
 
+DROP TABLE IF EXISTS `hut_deliveryaddress`;
 CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` mediumint(8) unsigned NOT NULL,
@@ -118,6 +138,7 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
 -- 表的结构 `hut_deliveryaddresscomponent`
 --
 
+DROP TABLE IF EXISTS `hut_deliveryaddresscomponent`;
 CREATE TABLE IF NOT EXISTS `hut_deliveryaddresscomponent` (
   `addressid` mediumint(8) unsigned NOT NULL,
   `formatid` mediumint(8) unsigned NOT NULL,
@@ -131,6 +152,7 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddresscomponent` (
 -- 表的结构 `hut_order`
 --
 
+DROP TABLE IF EXISTS `hut_order`;
 CREATE TABLE IF NOT EXISTS `hut_order` (
   `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(8) unsigned NOT NULL,
@@ -152,6 +174,7 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
 -- 表的结构 `hut_orderaddresscomponent`
 --
 
+DROP TABLE IF EXISTS `hut_orderaddresscomponent`;
 CREATE TABLE IF NOT EXISTS `hut_orderaddresscomponent` (
   `orderid` mediumint(8) unsigned NOT NULL,
   `formatid` mediumint(8) unsigned NOT NULL,
@@ -165,6 +188,7 @@ CREATE TABLE IF NOT EXISTS `hut_orderaddresscomponent` (
 -- 表的结构 `hut_orderdetail`
 --
 
+DROP TABLE IF EXISTS `hut_orderdetail`;
 CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `orderid` mediumint(8) unsigned NOT NULL,
@@ -185,6 +209,7 @@ CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
 -- 表的结构 `hut_product`
 --
 
+DROP TABLE IF EXISTS `hut_product`;
 CREATE TABLE IF NOT EXISTS `hut_product` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -204,13 +229,29 @@ CREATE TABLE IF NOT EXISTS `hut_product` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `hut_productcountdown`
+--
+
+DROP TABLE IF EXISTS `hut_productcountdown`;
+CREATE TABLE IF NOT EXISTS `hut_productcountdown` (
+  `id` int(11) unsigned NOT NULL,
+  `masked_priceid` int(11) unsigned DEFAULT NULL,
+  `start_time` int(11) unsigned NOT NULL,
+  `end_time` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `hut_productprice`
 --
 
+DROP TABLE IF EXISTS `hut_productprice`;
 CREATE TABLE IF NOT EXISTS `hut_productprice` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `productid` mediumint(8) unsigned NOT NULL,
-  `subtype` varchar(100) NOT NULL,
+  `subtype` varchar(100) DEFAULT NULL,
   `price` decimal(9,2) NOT NULL,
   `priceunit` mediumint(8) unsigned NOT NULL,
   `amount` int(11) unsigned NOT NULL,
@@ -225,6 +266,7 @@ CREATE TABLE IF NOT EXISTS `hut_productprice` (
 -- 表的结构 `hut_productunit`
 --
 
+DROP TABLE IF EXISTS `hut_productunit`;
 CREATE TABLE IF NOT EXISTS `hut_productunit` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
@@ -238,6 +280,7 @@ CREATE TABLE IF NOT EXISTS `hut_productunit` (
 -- 表的结构 `hut_user`
 --
 
+DROP TABLE IF EXISTS `hut_user`;
 CREATE TABLE IF NOT EXISTS `hut_user` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `account` varchar(50) NOT NULL,

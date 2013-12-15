@@ -36,12 +36,12 @@ switch($action){
 			$time_end = '';
 		}else{
 			if(isset($_REQUEST['time_start'])){
-				$time_start = empty($_REQUEST['time_start']) ? '' : strtotime($_REQUEST['time_start']);
+				$time_start = empty($_REQUEST['time_start']) ? '' : rstrtotime($_REQUEST['time_start']);
 			}else{
 				$time_start = rmktime(17, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
 			}
 			if(isset($_REQUEST['time_end'])){
-				$time_end = empty($_REQUEST['time_end']) ? '' : strtotime($_REQUEST['time_end']);
+				$time_end = empty($_REQUEST['time_end']) ? '' : rstrtotime($_REQUEST['time_end']);
 			}else{
 				$time_end = TIMESTAMP;
 			}
