@@ -24,16 +24,12 @@ switch($action){
 			}
 		}
 
-		if(!$cart){
-			showmsg('您还没有选购哦，请先把商品放入购物车。', 'market.php');
-		}
-
 		if($priceids){
 			$priceids = implode(',', $priceids);
 			$products = $db->fetch_all("SELECT p.*,r.*,r.id AS priceid
 				FROM {$tpre}productprice r
 					LEFT JOIN {$tpre}product p ON p.id=r.productid
-				WHERE r.id IN ($priceids)");
+				WHERE r.id IN ($priceids) AND p.hide=0");
 
 			//Remove deleted product prices from the shopping cart and update cookie
 			$filtered_cart = array();
@@ -47,6 +43,10 @@ switch($action){
 			rsetcookie('in_cart', $in_cart);
 		}else{
 			$products = array();
+		}
+
+		if(!$products){
+			showmsg('您还没有选购哦，请先把商品放入购物车。', 'market.php');
 		}
 
 		if($_POST){
