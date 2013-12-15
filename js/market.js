@@ -45,14 +45,23 @@ $(function(){
 
 			rule.before(brief);
 
+			var countdown_icon = rule.find('.countdown:eq(0)').clone();
+			if(countdown_icon.length > 0){
+				var detail = rule.parent();
+				var icon = detail.prev();
+				icon.append(countdown_icon);
+			}
+
 			more_button.click(function(){
 				if(list.is(':visible')){
 					list.hide();
 					brief.show();
+					countdown_icon.show();
 					$(this).text('点击展开并购买');
 				}else{
 					list.show();
 					brief.hide();
+					countdown_icon.hide();
 					$(this).text('点击收起');
 				}
 			});
