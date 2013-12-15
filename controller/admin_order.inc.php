@@ -2,7 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'mark_delivering', 'mark_received', 'mark_rejected', 'print', 'delete');
+$actions = array('list', 'mark_unsorted', 'mark_delivering', 'mark_received', 'mark_rejected', 'print', 'delete');
 $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
 
 switch($action){
@@ -204,6 +204,21 @@ switch($action){
 		}
 
 		include view('order_list');
+	break;
+
+	case 'mark_unsorted':
+		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
+		$order = new Order($_GET['orderid']);
+
+		if(!$order->belongToAddress($_G['admin']->formatid, $_G['admin']->componentid)){
+			exit('permission denied');
+		}
+
+		if($order->status == Order::Unsorted || $_G['admin']->isSuperAdmin()){
+			$order->status = Order::Delivering;
+		}
+
+		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
 	case 'mark_delivering':

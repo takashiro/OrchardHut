@@ -49,6 +49,19 @@ $(function(){
 			<button type="submit">查找</button>
 		</form>
 
+		<!--{if $_G['admin']->isSuperAdmin()}-->
+		<form class="quick_search" action="admin.php" method="get">
+			<input type="hidden" name="mod" value="order" />
+			<dl>
+				<dt>订单号：</dt>
+				<dd><input type="text" name="orderid" style="width:3em" /></dd>
+				<dt>状态：</dt>
+				<dd>{echo Template::select('action', array('mark_unsorted' => '待出库', 'mark_delivering' => '配送中', 'mark_delivered' => '已签收', 'mark_rejected' => '已拒收'))}</dd>
+			</dl>
+			<button type="submit">修改</button>
+		</form>
+		<!--{/if}-->
+
 		<div id="orderlist" class="list">
 			<table>
 				<thead>
