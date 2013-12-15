@@ -19,7 +19,7 @@ $(function(){
 		var list = rule.children();
 		var more = rule.next();
 		var more_button = more.children('a');
-		if(list.length == 1 && list.children('.subtype').html() == ''){
+		if(list.length == 1){
 			more_button.addClass('disabled');
 		}else{
 			var brief = $($.parseHTML('<div></div>'));
