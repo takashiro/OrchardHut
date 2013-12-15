@@ -295,8 +295,10 @@ class Product extends DBObject{
 		if(self::$AmountUnits == null){
 			self::$AmountUnits = self::Units(2);
 		}
-		if($id == -1 || !array_key_exists($id, self::$AmountUnits)){
+		if($id == -1){
 			return self::$AmountUnits;
+		}elseif(!isset(self::$AmountUnits[$id])){
+			return '';
 		}else{
 			return self::$AmountUnits[$id];
 		}
@@ -307,8 +309,10 @@ class Product extends DBObject{
 		if(self::$PriceUnits == null){
 			self::$PriceUnits = self::Units(1);
 		}
-		if($id == -1 || !array_key_exists($id, self::$PriceUnits)){
+		if($id == -1){
 			return self::$PriceUnits;
+		}elseif(!isset(self::$PriceUnits[$id])){
+			return '';
 		}else{
 			return self::$PriceUnits[$id];
 		}
