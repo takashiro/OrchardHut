@@ -26,6 +26,11 @@ $(function(){
 		'preferredFormat' : 'hex',
 		'showInput' : true
 	});
+
+	$('#price_list tr:not(:last-child)').click(function(){
+		var price_id = $(this).children('td:first-child').html();
+		$('#countdown_list tr:last-child td:first-child input').val(price_id);
+	});
 });
 </script>
 
