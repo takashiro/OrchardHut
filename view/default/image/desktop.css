@@ -38,6 +38,16 @@
 	color:#fe6565;
 }
 
+#sharebox a.button{
+	width:63px;
+	height:24px;
+	line-height:24px;
+	font-size:9pt;
+	padding:0;
+	border-radius:3px;
+	vertical-align:middle;
+}
+
 .messagebox{
 	width:470px;
 }
