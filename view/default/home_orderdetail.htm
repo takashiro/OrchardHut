@@ -1,0 +1,23 @@
+{template header}
+
+<div class="box">
+	<h1>我的订单</h1>
+	<div class="content">
+		<dl class="form">
+			<dt>订单编号：</dt><dd>$order[id]</dd>
+			<dt>下单时间：</dt><dd>$order[dateline]</dd>
+			<dt>收件人：</dt><dd>$order[addressee]</dd>
+			<dt>联系电话：</dt><dd>$order[mobile]</dd>
+			<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
+			<dt>用户留言：</dt><dd>$order[message]</dd>
+			<dt>物品：</dt><dd><dl>
+					<!--{loop $order['detail'] $d}-->
+					<dt>$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number']} $d[amountunit]</dt><dd>$d[subtotal] $order[priceunit]</dd>
+					<!--{/loop}-->
+			</dl></dd>
+			<dt>总计：</dt><dd>$order[totalprice] $order[priceunit]</dd>
+		<dl>
+	</div>
+</div>
+
+{template footer}

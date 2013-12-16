@@ -41,6 +41,19 @@ case 'mark_delivered':
 	showmsg('该订单不存在！', 'back');
 	break;
 
+case 'view':
+	if(empty($_GET['orderid'])) exit('access denied');
+	$orderid = intval($_GET['orderid']);
+	$order = new Order($orderid);
+	if($order->id <= 0){
+		showmsg('该订单已不存在。', 'refresh');
+	}
+
+	$order = $order->toReadable();
+
+	include view('home_orderdetail');
+	break;
+
 default:
 	$limit = 10;
 	$offset = ($page - 1) * $limit;

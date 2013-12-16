@@ -20,7 +20,7 @@
 						<td>价格</td>
 						<td>编号</td>
 						<td>状态</td>
-						<td>操作</td>
+						<td width="48">操作</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -30,7 +30,14 @@
 						<td>{$o[totalprice]}{$o[priceunit]}</td>
 						<td>$o[id]</td>
 						<td>{echo Order::$Status[$o['status']]}</td>
-						<td><!--{if $o['status'] == 0}--><a href="home.php?action=delete&orderid=$o[id]">[取消]</a><!--{elseif $o['status'] == 1}--><a href="home.php?action=mark_delivered&orderid=$o[id]">[签收]</a><!--{/if}--></td>
+						<td>
+							<a href="home.php?action=view&orderid=$o[id]" class="view">[详细]</a>
+							<!--{if $o['status'] == 0}-->
+								<a href="home.php?action=delete&orderid=$o[id]">[取消]</a>
+							<!--{elseif $o['status'] == 1}-->
+								<a href="home.php?action=mark_delivered&orderid=$o[id]">[签收]</a>
+							<!--{/if}-->
+						</td>
 					</tr>
 				<!--{/loop}-->
 				</tbody>

@@ -574,7 +574,8 @@ footer ul.button_list #cart-goods-number{
 }
 
 .order_list table th, .order_list table td{
-	border:#DDDDDD 1px solid;;
+	border:#DDDDDD 1px solid;
+	padding:0.5em 0;
 }
 
 .order_list table thead{
@@ -678,4 +679,24 @@ a.remove{
 	color:white;
 	text-align:center;
 	line-height:24px;
+}
+
+dl.form{
+	text-align:center;
+	margin:10px 5px;
+}
+
+dl.form > dt{
+	width:25%;
+	display:inline-block;
+	text-align:right;
+	font-weight:bold;
+	vertical-align:top;
+}
+
+dl.form > dd{
+	width:60%;
+	display:inline-block;
+	margin-left:2em;
+	text-align:left;
 }
