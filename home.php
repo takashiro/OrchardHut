@@ -45,7 +45,7 @@ case 'view':
 	if(empty($_GET['orderid'])) exit('access denied');
 	$orderid = intval($_GET['orderid']);
 	$order = new Order($orderid);
-	if($order->id <= 0){
+	if($order->id <= 0 || $order->userid != $_G['user']->id){
 		showmsg('该订单已不存在。', 'refresh');
 	}
 
