@@ -83,7 +83,8 @@ class Product extends DBObject{
 		$query = $db->query("SELECT c.*,p.*,c.id AS is_countdown
 			FROM {$tpre}productprice p
 				LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
-			WHERE p.productid=$productid AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))");
+			WHERE p.productid=$productid AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
+			ORDER BY p.displayorder");
 		while($p = $db->fetch_array($query)){
 			$prices[$p['id']] = $p;
 		}
@@ -107,7 +108,8 @@ class Product extends DBObject{
 			$prices = $db->fetch_all("SELECT p.*
 				FROM {$tpre}productprice p
 					LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
-				WHERE p.productid=$productid AND c.id IS NULL");
+				WHERE p.productid=$productid AND c.id IS NULL
+				ORDER BY p.displayorder");
 			if($to_readable){
 				foreach($prices as &$p){
 					$p['priceunit'] = self::PriceUnits($p['priceunit']);
@@ -150,6 +152,10 @@ class Product extends DBObject{
 				$update['amountunit'] = intval($price['amountunit']);
 			}
 
+			if(isset($price['displayorder'])){
+				$update['displayorder'] = intval($price['displayorder']);
+			}
+
 			$db->UPDATE($update, array('id' => $id, 'productid' => $this->id));
 			return $update;
 		}else{
@@ -160,6 +166,7 @@ class Product extends DBObject{
 				'priceunit' => intval($price['priceunit']),
 				'amount' => floatval($price['amount']),
 				'amountunit' => intval($price['amountunit']),
+				'displayorder' => intval($price['displayorder']),
 			);
 			$db->INSERT($price);
 			$price['id'] = $db->insert_id();
@@ -182,7 +189,8 @@ class Product extends DBObject{
 			$prices = $db->fetch_all("SELECT p.*,c.*
 				FROM {$tpre}productprice p
 					LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
-				WHERE p.productid=$productid AND c.id IS NOT NULL");
+				WHERE p.productid=$productid AND c.id IS NOT NULL
+				ORDER BY p.displayorder");
 			if($to_readable){
 				foreach($prices as &$p){
 					$p['priceunit'] = self::PriceUnits($p['priceunit']);

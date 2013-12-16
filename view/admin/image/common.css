@@ -261,7 +261,11 @@ footer{
 }
 
 input.narrow{
-	width:3em;
+	width:2.5em;
+}
+
+input.number{
+	text-align:center;
 }
 
 .edit_form table th{
