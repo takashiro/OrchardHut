@@ -47,21 +47,21 @@ switch($action){
 			}
 			
 			if($time_start !== ''){
-				$condition[] = 'dateline>='.$time_start;
+				$condition[] = 'o.dateline>='.$time_start;
 				$time_start = rdate($time_start, 'Y-m-d H:i');
 			}
 
 			if($time_end !== ''){
-				$condition[] = 'dateline<='.$time_end;
+				$condition[] = 'o.dateline<='.$time_end;
 				$time_end = rdate($time_end, 'Y-m-d H:i');
 			}
 		}
 		$display_status = array_keys($display_status);
-		$condition[] = 'status IN ('.implode(',', $display_status).')';
+		$condition[] = 'o.status IN ('.implode(',', $display_status).')';
 
 		$limitation_condition = array();
 		foreach($_G['admin']->getLimitations() as $componentid){
-			$limitation_condition[] = "id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE componentid=$componentid)";
+			$limitation_condition[] = "o.id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE componentid=$componentid)";
 		}
 
 		if($limitation_condition){
@@ -92,24 +92,55 @@ switch($action){
 		}
 
 		foreach($order_address as $componentid){
-			$condition[] = "id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE componentid=$componentid)";
+			$condition[] = "o.id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE componentid=$componentid)";
 		}
 
 		$condition = implode(' AND ', $condition);
+		
+		$stat = array(
+			'statonly' => !empty($_REQUEST['stat']['statonly']),
+			'totalprice' => !empty($_REQUEST['stat']['totalprice']),
+			'item' => !empty($_REQUEST['stat']['item']),
+		);
 
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
-		$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition LIMIT $offset,$limit");
-		$pagenum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE $condition");
-		
-		$stat = array();
-		if(!empty($_REQUEST['stat']['totalprice'])){
-			$stat['totalprice'] = $db->result_first("SELECT SUM(totalprice) FROM {$tpre}order WHERE $condition");
+		$pagenum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order o WHERE $condition");
+		if(!$stat['statonly']){
+			$orders = $db->fetch_all("SELECT * FROM {$tpre}order o WHERE $condition LIMIT $offset,$limit");
+		}else{
+			$orders = array();
+		}
+
+		$statdata = array();
+		if($stat['totalprice']){
+			$statdata['totalprice'] = $db->fetch_all("SELECT SUM(totalprice) AS price,priceunit FROM {$tpre}order o WHERE $condition GROUP BY priceunit");
+			foreach($statdata['totalprice'] as &$total){
+				$total['priceunit'] = Product::PriceUnits($total['priceunit']);
+			}
+			unset($total);
+		}else{
+			$statdata['totalprice'] = array();
+		}
+
+		if($stat['item']){
+			$statdata['item'] = $db->fetch_all("SELECT d.productname,d.subtype,d.amountunit,SUM(d.amount*d.number) AS num,o.priceunit,SUM(d.subtotal) AS totalprice
+				FROM {$tpre}orderdetail d
+					LEFT JOIN {$tpre}order o ON d.orderid=o.id
+				WHERE $condition
+				GROUP BY d.productname,d.subtype,d.amountunit,o.priceunit");
+
+			foreach($statdata['item'] as &$item){
+				$item['priceunit'] = Product::PriceUnits($item['priceunit']);
+			}
+			unset($item);
+		}else{
+			$statdata['item'] = array();
 		}
 
 		$stat_query = '';
 		foreach($stat as $field => $value){
-			$stat_query.= '&stat['.$field.']=1';
+			$stat_query.= '&stat['.$field.']='.$value;
 		}
 
 		if($orders){
