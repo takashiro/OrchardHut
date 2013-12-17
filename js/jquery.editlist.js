@@ -51,6 +51,18 @@
 				td.html('');
 				td.append(input);
 				input.focus();
+
+				if(input.is('select')){
+					var select_options = input.children('option');
+					if(select_options.length == 2){
+						select_options.filter(':selected').remove();
+						select_options = input.children('option');
+						select_options.attr('checked', true);
+						input.blur();
+						input.hide();
+						input.after('<div>' + select_options.text() + '</div>');
+					}
+				}
 			});
 
 			this.on('blur', 'tbody tr:not(:last-child) td input, tbody tr:not(:last-child) td textarea, tbody tr:not(:last-child) td select', function(e){
