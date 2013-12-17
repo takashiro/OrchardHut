@@ -38,7 +38,7 @@ $(function(){
 			</dl>
 			<dl>
 				<dt>订单送货地址：</dt>
-				<dd>{echo Template::tselect('delivery_address', $address_format, $address_components, false, $formatid, $componentid)}</dd>
+				<dd>{echo Template::tselect('delivery_address', $address_format, $address_components, false, $componentid)}</dd>
 				<dt>订单状态：</dt>
 				<dd>
 					<!--{loop $available_status $id $checked}-->

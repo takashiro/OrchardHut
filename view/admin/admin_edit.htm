@@ -1,5 +1,25 @@
 <!--{template header}-->
 
+<script type="text/javascript">
+$(function(){
+	$('#limitation_ul').on('click', 'li .add', function(e){
+		var button = $(e.target);
+		var li = button.parent();
+		var ul = li.parent();
+		ul.append(li.clone(true));
+
+		button.attr('class', 'remove');
+		button.text('[移除]');
+	});
+
+	$('#limitation_ul').on('click', 'li .remove', function(e){
+		var button = $(e.target);
+		var li = button.parent();
+		li.remove();
+	});
+});
+</script>
+
 <div class="box edit_form">
 	<!--{if $id}-->
 	<h1>编辑管理员权限 - $a[account]</h1>
@@ -48,12 +68,17 @@
 				</div>
 			</td>
 		</tr>
-		<!--{if !$_G['admin']->formatid}-->
 		<tr title="选择此项后该管理员的普通权限（全局权限不受限制）限定在指定营业范围内">
 			<th><label>限定管理范围：</label></th>
-			<td>{echo Template::tselect('limitation', $address_format, $address_components, false, $admin->formatid, $admin->componentid)}</td>
+			<td>
+				<ul id="limitation_ul">
+					<!--{loop $admin->getLimitations() $componentid}-->
+					<li>{echo Template::tselect('limitation[]', $address_format, $address_components, false, $componentid)} <a href="###" class="remove">[移除]</a></li>
+					<!--{/loop}-->
+					<li>{echo Template::tselect('limitation[]', $address_format, $address_components, false)} <a href="###" class="add">[增加]</a></li>
+				</ul>
+			</td>
 		</tr>
-		<!--{/if}-->
 	</table>
 
 	<div class="post_buttons">

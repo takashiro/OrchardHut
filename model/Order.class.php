@@ -49,14 +49,21 @@ class Order extends DBObject{
 		return $attr;
 	}
 
-	public function belongToAddress($formatid, $componentid){
-		if($formatid == 0){
+	public function belongToAddress($componentids){
+		if(!$componentids){
 			return true;
 		}
 
 		global $db;
 		$db->select_table('orderaddresscomponent');
-		return $this->id == $db->RESULTF('orderid', array('orderid' => $this->id, 'formatid' => intval($formatid), 'componentid' => intval($componentid)));
+
+		if(is_array($componentids)){
+			$condition = 'orderid='.$this->id.' AND componentid IN ('.implode(',', $componentids).')';
+		}else{
+			$condition = array('orderid' => $this->id, 'componentid' => intval($componentids));
+		}
+
+		return $this->id == $db->RESULTF('orderid', $condition);
 	}
 
 	public function addDetail($d){

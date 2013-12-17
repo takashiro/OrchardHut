@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 12 月 16 日 08:05
+-- 生成日期: 2013 年 12 月 17 日 06:44
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.3.13
 
@@ -63,8 +63,7 @@ CREATE TABLE IF NOT EXISTS `hut_administrator` (
   `pwmd5` varchar(32) NOT NULL,
   `nickname` varchar(50) NOT NULL,
   `permission` int(11) NOT NULL,
-  `formatid` mediumint(8) unsigned NOT NULL,
-  `componentid` mediumint(8) unsigned NOT NULL,
+  `limitation` text NOT NULL,
   `logintime` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

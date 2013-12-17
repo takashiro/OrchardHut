@@ -59,15 +59,18 @@ switch($action){
 		$display_status = array_keys($display_status);
 		$condition[] = 'status IN ('.implode(',', $display_status).')';
 
-		$order_address = array();
-		if($_G['admin']->formatid > 0){
-			$order_address[] = array(
-				'formatid' => $_G['admin']->formatid,
-				'componentid' => $_G['admin']->componentid,
-			);
+		$limitation_condition = array();
+		foreach($_G['admin']->getLimitations() as $componentid){
+			$limitation_condition[] = "id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE componentid=$componentid)";
 		}
 
-		$formatid = $componentid = 0;
+		if($limitation_condition){
+			$condition[] = '('.implode(' OR ', $limitation_condition).')';
+		}
+
+		$order_address = array();
+
+		$componentid = 0;
 		if(!empty($_REQUEST['delivery_address'])){
 			$delivery_address = $_REQUEST['delivery_address'];
 			$address = explode(',', $delivery_address);
@@ -82,19 +85,14 @@ switch($action){
 			}
 
 			if($format_order >= 0){
-				$formatid = $db->result_first("SELECT id FROM {$tpre}addressformat ORDER BY displayorder LIMIT $format_order,1");
-
-				$order_address[] = array(
-					'formatid' => $formatid,
-					'componentid' => $componentid,
-				);
+				$order_address[] = $componentid;
 			}
 		}else{
 			$delivery_address = '0,0';
 		}
 
-		foreach($order_address as $a){
-			$condition[] = "id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE formatid=$a[formatid] AND componentid=$a[componentid])";
+		foreach($order_address as $componentid){
+			$condition[] = "id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE componentid=$componentid)";
 		}
 
 		$condition = implode(' AND ', $condition);
@@ -155,7 +153,7 @@ switch($action){
 		$address_format = Address::Format();
 		$address_components = Address::Components();
 
-		$is_restricted = $_G['admin']->formatid != 0;
+		$is_restricted = !empty($_G['admin']->limitation);
 		$reserved = array();
 		if($is_restricted){
 			$find_parent = array();
@@ -163,10 +161,11 @@ switch($action){
 				$find_parent[$c['id']] = $c['parentid'];
 			}
 
-			$cur = $_G['admin']->componentid;
-			while($cur){
-				$reserved[] = $cur;
-				$cur = $find_parent[$cur];
+			foreach($_G['admin']->getLimitations() as $cur){
+				while($cur){
+					$reserved[] = $cur;
+					$cur = $find_parent[$cur];
+				}
 			}
 		}
 
@@ -179,10 +178,6 @@ switch($action){
 				}
 			}else{
 				array_unshift($address_components, array('id' => 0, 'formatid' => $format['id'], 'name' => '不限', 'parentid' => 0));
-			}
-
-			if($format['id'] == $_G['admin']->formatid){
-				$is_restricted = false;
 			}
 		}
 
@@ -210,7 +205,7 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if(!$order->belongToAddress($_G['admin']->formatid, $_G['admin']->componentid)){
+		if(!$order->belongToAddress($_G['admin']->getLimitations())){
 			exit('permission denied');
 		}
 
@@ -225,7 +220,7 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if(!$order->belongToAddress($_G['admin']->formatid, $_G['admin']->componentid)){
+		if(!$order->belongToAddress($_G['admin']->getLimitations())){
 			exit('permission denied');
 		}
 
@@ -240,7 +235,7 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if(!$order->belongToAddress($_G['admin']->formatid, $_G['admin']->componentid)){
+		if(!$order->belongToAddress($_G['admin']->getLimitations())){
 			exit('permission denied');
 		}
 
@@ -270,6 +265,10 @@ switch($action){
 		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 		if($orderid > 0){
 			$order = new Order($orderid);
+			if(!$order->belongToAddress($_G['admin']->getLimitations())){
+				exit('access denied');
+			}
+
 			$order = $order->toReadable();
 			if(!empty($_CONFIG['ticket_tips'])){
 				$tips = explode("\n", $_CONFIG['ticket_tips']);

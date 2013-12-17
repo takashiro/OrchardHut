@@ -53,31 +53,25 @@ switch($action){
 				$admin->nickname = trim($_POST['nickname']);
 			}
 
-			if(!empty($_POST['formatid'])){
-				$admin->formatid = intval($_POST['formatid']);
-			}
+			if(isset($_POST['limitation'])){
+				if(is_array($_POST['limitation'])){
+					$limitation = array();
+					foreach($_POST['limitation'] as $components){
+						$components = explode(',', $components);
+						do{
+							$componentid = array_pop($components);
+							$componentid = intval($componentid);
+						}while($components && empty($componentid));
 
-			if(!empty($_POST['componentid'])){
-				$admin->componentid = intval($_POST['componentid']);
-			}
-
-			if(!empty($_POST['limitation'])){
-				$limitation = explode(',', $_POST['limitation']);
-				foreach($limitation as $format_order => $componentid){
-					$componentid = intval($componentid);
-					if($componentid <= 0){
-						$format_order--;
-						break;
+						if($componentid){
+							$limitation[] = $componentid;
+						}
 					}
 
-					$admin->componentid = $componentid;
-				}
-
-				if($format_order < 0){
-					$admin->formatid = 0;
-					$admin->componentid = 0;
+					$limitation = array_unique($limitation);
+					$admin->limitation = implode(',', $limitation);
 				}else{
-					$admin->formatid = $db->result_first("SELECT id FROM {$tpre}addressformat ORDER BY displayorder LIMIT $format_order,1");
+					$admin->limitation = '';
 				}
 			}
 

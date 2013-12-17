@@ -156,7 +156,7 @@ class Template{
 		return $str;
 	}
 
-	static public function tselect($name, $formats, $components, $with_ext = true, $formatid = 0, $componentid = 0){
+	static public function tselect($name, $formats, $components, $with_ext = true, $componentid = 0){
 		$value = array($componentid);
 		
 		$find_parent = array();

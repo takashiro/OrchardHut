@@ -29,6 +29,13 @@ class Administrator extends User{
 		DBObject::__destruct();
 	}
 
+	public function getLimitations(){
+		if(empty($this->limitation)){
+			return array();
+		}
+		return explode(',', $this->limitation);
+	}
+
 	public function toArray(){
 		if($this->id > 0){
 			return parent::toArray();
