@@ -19,7 +19,7 @@ if(!$_G['admin']->isLoggedIn()){
 		if($result){
 			redirect('admin.php');
 		}else{
-			showmsg('账号或密码错误！请重试。', 'back');
+			showmsg('invalid_account_or_password', 'back');
 		}
 	}
 
@@ -36,7 +36,7 @@ $module = './controller/admin_'.$mod.'.inc.php';
 $mod_url = 'admin.php?mod='.$mod;
 if(file_exists($module)){
 	if(!in_array($mod, $public_mod) && !$_G['admin']->hasPermission($mod)){
-		showmsg('抱歉，您没有权限进行该操作。', 'back');
+		showmsg('no_permission', 'back');
 	}
 
 	include $module;

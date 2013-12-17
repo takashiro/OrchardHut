@@ -288,7 +288,7 @@ switch($action){
 		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 		if($orderid > 0){
 			if(empty($_GET['confirm'])){
-				showmsg('您确认删除该订单吗？', 'confirm');
+				showmsg('confirm_to_delete_order', 'confirm');
 			}
 
 			Order::Delete($orderid);

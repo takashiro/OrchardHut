@@ -20,11 +20,11 @@ if($action == 'login'){
 
 		if($_G['user']->isLoggedIn()){
 			if($_G['user']->qqopenid){
-				showmsg('请先解除已经绑定的QQ。', 'back');
+				showmsg('please_unbind_your_qq_first', 'back');
 			}
 
 			if(User::Exist($open_id, 'qqopenid')){
-				showmsg('该QQ已经绑定其他账号，您不能再次绑定。您需要通过该QQ登录本站解除绑定，才能绑定新账号。', 'back');
+				showmsg('binded_qq_cannot_be_binded_again', 'back');
 			}
 
 			$_G['user']->qqopenid = $open_id;
@@ -45,7 +45,7 @@ if($action == 'login'){
 			}
 
 			$user->force_login();
-			showmsg('您成功通过QQ登录本站！', 'market.php');
+			showmsg('successfully_logged_in_via_qq', 'market.php');
 		}
 	}else{
 		$qc->qq_login();
@@ -53,24 +53,24 @@ if($action == 'login'){
 
 }elseif($action == 'unbind'){
 	if(!$_G['user']->isLoggedIn()){
-		showmsg('请先登录。', 'memcp.php');
+		showmsg('binding_require_user_logged_in', 'memcp.php');
 	}
 
 	if(!$_G['user']->qqopenid){
-		showmsg('您未绑定QQ账号。', 'back');
+		showmsg('you_have_not_bind_qq', 'back');
 	}
 
 	if($_G['user']->qqopenid == $_G['user']->account){
-		showmsg('您的账号是通过QQ登录自动注册的，需要先设定本站登录账号和密码才能解绑，否则会造成您的账号无法再次登录。', 'memcp.php');
+		showmsg('qqopenid_cannot_be_unbinded_with_empty_account', 'memcp.php');
 	}
 
 	if(empty($_GET['confirm'])){
-		showmsg('您确定要解除与QQ的绑定吗？', 'confirm');
+		showmsg('confirm_to_unbind_qq', 'confirm');
 	}
 
 	$_G['user']->qqopenid = NULL;
 
-	showmsg('成功解除与QQ的绑定。', 'home.php');
+	showmsg('successfully_unbinded_qq', 'home.php');
 }
 
 ?>

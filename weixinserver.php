@@ -6,7 +6,7 @@ ob_clean();
 
 $wx = readdata('wxconnect');
 $weixin = new WeixinServer($wx['token'], $wx['account']);
-$request = $weixin->getRequest(true);
+$request = $weixin->getRequest();
 
 if(!$request){
 	if($weixin->isValidRequest()){
@@ -29,24 +29,24 @@ if($request['MsgType'] == 'event'){
 
 		if(isset($words[1])){
 			$final = array_pop($words);
-			$words = '【'.implode('】、【', $words).'】或【'.$final.'】';
+			$words = '【'.implode('】、【', $words).'】'.lang('message', 'or').'【'.$final.'】';
 		}else{
 			$words = $words[0];
 		}
 
-		$weixin->replyTextMessage("若您未登录，<a href=\"{$_G['root_url']}memcp.php?action=login\">点击登录已有账号</a>，然后回复{$words}。");
+		$weixin->replyTextMessage(lang('message', 'if_not_logged_in_comma')."<a href=\"{$_G['root_url']}memcp.php?action=login\">".lang('message', 'click_here_and_login')."</a>，".lang('message', 'and_reply').$words);
 	}
 
 	if(isset($wx['bind2_keyword']) && Autoreply::MatchKeywords($wx['bind2_keyword'], $request['Content'])){
 		$user = $request['FromUserName'];
 		$key = Authkey::Generate($user);
-		$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=bind&user=$user&key=$key\">点击进入商城</a>");
+		$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=bind&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
 	}
 
 	if(isset($wx['entershop_keyword']) && Autoreply::MatchKeywords($wx['entershop_keyword'], $request['Content'])){
 		$user = $request['FromUserName'];
 		$key = Authkey::Generate($user);
-		$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=login&user=$user&key=$key\">点击进入商城</a>");
+		$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=login&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
 	}
 
 	$reply = Autoreply::Find($request['Content']);

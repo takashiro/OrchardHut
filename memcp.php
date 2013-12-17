@@ -13,7 +13,7 @@ if($_G['user']->isLoggedIn()){
 
 if($action == 'login'){
 	if($_G['user']->isLoggedIn()){
-		showmsg('您已登录，不需要再次登录。', 'home.php');
+		showmsg('you_have_logged_in', 'home.php');
 	}
 
 	if($_POST){
@@ -28,12 +28,12 @@ if($action == 'login'){
 
 		if($result == User::ACTION_SUCCEEDED){
 			if(empty($_POST['http_referer'])){
-				showmsg('登录成功！', 'home.php');
+				showmsg('successfully_logged_in', 'home.php');
 			}else{
-				showmsg('登录成功！', $_POST['http_referer']);
+				showmsg('successfully_logged_in', $_POST['http_referer']);
 			}
 		}else{
-			showmsg('用户名或密码错误。', 'back');
+			showmsg('invalid_account_or_password', 'back');
 		}
 	}
 
@@ -50,13 +50,13 @@ if($action == 'login'){
 			$_G['user']->login($_POST['account'], $_POST['password'], 'account');
 			redirect('market.php');
 		}elseif($uid == User::INVALID_ACCOUNT){
-			showmsg('用户名不能少于4个字，不能多于50字。', 'back');
+			showmsg('account_too_short_or_too_long', 'back');
 		}elseif($uid == User::INVALID_PASSWORD){
-			showmsg('密码长度不能少于6位。', 'back');
+			showmsg('password_too_short', 'back');
 		}elseif($uid == User::DUPLICATED_ACCOUNT){
-			showmsg('该用户名已经被注册，请更换一个用户名。', 'back');
+			showmsg('duplicated_account', 'back');
 		}else{
-			showmsg('未知错误。', 'back');
+			showmsg('unknown_error_period', 'back');
 		}
 	}
 
@@ -68,11 +68,11 @@ if($action == 'login'){
 			$mobile = trim($_POST['mobile']);
 			if($mobile != ''){
 				if(!User::IsMobile($mobile)){
-					showmsg('请输入正确的手机号码', 'back');
+					showmsg('incorrect_mobile_number', 'back');
 				}
 
 				if(User::Exist($mobile, 'mobile')){
-					showmsg('您输入的手机号码已被使用，请重新输入。', 'back');
+					showmsg('duplicated_mobile', 'back');
 				}
 			}else{
 				$mobile = NULL;
@@ -85,11 +85,11 @@ if($action == 'login'){
 			$email = trim($_POST['email']);
 			if($email != ''){
 				if(!User::IsEmail($email)){
-					showmsg('请输入正确的电子邮箱地址。', 'back');
+					showmsg('invalid_email', 'back');
 				}
 
 				if(User::Exist($email, 'email')){
-					showmsg('您输入的邮箱已被使用，请重新输入。', 'back');
+					showmsg('duplicated_email', 'back');
 				}
 			}else{
 				$email = NULL;
@@ -106,7 +106,7 @@ if($action == 'login'){
 			$account = trim($_POST['account']);
 			$duplicated = $db->result_first("SELECT id FROM {$tpre}user WHERE account='$account'");
 			if($duplicated){
-				showmsg('您设定的用户名已经被使用，请重新设定一个用户名。', 'back');
+				showmsg('duplicated_account', 'back');
 			}
 
 			$_G['user']->account = $account;
@@ -114,36 +114,36 @@ if($action == 'login'){
 
 		if(!empty($_POST['new_password'])){
 			if(empty($_POST['new_password2'])){
-				showmsg('请输入两次新密码用以再次确认。', 'back');
+				showmsg('please_confim_your_password', 'back');
 			}
 
 			if($_G['user']->account == $_G['user']->qqopenid){
-				showmsg('设置登录密码同时需要设定登录用户名，请填写用户名。', 'back');
+				showmsg('cannot_set_password_without_an_account', 'back');
 			}
 
 			if($_G['user']->pwmd5){
 				if(empty($_POST['old_password'])){
-					showmsg('修改密码需要填写原密码。', 'back');
+					showmsg('password_modifying_require_old_password', 'back');
 				}
 
 				$result = $_G['user']->changePassword($_POST['old_password'], $_POST['new_password'], $_POST['new_password2']);
 				if($result !== true){
 					if($result == User::PASSWORD2_WRONG){
-						showmsg('您两次输入的密码不一致，请重新输入。', 'back');
+						showmsg('two_passwords_are_different', 'back');
 					}elseif($result == User::OLD_PASSWORD_WRONG){
-						showmsg('您输入的旧密码不正确，请重新输入。', 'back');
+						showmsg('incorrect_old_password', 'back');
 					}
 				}
 			}else{
 				if($_POST['new_password'] != $_POST['new_password2']){
-					showmsg('您两次输入的密码不一致，请重新输入。', 'back');
+					showmsg('two_passwords_are_different', 'back');
 				}
 
 				$_G['user']->pwmd5 = rmd5($_POST['new_password']);
 			}
 		}
 
-		showmsg('修改个人信息成功！', 'memcp.php');
+		showmsg('successfully_update_profile', 'memcp.php');
 	}
 
 	include view('memcp_edit');

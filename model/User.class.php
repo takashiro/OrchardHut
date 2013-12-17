@@ -116,7 +116,7 @@ class User extends DBObject{
 		}
 
 		$account_length = strlen($user['account']);
-		if($account_length < 4 || $account_length > 50){
+		if($account_length < 4 || $account_length > 15){
 			return self::INVALID_ACCOUNT;
 		}
 

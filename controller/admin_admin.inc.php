@@ -16,13 +16,13 @@ switch($action){
 	case 'edit':
 		$admin = new Administrator($id);
 		if($admin->isSuperAdmin()){
-			showmsg('非法操作。', 'back');
+			showmsg('illegal_operation', 'back');
 		}
 		$id = $admin->id;
 
 		if($_POST){
 			if(!empty($_POST['password']) && $_POST['password'] != $_POST['password2']){
-				showmsg('两次输入的密码不一致。', 'back');
+				showmsg('two_different_passwords', 'back');
 			}
 
 			if($id <= 0){
@@ -32,7 +32,7 @@ switch($action){
 				);
 				$new_id = Administrator::Register($new_admin);
 				if($new_id <= 0){
-					showmsg('您输入的登录名已经被使用，请重新输入一个登录用户名。', 'back');
+					showmsg('duplicated_account', 'back');
 				}
 
 				$admin = new Administrator($new_id);
@@ -91,14 +91,14 @@ switch($action){
 
 	case 'delete':
 		if($id <= 0){
-			showmsg('非法操作。');
+			showmsg('illegal_operation');
 		}
 
 		if(!empty($_GET['confirm'])){
 			Administrator::Delete($id);
 			redirect($mod_url);
 		}else{
-			showmsg('您确认要删除该管理员吗？', 'confirm');
+			showmsg('confirm_to_delete_administrator', 'confirm');
 		}
 
 	break;

@@ -8,16 +8,16 @@ $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET
 if($action == 'login'){
 	if(!$_G['user']->isLoggedIn()){
 		if(empty($_GET['user']) || empty($_GET['key'])){
-			showmsg('啊哦，我们遇到了点意外（参数不足）。', 'index.php');
+			showmsg('unexpected_link_with_inadequate_parameters', 'index.php');
 		}
 
 		$authkey = new Authkey($_GET['user']);
 		if($authkey->isExpired()){
-			showmsg('啊哦，我们遇到了点意外。该网页链接已失效，请回到微信重新操作。');
+			showmsg('expired_wxlogin_link');
 		}
 
 		if(!$authkey->matchOnce($_GET['key'])){
-			showmsg('啊哦，我们遇到了点意外。本网页链接无效了，请回到微信重新操作。');
+			showmsg('invalid_wxlogin_link');
 		}
 
 		$user = new User;
@@ -34,7 +34,7 @@ if($action == 'login'){
 			$user->account = $open_id;
 			$user->pwmd5 = '';
 			$user->wxopenid = $open_id;
-			$user->nickname = '微信用户';
+			$user->nickname = lang('message', 'wxuser');
 
 			$user->insert();
 		}
@@ -46,39 +46,39 @@ if($action == 'login'){
 
 }elseif($action == 'bind'){
 	if(!$_G['user']->isLoggedIn()){
-		showmsg('请先登录，然后再进行绑定操作。', 'back');
+		showmsg('binding_require_user_logged_in', 'back');
 	}
 	
 	if(!array_key_exists('user', $_GET) || !array_key_exists('key', $_GET)){
-		showmsg('非法操作，参数不足。');
+		showmsg('unexpected_link_with_inadequate_parameters', 'index.php');
 	}
 
 	$authkey = new Authkey($_GET['user']);
 	if($authkey->isExpired()){
-		showmsg('该网页链接已失效，请重新进行绑定操作。');
+		showmsg('expired_wxbind_link');
 	}
 
 	if(User::Exist($_GET['user'], 'wxopenid')){
-		showmsg('该微信账号已经绑定其他账号，请先通过微信登录然后解绑，才能重新绑定。');
+		showmsg('wxopenid_binded_to_another_account');
 	}
 
 	if($authkey->matchOnce($_GET['key'])){
 		$_G['user']->wxopenid = $_GET['user'];
-		showmsg('成功绑定微信账号！', 'index.php');
+		showmsg('successfully_binded_wxopenid', 'index.php');
 	}else{
-		showmsg('非法操作，本网页链接无效。');
+		showmsg('invalid_wxbind_link');
 	}
 
 }else{
 	if($_G['user']->isLoggedIn()){
 		if($_G['user']->account == $_G['user']->wxopenid){
-			showmsg('您的账号是通过微信登录自动注册的，需要先设定本站登录账号和密码才能解绑，否则会造成您的账号无法再次登录。', 'memcp.php');
+			showmsg('cannot_unbind_wxopenid_with_account_empty', 'memcp.php');
 		}
 
 		$_G['user']->wxopenid = NULL;
-		showmsg('成功解除该账号已绑定的微信账号！', 'refresh');
+		showmsg('successfully_unbinded_wxopenid', 'refresh');
 	}else{
-		showmsg('请先登录，否则无法绑定。', 'memcp.php');
+		showmsg('binding_require_user_logged_in', 'memcp.php');
 	}
 }
 

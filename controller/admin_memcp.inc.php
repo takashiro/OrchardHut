@@ -13,20 +13,20 @@ if($action == 'edit'){
 
 		if(!empty($_POST['password'])){
 			if(empty($_POST['password2']) || $_POST['password'] != $_POST['password2']){
-				showmsg('您两次输入的新密码不一致，请重新输入。', 'back');
+				showmsg('two_different_passwords', 'back');
 			}
 
 			if(!isset($_POST['old_password'])){
-				showmsg('请输入旧密码，否则无法修改密码。', 'back');
+				showmsg('password_modifying_require_old_password', 'back');
 			}
 
 			$result = $_G['admin']->changePassword($_POST['old_password'], $_POST['password']);
 			if($result === -1){
-				showmsg('您输入的旧密码不正确，请重新输入。', 'back');
+				showmsg('incorrect_old_password', 'back');
 			}
 		}
 
-		showmsg('成功修改个人信息！', 'refresh');
+		showmsg('successfully_update_profile', 'refresh');
 	}
 
 	$_ADMIN = $_G['admin']->toArray();

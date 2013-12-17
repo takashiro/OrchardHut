@@ -36,7 +36,7 @@ switch($action){
 				}
 
 				if(empty($_REQUEST['ajax'])){
-					showmsg('成功编辑本条公告。', 'refresh');
+					showmsg('succesfully_edited_announcement', 'refresh');
 				}else{
 					echo json_encode($announcement->toReadable());
 				}

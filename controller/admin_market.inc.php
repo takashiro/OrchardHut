@@ -18,7 +18,7 @@ switch($action){
 		if($_POST){
 			if($productid == 0){
 				if(empty($_POST['name'])){
-					showmsg('请填写商品名称。', 'back');
+					showmsg('please_fill_in_product_name', 'back');
 				}
 
 				$product = new Product;
@@ -65,7 +65,7 @@ switch($action){
 			if(!empty($_GET['ajax'])){
 				echo json_encode($product->toArray());
 			}else{
-				showmsg('编辑成功。', 'refresh');
+				showmsg('edit_succeed', 'refresh');
 			}
 
 		}else{

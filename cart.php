@@ -53,7 +53,7 @@ switch($action){
 		}
 
 		if(!$products){
-			showmsg('您还没有选购哦，请先把商品放入购物车。', 'market.php');
+			showmsg('shopping_cart_empty', 'market.php');
 		}
 
 		if($_POST){
@@ -61,24 +61,24 @@ switch($action){
 
 			if($addressid <= 0){
 				if(empty($_POST['addressee'])){
-					showmsg('请填写收件人姓名。', 'back');
+					showmsg('please_fill_in_addressee', 'back');
 				}
 
 				if(empty($_POST['mobile']) || !preg_match('/^\d{11}$/', $_POST['mobile'])){
-					showmsg('请填写正确的手机号码。', 'back');
+					showmsg('incorrect_mobile_number', 'back');
 				}
 
 				$address = array();
 				if(!empty($_POST['deliveryaddress'])){
 					$address = explode(',', $_POST['deliveryaddress']);
 				}else{
-					showmsg('请将收件地址填写完整。', 'back');
+					showmsg('invalid_delivery_address_with_inadquate_components', 'back');
 				}
 			}else{
 				$db->select_table('deliveryaddress');
 				$address = $db->FETCH('*', 'id='.$addressid);
 				if(!$address || $address['userid'] != $_G['user']->id){
-					showmsg('非法操作。该收货地址不存在。');
+					showmsg('delivery_address_id_not_exist');
 				}
 
 				$_POST['addressee'] = $address['addressee'];
@@ -127,7 +127,7 @@ switch($action){
 			}
 			foreach(Address::Format() as $format){
 				if(!array_key_exists($format['id'], $format2component)){
-					showmsg('请填写完整的收件地址！', 'back');
+					showmsg('invalid_delivery_address_with_inadquate_components', 'back');
 				}
 			}
 
@@ -194,7 +194,7 @@ switch($action){
 			}
 
 			rsetcookie('in_cart', '');
-			showmsg('成功提交订单！', 'market.php');
+			showmsg('successfully_submitted_order', 'market.php');
 
 		}
 

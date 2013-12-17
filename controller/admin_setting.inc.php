@@ -26,7 +26,7 @@ case 'system':
 
 	if($_POST){
 		writedata('config', $config);
-		showmsg('成功修改系统配置！', 'refresh');
+		showmsg('successfully_updated_system_config', 'refresh');
 	}
 
 	foreach($config as $var => $v){
@@ -98,7 +98,7 @@ case 'qqconnect':
 
 	if($_POST){
 		writedata('qqconnect', $qqconnect);
-		showmsg('成功修改账户互联设置！', 'refresh');
+		showmsg('successfully_updated_qqconnect_config', 'refresh');
 	}
 
 	break;
@@ -113,7 +113,7 @@ case 'wxconnect':
 
 	if($_POST){
 		writedata('wxconnect', $wxconnect);
-		showmsg('成功修改账户互联设置！', 'refresh');
+		showmsg('successfully_updated_wxconnect_config', 'refresh');
 	}
 
 	break;

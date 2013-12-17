@@ -1,8 +1,46 @@
 <?php
 
+function lang($type, $from = NULL){
+	$style = $GLOBALS['_G']['style'];
+	$file = './view/'.$style.'/'.$type.'.lang.php';
+
+	if(file_exists($file)){
+		$lang = include $file;
+	}else{
+		$style = 'default';
+		$file = './view/'.$style.'/'.$type.'.lang.php';
+		$lang = include $file;
+	}
+
+	if($style != 'default'){
+		$default_lang = include './view/default/'.$type.'.lang.php';;
+		foreach($default_lang as $key => $value){
+			if(!isset($lang[$key])){
+				$lang[$key] = $value;
+			}
+		}
+	}
+
+	if($from === NULL){
+		return $lang;
+	}elseif(isset($lang[$from])){
+		trigger_error('undefined message in language pack: '.$from, E_USER_ERROR);
+		return $lang[$from];
+	}else{
+		return $from;
+	}
+}
+
 //显示一个消息，并跳转到$url_forward
 function showmsg($message, $url_forward = ''){
 	extract($GLOBALS, EXTR_SKIP);
+
+	static $lang = NULL;
+	$lang == NULL && $lang = lang('message');
+
+	if(isset($lang[$message])){
+		$message = $lang[$message];
+	}
 
 	if(empty($_GET['ajax'])){
 		switch($url_forward){

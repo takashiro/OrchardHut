@@ -11,34 +11,34 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 switch($action){
 case 'delete':
 	if(empty($_GET['confirm'])){
-		showmsg('您确定取消该订单吗？', 'confirm');
+		showmsg('confirm_to_cancel_order', 'confirm');
 	}
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	if($orderid > 0){
 		$db->query("DELETE FROM {$tpre}order WHERE id=$orderid AND userid=$_USER[id] AND status=0");
 		if($db->affected_rows() > 0){
-			showmsg('成功取消该订单！', 'home.php');
+			showmsg('successfully_canceled_order', 'home.php');
 		}
 	}
 
-	showmsg('该订单不存在！', 'back');
+	showmsg('order_not_exist', 'back');
 	break;
 
 case 'mark_delivered':
 	if(empty($_GET['confirm'])){
-		showmsg('您确认已经收到订单吗？', 'confirm');
+		showmsg('confirm_to_mark_order_as_received', 'confirm');
 	}
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	if($orderid > 0){
 		$db->query("UPDATE {$tpre}order SET status=2 WHERE id=$orderid AND userid=$_USER[id] AND status=1");
 		if($db->affected_rows() > 0){
-			showmsg('成功确认收货！欢迎再光临'.$_CONFIG['sitename'].'！', 'home.php');
+			showmsg('successfully_received', 'home.php');
 		}
 	}
 
-	showmsg('该订单不存在！', 'back');
+	showmsg('order_not_exist', 'back');
 	break;
 
 case 'view':
@@ -46,7 +46,7 @@ case 'view':
 	$orderid = intval($_GET['orderid']);
 	$order = new Order($orderid);
 	if($order->id <= 0 || $order->userid != $_G['user']->id){
-		showmsg('该订单已不存在。', 'refresh');
+		showmsg('order_not_exist', 'refresh');
 	}
 
 	$order = $order->toReadable();
