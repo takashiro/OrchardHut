@@ -7,17 +7,17 @@ $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET
 
 if($action == 'login'){
 	if(!$_G['user']->isLoggedIn()){
-		if(!array_key_exists('user', $_GET) || !array_key_exists('key', $_GET)){
-			showmsg('非法操作，参数不足。');
+		if(empty($_GET['user']) || empty($_GET['key'])){
+			showmsg('啊哦，我们遇到了点意外（参数不足）。', 'index.php');
 		}
 
 		$authkey = new Authkey($_GET['user']);
 		if($authkey->isExpired()){
-			showmsg('该网页链接已失效，请回到微信重新操作。');
+			showmsg('啊哦，我们遇到了点意外。该网页链接已失效，请回到微信重新操作。');
 		}
 
 		if(!$authkey->matchOnce($_GET['key'])){
-			showmsg('非法操作，本网页链接无效。');
+			showmsg('啊哦，我们遇到了点意外。本网页链接无效了，请回到微信重新操作。');
 		}
 
 		$user = new User;
@@ -75,7 +75,7 @@ if($action == 'login'){
 			showmsg('您的账号是通过微信登录自动注册的，需要先设定本站登录账号和密码才能解绑，否则会造成您的账号无法再次登录。', 'memcp.php');
 		}
 
-		$db->query("UPDATE {$tpre}user SET wxopenid=NULL WHERE id=$_USER[id]");
+		$_G['user']->wxopenid = NULL;
 		showmsg('成功解除该账号已绑定的微信账号！', 'refresh');
 	}else{
 		showmsg('请先登录，否则无法绑定。', 'memcp.php');
