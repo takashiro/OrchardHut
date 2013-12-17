@@ -24,9 +24,9 @@ function lang($type, $from = NULL){
 	if($from === NULL){
 		return $lang;
 	}elseif(isset($lang[$from])){
-		trigger_error('undefined message in language pack: '.$from, E_USER_ERROR);
 		return $lang[$from];
 	}else{
+		trigger_error('undefined message in language pack: '.$from, E_USER_ERROR);
 		return $from;
 	}
 }
