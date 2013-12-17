@@ -128,7 +128,8 @@ $(function(){
 					<tr>
 						<td>总计</td>
 						<td colspan="{echo count(Address::Format()) + 1}"></td>
-						<td colspan="2">$pagenum 个订单</td>
+						<td></td>
+						<td>$pagenum 个订单</td>
 						<td><!--{loop $statdata['totalprice'] $total}-->$total[price] $total[priceunit]<!--{/loop}-->
 						</td>
 						<td colspan="4"></td>
@@ -141,7 +142,7 @@ $(function(){
 </div>
 
 <!--{if empty($stat['statonly'])}-->
-{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&display_status='.implode(',', $display_status).'&delivery_address='.$delivery_address.'&time_start='.$time_start.'&time_end='.$time_end.$stat_query)}
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&display_status='.implode(',', $display_status).'&delivery_address='.$delivery_address.'&time_start='.$time_start.'&time_end='.$time_end.'&'.http_build_query(array('stat' => $stat)))}
 <!--{/if}-->
 
 {template footer}

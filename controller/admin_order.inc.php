@@ -138,11 +138,6 @@ switch($action){
 			$statdata['item'] = array();
 		}
 
-		$stat_query = '';
-		foreach($stat as $field => $value){
-			$stat_query.= '&stat['.$field.']='.$value;
-		}
-
 		if($orders){
 			$orderids = array();
 			foreach($orders as &$o){
