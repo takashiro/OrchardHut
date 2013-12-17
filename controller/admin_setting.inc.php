@@ -14,6 +14,7 @@ case 'system':
 		'timezone' => intval($config['timezone']),
 		'timefix' => intval($config['timefix']),
 		'cookiepre' => $config['cookiepre'],
+		'refversion' => $config['refversion'],
 		'charset' => 'utf-8',
 		'style' => $config['style'],
 		'debugmode' => !empty($config['debugmode']),
