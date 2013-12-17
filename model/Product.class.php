@@ -253,7 +253,7 @@ class Product extends DBObject{
 		$id = intval($id);
 		global $db;
 		$db->select_table('productcountdown');
-		$db->DELETE(array('id' => $id, 'productid' => $this->id));
+		$db->DELETE(array('id' => $id));
 		return $db->affected_rows();
 	}
 
