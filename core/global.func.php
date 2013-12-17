@@ -31,7 +31,6 @@ function lang($type, $from = NULL){
 	}
 }
 
-//显示一个消息，并跳转到$url_forward
 function showmsg($message, $url_forward = ''){
 	extract($GLOBALS, EXTR_SKIP);
 
@@ -158,7 +157,6 @@ function readdata($file){
 	}
 }
 
-//递归加上转义符号，可以处理数组
 function raddslashes($str){
 	if(is_array($str)){
 		foreach($str as $key => $val){
@@ -170,7 +168,6 @@ function raddslashes($str){
 	return $str;
 }
 
-//递归转义HTML，可以处理数组
 function rhtmlspecialchars($str){
 	if(is_array($str)){
 		foreach($str as $key => $val){
@@ -182,7 +179,6 @@ function rhtmlspecialchars($str){
 	return $str;
 }
 
-//html显示模板选择
 function view($tpl){
 	global $_G;
 	$htmpath = S_ROOT.'./view/'.$_G['style'].'/'.$tpl.'.htm';
@@ -196,7 +192,6 @@ function view($tpl){
 	return $tplpath;
 }
 
-//日期显示
 function rdate($dateline, $format = 'Y-m-d H:i:s', $lang = 'en'){
 	$str = gmdate($format, $dateline + $GLOBALS['_CONFIG']['timezone'] * 3600);
 	
@@ -208,7 +203,7 @@ function rdate($dateline, $format = 'Y-m-d H:i:s', $lang = 'en'){
 }
 
 function rmktime($hour, $minute, $second, $month, $day, $year){
-	return gmmktime($hour, $minute, $second, $month, $day, $year) - $GLOBALS['_CONFIG']['timezone'] * 3600;  //gmmktime() 函数取得 GMT 日期的 UNIX 时间戳
+	return gmmktime($hour, $minute, $second, $month, $day, $year) - $GLOBALS['_CONFIG']['timezone'] * 3600;
 }
 
 function datetotimestamp($date){
@@ -217,7 +212,7 @@ function datetotimestamp($date){
 		$extra += 12 * 3600;
 	}
 
-	$date = explode('-', $date);  //explode() 函数把字符串分割为数组。
+	$date = explode('-', $date);
 	if(count($date) != 3){
 		return 0;
 	}
@@ -270,18 +265,16 @@ function rfilesize($size){
 	if($size < 1024){
 		return $size.'B';
 	}elseif($size < 1024 * 1024){
-		return (floor($size / 1024 * 100) / 100).'KB'; //floor() 函数向下舍入为最接近的整数。
+		return (floor($size / 1024 * 100) / 100).'KB';
 	}else{
 		return (floor($size / 1024 / 1024 * 100) / 100).'MB';
 	}
 }
 
-//?????
 function rheader($string, $replace = true, $http_response_code = 0) {
 	$string = str_replace(array("\r", "\n"), array('', ''), $string);
 	if(empty($http_response_code) || PHP_VERSION < '4.3' ) {
-		@header($string, $replace);  
-		//header() 函数向客户端发送原始的 HTTP 报头;@ 用在函数前，使不显示错误信息：
+		@header($string, $replace);
 	} else {
 		@header($string, $replace, $http_response_code);
 	}
@@ -290,7 +283,6 @@ function rheader($string, $replace = true, $http_response_code = 0) {
 	}
 }
 
-//?????
 function riconv($in, $out, $str){
 	if(is_array($str)){
 		foreach($str as $k => $v){
@@ -302,12 +294,10 @@ function riconv($in, $out, $str){
 	}
 }
 
-//用配置文件中的数值进行MD5加密
 function rmd5($str){
 	return md5($str.$GLOBALS['_G']['config']['salt']);
 }
 
-//写日志
 function writelog($logfile, $data){
 	$logfile = S_ROOT.'./data/log/'.rdate(TIMESTAMP, 'Ymd').'_'.$logfile.'.log.php';
 
