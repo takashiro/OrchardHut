@@ -97,11 +97,17 @@ class DBObject{
 		$this->attr = $this->oattr = array();
 	}
 
-	static public function Delete($id){
+	static public function Delete($id, $extra = ''){
 		global $db;
 		$id = intval($id);
 		$db->select_table(static::TABLE_NAME);
-		$db->DELETE(static::PRIMARY_KEY.'='.$id);
+
+		if($extra){
+			$extra = ' AND ('.$extra.')';
+		}
+
+		$db->DELETE(static::PRIMARY_KEY.'='.$id.$extra);
+		return $db->affected_rows();
 	}
 
 	static public function Exist($id, $field = ''){

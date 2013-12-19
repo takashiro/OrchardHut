@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 12 月 19 日 11:55
+-- 生成日期: 2013 年 12 月 19 日 13:27
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.3.13
 
@@ -193,6 +193,7 @@ CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `orderid` mediumint(8) unsigned NOT NULL,
   `productid` mediumint(8) unsigned NOT NULL,
+  `storageid` mediumint(8) unsigned DEFAULT NULL,
   `productname` varchar(50) NOT NULL,
   `subtype` varchar(50) NOT NULL,
   `amount` int(11) unsigned NOT NULL,

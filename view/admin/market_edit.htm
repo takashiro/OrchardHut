@@ -9,7 +9,7 @@ $(function(){
 	$('#price_list').editlist({
 		'edit' : '$mod_url&action=editprice&productid=$product[id]',
 		'delete' : '$mod_url&action=deleteprice&productid=$product[id]',
-		'attr' : ['', 'subtype', 'price', 'priceunit', 'amount', 'amountunit', 'storageid', 'displayorder'],
+		'attr' : ['id', 'subtype', 'price', 'priceunit', 'amount', 'amountunit', 'storageid', 'displayorder'],
 		'buttons' : {'delete':'删除'}
 	});
 
@@ -23,7 +23,7 @@ $(function(){
 	$('#storage_list').editlist({
 		'edit' : '$mod_url&action=editstorage&productid=$product[id]',
 		'delete' : '$mod_url&action=deletestorage&productid=$product[id]',
-		'attr' : ['', 'remark', 'num', 'addnum'],
+		'attr' : ['id', 'remark', 'num', 'addnum'],
 		'buttons' : {'delete':'删除'}
 	});
 

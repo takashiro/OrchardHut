@@ -16,7 +16,8 @@ case 'delete':
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	if($orderid > 0){
-		$db->query("DELETE FROM {$tpre}order WHERE id=$orderid AND userid=$_USER[id] AND status=0");
+		Order::Delete($orderid, "userid=$_USER[id] AND status=0");
+
 		if($db->affected_rows() > 0){
 			showmsg('successfully_canceled_order', 'home.php');
 		}

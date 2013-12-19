@@ -87,6 +87,7 @@ class Order extends DBObject{
 
 		$this->detail[] = array(
 			'productid' => $d['productid'],
+			'storageid' => $d['storageid'],
 			'productname' => $d['productname'],
 			'subtype' => $d['subtype'],
 			'amount' => $d['amount'],
@@ -141,6 +142,26 @@ class Order extends DBObject{
 		$db->INSERTS($this->address_components);
 
 		return true;
+	}
+
+	static public function Delete($orderid, $extra = ''){
+		$result = parent::Delete($orderid, $extra);
+		if($result){
+			global $db, $tpre;
+			
+			$db->select_table('orderdetail');
+			$details = $db->MFETCH('storageid,amount,number', 'orderid='.$orderid.' AND storageid IS NOT NULL');
+			foreach($details as $d){
+				$num = $d['amount'] * $d['number'];
+				$db->query("UPDATE {$tpre}productstorage SET num=num+$num WHERE id=$d[storageid]");
+			}
+			$db->DELETE('orderid='.$orderid);
+
+			$db->select_table('orderaddresscomponent');
+			$db->DELETE('orderid='.$orderid);
+		}
+
+		return $result;
 	}
 }
 
