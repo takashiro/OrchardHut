@@ -13,6 +13,7 @@ switch($action){
 	case 'order':
 		$cart = $priceids = array();
 		$total_price = array();
+		$item_deleted = false;
 
 		if(!empty($_COOKIE['in_cart'])){
 			$in_cart = explode(',', $_COOKIE['in_cart']);
@@ -30,8 +31,10 @@ switch($action){
 				FROM {$tpre}productprice r
 					LEFT JOIN {$tpre}product p ON p.id=r.productid
 					LEFT JOIN {$tpre}productcountdown c ON c.id=r.id
+					LEFT JOIN {$tpre}productstorage s ON s.id=r.storageid
 				WHERE r.id IN ($priceids)
 					AND p.hide=0
+					AND (r.storageid IS NULL OR s.num>=r.amount)
 					AND (c.id IS NULL OR (c.start_time<=$timestamp AND c.end_time>=$timestamp))
 					AND r.id NOT IN (SELECT masked_priceid
 									FROM {$tpre}productcountdown c
@@ -45,6 +48,15 @@ switch($action){
 				$filtered_cart[$p['priceid']] = $cart[$p['priceid']];
 				$in_cart[] = $p['priceid'].'='.$cart[$p['priceid']];
 			}
+
+			//Check if some items are deleted
+			foreach($cart as $priceid => $number){
+				if(!isset($filtered_cart[$priceid]) || $filtered_cart[$priceid] != $number){
+					$item_deleted = true;
+					break;
+				}
+			}
+
 			$cart = &$filtered_cart;
 			$in_cart = implode(',', $in_cart);
 			rsetcookie('in_cart', $in_cart);
@@ -53,7 +65,11 @@ switch($action){
 		}
 
 		if(!$products){
-			showmsg('shopping_cart_empty', 'market.php');
+			if($item_deleted){
+				showmsg('shopping_cart_empty_because_of_item_deleted', 'market.php');
+			}else{
+				showmsg('shopping_cart_empty', 'market.php');
+			}
 		}
 
 		if($_POST){
@@ -166,15 +182,15 @@ switch($action){
 				$db->INSERTS($delivery_address_components);
 			}
 
+			$order_succeeded = false;
 			foreach($total_price as $unit => $total){
 				$order->clearDetail();
 
-				$order->totalprice = $total;
 				$order->priceunit = $unit;
 
 				foreach($products as &$p){
 					if($p['priceunit'] == $unit){
-						$order->addDetail(array(
+						$succeeded = $order->addDetail(array(
 							'productid' => $p['productid'],
 							'productname' => $p['name'],
 							'subtype' => $p['subtype'],
@@ -182,7 +198,11 @@ switch($action){
 							'amountunit' => $p['amountunit'],
 							'number' => $p['number'],
 							'subtotal' => $p['subtotal'],
+							'storageid' => $p['storageid'],
+							'price' => $p['price'],
 						));
+
+						$succeeded || $item_deleted = true;
 
 						$totalamount = $p['amount'] * $p['number'];
 						$db->query("UPDATE LOW_PRIORITY {$tpre}product SET soldout=soldout+$totalamount WHERE id=$p[productid]");
@@ -190,12 +210,21 @@ switch($action){
 				}
 				unset($p);
 
-				$order->insert();
+				$succeeded = $order->insert();
+				$succeeded && $order_succeeded = true;
 			}
 
 			rsetcookie('in_cart', '');
-			showmsg('successfully_submitted_order', 'market.php');
 
+			if($order_succeeded){
+				if(!$item_deleted){
+					showmsg('successfully_submitted_order', 'home.php');
+				}else{
+					showmsg('successfully_submitted_order_with_item_deleted', 'home.php');
+				}
+			}else{
+				showmsg('failed_to_submit_order', 'market.php');
+			}
 		}
 
 		$product = new Product;

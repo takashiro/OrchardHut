@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 12 月 19 日 07:19
+-- 生成日期: 2013 年 12 月 19 日 11:55
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.3.13
 
@@ -257,6 +257,23 @@ CREATE TABLE IF NOT EXISTS `hut_productprice` (
   `amount` int(11) unsigned NOT NULL,
   `amountunit` mediumint(8) unsigned NOT NULL,
   `displayorder` tinyint(4) NOT NULL,
+  `storageid` mediumint(8) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `productid` (`productid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `hut_productstorage`
+--
+
+DROP TABLE IF EXISTS `hut_productstorage`;
+CREATE TABLE IF NOT EXISTS `hut_productstorage` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `productid` mediumint(8) unsigned NOT NULL,
+  `remark` varchar(15) NOT NULL,
+  `num` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

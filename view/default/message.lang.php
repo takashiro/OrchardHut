@@ -26,10 +26,13 @@ return array(
 	'binding_require_user_logged_in' => '请先登录，然后再进行绑定操作。',
 
 	'shopping_cart_empty' => '您还没有选购哦，请先把商品放入购物车。',
+	'shopping_cart_empty_because_of_item_deleted' => '您选购的商品被别人先下手了QAQ，现在购物车已经空了，重新选购吧QAQ',
 	'please_fill_in_addressee' => '请填写收件人姓名。',
 	'invalid_delivery_address_with_inadquate_components' => '请将收件地址填写完整。',
 	'delivery_address_id_not_exist' => '非法操作。该收货地址不存在。',
 	'successfully_submitted_order' => '成功提交订单！',
+	'successfully_submitted_order_with_item_deleted' => '成功提交订单！但是由于库存量紧缺，您的部分商品被人先下手啦！',
+	'failed_to_submit_order' => '由于库存紧缺，刚刚有人先下手为强，您的订单提交失败了QAQ。',
 	'confirm_to_cancel_order' => '您确定取消该订单吗？',
 	'successfully_canceled_order' => '成功取消该订单！',
 	'order_not_exist' => '该订单不存在！',

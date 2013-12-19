@@ -5,13 +5,38 @@ $(function(){
 		var numberbox = input.parent();
 		var li = numberbox.parent();
 
-		var data = {
-			'product_id' : li.attr('product-id'),
-			'price_id' : li.attr('price-id'),
-			'number' : parseInt(input.val(), 10)
-		};
+		var product_id = li.attr('product-id');
+		var price_id = li.attr('price-id');
+		var storage_id = li.attr('storage-id');
+		var number = parseInt(input.val(), 10);
 
-		cart_set(data.price_id, data.number);
+		if(typeof ProductStorage[storage_id] != 'undefined'){
+			var total = ProductStorage[storage_id];
+			var cart = cart_read();
+			$('.product_list .rule li').each(function(){
+				if($(this).attr('storage-id') == storage_id){
+					var ordered = parseInt($(this).find('.order_input input').val(), 10);
+					if(!isNaN(ordered)){
+						var amount = parseInt($(this).children('.amount').text(), 10);
+						total -= ordered * amount;
+					}
+				}
+			});
+
+			if(total < 0){
+				var amount = parseInt(li.children('.amount').text(), 10);
+				number -= -total / amount;
+				number = Math.floor(number);
+				if(number > 0){
+					input.val(number);
+				}else{
+					input.val('');
+					number = 0;
+				}
+			}
+		}
+
+		cart_set(price_id, number);
 	});
 
 	$('.product_list .rule').each(function(){

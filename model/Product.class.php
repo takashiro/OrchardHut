@@ -83,7 +83,8 @@ class Product extends DBObject{
 		$query = $db->query("SELECT c.*,p.*,c.id AS is_countdown
 			FROM {$tpre}productprice p
 				LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
-			WHERE p.productid=$productid AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
+				LEFT JOIN {$tpre}productstorage s ON s.id=p.storageid AND s.productid=p.productid
+			WHERE p.productid=$productid AND (p.storageid IS NULL OR s.num>=p.amount) AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
 			ORDER BY p.displayorder");
 		while($p = $db->fetch_array($query)){
 			$prices[$p['id']] = $p;
@@ -127,51 +128,49 @@ class Product extends DBObject{
 	public function editPrice($price){
 		@$id = intval($price['id']);
 
+		$update = array();
+
+		if(isset($price['subtype'])){
+			$update['subtype'] = $price['subtype'];
+		}
+
+		if(isset($price['price'])){
+			$update['price'] = floatval($price['price']);
+		}
+
+		if(isset($price['priceunit'])){
+			$update['priceunit'] = intval($price['priceunit']);
+		}
+
+		if(isset($price['amount'])){
+			$update['amount'] = floatval($price['amount']);
+		}
+
+		if(isset($price['amountunit'])){
+			$update['amountunit'] = intval($price['amountunit']);
+		}
+
+		if(isset($price['storageid'])){
+			$update['storageid'] = intval($price['storageid']);
+			$update['storageid'] <= 0 && $update['storageid'] = NULL;
+		}
+
+		if(isset($price['displayorder'])){
+			$update['displayorder'] = intval($price['displayorder']);
+		}
+
 		global $db;
 		$db->select_table('productprice');
 		if($id > 0){
-			$update = array();
-
-			if(isset($price['subtype'])){
-				$update['subtype'] = $price['subtype'];
-			}
-
-			if(isset($price['price'])){
-				$update['price'] = floatval($price['price']);
-			}
-
-			if(isset($price['priceunit'])){
-				$update['priceunit'] = intval($price['priceunit']);
-			}
-
-			if(isset($price['amount'])){
-				$update['amount'] = floatval($price['amount']);
-			}
-
-			if(isset($price['amountunit'])){
-				$update['amountunit'] = intval($price['amountunit']);
-			}
-
-			if(isset($price['displayorder'])){
-				$update['displayorder'] = intval($price['displayorder']);
-			}
-
 			$db->UPDATE($update, array('id' => $id, 'productid' => $this->id));
-			return $update;
 		}else{
-			@$price = array(
-				'productid' => $this->id,
-				'subtype' => $price['subtype'],
-				'price' => floatval($price['price']),
-				'priceunit' => intval($price['priceunit']),
-				'amount' => floatval($price['amount']),
-				'amountunit' => intval($price['amountunit']),
-				'displayorder' => intval($price['displayorder']),
-			);
-			$db->INSERT($price);
-			$price['id'] = $db->insert_id();
-			return $price;
+			$update['productid'] = $this->id;
+
+			$db->INSERT($update);
+			$update['id'] = $db->insert_id();
 		}
+
+		return $update;
 	}
 
 	public function deletePrice($id){
@@ -257,6 +256,103 @@ class Product extends DBObject{
 		return $db->affected_rows();
 	}
 
+	static public function AllStorages($simple = true){
+		global $db;
+		$db->select_table('productstorage');
+
+		if(!$simple){
+			return $db->MFETCH('*');
+		}
+
+		$storages = array();
+		foreach($db->MFETCH('id,num') as $s){
+			$storages[$s['id']] = intval($s['num']);
+		}
+		return $storages;
+	}
+
+	public function getStorages(){
+		if($this->id <= 0){
+			return array();
+		}
+
+		global $db;
+		$db->select_table('productstorage');
+		return $db->MFETCH('*', 'productid='.$this->id);
+	}
+
+	public function editStorage($storage){
+		if($this->id <= 0){
+			return false;
+		}
+
+		@$id = intval($storage['id']);
+
+		$attr = array();
+		if(isset($storage['remark'])){
+			$attr['remark'] = trim($storage['remark']);
+		}
+
+		global $db, $tpre;
+		$db->select_table('productstorage');
+
+		if($id > 0){
+			$productid = $this->id;
+			$db->UPDATE($attr, array('id' => $id, 'productid' => $productid));
+			
+			if(isset($storage['addnum'])){
+				$attr['addnum'] = '';
+				$num = $this->updateStorage($id, $storage['addnum']);
+				if($num !== false){
+					$attr['num'] = $num;
+				}
+			}
+		}else{
+			$attr['productid'] = $this->id;
+
+			if(isset($storage['addnum'])){
+				$attr['num'] = intval($storage['addnum']);
+			}
+
+			$db->INSERT($attr);
+			$attr['id'] = $db->insert_id();
+		}
+
+		return $attr;
+	}
+
+	public function updateStorage($id, $num){
+		global $db, $tpre;
+
+		$productid = $this->id;
+		$addnum = intval($num);
+		$is_minus = $addnum < 0;
+		if($is_minus){
+			$addnum = -$addnum;
+			$db->query("UPDATE {$tpre}productstorage SET num=num-{$addnum} WHERE id=$id AND productid=$productid AND num>=$addnum");
+		}else{
+			$db->query("UPDATE {$tpre}productstorage SET num=num+{$addnum} WHERE id=$id AND productid=$productid");
+		}
+
+		if($db->affected_rows()){
+			return $db->result_first("SELECT num FROM {$tpre}productstorage WHERE id=$id AND productid=$productid");
+		}
+
+		return false;
+	}
+
+	public function deleteStorage($id){
+		$id = intval($id);
+		global $db;
+		$db->select_table('productstorage');
+		$db->DELETE(array('id' => $id));
+		$result = $db->affected_rows();
+		if($result > 0){
+			$db->select_table('productprice');
+			$db->UPDATE(array('storageid' => NULL), array('productid' => $this->id, 'storageid' => $id));
+		}
+	}
+
 	public function toArray(){
 		if($this->id > 0){
 			$attr = parent::toArray();
@@ -277,6 +373,21 @@ class Product extends DBObject{
 				'prices' => array(),
 			);
 		}
+	}
+
+	static public function Delete($id){
+		parent::Delete($id);
+
+		global $db;
+		$id = intval($id);
+		$condition = 'productid='.$id;
+
+		$db->select_table('productprice');
+		$db->DELETE($condition);
+		$db->select_table('productcountdown');
+		$db->DELETE($condition);
+		$db->select_table('productstorage');
+		$db->DELETE($condition);
 	}
 
 	static private $Types = array('单卖', '套餐');

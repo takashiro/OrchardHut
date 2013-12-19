@@ -74,11 +74,33 @@ class Order extends DBObject{
 	}
 
 	public function addDetail($d){
-		$this->detail[] = $d;
+		if($d['storageid']){
+			global $db, $tpre;
+			$number = $d['amount'] * $d['number'];
+			$db->query("UPDATE {$tpre}productstorage SET num=num-$number WHERE id=$d[storageid] AND num>=$number");
+			if($db->affected_rows() <= 0){
+				return false;
+			}
+		}
+		
+		$this->totalprice += $d['number'] * $d['price'];
+
+		$this->detail[] = array(
+			'productid' => $d['productid'],
+			'productname' => $d['productname'],
+			'subtype' => $d['subtype'],
+			'amount' => $d['amount'],
+			'amountunit' => $d['amountunit'],
+			'number' => $d['number'],
+			'subtotal' => $d['subtotal'],
+		);
+
+		return true;
 	}
 
 	public function clearDetail(){
 		$this->detail = array();
+		$this->totalprice = 0;
 	}
 
 	public function addAddressComponent($c){
@@ -90,6 +112,10 @@ class Order extends DBObject{
 	}
 
 	public function insert(){
+		if(empty($this->detail)){
+			return false;
+		}
+
 		$this->dateline = TIMESTAMP;
 
 		parent::insert();
@@ -102,6 +128,7 @@ class Order extends DBObject{
 			}
 		}
 		unset($d);
+
 		$db->select_table('orderdetail');
 		$db->INSERTS($this->detail);
 
@@ -109,8 +136,11 @@ class Order extends DBObject{
 			$c['orderid'] = $this->id;
 		}
 		unset($c);
+		
 		$db->select_table('orderaddresscomponent');
 		$db->INSERTS($this->address_components);
+
+		return true;
 	}
 }
 
