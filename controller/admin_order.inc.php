@@ -107,7 +107,9 @@ switch($action){
 		$offset = ($page - 1) * $limit;
 		$pagenum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order o WHERE $condition");
 		if(!$stat['statonly']){
-			$orders = $db->fetch_all("SELECT * FROM {$tpre}order o WHERE $condition LIMIT $offset,$limit");
+			$orders = $db->fetch_all("SELECT *,(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND dateline<o.dateline) AS ordernum
+				FROM {$tpre}order o
+				WHERE $condition ORDER BY o.dateline LIMIT $offset,$limit");
 		}else{
 			$orders = array();
 		}
@@ -295,6 +297,7 @@ switch($action){
 				exit('access denied');
 			}
 
+			$ordernum = $order->getUserOrderNum();
 			$order = $order->toReadable();
 			if(!empty($_CONFIG['ticket_tips'])){
 				$tips = explode("\n", $_CONFIG['ticket_tips']);
@@ -306,6 +309,7 @@ switch($action){
 			}else{
 				$tips = '';
 			}
+
 			include view('order_print');
 		}
 	break;

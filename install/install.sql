@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 12 月 17 日 06:44
+-- 生成日期: 2013 年 12 月 19 日 07:19
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.3.13
 
@@ -164,7 +164,8 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `mobile` varchar(11) NOT NULL,
   `message` text NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  KEY `dateline` (`dateline`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

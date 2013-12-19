@@ -49,6 +49,13 @@ class Order extends DBObject{
 		return $attr;
 	}
 
+	public function getUserOrderNum(){
+		global $db, $tpre;
+		$userid = $this->userid;
+		$dateline = $this->dateline;
+		return $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid=$userid AND dateline<$dateline");
+	}
+
 	public function belongToAddress($componentids){
 		if(!$componentids){
 			return true;
