@@ -35,6 +35,8 @@ $(function(){
 					var div = $('<div></div>');
 					div.append(button);
 					td.append(div);
+
+					td.parent().find('a.delete').remove();
 				}
 			}else if(a.hasClass('mark_received')){
 				td.html('已签收');
