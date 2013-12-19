@@ -89,6 +89,19 @@
 						td.html(value);
 					}
 
+					var tds = tr.children('td');
+					for(var i = 0; i < options.attr.length; i++){
+						var attr = options.attr[i];
+						if(typeof data[attr] != 'undefined'){
+							if(input.is('select')){
+								tds.eq(i).attr('realvalue', data[attr]);
+								tds.eq(i).html(input.children(':selected').html());
+							}else{
+								tds.eq(i).html(data[attr]);
+							}
+						}
+					}
+
 				}, 'json');
 			});
 		}
