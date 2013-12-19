@@ -233,12 +233,8 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if(!$order->belongToAddress($_G['admin']->getLimitations())){
-			exit('permission denied');
-		}
-
-		if($order->status == Order::Unsorted || $_G['admin']->isSuperAdmin()){
-			$order->status = Order::Delivering;
+		if($_G['admin']->isSuperAdmin()){
+			$order->status = Order::Unsorted;
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
