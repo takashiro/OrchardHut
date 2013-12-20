@@ -199,12 +199,21 @@ switch($action){
 
 		foreach($address_format as $format){
 			if($is_restricted){
+				$count = 0;
 				foreach($address_components as $i => $c){
-					if($c['formatid'] == $format['id'] && !in_array($c['id'], $reserved)){
-						unset($address_components[$i]);
+					if($c['formatid'] == $format['id']){
+						if(!in_array($c['id'], $reserved)){
+							unset($address_components[$i]);
+						}else{
+							$count++;
+						}
 					}
 				}
 			}else{
+				$count = 2;
+			}
+
+			if($count > 1){
 				array_unshift($address_components, array('id' => 0, 'formatid' => $format['id'], 'name' => '不限', 'parentid' => 0));
 			}
 		}
