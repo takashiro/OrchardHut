@@ -47,7 +47,7 @@ function showmsg($message, $url_forward = ''){
 				$url_forward = 'javascript:history.back()';
 			break;
 			case 'refresh':
-				$url_forward = $_SERVER['HTTP_REFERER'];
+				$url_forward = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 			break;
 			case 'login':
 				$url_forward = 'login.php';
