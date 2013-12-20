@@ -1,21 +1,21 @@
 $(function(){
 	$('#price_list').editlist({
-		'edit' : '$mod_url&action=editprice&productid=$product[id]',
-		'delete' : '$mod_url&action=deleteprice&productid=$product[id]',
+		'edit' : mod_url + '&action=editprice&productid=' + product_id,
+		'delete' : mod_url + '&action=deleteprice&productid=' + product_id,
 		'attr' : ['id', 'subtype', 'price', 'priceunit', 'amount', 'amountunit', 'storageid', 'displayorder'],
 		'buttons' : {'delete':'删除'}
 	});
 
 	$('#countdown_list').editlist({
-		'edit' : '$mod_url&action=editcountdown&productid=$product[id]',
-		'delete' : '$mod_url&action=deletecountdown&productid=$product[id]',
+		'edit' : mod_url + '&action=editcountdown&productid=' + product_id,
+		'delete' : mod_url + '&action=deletecountdown&productid=' + product_id,
 		'attr' : ['masked_priceid', 'subtype', 'price', 'priceunit', 'amount', 'amountunit', 'start_time', 'end_time', 'storageid', 'displayorder'],
 		'buttons' : {'delete':'删除'}
 	});
 
 	$('#storage_list').editlist({
-		'edit' : '$mod_url&action=editstorage&productid=$product[id]',
-		'delete' : '$mod_url&action=deletestorage&productid=$product[id]',
+		'edit' : mod_url + '&action=editstorage&productid=' + product_id,
+		'delete' : mod_url + '&action=deletestorage&productid=' + product_id,
 		'attr' : ['id', 'remark', 'num', 'addnum'],
 		'buttons' : {'delete':'删除'}
 	});
