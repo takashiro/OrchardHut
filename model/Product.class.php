@@ -126,7 +126,7 @@ class Product extends DBObject{
 	}
 
 	public function editPrice($price){
-		@$id = intval($price['id']);
+		$id = isset($price['id']) ? intval($price['id']) : 0;
 
 		$update = array();
 
@@ -205,7 +205,7 @@ class Product extends DBObject{
 	}
 
 	public function editCountdown($countdown){
-		@$id = intval($countdown['id']);
+		$id = isset($countdown['id']) ? intval($countdown['id']) : 0;
 
 		$price = $this->editPrice($countdown);
 
@@ -375,8 +375,8 @@ class Product extends DBObject{
 		}
 	}
 
-	static public function Delete($id){
-		parent::Delete($id);
+	static public function Delete($id, $extra = ''){
+		parent::Delete($id, $extra);
 
 		global $db;
 		$id = intval($id);
