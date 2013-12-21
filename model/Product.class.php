@@ -103,6 +103,10 @@ class Product extends DBObject{
 	}
 
 	static public function FetchFilteredPrices(&$oproducts){
+		if(empty($oproducts)){
+			return;
+		}
+
 		global $db, $tpre;
 		$now = TIMESTAMP;
 
