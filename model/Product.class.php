@@ -286,7 +286,7 @@ class Product extends DBObject{
 			return false;
 		}
 
-		@$id = intval($storage['id']);
+		$id = isset($storage['id']) ? intval($storage['id']) : 0;
 
 		$attr = array();
 		if(isset($storage['remark'])){
