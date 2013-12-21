@@ -366,6 +366,10 @@ footer ul.button_list #cart-goods-number{
 	margin-left:-10px;
 }
 
+.debug{
+	display:none;
+}
+
 .post_buttons{
 	text-align:center;
 }

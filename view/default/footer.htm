@@ -1,3 +1,9 @@
+		<div class="debug">
+			<div class="copyright">Powered By Kazuichi Takashiro ©2013</div>
+			<div class="runtime">
+				GMT {TIMEZONE}, {echo rdate(TIMESTAMP, 'Y-m-d H:i:s')}, Processed in {echo microtime(true) - $_G['starttime']} millsecond(s), {echo $db->querynum} Quer<!--{if $db->querynum > 1}-->ies<!--{else}-->y<!--{/if}-->
+			</div>
+		</div>
 	</section>
 	<footer>
 		<ul class="button_list">

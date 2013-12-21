@@ -61,3 +61,19 @@
 .popup_message .content{
 	max-height:420px;
 }
+
+.debug{
+	display:block;
+	color:white;
+	font-size:9pt;
+	margin-top:10px;
+	text-shadow:rgb(153, 153, 153) 0px 1px 1px;
+}
+
+.debug .runtime{
+	text-align:right;
+}
+
+.container{
+	padding-bottom:80px;
+}
