@@ -64,15 +64,15 @@
 					</ul>
 					<table>
 						<tr>
-							<td><label>地址：</label></td>
+							<th><label>地址：</label></th>
 							<td>{echo Template::tselect('deliveryaddress', Address::Format(), Address::Components())}</td>
 						</tr>
 						<tr>
-							<td><label>收货人：</label></td>
+							<th><label for="addressee">收货人：</label></th>
 							<td><input type="text" name="addressee" placeholder="收货人姓名" /></td>
 							</p>
 						<tr>
-							<td><label>联系电话：</label></td>
+							<th><label for="mobile">联系电话：</label></th>
 							<td><input type="text" name="mobile" placeholder="收货人联系电话" /></td>
 						</tr>
 					</table>

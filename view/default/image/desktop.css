@@ -55,5 +55,9 @@
 
 .popup_message{
 	width:500px;
-	height:350px;
+	min-height:350px;
+}
+
+.popup_message .content{
+	max-height:420px;
 }

@@ -110,7 +110,10 @@ $(function(){
 		var name = detail.children('.name');
 
 		var title = name.html();
-		var message = photo.html() + '<div>' + introduction.html() + '</div>';
+		var message = $('<div></div>');
+		message.append(photo.clone());
+		message.append(introduction.clone());
+		message = message.html();
 		popup_message(title, message);
 	});
 });

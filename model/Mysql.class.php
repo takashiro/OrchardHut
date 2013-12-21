@@ -221,8 +221,19 @@ class Mysql {
 	function INSERT($node, $replace = false, $extra = ''){
 		$action = $replace ? 'REPLACE' : 'INSERT';
 		$fields = implode('`,`',array_keys($node));
-		$values = implode('\',\'', $node);
-		return $this->query("$action $extra INTO `{$this->tpre}{$this->tablename}` (`$fields`) VALUES ('$values')");
+		
+		$values = array_values($node);
+		foreach($values as &$value){
+			if($value !== NULL){
+				$value = '\''.$value.'\'';
+			}else{
+				$value = 'NULL';
+			}
+		}
+		unset($value);
+		$values = implode(',', $values);
+
+		return $this->query("$action $extra INTO `{$this->tpre}{$this->tablename}` (`$fields`) VALUES ($values)");
 	}
 	
 	function INSERTS($nodes, $replace = false, $extra = ''){

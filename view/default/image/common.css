@@ -1,7 +1,6 @@
 
 body{
 	background:url(body_bg.png);
-	user-select:none;
 	padding:0;
 	margin:0;
 }
@@ -76,9 +75,10 @@ ul.mselect{
 
 ul.mselect li{
 	cursor:pointer;
-	padding:0.5em 1em;
+	padding:5px 5px 5px 24px;
 	border-bottom:#DDDDDD 1px solid;
 	border-left:#F7F7F7 2px solid;
+	position:relative;
 }
 
 ul.mselect li:last-child{
@@ -88,6 +88,12 @@ ul.mselect li:last-child{
 ul.mselect li.checked{
 	border-left:#FE6565 2px solid;
 	color:#FD6565;
+}
+
+ul.mselect li input{
+	position:absolute;
+	left:0;
+	top:5px;
 }
 
 input:focus, select:focus{
@@ -550,9 +556,14 @@ footer ul.button_list #cart-goods-number{
 	width:98%;
 }
 
-.deliveryaddress label{
-	width:120px;
-	display:inline-block;
+.deliveryaddress table{
+	width:100%;
+}
+
+.deliveryaddress table th{
+	width:20%;
+	min-width:5em;
+	font-weight:normal;
 	text-align:right;
 }
 
@@ -600,7 +611,6 @@ footer ul.button_list #cart-goods-number{
 	box-shadow:rgb(116, 116, 116) 0px 0px 8px 0px;
 	padding:8px 10px;
 	margin:50px auto;
-	min-height:200px;
 }
 
 .popup_message header{
@@ -621,6 +631,15 @@ footer ul.button_list #cart-goods-number{
 	position:absolute;
 	right:0;
 	top:0;
+}
+
+.popup_message .content{
+	max-height:380px;
+	overflow-y:auto;
+}
+
+.popup_message .content .photo{
+	text-align:center;
 }
 
 .mpage a{
@@ -665,6 +684,7 @@ footer ul.button_list #cart-goods-number{
 
 a.remove{
 	position:absolute;
+	top:5px;
 	right:10px;
 	font-family:Arial;
 	padding:2px 8px;

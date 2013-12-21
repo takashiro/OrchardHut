@@ -14,6 +14,7 @@ foreach($products as &$p){
 	}
 	$p = $product->toArray();
 	$p['rule'] = $product->getFilteredPrices();
+	$p['introduction'] = str_replace(array("\r\n", "\n", "\r"), '<br />', $p['introduction']);
 }
 unset($p);
 
