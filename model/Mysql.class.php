@@ -22,7 +22,6 @@ class Mysql {
 		if(!$this->link = @$func($host, $user, $pw, 1)) {
 			$halt && $this->halt('Can not connect to MySQL server');
 		} else {
-			//数据库版本差异?????
 			if($this->version() > '4.1'){
 				$charset = $GLOBALS['_G']['config']['charset'];
 				$dbcharset = str_replace('-', '', $charset);
@@ -55,42 +54,36 @@ class Mysql {
 		return $this->fetch_array($this->query($sql));
 	}
 	
-	function fetch_all($sql, $filter = ''){
-		$filter = ($filter && function_exists($filter)) ? $filter : '';
+	function fetch_all($sql){
 		$query = $this->query($sql);
 		$result = array();
-		if($filter){
-			while($t = $this->fetch_array($query)){
-				$result[] = $filter($t);
-			}
-		}else{
-			while($t = $this->fetch_array($query)){
-				$result[] = $t;
-			}
+		while($t = $this->fetch_array($query)){
+			$result[] = $t;
 		}
 		return $result;
 	}
 
-	function result_first($sql) {
+	function result_first($sql){
 		$query = $this->query($sql);
 		$row = $this->fetch_row($query);
 		return $row[0];
 	}
 
-	function query($sql, $type = '') {	
+	function query($sql, $type = ''){
 		$func = $type == 'UNBUFFERED' && @function_exists('mysql_unbuffered_query') ? 'mysql_unbuffered_query' : 'mysql_query';
-		if(!($query = $func($sql, $this->link))) {
+		if(!($query = $func($sql, $this->link))){
 			if(in_array($this->errno(), array(2006, 2013)) && substr($type, 0, 5) != 'RETRY') {
 				$this->close();
 
 				$this->connect($this->db['host'], $this->db['user'], $this->db['pw'], $this->db['name'], $this->db['pconnect'], true, $this->db['charset']);
 				$this->query($sql, 'RETRY'.$type);
-			} elseif($type != 'SILENT' && substr($type, 5) != 'SILENT') {
+			}elseif($type != 'SILENT' && substr($type, 5) != 'SILENT') {
 				trigger_error('SQL Error:'.$sql.'<br />'.$this->error(), E_USER_ERROR);
 			}
 		}
 
 		$this->querynum++;
+
 		return $query;
 	}
 
@@ -145,11 +138,11 @@ class Mysql {
 	}
 
 	function close() {
-		return mysql_close($this->link); //mysql_close() 函数关闭非持久的 MySQL 连接
+		return mysql_close($this->link);
 	}
 	
 	function halt($message) {
-		trigger_error($message, E_USER_ERROR);  //trigger_error() 函数创建用户定义的错误消息。
+		trigger_error($message, E_USER_ERROR);
 		exit;
 	}
 	
@@ -163,7 +156,7 @@ class Mysql {
 
 	function SELECT($fields, $condition = '1'){
 		if(is_array($condition)){
-			$condition = self::ToCondition($condition);  //??????
+			$condition = self::ToCondition($condition);
 		}
 
 		is_array($fields) && $fields = '`'.implode('`,`', $fields).'`';
