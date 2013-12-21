@@ -13,10 +13,11 @@ foreach($products as &$p){
 		$product->$attr = $value;
 	}
 	$p = $product->toArray();
-	$p['rule'] = $product->getFilteredPrices();
 	$p['introduction'] = str_replace(array("\r\n", "\n", "\r"), '<br />', $p['introduction']);
 }
 unset($p);
+
+Product::FetchFilteredPrices($products);
 
 $announcements = Announcement::GetActiveAnnouncements();
 

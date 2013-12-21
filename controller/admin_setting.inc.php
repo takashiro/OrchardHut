@@ -72,6 +72,8 @@ case 'product':
 			$unit['id'] = $db->insert_id();
 		}
 
+		writecache('productunits', NULL);
+
 		echo json_encode($unit);
 		exit;
 		break;
@@ -79,6 +81,8 @@ case 'product':
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 		if($id > 0){
 			$db->DELETE('id='.$id);
+			writecache('productunits', NULL);
+			
 			echo $db->affected_rows();
 		}else{
 			echo 0;

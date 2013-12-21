@@ -102,6 +102,45 @@ class Product extends DBObject{
 		return $prices;
 	}
 
+	static public function FetchFilteredPrices(&$oproducts){
+		global $db, $tpre;
+		$now = TIMESTAMP;
+
+		$products = array();
+		$productids = array();
+		foreach($oproducts as &$p){
+			$productids[] = $p['id'];
+
+			$p['rule'] = array();
+			$products[$p['id']] = &$p;
+		}
+		unset($p);
+		$productids = implode(',', $productids);
+
+		$prices = array();
+
+		$query = $db->query("SELECT c.*,p.*,c.id AS is_countdown
+			FROM {$tpre}productprice p
+				LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
+				LEFT JOIN {$tpre}productstorage s ON s.id=p.storageid AND s.productid=p.productid
+			WHERE p.productid IN ($productids) AND (p.storageid IS NULL OR s.num>=p.amount) AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
+			ORDER BY p.displayorder");
+		while($p = $db->fetch_array($query)){
+			$prices[$p['id']] = $p;
+		}
+
+		foreach($prices as &$p){
+			$p['priceunit'] = self::PriceUnits($p['priceunit']);
+			$p['amountunit'] = self::AmountUnits($p['amountunit']);
+			$p['price'] = floatval($p['price']);
+			$p['amount'] = floatval($p['amount']);
+			unset($prices[$p['masked_priceid']]);
+
+			$products[$p['productid']]['rule'][] = &$p;
+		}
+		unset($p);
+	}
+
 	public function getPrices($to_readable = false){
 		if($this->id > 0){
 			global $db, $tpre;
@@ -400,13 +439,20 @@ class Product extends DBObject{
 	}
 
 	static private function Units($type){
-		global $db;
-		$db->select_table('productunit');
-		$units = array();
-		foreach($db->MFETCH('id,name', 'type='.intval($type)) as $u){
-			$units[$u['id']] = $u['name'];
+		$units = readcache('productunits');
+
+		if($units === NULL){
+			global $db;
+			$db->select_table('productunit');
+			$units = array();
+			foreach($db->MFETCH('id,name,type') as $u){
+				$units[$u['type']][$u['id']] = $u['name'];
+			}
+
+			writecache('productunits', $units);
 		}
-		return $units;
+
+		return isset($units[$type]) ? $units[$type] : NULL;
 	}
 
 	static private $AmountUnits = null;
@@ -414,6 +460,7 @@ class Product extends DBObject{
 		if(self::$AmountUnits == null){
 			self::$AmountUnits = self::Units(2);
 		}
+
 		if($id == -1){
 			return self::$AmountUnits;
 		}elseif(!isset(self::$AmountUnits[$id])){
