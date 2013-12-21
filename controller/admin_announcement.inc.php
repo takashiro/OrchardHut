@@ -35,6 +35,8 @@ switch($action){
 					$announcement->displayorder = intval($_POST['displayorder']);
 				}
 
+				Announcement::RefreshCache();
+
 				if(empty($_REQUEST['ajax'])){
 					showmsg('succesfully_edited_announcement', 'refresh');
 				}else{
@@ -62,6 +64,8 @@ switch($action){
 				$announcement->displayorder = isset($_POST['displayorder']) ? intval($_POST['displayorder']) : 0;
 
 				$announcement->insert();
+
+				Announcement::RefreshCache();
 
 				echo json_encode($announcement->toReadable());
 			}
