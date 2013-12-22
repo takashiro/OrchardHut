@@ -22,16 +22,26 @@ class Announcement extends DBObject{
 		parent::insert();
 	}
 
+	static private $PotentialAnnouncements = NULL;
 	static private $ActiveAnnouncements = NULL;
 	static public function GetActiveAnnouncements(){
 		if(self::$ActiveAnnouncements === NULL){
-			self::$ActiveAnnouncements = readcache('announcements');
-			if(self::$ActiveAnnouncements === NULL){
-				global $db;
-				$db->select_table('announcement');
-				self::$ActiveAnnouncements = $db->MFETCH('*', 'time_start<='.TIMESTAMP.' AND time_end>='.TIMESTAMP.' ORDER BY displayorder,time_start DESC,time_end');
-				writecache('announcements', self::$ActiveAnnouncements);
+			if(self::$PotentialAnnouncements === NULL){
+				self::$PotentialAnnouncements = readcache('announcements');
+				if(self::$PotentialAnnouncements === NULL){
+					global $db;
+					$db->select_table('announcement');
+					self::$PotentialAnnouncements = $db->MFETCH('*', 'time_end>='.TIMESTAMP.' ORDER BY displayorder,time_start DESC,time_end');
+					writecache('announcements', self::$PotentialAnnouncements);
+				}
 			}
+			self::$ActiveAnnouncements = array();
+			foreach(self::$PotentialAnnouncements as &$a){
+				if($a['time_start'] <= TIMESTAMP){
+					self::$ActiveAnnouncements[] = &$a;
+				}
+			}
+			unset($a);
 		}
 
 		return self::$ActiveAnnouncements;
