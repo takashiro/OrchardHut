@@ -9,7 +9,7 @@ function lang($type, $from = NULL){
 	}else{
 		$style = 'default';
 		$file = './view/'.$style.'/'.$type.'.lang.php';
-		$lang = include $file;
+		$lang = file_exists($file) ? include $file : array();
 	}
 
 	if($style != 'default'){
