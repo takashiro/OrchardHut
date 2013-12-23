@@ -10,6 +10,24 @@ var order_status = {
 	received : '已签收',
 	rejected : '已拒收'
 };
+
+$(function(){
+	$('#delivery_address_list').on('click', 'li .add', function(e){
+		var button = $(e.target);
+		var li = button.parent();
+		var ul = li.parent();
+		ul.append(li.clone(true));
+
+		button.attr('class', 'remove');
+		button.text('[移除]');
+	});
+
+	$('#delivery_address_list').on('click', 'li .remove', function(e){
+		var button = $(e.target);
+		var li = button.parent();
+		li.remove();
+	});
+});
 </script>
 <script type="text/javascript" src="./js/admin_order_list.js"></script>
 
@@ -26,8 +44,8 @@ var order_status = {
 				<dd>{echo Template::checkbox('stat[statonly]', '仅统计', !empty($stat['statonly']))} {echo Template::checkbox('stat[item]', '物品', !empty($stat['item']))} {echo Template::checkbox('stat[totalprice]', '总价格', !empty($stat['totalprice']))}</dd>
 			</dl>
 			<dl>
-				<dt>订单送货地址：</dt>
-				<dd>{echo Template::tselect('delivery_address', $address_format, $address_components, false, $componentid)}</dd>
+				<dt>送货地址：</dt>
+				<dd>{echo Template::tselect('delivery_address[]', $address_format, $address_components, false, isset($order_address[0]) && empty($order_address[1]) ? $order_address[0] : 0)}</dd>
 				<dt>订单状态：</dt>
 				<dd>
 					<!--{loop $available_status $id $checked}-->
@@ -36,8 +54,9 @@ var order_status = {
 				</dd>
 			</dl>
 			<button type="submit">查找</button>
+			<a href="$mod_url&action=search" class="button">高级查找</a>
 		</form>
-		
+
 		<!--{if $_G['admin']->isSuperAdmin()}-->
 		<form class="quick_search" action="admin.php" method="get">
 			<input type="hidden" name="mod" value="order" />
@@ -63,7 +82,7 @@ var order_status = {
 					<!--{/loop}-->
 						<td>地址</td>
 						<td>收件人</td>
-						<td>订单量</td>
+						<td>历史订单</td>
 						<td>物品</td>
 						<td>价格</td>
 						<td width="60">状态</td>
@@ -81,8 +100,8 @@ var order_status = {
 							<td>{echo $o['address'][$format['id']]}</td>
 						<!--{/loop}-->
 						<td>$o[extaddress]</td>
-						<td>$o[addressee]<br />$o[mobile]</td>
-						<td>$o[ordernum]</td>
+						<td><a href="$mod_url&action=list&time_start=&time_end=&addressee=$o[addressee]">$o[addressee]</a><br /><a href="$mod_url&action=list&time_start=&time_end=&mobile=$o[mobile]">$o[mobile]</a></td>
+						<td><a href="$mod_url&action=list&time_start=&time_end=&userid=$o[userid]">$o[ordernum]</a></td>
 						<td>$o[items]</td>
 						<td>$o[totalprice] $o[priceunit]</td>
 						<td>
@@ -137,7 +156,7 @@ var order_status = {
 </div>
 
 <!--{if empty($stat['statonly'])}-->
-{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&display_status='.implode(',', $display_status).'&delivery_address='.$delivery_address.'&time_start='.$time_start.'&time_end='.$time_end.'&'.http_build_query(array('stat' => $stat)))}
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&display_status='.implode(',', $display_status).'&'.http_build_query(array('delivery_address' => $delivery_address)).'&time_start='.$time_start.'&time_end='.$time_end.'&'.http_build_query(array('stat' => $stat)).'&mobile='.$mobile.'&addressee='.$addressee.'&administrator='.$administrator.'&userid='.$userid)}
 <!--{/if}-->
 
 {template footer}

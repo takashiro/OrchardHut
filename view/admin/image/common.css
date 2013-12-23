@@ -21,8 +21,7 @@ a{
 }
 
 a:hover{
-	color:#A90505;
-	font-weight:bold;
+	color:black;
 }
 
 ul{
@@ -50,6 +49,7 @@ button, a.button{
 	font-weight:bold;
 	cursor:pointer;
 	margin:0.1em 0.2em;
+	text-align:center;
 }
 
 form label{
@@ -311,10 +311,6 @@ input.number{
 	display:inline;
 	margin:0;
 	margin-right:0.5em;
-}
-
-.quick_search button{
-	display:inline-block;
 }
 
 ul.nav{
