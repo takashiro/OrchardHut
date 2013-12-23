@@ -192,26 +192,15 @@ function view($tpl){
 	return $tplpath;
 }
 
-function rdate($dateline, $format = 'Y-m-d H:i:s', $lang = 'en'){
-	$str = gmdate($format, $dateline + $GLOBALS['_CONFIG']['timezone'] * 3600);
-	
-	if($lang == 'ch' && strpos($format, 'A') !== false){
-		$str = str_replace(array('AM', 'PM'), array('上午', '下午'), $str);
-	}
-
-	return $str;
+function rdate($dateline, $format = 'Y-m-d H:i:s'){
+	return gmdate($format, $dateline + $GLOBALS['_CONFIG']['timezone'] * 3600);
 }
 
 function rmktime($hour, $minute, $second, $month, $day, $year){
-	return gmmktime($hour, $minute, $second, $month, $day, $year) - $GLOBALS['_CONFIG']['timezone'] * 3600;
+	return gmmktime($hour, $minute, $second, $month, $day, $year) - TIMEZONE * 3600;
 }
 
 function datetotimestamp($date){
-	$extra = 0;
-	if(strpos($date, '下午') !== false){
-		$extra += 12 * 3600;
-	}
-
 	$date = explode('-', $date);
 	if(count($date) != 3){
 		return 0;
@@ -221,7 +210,7 @@ function datetotimestamp($date){
 		$d = intval($d);
 	}
 	unset($d);
-	return rmktime(0, 0, 0, $date[1], $date[2], $date[0]) + $extra;
+	return rmktime(0, 0, 0, $date[1], $date[2], $date[0]);
 }
 
 function rstrtotime($datetime){

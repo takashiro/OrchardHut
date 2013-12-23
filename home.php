@@ -26,15 +26,19 @@ case 'delete':
 	showmsg('order_not_exist', 'back');
 	break;
 
-case 'mark_delivered':
+case 'mark_received':
 	if(empty($_GET['confirm'])){
 		showmsg('confirm_to_mark_order_as_received', 'confirm');
 	}
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	if($orderid > 0){
-		$db->query("UPDATE {$tpre}order SET status=2 WHERE id=$orderid AND userid=$_USER[id] AND status=1");
+		$db->query("UPDATE {$tpre}order SET status=".Order::Received." WHERE id=$orderid AND userid=$_USER[id] AND status=".Order::Delivering);
 		if($db->affected_rows() > 0){
+			$order = new Order;
+			$order->id = $orderid;
+			$order->addLog($_G['user'], Order::StatusChanged, Order::Received);
+
 			showmsg('successfully_received', 'home.php');
 		}
 	}
@@ -50,6 +54,7 @@ case 'view':
 		showmsg('order_not_exist', 'refresh');
 	}
 
+	$orderlog = $order->getLogs();
 	$order = $order->toReadable();
 
 	include view('home_orderdetail');

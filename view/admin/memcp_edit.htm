@@ -6,10 +6,6 @@
 	<form action="$mod_url&action=edit" method="post">
 	<table>
 		<tr>
-			<th><label>姓名：</label></th>
-			<td><input type="text" id="nickname" name="nickname" value="$_ADMIN[nickname]" /></td>
-		</tr>
-		<tr>
 			<th><label>账号：</label></th>
 			<td><input type="text" id="account" name="account" value="$_ADMIN[account]" readonly="readonly" /></td>
 		</tr>
@@ -27,6 +23,18 @@
 		<tr>
 			<th><label>再次确认新密码：</label></th>
 			<td><input type="password" id="password2" name="password2" /></td>
+		</tr>
+		<tr>
+			<th><label>姓名：</label></th>
+			<td><input type="text" id="realname" name="realname" value="$_ADMIN[realname]" /></td>
+		</tr>
+		<tr>
+			<th><label>手机：</label></th>
+			<td><input type="text" id="mobile" name="mobile" value="$_ADMIN[mobile]" /></td>
+		</tr>
+		<tr>
+			<th><label>昵称：</label></th>
+			<td><input type="text" id="nickname" name="nickname" value="$_ADMIN[nickname]" /></td>
 		</tr>
 	</table>
 

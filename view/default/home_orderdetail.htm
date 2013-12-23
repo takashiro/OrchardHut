@@ -16,7 +16,51 @@
 					<!--{/loop}-->
 			</dl></dd>
 			<dt>总计：</dt><dd>$order[totalprice] $order[priceunit]</dd>
+
+			<dt>订单状态：</dt><dd><ul>
+				<li>{$order[dateline]}，您在{$_CONFIG[sitename]}下单</li>
+			<!--{loop $orderlog $log}-->
+				<li>{echo rdate($log['dateline'])}，
+					<!--{if $log['operatorgroup'] == Order::SystemOperated}-->
+						系统
+					<!--{elseif $log['operatorgroup'] == Order::AdministratorOperated}-->
+						<!--{if $log['realname']}-->
+						$log[realname]<!--{if $log['mobile']}-->(手机:$log[mobile])<!--{/if}-->
+						<!--{else}-->
+							匿名管理员
+						<!--{/if}-->
+					<!--{else}-->
+						您
+					<!--{/if}-->
+					<!--{if $log['operation'] == Order::StatusChanged}-->
+						<!--{if $log['extra'] == Order::Unsorted}-->
+							重新分拣了订单
+						<!--{elseif $log['extra'] == Order::Sorted}-->
+							为您打包了订单
+						<!--{elseif $log['extra'] == Order::Delivering}-->
+							正在为您配送
+						<!--{elseif $log['extra'] == Order::Received}-->
+							<!--{if $log['operatorgroup'] == Order::UserOperated}-->
+							已签收订单
+							<!--{else}-->
+							已送达您手中
+							<!--{/if}-->
+						<!--{elseif $log['extra'] == Order::Rejected}-->
+							<!--{if $log['operatorgroup'] == Order::UserOperated}-->
+							已拒收订单
+							<!--{else}-->
+							已被您拒收订单
+							<!--{/if}-->
+						<!--{/if}-->
+					<!--{/if}-->
+				</li>
+			<!--{/loop}-->
+			</ul></dd>
 		<dl>
+
+		<ul>
+		
+		</ul>
 	</div>
 </div>
 

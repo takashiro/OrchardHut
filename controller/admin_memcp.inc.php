@@ -11,6 +11,14 @@ if($action == 'edit'){
 			$_G['admin']->nickname = $_POST['nickname'];
 		}
 
+		if(isset($_POST['realname'])){
+			$_G['admin']->realname = $_POST['realname'];
+		}
+
+		if(isset($_POST['mobile'])){
+			$_G['admin']->mobile = $_POST['mobile'];
+		}
+
 		if(!empty($_POST['password'])){
 			if(empty($_POST['password2']) || $_POST['password'] != $_POST['password2']){
 				showmsg('two_different_passwords', 'back');

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 12 月 19 日 13:27
+-- 生成日期: 2013 年 12 月 23 日 04:23
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.3.13
 
@@ -65,6 +65,8 @@ CREATE TABLE IF NOT EXISTS `hut_administrator` (
   `permission` int(11) NOT NULL,
   `limitation` text NOT NULL,
   `logintime` int(11) unsigned NOT NULL,
+  `realname` varchar(50) NOT NULL,
+  `mobile` varchar(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -200,6 +202,25 @@ CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
   `amountunit` varchar(30) NOT NULL,
   `number` int(11) unsigned NOT NULL,
   `subtotal` decimal(9,2) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `orderid` (`orderid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `hut_orderlog`
+--
+
+DROP TABLE IF EXISTS `hut_orderlog`;
+CREATE TABLE IF NOT EXISTS `hut_orderlog` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `orderid` mediumint(8) unsigned NOT NULL,
+  `operator` mediumint(8) unsigned DEFAULT NULL,
+  `operatorgroup` tinyint(4) unsigned NOT NULL,
+  `operation` smallint(5) unsigned NOT NULL,
+  `extra` varchar(255) DEFAULT NULL,
+  `dateline` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

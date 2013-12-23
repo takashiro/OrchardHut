@@ -3,11 +3,13 @@
 class Order extends DBObject{
 	const TABLE_NAME = 'order';
 
+	//States
 	public static $Status;
 	const Unsorted = 0;
-	const Delivering = 1;
-	const Received = 2;
-	const Rejected = 3;
+	const Sorted = 1;
+	const Delivering = 2;
+	const Received = 3;
+	const Rejected = 4;
 
 	private $detail = array();
 	private $address_components = array();
@@ -159,17 +161,67 @@ class Order extends DBObject{
 
 			$db->select_table('orderaddresscomponent');
 			$db->DELETE('orderid='.$orderid);
+
+			$db->select_table('orderlog');
+			$db->DELETE('orderid='.$orderid);
 		}
 
 		return $result;
+	}
+
+	//Operator Group
+	const SystemOperated = 0;
+	const AdministratorOperated = 1;
+	const UserOperated = 2;
+
+	//Operations
+	const StatusChanged = 1;
+	const DetailMarkedAsSoldOut = 2;
+	const PriceChanged = 3;
+
+	public function addLog(&$operator, $operation, $extra = NULL){
+		$log = array(
+			'orderid' => $this->id,
+			'operator' => $operator->id,
+			'operatorgroup' => self::SystemOperated,
+			'operation' => $operation,
+			'extra' => $extra,
+			'dateline' => TIMESTAMP,
+		);
+
+		if($log['extra'] !== NULL){
+			$log['extra'] = (string) $log['extra'];
+		}
+
+		if($operator instanceof Administrator){
+			$log['operatorgroup'] = self::AdministratorOperated;
+		}elseif($operator instanceof User){
+			$log['operatorgroup'] = self::UserOperated;
+		}
+
+		global $db;
+		$db->select_table('orderlog');
+		$db->INSERT($log, false, 'DELAYED');
+		return $db->insert_id();
+	}
+
+	public function getLogs(){
+		global $db, $tpre;
+
+		$operatorgroup = self::AdministratorOperated;
+		return $db->fetch_all("SELECT l.*,a.realname,a.mobile
+			FROM {$tpre}orderlog l
+				LEFT JOIN {$tpre}administrator a ON l.operatorgroup=$operatorgroup AND a.id=l.operator
+			WHERE l.orderid={$this->id}");
 	}
 }
 
 Order::$Status = array(
 	lang('common', 'order_unsorted'),
+	lang('common', 'order_sorted'),
 	lang('common', 'order_delivering'),
 	lang('common', 'order_received'),
-	lang('common', 'order_rejected')
+	lang('common', 'order_rejected'),
 );
 
 ?>

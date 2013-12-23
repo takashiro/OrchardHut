@@ -17,15 +17,29 @@ $(function(){
 		format : 'Y-m-d H:i',
 	});
 
-	$('#orderlist').on('click', '.mark_delivering, .mark_received, .mark_rejected', function(e){
+	$('#orderlist').on('click', '.mark_sorted, .mark_delivering, .mark_received, .mark_rejected', function(e){
 		var a = $(e.target);
 		var href = a.attr('href');
 		var td = a.parent().parent();
 		$.post(href + '&ajax=1', [], function(data){
-			if(a.hasClass('mark_delivering')){
-				td.html('配送中');
+			if(a.hasClass('mark_sorted')){
+				td.html(order_status['sorted']);
+
+				var button = $('<a></a>');
+				button.attr('class', 'mark_delivering');
+				button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
+				button.html('[' + order_status['delivering'] + ']');
 				
-				var data = {'mark_received':'[已签收]', 'mark_rejected':'[已拒收]'};
+				var div = $('<div></div>');
+				div.append(button);
+				td.append(div);
+
+				td.parent().find('a.delete').remove();
+
+			}else if(a.hasClass('mark_delivering')){
+				td.html(order_status['delivering']);
+				
+				var data = {'mark_received':'[' + order_status['received'] + ']', 'mark_rejected':'[' + order_status['rejected'] + ']'};
 				for(var action in data){
 					var button = $('<a></a>');
 					button.attr('class', action);
@@ -35,13 +49,11 @@ $(function(){
 					var div = $('<div></div>');
 					div.append(button);
 					td.append(div);
-
-					td.parent().find('a.delete').remove();
 				}
 			}else if(a.hasClass('mark_received')){
-				td.html('已签收');
+				td.html(order_status['received']);
 			}else if(a.hasClass('mark_rejected')){
-				td.html('已拒收');
+				td.html(order_status['rejected']);
 			}
 		});
 

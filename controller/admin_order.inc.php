@@ -2,7 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'mark_unsorted', 'mark_delivering', 'mark_received', 'mark_rejected', 'print', 'delete');
+$actions = array('list', 'mark_unsorted', 'mark_sorted', 'mark_delivering', 'mark_received', 'mark_rejected', 'print', 'delete');
 $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
 
 switch($action){
@@ -21,16 +21,16 @@ switch($action){
 		}
 
 		if(!$_G['admin']->hasPermission('order_sort')){
-			unset($display_status[0]);
+			unset($display_status[Order::Unsorted]);
 		}
 
 		if(!$_G['admin']->hasPermission('order_deliver')){
-			unset($display_status[1]);
+			unset($display_status[Order::Sorted], $display_status[Order::Delivering]);
 		}
 
 		if(!empty($_REQUEST['orderid'])){
 			$condition[] = 'id='.intval($_REQUEST['orderid']);
-			$display_status[2] = $display_status[3] = true;
+			$display_status[Order::Received] = $display_status[Order::Rejected] = true;
 
 			$time_start = '';
 			$time_end = '';
@@ -242,14 +242,15 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if($_G['admin']->isSuperAdmin()){
+		if($_G['admin']->isSuperAdmin() && $order->status != Order::Unsorted){
 			$order->status = Order::Unsorted;
+			$order->addLog($_G['admin'], Order::StatusChanged, Order::Unsorted);
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
-	case 'mark_delivering':
+	case 'mark_sorted':
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
@@ -258,7 +259,24 @@ switch($action){
 		}
 
 		if($order->status == Order::Unsorted || $_G['admin']->isSuperAdmin()){
+			$order->status = Order::Sorted;
+			$order->addLog($_G['admin'], Order::StatusChanged, Order::Sorted);
+		}
+
+		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
+	break;
+
+	case 'mark_delivering':
+		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
+		$order = new Order($_GET['orderid']);
+
+		if(!$order->belongToAddress($_G['admin']->getLimitations())){
+			exit('permission denied');
+		}
+
+		if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
 			$order->status = Order::Delivering;
+			$order->addLog($_G['admin'], Order::StatusChanged, Order::Delivering);
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
@@ -274,6 +292,7 @@ switch($action){
 
 		if($order->status == Order::Delivering || $_G['admin']->isSuperAdmin()){
 			$order->status = Order::Received;
+			$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
 		}
 		
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
@@ -289,6 +308,7 @@ switch($action){
 
 		if($order->status == Order::Delivering || $_G['admin']->isSuperAdmin()){
 			$order->status = Order::Rejected;
+			$order->addLog($_G['admin'], Order::StatusChanged, Order::Rejected);
 		}
 		
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
