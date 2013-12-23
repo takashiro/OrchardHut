@@ -33,6 +33,8 @@ $(function(){
 					input.val('');
 					number = 0;
 				}
+
+				alert(lang['storage_inadequate']);
 			}
 		}
 
