@@ -59,4 +59,12 @@ $(function(){
 
 		return false;
 	});
+
+	$('#multi_mark_sorted').click(function(){
+		$('a.mark_sorted').click();
+	});
+
+	$('#multi_mark_delivering').click(function(){
+		$('a.mark_delivering').click();
+	});
 });

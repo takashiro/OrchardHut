@@ -37,7 +37,7 @@ var order_status = {
 			</dl>
 			<button type="submit">查找</button>
 		</form>
-
+		
 		<!--{if $_G['admin']->isSuperAdmin()}-->
 		<form class="quick_search" action="admin.php" method="get">
 			<input type="hidden" name="mod" value="order" />
@@ -48,6 +48,8 @@ var order_status = {
 				<dd>{echo Template::select('action', array('mark_unsorted' => '待出库', 'mark_sorted' => '待配送', 'mark_delivering' => '配送中', 'mark_received' => '已签收', 'mark_rejected' => '已拒收'))}</dd>
 			</dl>
 			<button type="submit">修改</button>
+			<a class="button" id="multi_mark_sorted" href="###" title="批量点击本页所有[已打包]按钮">本页已打包</a>
+			<a class="button" id="multi_mark_delivering" href="###" title="批量点击本页所有[配送中]按钮">本页配送中</a>
 		</form>
 		<!--{/if}-->
 
