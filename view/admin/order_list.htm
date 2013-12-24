@@ -13,6 +13,16 @@ var lang = {
 	confirm_to_mark_detail_out_of_stock : '您确认要将该项标记为缺货吗？'
 };
 var mod_url = '$mod_url';
+var admin = {
+	hasPermission : function(perm){
+		{loop $_G['admin']->GetAllPermissionNames() $perm}
+		if(perm == '$perm'){
+			return {echo $_G['admin']->hasPermission($perm) ? 'true' : 'false'};
+		}
+		{/loop}
+		return false;
+	}
+}
 
 $(function(){
 	$('#delivery_address_list').on('click', 'li .add', function(e){

@@ -25,14 +25,16 @@ $(function(){
 			if(a.hasClass('mark_sorted')){
 				td.html(lang['order_sorted']);
 
-				var button = $('<a></a>');
-				button.attr('class', 'mark_delivering');
-				button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
-				button.html('[' + lang['order_delivering'] + ']');
-				
-				var div = $('<div></div>');
-				div.append(button);
-				td.append(div);
+				if(admin.hasPermission('order_deliver_w')){
+					var button = $('<a></a>');
+					button.attr('class', 'mark_delivering');
+					button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
+					button.html('[' + lang['order_delivering'] + ']');
+
+					var div = $('<div></div>');
+					div.append(button);
+					td.append(div);
+				}
 
 				var tr = td.parent();
 				tr.find('a.delete').remove();
@@ -41,16 +43,18 @@ $(function(){
 			}else if(a.hasClass('mark_delivering')){
 				td.html(lang['order_delivering']);
 				
-				var data = {'mark_received':'[' + lang['order_received'] + ']', 'mark_rejected':'[' + lang['order_rejected'] + ']'};
-				for(var action in data){
-					var button = $('<a></a>');
-					button.attr('class', action);
-					button.attr('href', href.replace('mark_delivering', action));
-					button.html(data[action]);
+				if(admin.hasPermission('order_deliver_w')){
+					var data = {'mark_received':'[' + lang['order_received'] + ']', 'mark_rejected':'[' + lang['order_rejected'] + ']'};
+					for(var action in data){
+						var button = $('<a></a>');
+						button.attr('class', action);
+						button.attr('href', href.replace('mark_delivering', action));
+						button.html(data[action]);
 
-					var div = $('<div></div>');
-					div.append(button);
-					td.append(div);
+						var div = $('<div></div>');
+						div.append(button);
+						td.append(div);
+					}
 				}
 			}else if(a.hasClass('mark_received')){
 				td.html(lang['order_received']);
