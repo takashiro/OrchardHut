@@ -2,7 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'mark_unsorted', 'mark_sorted', 'mark_delivering', 'mark_received', 'mark_rejected', 'print', 'delete', 'search');
+$actions = array('list', 'mark_unsorted', 'mark_sorted', 'mark_delivering', 'mark_received', 'mark_rejected', 'print', 'delete', 'search', 'detail_outofstock');
 $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
 
 switch($action){
@@ -191,29 +191,25 @@ switch($action){
 
 				$orderids = implode(',', $orderids);
 
-				$details = $db->fetch_all("SELECT d.productname,d.subtype,d.amount,d.amountunit,d.number,d.orderid
+				$order_details = array();
+				$query = $db->query("SELECT d.id,d.productname,d.subtype,d.amount,d.amountunit,d.number,d.orderid,d.state
 					FROM {$tpre}orderdetail d
 					WHERE d.orderid IN ($orderids)");
-
-				$order_details = array();
-				foreach($details as &$d){
-					$order_details[$d['orderid']][] = $d['productname'].(!empty($d['subtype']) ? '('.$d['subtype'].')' : '').' '.($d['amount'] * $d['number']).$d['amountunit'];
+				while($d = $db->fetch_array($query)){
+					$order_details[$d['orderid']][] = $d;
 				}
-				unset($d);
 
-				$addresses = $db->fetch_all("SELECT o.*,c.name componentname
+				$order_addresses = array();
+				$query = $db->query("SELECT o.*,c.name componentname
 					FROM {$tpre}orderaddresscomponent o
 						LEFT JOIN {$tpre}addresscomponent c ON c.id=o.componentid
 					WHERE o.orderid IN ($orderids)");
-
-				$order_addresses = array();
-				foreach($addresses as &$a){
+				while($a = $db->fetch_array($query)){
 					$order_addresses[$a['orderid']][$a['formatid']] = $a['componentname'];
 				}
-				unset($a);
 
 				foreach($orders as &$o){
-					$o['items'] = implode('<br />', $order_details[$o['id']]);
+					$o['details'] = &$order_details[$o['id']];
 					$o['priceunit'] = Product::PriceUnits($o['priceunit']);
 					$o['address'] = &$order_addresses[$o['id']];
 				}
@@ -396,6 +392,36 @@ switch($action){
 			Order::Delete($orderid);
 			redirect($_COOKIE['http_referer']);
 		}
+	break;
+
+	case 'detail_outofstock':
+		if(!$_G['admin']->hasPermission('order_sort_w')){
+			exit('access denied');
+		}
+
+		$detailid = isset($_GET['detailid']) ? intval($_GET['detailid']) : 0;
+		if($detailid <= 0){
+			exit('access denied');
+		}
+
+		$state = !empty($_REQUEST['state']) ? 1 : 0;
+		$order_unsorted = Order::Unsorted;
+		$db->query("UPDATE {$tpre}orderdetail d
+			SET d.state=$state
+			WHERE d.id=$detailid AND (SELECT o.status FROM {$tpre}order o WHERE o.id=d.orderid)=$order_unsorted");
+
+		$result = array();
+		if($db->affected_rows()){
+			$orderid = $db->result_first("SELECT orderid FROM {$tpre}orderdetail WHERE id=$detailid");
+			$db->query("UPDATE {$tpre}order o SET o.totalprice=(SELECT SUM(d.subtotal) FROM {$tpre}orderdetail d WHERE d.orderid=o.id AND d.state=0) WHERE o.id=$orderid");
+			$result['totalprice'] = $db->result_first("SELECT totalprice FROM {$tpre}order WHERE id=$orderid");
+
+			$order = new Order;
+			$order->id = $orderid;
+			$order->addLog($_G['admin'], $state ? Order::DetailOutOfStock : Order::DetailInStock, $detailid);
+		}
+
+		echo json_encode($result);
 	break;
 }
 

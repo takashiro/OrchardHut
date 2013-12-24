@@ -341,3 +341,15 @@ ul.nav li{
 	color:gray;
 	cursor:default;
 }
+
+ul.order_detail:not(.disabled) li{
+	cursor:pointer;
+}
+
+ul.order_detail:not(.disabled) li:hover{
+	color:black;
+}
+
+ul.order_detail li.outofstock{
+	text-decoration:line-through;
+}

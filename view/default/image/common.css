@@ -724,3 +724,7 @@ dl.form > dd{
 	margin-left:2em;
 	text-align:left;
 }
+
+.order_detail .outofstock{
+	text-decoration:line-through;
+}

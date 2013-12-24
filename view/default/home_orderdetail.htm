@@ -10,9 +10,10 @@
 			<dt>联系电话：</dt><dd>$order[mobile]</dd>
 			<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
 			<dt>用户留言：</dt><dd>$order[message]</dd>
-			<dt>物品：</dt><dd><dl>
+			<dt>物品：</dt><dd><dl class="order_detail">
 					<!--{loop $order['detail'] $d}-->
-					<dt>$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number']} $d[amountunit]</dt><dd>$d[subtotal] $order[priceunit]</dd>
+					<dt><!--{if $d['state'] == 1}-->[缺货] <!--{/if}-->$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number']} $d[amountunit]</dt>
+					<dd>$d[subtotal] $order[priceunit]</dd>
 					<!--{/loop}-->
 			</dl></dd>
 			<dt>总计：</dt><dd>$order[totalprice] $order[priceunit]</dd>
@@ -52,6 +53,8 @@
 							已被您拒收订单
 							<!--{/if}-->
 						<!--{/if}-->
+					<!--{elseif $log['operation'] == Order::DetailInStock || $log['operation'] == Order::DetailOutOfStock}-->
+						将 $log[productname]<!--{if $log['subtype']}-->($log[subtype])<!--{/if}-->{echo $log['amount'] * $log['number']}{$log[amountunit]} 标记为<!--{if $log['operation'] == Order::DetailInStock}-->有货<!--{else}-->缺货<!--{/if}-->
 					<!--{/if}-->
 				</li>
 			<!--{/loop}-->

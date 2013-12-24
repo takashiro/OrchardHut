@@ -1,30 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 3.5.1
--- http://www.phpmyadmin.net
---
--- 主机: localhost
--- 生成日期: 2013 年 12 月 23 日 04:23
--- 服务器版本: 5.5.24-log
--- PHP 版本: 5.3.13
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- 数据库: `orchardhut`
---
-
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_addresscomponent`
---
 
 DROP TABLE IF EXISTS `hut_addresscomponent`;
 CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
@@ -36,12 +17,6 @@ CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_addressformat`
---
-
 DROP TABLE IF EXISTS `hut_addressformat`;
 CREATE TABLE IF NOT EXISTS `hut_addressformat` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -49,12 +24,6 @@ CREATE TABLE IF NOT EXISTS `hut_addressformat` (
   `name` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_administrator`
---
 
 DROP TABLE IF EXISTS `hut_administrator`;
 CREATE TABLE IF NOT EXISTS `hut_administrator` (
@@ -70,12 +39,6 @@ CREATE TABLE IF NOT EXISTS `hut_administrator` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_announcement`
---
-
 DROP TABLE IF EXISTS `hut_announcement`;
 CREATE TABLE IF NOT EXISTS `hut_announcement` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -88,12 +51,6 @@ CREATE TABLE IF NOT EXISTS `hut_announcement` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_authkey`
---
-
 DROP TABLE IF EXISTS `hut_authkey`;
 CREATE TABLE IF NOT EXISTS `hut_authkey` (
   `user` varchar(32) NOT NULL,
@@ -102,12 +59,6 @@ CREATE TABLE IF NOT EXISTS `hut_authkey` (
   PRIMARY KEY (`user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_autoreply`
---
-
 DROP TABLE IF EXISTS `hut_autoreply`;
 CREATE TABLE IF NOT EXISTS `hut_autoreply` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -115,12 +66,6 @@ CREATE TABLE IF NOT EXISTS `hut_autoreply` (
   `reply` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_deliveryaddress`
---
 
 DROP TABLE IF EXISTS `hut_deliveryaddress`;
 CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
@@ -133,12 +78,6 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
   KEY `userid` (`userid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_deliveryaddresscomponent`
---
-
 DROP TABLE IF EXISTS `hut_deliveryaddresscomponent`;
 CREATE TABLE IF NOT EXISTS `hut_deliveryaddresscomponent` (
   `addressid` mediumint(8) unsigned NOT NULL,
@@ -146,12 +85,6 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddresscomponent` (
   `componentid` mediumint(8) unsigned NOT NULL,
   KEY `deliveryaddressid` (`addressid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_order`
---
 
 DROP TABLE IF EXISTS `hut_order`;
 CREATE TABLE IF NOT EXISTS `hut_order` (
@@ -170,12 +103,6 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   KEY `dateline` (`dateline`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_orderaddresscomponent`
---
-
 DROP TABLE IF EXISTS `hut_orderaddresscomponent`;
 CREATE TABLE IF NOT EXISTS `hut_orderaddresscomponent` (
   `orderid` mediumint(8) unsigned NOT NULL,
@@ -183,12 +110,6 @@ CREATE TABLE IF NOT EXISTS `hut_orderaddresscomponent` (
   `componentid` mediumint(8) unsigned NOT NULL,
   KEY `orderid` (`orderid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_orderdetail`
---
 
 DROP TABLE IF EXISTS `hut_orderdetail`;
 CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
@@ -202,15 +123,10 @@ CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
   `amountunit` varchar(30) NOT NULL,
   `number` int(11) unsigned NOT NULL,
   `subtotal` decimal(9,2) unsigned NOT NULL,
+  `state` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_orderlog`
---
 
 DROP TABLE IF EXISTS `hut_orderlog`;
 CREATE TABLE IF NOT EXISTS `hut_orderlog` (
@@ -224,12 +140,6 @@ CREATE TABLE IF NOT EXISTS `hut_orderlog` (
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_product`
---
 
 DROP TABLE IF EXISTS `hut_product`;
 CREATE TABLE IF NOT EXISTS `hut_product` (
@@ -248,12 +158,6 @@ CREATE TABLE IF NOT EXISTS `hut_product` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_productcountdown`
---
-
 DROP TABLE IF EXISTS `hut_productcountdown`;
 CREATE TABLE IF NOT EXISTS `hut_productcountdown` (
   `id` int(11) unsigned NOT NULL,
@@ -262,12 +166,6 @@ CREATE TABLE IF NOT EXISTS `hut_productcountdown` (
   `end_time` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_productprice`
---
 
 DROP TABLE IF EXISTS `hut_productprice`;
 CREATE TABLE IF NOT EXISTS `hut_productprice` (
@@ -284,12 +182,6 @@ CREATE TABLE IF NOT EXISTS `hut_productprice` (
   KEY `productid` (`productid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_productstorage`
---
-
 DROP TABLE IF EXISTS `hut_productstorage`;
 CREATE TABLE IF NOT EXISTS `hut_productstorage` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -300,12 +192,6 @@ CREATE TABLE IF NOT EXISTS `hut_productstorage` (
   KEY `productid` (`productid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_productunit`
---
-
 DROP TABLE IF EXISTS `hut_productunit`;
 CREATE TABLE IF NOT EXISTS `hut_productunit` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -313,12 +199,6 @@ CREATE TABLE IF NOT EXISTS `hut_productunit` (
   `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `hut_user`
---
 
 DROP TABLE IF EXISTS `hut_user`;
 CREATE TABLE IF NOT EXISTS `hut_user` (

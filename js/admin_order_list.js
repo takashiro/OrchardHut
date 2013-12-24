@@ -23,23 +23,25 @@ $(function(){
 		var td = a.parent().parent();
 		$.post(href + '&ajax=1', [], function(data){
 			if(a.hasClass('mark_sorted')){
-				td.html(order_status['sorted']);
+				td.html(lang['order_sorted']);
 
 				var button = $('<a></a>');
 				button.attr('class', 'mark_delivering');
 				button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
-				button.html('[' + order_status['delivering'] + ']');
+				button.html('[' + lang['order_delivering'] + ']');
 				
 				var div = $('<div></div>');
 				div.append(button);
 				td.append(div);
 
-				td.parent().find('a.delete').remove();
+				var tr = td.parent();
+				tr.find('a.delete').remove();
+				tr.find('ul.order_detail').addClass('disabled');
 
 			}else if(a.hasClass('mark_delivering')){
-				td.html(order_status['delivering']);
+				td.html(lang['order_delivering']);
 				
-				var data = {'mark_received':'[' + order_status['received'] + ']', 'mark_rejected':'[' + order_status['rejected'] + ']'};
+				var data = {'mark_received':'[' + lang['order_received'] + ']', 'mark_rejected':'[' + lang['order_rejected'] + ']'};
 				for(var action in data){
 					var button = $('<a></a>');
 					button.attr('class', action);
@@ -51,9 +53,9 @@ $(function(){
 					td.append(div);
 				}
 			}else if(a.hasClass('mark_received')){
-				td.html(order_status['received']);
+				td.html(lang['order_received']);
 			}else if(a.hasClass('mark_rejected')){
-				td.html(order_status['rejected']);
+				td.html(lang['order_rejected']);
 			}
 		});
 
@@ -66,5 +68,35 @@ $(function(){
 
 	$('#multi_mark_delivering').click(function(){
 		$('a.mark_delivering').click();
+	});
+
+	$('ul.order_detail').on('dblclick', 'li', function(e){
+		var li = $(e.target);
+		var ul = li.parent();
+		if(ul.hasClass('disabled')){
+			return false;
+		}
+
+		var data = {
+			'detailid' : li.attr('primaryvalue'),
+			'state' : li.hasClass('outofstock') ? 0 : 1
+		};
+
+		var message = 'confirm_to_mark_detail_' + (data.state ? 'out_of' : 'in') + '_stock';
+		if(confirm(lang[message])){
+			$.get(mod_url + '&action=detail_outofstock', data, function(result){
+				if(data.state == 0){
+					li.removeClass('outofstock');
+				}else{
+					li.addClass('outofstock');
+				}
+
+				if(result.totalprice !== undefined){
+					var td = ul.parent();
+					var tr = td.parent();
+					tr.find('.totalprice').html(result.totalprice);
+				}
+			}, 'json');
+		}
 	});
 });

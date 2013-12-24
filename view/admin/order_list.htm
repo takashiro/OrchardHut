@@ -3,13 +3,16 @@
 <script type="text/javascript" src="./plugin/datetimepicker/jquery.datetimepicker.min.js"></script>
 <style type="text/css">@import url(./plugin/datetimepicker/jquery.datetimepicker.css);</style>
 <script type="text/javascript">
-var order_status = {
-	unsorted : '待出库',
-	sorted : '待配送',
-	delivering : '配送中',
-	received : '已签收',
-	rejected : '已拒收'
+var lang = {
+	order_unsorted : '待出库',
+	order_sorted : '待配送',
+	order_delivering : '配送中',
+	order_received : '已签收',
+	order_rejected : '已拒收',
+	confirm_to_mark_detail_in_stock : '您确认要将该项标记为有货吗？',
+	confirm_to_mark_detail_out_of_stock : '您确认要将该项标记为缺货吗？'
 };
+var mod_url = '$mod_url';
 
 $(function(){
 	$('#delivery_address_list').on('click', 'li .add', function(e){
@@ -102,8 +105,14 @@ $(function(){
 						<td>$o[extaddress]</td>
 						<td><a href="$mod_url&action=list&time_start=&time_end=&addressee=$o[addressee]">$o[addressee]</a><br /><a href="$mod_url&action=list&time_start=&time_end=&mobile=$o[mobile]">$o[mobile]</a></td>
 						<td><a href="$mod_url&action=list&time_start=&time_end=&userid=$o[userid]">$o[ordernum]</a></td>
-						<td>$o[items]</td>
-						<td>$o[totalprice] $o[priceunit]</td>
+						<td>
+							<ul class="order_detail{if !$_G['admin']->hasPermission('order_sort_w') || $o['status'] != Order::Unsorted} disabled{/if}">
+							<!--{loop $o['details'] $d}-->
+							<li primaryvalue="$d[id]"{if $d['state'] == 1} class="outofstock"{/if}>$d[productname]<!--{if $d['subtype']}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number'];}$d[amountunit]</li>
+							<!--{/loop}-->
+							</ul>
+						</td>
+						<td><span class="totalprice">$o[totalprice]</span> $o[priceunit]</td>
 						<td>
 							{echo Order::$Status[$o['status']]}
 							<!--{if $o['status'] == Order::Unsorted && $_G['admin']->hasPermission('order_sort_w')}-->

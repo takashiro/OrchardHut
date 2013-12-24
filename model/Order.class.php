@@ -176,8 +176,9 @@ class Order extends DBObject{
 
 	//Operations
 	const StatusChanged = 1;
-	const DetailMarkedAsSoldOut = 2;
+	const DetailOutOfStock = 2;
 	const PriceChanged = 3;
+	const DetailInStock = 4;
 
 	public function addLog(&$operator, $operation, $extra = NULL){
 		$log = array(
@@ -207,11 +208,15 @@ class Order extends DBObject{
 
 	public function getLogs(){
 		global $db, $tpre;
+		$detail_in_stock = self::DetailInStock;
+		$detail_out_of_stock = self::DetailOutOfStock;
+		$detailop = $detail_in_stock.','.$detail_out_of_stock;
 
 		$operatorgroup = self::AdministratorOperated;
-		return $db->fetch_all("SELECT l.*,a.realname,a.mobile
+		return $db->fetch_all("SELECT l.*,a.realname,a.mobile,d.productname,d.subtype,d.amount,d.number,d.amountunit
 			FROM {$tpre}orderlog l
 				LEFT JOIN {$tpre}administrator a ON l.operatorgroup=$operatorgroup AND a.id=l.operator
+				LEFT JOIN {$tpre}orderdetail d ON l.operation IN ($detailop) AND d.id=l.extra
 			WHERE l.orderid={$this->id}");
 	}
 }
