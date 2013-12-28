@@ -1,0 +1,23 @@
+{eval rheader('Cache-Control: no-cache, must-revalidate');}
+{eval rheader('Content-Type: application/octet-stream');}
+{eval rheader('Content-Disposition: attachment; filename=订单.csv');}
+编号<!--{loop Address::Format() $f}-->,$f[name]<!--{/loop}-->,地址,收件人,电话,历史订单,物品,价格,状态,时间,留言{eval echo "\r\n";}
+{eval foreach($orders as $o){}
+{eval echo $o['id'];}
+{eval foreach(Address::Format() as $format){}
+{eval 	echo ',',$o['address'][$format['id']];}
+{eval }}
+{eval echo ',',$o['extaddress'],',',$o['addressee'],',"',$o['mobile'],'",',$o['ordernum'],',"';}
+{eval foreach($o['details'] as $d){}
+{eval 	if($d['state'] == 1){}
+{eval 		echo '[缺货]';}
+{eval 	}}
+{eval 	echo $d['productname'];}
+{eval 	if($d['subtype']){}
+{eval 		echo $d['subtype'];}
+{eval 	}}
+{eval 	echo $d['amount'] * $d['number'],$d['amountunit'],"\r\n";}
+{eval }}
+{eval echo '",',$o['totalprice'],$o['priceunit'],',',Order::$Status[$o['status']],',',rdate($o['dateline']),',',$o['message'],"\r\n";}
+{eval }}
+{eval exit;}

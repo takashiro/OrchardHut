@@ -278,7 +278,21 @@ switch($action){
 			$available_status[$status] = true;
 		}
 
-		include view('order_'.$action);
+		if($action == 'list'){
+			$formats = array('html', 'csv');
+			$format = &$_REQUEST['format'];
+			if(empty($format) || !in_array($format, $formats)){
+				$format = $formats[0];
+			}
+
+			if($format == 'html'){
+				include view('order_list');
+			}else{
+				include view('order_'.$format);
+			}
+		}else{
+			include view('order_search');
+		}
 	break;
 
 	case 'mark_unsorted':
