@@ -16,7 +16,7 @@ class WeixinServer{
 		}
 
 		$tmp_arr = array($this->token, $_GET['timestamp'], $_GET['nonce']);
-		sort($tmp_arr);
+		sort($tmp_arr,SORT_STRING);
 		$tmp_str = implode($tmp_arr);
 		$tmp_str = sha1($tmp_str);
 
