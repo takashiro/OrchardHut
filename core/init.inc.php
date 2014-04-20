@@ -9,6 +9,8 @@ define('S_VERSION', '1.0');
 error_reporting(0);
 set_time_limit(0);
 
+ob_start();
+
 //类自动加载
 class SimpleClassLoader{
 	static public function Load($classname){
