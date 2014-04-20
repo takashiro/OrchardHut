@@ -28,9 +28,11 @@ foreach($products as $product){
 	}
 }
 $quantity_limit = array();
-$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid=$_USER[id]");
-while($l = $db->fetch_array($query)){
-	$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
+if($_G['user']->isLoggedIn()){
+	$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid=$_USER[id]");
+	while($l = $db->fetch_array($query)){
+		$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
+	}
 }
 
 include view('market');
