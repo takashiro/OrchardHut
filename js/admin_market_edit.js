@@ -2,14 +2,14 @@ $(function(){
 	$('#price_list').editlist({
 		'edit' : mod_url + '&action=editprice&productid=' + product_id,
 		'delete' : mod_url + '&action=deleteprice&productid=' + product_id,
-		'attr' : ['id', 'subtype', 'price', 'priceunit', 'amount', 'amountunit', 'storageid', 'displayorder'],
+		'attr' : ['id', 'subtype', 'price', 'priceunit', 'amount', 'amountunit', 'storageid', 'quantitylimit', 'displayorder'],
 		'buttons' : {'delete':'删除'}
 	});
 
 	$('#countdown_list').editlist({
 		'edit' : mod_url + '&action=editcountdown&productid=' + product_id,
 		'delete' : mod_url + '&action=deletecountdown&productid=' + product_id,
-		'attr' : ['masked_priceid', 'subtype', 'price', 'priceunit', 'amount', 'amountunit', 'start_time', 'end_time', 'storageid', 'displayorder'],
+		'attr' : ['masked_priceid', 'subtype', 'price', 'priceunit', 'amount', 'amountunit', 'start_time', 'end_time', 'storageid', 'quantitylimit', 'displayorder'],
 		'buttons' : {'delete':'删除'}
 	});
 

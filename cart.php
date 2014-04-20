@@ -190,18 +190,7 @@ switch($action){
 
 				foreach($products as &$p){
 					if($p['priceunit'] == $unit){
-						$succeeded = $order->addDetail(array(
-							'productid' => $p['productid'],
-							'productname' => $p['name'],
-							'subtype' => $p['subtype'],
-							'amount' => $p['amount'],
-							'amountunit' => $p['amountunit'],
-							'number' => $p['number'],
-							'subtotal' => $p['subtotal'],
-							'storageid' => $p['storageid'],
-							'price' => $p['price'],
-						));
-
+						$succeeded = $order->addDetail($p);
 						$succeeded || $item_deleted = true;
 
 						$totalamount = $p['amount'] * $p['number'];

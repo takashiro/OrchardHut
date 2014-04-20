@@ -38,6 +38,25 @@ $(function(){
 			}
 		}
 
+		var quantity_limit = parseInt(li.attr('quantity-limit'), 10);
+		if(quantity_limit > 0){
+			var bought = parseInt(ProductQuantityLimit[price_id], 10);
+			if(bought + number >= quantity_limit){
+				number = quantity_limit - bought;
+				if(number > 0){
+					input.val(number);
+				}else{
+					input.val('');
+					number = 0;
+				}
+
+				var msg = lang['out_of_product_quantity_limit']
+					.replace('%bought', bought)
+					.replace('%limit', quantity_limit);
+				alert(msg);
+			}
+		}
+
 		cart_set(price_id, number);
 	});
 

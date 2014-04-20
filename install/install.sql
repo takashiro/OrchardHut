@@ -178,9 +178,18 @@ CREATE TABLE IF NOT EXISTS `hut_productprice` (
   `amountunit` mediumint(8) unsigned NOT NULL,
   `displayorder` tinyint(4) NOT NULL,
   `storageid` mediumint(8) unsigned DEFAULT NULL,
+  `quantitylimit` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `hut_productquantitylimit`;
+CREATE TABLE IF NOT EXISTS `hut_productquantitylimit` (
+  `priceid` int(11) unsigned NOT NULL,
+  `userid` mediumint(8) unsigned NOT NULL,
+  `amount` smallint(5) unsigned NOT NULL,
+  UNIQUE KEY `priceid` (`priceid`,`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productstorage`;
 CREATE TABLE IF NOT EXISTS `hut_productstorage` (

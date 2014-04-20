@@ -21,6 +21,18 @@ Product::FetchFilteredPrices($products);
 
 $announcements = Announcement::GetActiveAnnouncements();
 
+$priceids = array();
+foreach($products as $product){
+	foreach($product['rule'] as $price){
+		$priceids[] = $price['id'];
+	}
+}
+$quantity_limit = array();
+$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid=$_USER[id]");
+while($l = $db->fetch_array($query)){
+	$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
+}
+
 include view('market');
 
 ?>

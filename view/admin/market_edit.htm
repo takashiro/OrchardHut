@@ -57,6 +57,7 @@ var product_id = $product[id];
 					<td colspan="2">价格</td>
 					<td colspan="2">数量</td>
 					<td>库存号</td>
+					<td>限购</td>
 					<td>显示顺序</td>
 					<td>操作</td>
 				</tr>
@@ -71,6 +72,7 @@ var product_id = $product[id];
 					<td>$p[amount]</td>
 					<td realvalue="$p[amountunit]">{echo Product::AmountUnits($p['amountunit'])}</td>
 					<td>$p[storageid]</td>
+					<td>$p[quantitylimit]</td>
 					<td>$p[displayorder]</td>
 					<td></td>
 				</tr>
@@ -83,6 +85,7 @@ var product_id = $product[id];
 					<td><input type="text" class="number narrow" value="1" /></td>
 					<td>{echo Template::select('', Product::AmountUnits())}</td>
 					<td><input type="text" class="number narrow storageid" /></td>
+					<td><input type="text" class="number narrow" /></td>
 					<td><input type="text" class="number narrow" /></td>
 					<td><button type="button" class="add">添加</button></td>
 				</tr>
@@ -104,6 +107,7 @@ var product_id = $product[id];
 					<td>开始时间</td>
 					<td>结束时间</td>
 					<td>库存号</td>
+					<td>限购</td>
 					<td>显示顺序</td>
 					<td>操作</td>
 				</tr>
@@ -121,6 +125,7 @@ var product_id = $product[id];
 					<td>{echo rdate($p['end_time'])}</td>
 					<td>$p[storageid]</td>
 					<td>$p[displayorder]</td>
+					<td>$p[quantitylimit]</td>
 					<td></td>
 				</tr>
 				<!--{/loop}-->
@@ -134,6 +139,7 @@ var product_id = $product[id];
 					<td><input type="text" /></td>
 					<td><input type="text" /></td>
 					<td><input type="text" class="number narrow storageid" /></td>
+					<td><input type="text" class="number narrow" /></td>
 					<td><input type="text" class="number narrow" /></td>
 					<td><button type="button" class="add">添加</button></td>
 				</tr>

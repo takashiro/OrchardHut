@@ -13,6 +13,7 @@ class Order extends DBObject{
 
 	private $detail = array();
 	private $address_components = array();
+	private $quantity_limit = array();
 
 	public function __construct($id = 0){
 		$id = intval($id);
@@ -76,8 +77,24 @@ class Order extends DBObject{
 	}
 
 	public function addDetail($d){
+		global $db, $tpre;
+
+		if($d['quantitylimit']){
+			$bought = $db->result_first("SELECT amount FROM {$tpre}productquantitylimit WHERE priceid=$d[priceid] AND userid={$this->userid}");
+			$bought = intval($bought);
+			$d['quantitylimit'] = intval($d['quantitylimit']);
+			$d['number'] = $d['quantitylimit'] - $bought;
+			if($d['number'] <= 0){
+				return false;
+			}
+
+			$this->quantity_limit[] = array(
+				'priceid' => $d['priceid'],
+				'amount' => $d['number']
+			);
+		}
+
 		if($d['storageid']){
-			global $db, $tpre;
 			$number = $d['amount'] * $d['number'];
 			$db->query("UPDATE {$tpre}productstorage SET num=num-$number WHERE id=$d[storageid] AND num>=$number");
 			if($db->affected_rows() <= 0){
@@ -90,7 +107,7 @@ class Order extends DBObject{
 		$this->detail[] = array(
 			'productid' => $d['productid'],
 			'storageid' => $d['storageid'],
-			'productname' => $d['productname'],
+			'productname' => $d['name'],
 			'subtype' => $d['subtype'],
 			'amount' => $d['amount'],
 			'amountunit' => $d['amountunit'],
@@ -119,6 +136,7 @@ class Order extends DBObject{
 			return false;
 		}
 
+		global $tpre;
 		$this->dateline = TIMESTAMP;
 
 		parent::insert();
@@ -142,6 +160,12 @@ class Order extends DBObject{
 		
 		$db->select_table('orderaddresscomponent');
 		$db->INSERTS($this->address_components);
+
+		foreach($this->quantity_limit as $ql){
+			$db->query("INSERT INTO {$tpre}productquantitylimit (`priceid`,`userid`,`amount`)
+				VALUES ($ql[priceid], {$this->userid}, $ql[amount])
+				ON DUPLICATE KEY UPDATE `amount`=`amount`+$ql[amount]");
+		}
 
 		return true;
 	}

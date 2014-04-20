@@ -198,6 +198,10 @@ class Product extends DBObject{
 			$update['storageid'] <= 0 && $update['storageid'] = NULL;
 		}
 
+		if(isset($price['quantitylimit'])){
+			$update['quantitylimit'] = intval($price['quantitylimit']);
+		}
+
 		if(isset($price['displayorder'])){
 			$update['displayorder'] = intval($price['displayorder']);
 		}
@@ -221,6 +225,8 @@ class Product extends DBObject{
 		global $db;
 		$db->select_table('productprice');
 		$db->DELETE(array('id' => $id, 'productid' => $this->id));
+		$db->select_table('productquantitylimit');
+		$db->DELETE(array('priceid' => $id));
 		return $db->affected_rows();
 	}
 
