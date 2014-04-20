@@ -78,6 +78,17 @@
 					</table>
 				</div>
 			</div>
+			<div class="lightbox deliverytime">
+				<h1>收货时间</h1>
+				<div class="content">
+					<ul class="mselect">
+						<li class="checked"><input type="radio" name="deliverytime" value="0" />任意时间段</li>
+						<!--{loop $delivery_timespans $s}-->
+						<li><input type="radio" name="deliverytime" value="$s[id]" />{echo rdate($s['time_from'], 'm月d日 H:i')}~{echo rdate($s['time_to'], 'H:i')}</li>
+						<!--{/loop}-->
+					</ul>
+				</div>
+			</div>
 			<div class="post_buttons">
 				<button type="submit">提交订单</button>
 			</div>

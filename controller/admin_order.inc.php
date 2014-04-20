@@ -149,9 +149,25 @@ switch($action){
 			$offset = ($page - 1) * $limit;
 			$pagenum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order o WHERE $condition");
 			if(!$stat['statonly']){
-				$orders = $db->fetch_all("SELECT *,(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND dateline<o.dateline) AS ordernum
+				$orders = $db->fetch_all("SELECT o.*,dt.time_from AS dtime_from, dt.time_to AS dtime_to, (SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND dateline<o.dateline) AS ordernum
 					FROM {$tpre}order o
+						LEFT JOIN {$tpre}deliverytime dt ON dt.id=o.deliverytime
 					WHERE $condition ORDER BY o.dateline LIMIT $offset,$limit");
+
+				foreach($orders as &$o){
+					if($o['deliverytime']){
+						list($Y, $m, $d, $H, $i, $s) = explode('-', rdate($o['dateline'], 'Y-m-d-H-i-s'));
+						$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
+						$splitter = $H * 3600 + $i * 60 + $s;
+						if($o['dtime_from'] <= $splitter){
+							$o['dtime_from'] += 24 * 3600;
+							$o['dtime_to'] += 24 * 3600;
+						}
+						$o['dtime_from'] += $today;
+						$o['dtime_to'] += $today;
+					}
+				}
+				unset($o);
 			}else{
 				$orders = array();
 			}

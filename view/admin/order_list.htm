@@ -87,7 +87,7 @@ $(function(){
 		</form>
 		<!--{/if}-->
 
-		<div id="orderlist" class="list">
+		<div id="orderlist" class="list" style="font-size:10pt">
 			<table>
 				<thead>
 					<tr>
@@ -101,7 +101,8 @@ $(function(){
 						<td>物品</td>
 						<td>价格</td>
 						<td width="60">状态</td>
-						<td width="100">时间</td>
+						<td width="100">下单时间</td>
+						<td width="100">收货时间</td>
 						<td width="50">操作</td>
 						<td>留言</td>
 					</tr>
@@ -137,6 +138,13 @@ $(function(){
 							<!--{/if}-->
 						</td>
 						<td>{echo rdate($o['dateline'])}</td>
+						<td>
+						<!--{if $o['deliverytime']}-->
+							{echo rdate($o['dtime_from'], 'Y-m-d H:i')} - {echo rdate($o['dtime_to'], 'H:i')}
+						<!--{else}-->
+							不限
+						<!--{/if}-->
+						</td>
 						<td>
 							<a class="print" href="$mod_url&action=print&orderid=$o[id]" target="_blank">[打印]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->

@@ -2,8 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$types = array('system', 'product', 'qqconnect', 'wxconnect', 'autoreply');
-$type = !empty($_GET['type']) && in_array($_GET['type'], $types) ? $_GET['type'] : $types[0];
+$type = !empty($_GET['type']) ? $_GET['type'] : 'system';
 
 switch($type){
 case 'system':
@@ -173,6 +172,73 @@ case 'autoreply':
 
 	default:
 		$autoreply = $db->MFETCH('*');
+	}
+	break;
+
+case 'delivery':
+	$action = &$_GET['action'];
+	switch($action){
+	case 'edit':
+		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+		if($id > 0){
+			$timespan = array();
+			if(isset($_POST['time_from'])){
+				$timespan['time_from'] = $_POST['time_from'];
+			}
+			if(isset($_POST['time_to'])){
+				$timespan['time_to'] = $_POST['time_to'];
+			}
+		}else{
+			$timespan = array(
+				'time_from' => $_POST['time_from'],
+				'time_to' => $_POST['time_to']
+			);
+		}
+
+		foreach($timespan as &$time){
+			@list($H, $i, $s) = explode(':', $time);
+			$H = intval($H);
+			$i = intval($i);
+			$s = intval($s);
+			$time = $H * 3600 + $i * 60 + $s;
+		}
+		unset($time);
+
+		if(isset($_POST['hidden'])){
+			$timespan['hidden'] = !empty($_POST['hidden']);
+		}
+
+		$db->select_table('deliverytime');
+		if($id > 0){
+			$db->UPDATE($timespan, 'id='.$id);
+			$timespan['id'] = $id;
+		}else{
+
+
+			$db->INSERT($timespan);
+			$timespan['id'] = $db->insert_id();
+		}
+
+		isset($timespan['time_from']) && $timespan['time_from'] = gmdate('H:i:s', $timespan['time_from']);
+		isset($timespan['time_to']) && $timespan['time_to'] = gmdate('H:i:s', $timespan['time_to']);
+		echo json_encode($timespan);
+		exit;
+	case 'delete':
+		@$id = intval($_REQUEST['id']);
+		if($id > 0){
+			$db->select_table('deliverytime');
+			$db->DELETE('id='.$id);
+			echo 1;
+		}
+		break;
+	default:
+		$db->select_table('deliverytime');
+		$delivery_timespans = $db->MFETCH('*');
+		foreach($delivery_timespans as &$s){
+			$s['time_from'] = gmdate('H:i:s', $s['time_from']);
+			$s['time_to'] = gmdate('H:i:s', $s['time_to']);
+		}
+		unset($s);
 	}
 	break;
 }

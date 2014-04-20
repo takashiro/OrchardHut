@@ -86,6 +86,15 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddresscomponent` (
   KEY `deliveryaddressid` (`addressid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `hut_deliverytime`;
+CREATE TABLE IF NOT EXISTS `hut_deliverytime` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `hidden` tinyint(1) NOT NULL,
+  `time_from` mediumint(8) unsigned NOT NULL,
+  `time_to` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `hut_order`;
 CREATE TABLE IF NOT EXISTS `hut_order` (
   `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -98,6 +107,7 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `addressee` varchar(50) NOT NULL,
   `mobile` varchar(11) NOT NULL,
   `message` text NOT NULL,
+  `deliverytime` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `dateline` (`dateline`)

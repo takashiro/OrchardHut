@@ -160,6 +160,7 @@ switch($action){
 			$order->extaddress = array_shift($address);
 			$order->addressee = $_POST['addressee'];
 			$order->mobile = $_POST['mobile'];
+			@$order->deliverytime = intval($_POST['deliverytime']);
 
 			if($addressid <= 0){
 				$delivery_address = array(
@@ -258,6 +259,25 @@ switch($action){
 			$a['address_text'].= $a['extaddress'].' '.$a['addressee'].'('.$a['mobile'].')';
 		}
 		unset($a);
+
+		list($Y, $m, $d) = explode('-', rdate(TIMESTAMP, 'Y-m-d'));
+		$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
+		$db->select_table('deliverytime');
+		$delivery_timespans = $db->MFETCH('*', 'hidden=0');
+		foreach($delivery_timespans as &$s){
+			$s['time_from'] += $today;
+			$s['time_to'] += $today;
+			while($s['time_from'] <= TIMESTAMP){
+				$s['time_from'] += 24 * 3600;
+				$s['time_to'] += 24 * 3600;
+			}
+		}
+		unset($s);
+
+		function __sort_by_time($s1, $s2){
+			return $s1['time_from'] < $s2['time_from'];
+		}
+		usort($delivery_timespans, '__sort_by_time');
 
 		include view('cart');
 	break;

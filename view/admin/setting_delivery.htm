@@ -1,0 +1,43 @@
+<!--{template header}-->
+
+<script type="text/javascript">
+$(function(){
+	$('#unit_list').editlist({
+		'edit' : '$mod_url&type=delivery&action=edit',
+		'delete' : '$mod_url&type=delivery&action=delete',
+		'attr' : ['time_from', 'time_to' , 'hidden']
+	});
+});
+</script>
+
+<div class="box">
+	<h1>配送相关设置</h1>
+	<div class="headactions">
+		{template setting_menu}
+	</div>
+
+	<h2>每日配送时间段设置</h2>
+	<div id="unit_list" class="list">
+		<table>
+			<thead><tr><td>开始时间</td><td>结束时间</td><td>隐藏</td><td>操作</td></tr></thead>
+			<tbody>
+				<!--{loop $delivery_timespans $s}-->
+				<tr primaryvalue="$s[id]">
+					<td>$s['time_from']</td>
+					<td>$s['time_to']</td>
+					<td realvalue="$s[hidden]"><!--{if $s['hidden']}-->是<!--{else}-->否<!--{/if}--></td>
+					<td></td>
+				</tr>
+				<!--{/loop}-->
+				<tr>
+					<td><input type="text" /></td>
+					<td><input type="text" /></td>
+					<td><select><option value="0">否</option><option value="1">是</option></select></td>
+					<td><button type="button" class="add">添加</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--{template footer}-->
