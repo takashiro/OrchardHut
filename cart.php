@@ -265,9 +265,11 @@ switch($action){
 		$db->select_table('deliverytime');
 		$delivery_timespans = $db->MFETCH('*', 'hidden=0');
 		foreach($delivery_timespans as &$s){
+			$s['time_deadline'] += $today;
 			$s['time_from'] += $today;
 			$s['time_to'] += $today;
-			while($s['time_from'] <= TIMESTAMP){
+			while($s['time_deadline'] <= TIMESTAMP){
+				$s['time_deadline'] += 24 * 3600;
 				$s['time_from'] += 24 * 3600;
 				$s['time_to'] += 24 * 3600;
 			}
@@ -275,7 +277,7 @@ switch($action){
 		unset($s);
 
 		function __sort_by_time($s1, $s2){
-			return $s1['time_from'] < $s2['time_from'];
+			return $s1['time_from'] > $s2['time_from'];
 		}
 		usort($delivery_timespans, '__sort_by_time');
 

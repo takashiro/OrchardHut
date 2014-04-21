@@ -180,19 +180,16 @@ case 'delivery':
 	switch($action){
 	case 'edit':
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
-		if($id > 0){
-			$timespan = array();
-			if(isset($_POST['time_from'])){
-				$timespan['time_from'] = $_POST['time_from'];
-			}
-			if(isset($_POST['time_to'])){
-				$timespan['time_to'] = $_POST['time_to'];
-			}
-		}else{
-			$timespan = array(
-				'time_from' => $_POST['time_from'],
-				'time_to' => $_POST['time_to']
-			);
+		
+		$timespan = array();
+		if(isset($_POST['time_from'])){
+			$timespan['time_from'] = $_POST['time_from'];
+		}
+		if(isset($_POST['time_to'])){
+			$timespan['time_to'] = $_POST['time_to'];
+		}
+		if(isset($_POST['time_deadline'])){
+			$timespan['time_deadline'] = $_POST['time_deadline'];
 		}
 
 		foreach($timespan as &$time){
@@ -219,8 +216,9 @@ case 'delivery':
 			$timespan['id'] = $db->insert_id();
 		}
 
-		isset($timespan['time_from']) && $timespan['time_from'] = gmdate('H:i:s', $timespan['time_from']);
-		isset($timespan['time_to']) && $timespan['time_to'] = gmdate('H:i:s', $timespan['time_to']);
+		foreach(array('time_deadline', 'time_from', 'time_to') as $var){
+			isset($timespan[$var]) && $timespan[$var] = gmdate('H:i:s', $timespan[$var]);
+		}
 		echo json_encode($timespan);
 		exit;
 	case 'delete':
@@ -235,8 +233,9 @@ case 'delivery':
 		$db->select_table('deliverytime');
 		$delivery_timespans = $db->MFETCH('*');
 		foreach($delivery_timespans as &$s){
-			$s['time_from'] = gmdate('H:i:s', $s['time_from']);
-			$s['time_to'] = gmdate('H:i:s', $s['time_to']);
+			foreach(array('time_deadline', 'time_from', 'time_to') as $var){
+				$s[$var] = gmdate('H:i:s', $s[$var]);
+			}
 		}
 		unset($s);
 	}

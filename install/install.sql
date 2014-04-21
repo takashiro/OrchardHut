@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS `hut_deliverytime` (
   `hidden` tinyint(1) NOT NULL,
   `time_from` mediumint(8) unsigned NOT NULL,
   `time_to` mediumint(8) unsigned NOT NULL,
+  `time_deadline` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

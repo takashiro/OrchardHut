@@ -82,7 +82,6 @@
 				<h1>收货时间</h1>
 				<div class="content">
 					<ul class="mselect">
-						<li class="checked"><input type="radio" name="deliverytime" value="0" />自提</li>
 						<!--{loop $delivery_timespans $s}-->
 						<li><input type="radio" name="deliverytime" value="$s[id]" />{echo rdate($s['time_from'], 'm月d日 H:i')}~{echo rdate($s['time_to'], 'H:i')}</li>
 						<!--{/loop}-->
