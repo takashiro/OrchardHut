@@ -160,7 +160,25 @@ switch($action){
 			$order->extaddress = array_shift($address);
 			$order->addressee = $_POST['addressee'];
 			$order->mobile = $_POST['mobile'];
-			@$order->deliverytime = intval($_POST['deliverytime']);
+
+			if(!empty($_POST['deliverytime'])){
+				$dtid = intval($_POST['deliverytime']);
+				$db->select_table('deliverytime');
+				$delivery = $db->FETCH('*', 'id='.$dtid);
+
+				list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
+				$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
+				$splitter = $H * 3600 + $i * 60 + $s;
+				if($delivery['time_deadline'] <= $splitter){
+					$delivery['time_from'] += 24 * 3600;
+					$delivery['time_to'] += 24 * 3600;
+				}
+				$delivery['time_from'] += $today;
+				$delivery['time_to'] += $today;
+
+				$order->dtime_from = $delivery['time_from'];
+				$order->dtime_to = $delivery['time_to'];
+			}
 
 			if($addressid <= 0){
 				$delivery_address = array(

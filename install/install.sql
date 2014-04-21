@@ -108,7 +108,8 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `addressee` varchar(50) NOT NULL,
   `mobile` varchar(11) NOT NULL,
   `message` text NOT NULL,
-  `deliverytime` mediumint(8) unsigned NOT NULL,
+  `dtime_from` int(11) unsigned NOT NULL,
+  `dtime_to` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `dateline` (`dateline`)

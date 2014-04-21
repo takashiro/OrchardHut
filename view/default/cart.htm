@@ -82,8 +82,8 @@
 				<h1>收货时间</h1>
 				<div class="content">
 					<ul class="mselect">
-						<!--{loop $delivery_timespans $s}-->
-						<li><input type="radio" name="deliverytime" value="$s[id]" />{echo rdate($s['time_from'], 'm月d日 H:i')}~{echo rdate($s['time_to'], 'H:i')}</li>
+						<!--{loop $delivery_timespans $i $s}-->
+						<li{if $i == 0} class="checked"{/if}><input type="radio" name="deliverytime" value="$s[id]" {if $i == 0} checked="checked"{/if} />{echo rdate($s['time_from'], 'm月d日 H:i')}~{echo rdate($s['time_to'], 'H:i')}</li>
 						<!--{/loop}-->
 					</ul>
 				</div>
