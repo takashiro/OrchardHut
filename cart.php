@@ -278,19 +278,18 @@ switch($action){
 		}
 		unset($a);
 
-		list($Y, $m, $d) = explode('-', rdate(TIMESTAMP, 'Y-m-d'));
+		list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
 		$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
+		$splitter = $H * 3600 + $i * 60 + $s;
 		$db->select_table('deliverytime');
 		$delivery_timespans = $db->MFETCH('*', 'hidden=0');
 		foreach($delivery_timespans as &$s){
-			$s['time_deadline'] += $today;
-			$s['time_from'] += $today;
-			$s['time_to'] += $today;
-			while($s['time_deadline'] <= TIMESTAMP){
-				$s['time_deadline'] += 24 * 3600;
+			if($s['time_deadline'] <= $splitter){
 				$s['time_from'] += 24 * 3600;
 				$s['time_to'] += 24 * 3600;
 			}
+			$s['time_from'] += $today;
+			$s['time_to'] += $today;
 		}
 		unset($s);
 
