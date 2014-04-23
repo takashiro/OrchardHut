@@ -36,6 +36,7 @@ case 'mark_received':
 			$order->id = $orderid;
 			$order->addLog($_G['user'], Order::StatusChanged, Order::Received);
 
+			rsetcookie('order-number-cache-time', 0);
 			showmsg('successfully_received', 'home.php');
 		}
 	}
@@ -56,6 +57,11 @@ case 'view':
 
 	include view('home_orderdetail');
 	break;
+
+case 'deliveringnum':
+	$num = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid=$_USER[id] AND status=".Order::Delivering);
+	echo $num;
+	exit;
 
 default:
 	$limit = 10;

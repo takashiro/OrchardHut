@@ -41,6 +41,8 @@ if($action == 'login'){
 
 }elseif($action == 'logout'){
 	$_G['user']->logout();
+	rsetcookie('delivering-order-number');
+	rsetcookie('order-number-cache-time');
 	redirect('memcp.php');
 
 }elseif($action == 'register'){

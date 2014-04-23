@@ -354,7 +354,7 @@ footer ul.button_list #cart a{
 	position:relative;
 }
 
-footer ul.button_list #cart-goods-number{
+footer ul.button_list .number_notice{
 	font-weight:bold;
 	background-color:#fe6565;
 	color:white;
@@ -362,8 +362,12 @@ footer ul.button_list #cart-goods-number{
 	border-radius:15px;
 	padding:0 4px;
 	position:absolute;
-	top:3px;
+	bottom:22px;
 	margin-left:-10px;
+}
+
+footer ul.button_list #delivering-order-number.number_notice{
+	margin-left:-16px;
 }
 
 .debug{

@@ -27,7 +27,17 @@ function cart_set(price_id, number){
 	var cart = cart_read();
 	cart[price_id] = number;
 	cart_write(cart);
-	$('#cart-goods-number').html(cart_number());
+
+	$('#cart-goods-number').numbernotice(cart_number());
+}
+
+function cart_number(){
+	var in_cart = getcookie('in_cart');
+	if(in_cart == ''){
+		return 0;
+	}else{
+		return in_cart.split(',').length;
+	}
 }
 
 $(function(){
@@ -52,7 +62,7 @@ $(function(){
 		}
 	});
 
-	$('#cart-goods-number').html(cart_number());
+	$('#cart-goods-number').numbernotice(cart_number());
 
 	$('.deliveryaddress ul li a.remove').click(function(e){
 		if(confirm('您确认要删除该收货地址吗？')){
@@ -69,4 +79,21 @@ $(function(){
 			});
 		}
 	});
+
+	var delivered_num = parseInt(getcookie('delivering-order-number'), 10);
+	var cache_time = parseInt(getcookie('order-number-cache-time'), 10);
+	var current_time = parseInt(new Date().valueOf() / 1000);
+	if(isNaN(delivered_num) || isNaN(cache_time) || cache_time - current_time >= 1800){
+		$('#delivering-order-number').numbernotice(0);
+		$.post('home.php?action=deliveringnum', {}, function(data){
+			delivered_num = parseInt(data, 10);
+			if(!isNaN(delivered_num)){
+				setcookie('delivering-order-number', delivered_num);
+				setcookie('order-number-cache-time', current_time);
+				$('#delivering-order-number').numbernotice(delivered_num);
+			}
+		});
+	}else{
+		$('#delivering-order-number').numbernotice(delivered_num);
+	}
 });

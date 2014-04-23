@@ -41,15 +41,6 @@ function in_array(needle, arr){
 	return false;
 }
 
-function cart_number(){
-	var in_cart = getcookie('in_cart');
-	if(in_cart == ''){
-		return 0;
-	}else{
-		return in_cart.split(',').length;
-	}
-}
-
 function popup_message(title, message){
 	var popup_message = $('<div></div>');
 	popup_message.addClass('popup_message');
@@ -86,6 +77,17 @@ function popup_message(title, message){
 
 	wrapper.fadeIn();
 }
+
+(function($){
+	$.fn.numbernotice = function(val){
+		this.text(val);
+		if(val == 0){
+			this.hide();
+		}else{
+			this.css('display', 'inline');
+		}
+	}
+})(jQuery);
 
 $(function(){
 	var button_increase = $.parseHTML('<button class="increase"></button>');
