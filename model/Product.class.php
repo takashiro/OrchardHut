@@ -431,9 +431,9 @@ class Product extends DBObject{
 		$id = intval($id);
 		$condition = 'productid='.$id;
 
+		$db->query("DELETE FROM {$tpre}productcountdown WHERE id IN (SELECT id FROM {$tpre}productprice WHERE productid=$id)");
+
 		$db->select_table('productprice');
-		$db->DELETE($condition);
-		$db->select_table('productcountdown');
 		$db->DELETE($condition);
 		$db->select_table('productstorage');
 		$db->DELETE($condition);
