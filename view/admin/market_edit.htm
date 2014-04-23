@@ -157,7 +157,7 @@ var product_id = $product[id];
 					<td>库存号</td>
 					<td>备注</td>
 					<td>库存量</td>
-					<td>增加库存</td>
+					<td>增减库存</td>
 					<td>操作</td>
 				</tr>
 			</thead>
@@ -167,14 +167,14 @@ var product_id = $product[id];
 					<td>$p[id]</td>
 					<td>$p[remark]</td>
 					<td>$p[num]</td>
-					<td></td>
+					<td title="正数增加，负数减少"></td>
 					<td></td>
 				</tr>
 				<!--{/loop}-->
 				<tr>
 					<td></td>
 					<td><input type="text" /></td>
-					<td></td>
+					<td>0</td>
 					<td><input type="text" class="number narrow" /></td>
 					<td><button type="button" class="add">添加</button></td>
 				</tr>
