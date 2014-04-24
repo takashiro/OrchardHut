@@ -107,6 +107,14 @@ class Template{
 		return $html;
 	}
 	
+	/*
+		Function mpage (short for multiple page) generate HTML codes for multiple pages. It's a paging function.
+		$totalnum is the total number of rows of data.
+		$page is the current page number.
+		$limit is the number of rows on each page.
+		$url is the basic URL, that a new parameter "page" (via GET method), which represents the target page, will be appended to.
+		@TO-DO: it does not support language packs, for chinese words are already written, as follows, inside the function.
+	*/
 	static public function mpage($totalnum, $page, $limit, $url = ''){
 		if(!$url){
 			$url = $_SERVER['SCRIPT_FILENAME'].($_SERVER['QUERY_STRING'] ? '?'.$_SERVER['QUERY_STRING'] : '');
@@ -121,20 +129,31 @@ class Template{
 		$page = min($maxpage, max(1, intval($page)));
 		
 		$html = '<div class="mpage">';
-		$html.= '<a href="'.$url.$delimeter.'page=1'.'">'."首页".'</a>';
 
-		$html.= '<a href="'.$url.$delimeter.'page='.max(1,$page - 1).'">'."上一页".'</a>';
-		for($i = max(1, $page - 5 - max(0,$page + 5 - $maxpage)); $i <= min($maxpage, $page + 5 + max(0, 6 - $page)); $i++){
+		if($page > 1){
+			if($page > 2){
+				$html.= '<a href="'.$url.$delimeter.'page=1'.'">'."首页".'</a>';
+			}
+			$html.= '<a href="'.$url.$delimeter.'page='.max(1,$page - 1).'">'."上一页".'</a>';
+		}
+
+		$faraway = min($maxpage, $page + 5 + max(0, 6 - $page));
+		for($i = max(1, $page - 5 - max(0,$page + 5 - $maxpage)); $i <= $faraway; $i++){
 			if($i == $page){
 				$html.= '<a href="###" class="current">'.$i.'</a>';
 			}else{
 				$html.= '<a href="'.$url.$delimeter.'page='.$i.'">'.$i.'</a>';
 			}
 		}
-		$html.= '<a href="'.$url.$delimeter.'page='.min($maxpage,$page + 1).'">'."下一页".'</a>';
-		$html.= '<a href="'.$url.$delimeter.'page='.$maxpage.'">'."尾页".'</a>';
+
+		if($page < $maxpage){
+			$html.= '<a href="'.$url.$delimeter.'page='.($page + 1).'">'."下一页".'</a>';
+			if($page < $maxpage - 1){
+				$html.= '<a href="'.$url.$delimeter.'page='.$maxpage.'">'."尾页".'</a>';
+			}
+		}
+
 		$html.= '</div>';
-		
 		
 		return $html;
 	}
