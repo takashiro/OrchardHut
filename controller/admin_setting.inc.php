@@ -219,6 +219,8 @@ case 'delivery':
 		foreach(array('time_deadline', 'time_from', 'time_to') as $var){
 			isset($timespan[$var]) && $timespan[$var] = gmdate('H:i:s', $timespan[$var]);
 		}
+		
+		DeliveryTime::UpdateCache();
 		echo json_encode($timespan);
 		exit;
 	case 'delete':
@@ -226,12 +228,12 @@ case 'delivery':
 		if($id > 0){
 			$db->select_table('deliverytime');
 			$db->DELETE('id='.$id);
+			DeliveryTime::UpdateCache();
 			echo 1;
 		}
 		break;
 	default:
-		$db->select_table('deliverytime');
-		$delivery_timespans = $db->MFETCH('*');
+		$delivery_timespans = DeliveryTime::FetchAll();
 		foreach($delivery_timespans as &$s){
 			foreach(array('time_deadline', 'time_from', 'time_to') as $var){
 				$s[$var] = gmdate('H:i:s', $s[$var]);

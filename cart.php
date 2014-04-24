@@ -281,8 +281,7 @@ switch($action){
 		list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
 		$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
 		$splitter = $H * 3600 + $i * 60 + $s;
-		$db->select_table('deliverytime');
-		$delivery_timespans = $db->MFETCH('*', 'hidden=0');
+		$delivery_timespans = DeliveryTime::FetchAll();
 		foreach($delivery_timespans as &$s){
 			if($s['time_deadline'] <= $splitter){
 				$s['time_from'] += 24 * 3600;
@@ -293,10 +292,7 @@ switch($action){
 		}
 		unset($s);
 
-		function __sort_by_time($s1, $s2){
-			return $s1['time_from'] > $s2['time_from'];
-		}
-		usort($delivery_timespans, '__sort_by_time');
+		DeliveryTime::SortByTimeFrom($delivery_timespans);
 
 		include view('cart');
 	break;
