@@ -12,7 +12,7 @@ switch($action){
 
 			if(!empty($_POST['display_status']) && is_array($_POST['display_status'])){
 				$display_status = $_POST['display_status'];
-			}elseif(!empty($_GET['display_status'])){
+			}elseif(isset($_GET['display_status'])){
 				$display_status = array();
 				foreach(explode(',', $_GET['display_status']) as $status){
 					$display_status[$status] = true;
