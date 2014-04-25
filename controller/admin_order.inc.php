@@ -149,9 +149,12 @@ switch($action){
 			$offset = ($page - 1) * $limit;
 			$pagenum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order o WHERE $condition");
 			if(!$stat['statonly']){
-				$orders = $db->fetch_all("SELECT o.*, (SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND dateline<o.dateline) AS ordernum
+				$orders = $db->fetch_all("SELECT o.*,
+						(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND dateline<o.dateline) AS ordernum
 					FROM {$tpre}order o
-					WHERE $condition ORDER BY o.status,o.dtime_from,o.dateline LIMIT $offset,$limit");
+					WHERE $condition
+					ORDER BY o.status,o.dtime_from,o.dateline
+					LIMIT $offset,$limit");
 			}else{
 				$orders = array();
 			}

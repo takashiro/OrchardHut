@@ -169,7 +169,7 @@ switch($action){
 				list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
 				$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
 				$splitter = $H * 3600 + $i * 60 + $s;
-				if($delivery['time_deadline'] <= $splitter){
+				if($delivery['deadline'] <= $splitter){
 					$delivery['time_from'] += 24 * 3600;
 					$delivery['time_to'] += 24 * 3600;
 				}
@@ -281,9 +281,9 @@ switch($action){
 		list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
 		$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
 		$splitter = $H * 3600 + $i * 60 + $s;
-		$delivery_timespans = DeliveryTime::FetchAll();
+		$delivery_timespans = DeliveryTime::FetchAllEffective();
 		foreach($delivery_timespans as &$s){
-			if($s['time_deadline'] <= $splitter){
+			if($s['deadline'] <= $splitter){
 				$s['time_from'] += 24 * 3600;
 				$s['time_to'] += 24 * 3600;
 			}

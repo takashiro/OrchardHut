@@ -188,8 +188,8 @@ case 'delivery':
 		if(isset($_POST['time_to'])){
 			$timespan['time_to'] = $_POST['time_to'];
 		}
-		if(isset($_POST['time_deadline'])){
-			$timespan['time_deadline'] = $_POST['time_deadline'];
+		if(isset($_POST['deadline'])){
+			$timespan['deadline'] = $_POST['deadline'];
 		}
 
 		foreach($timespan as &$time){
@@ -202,7 +202,15 @@ case 'delivery':
 		unset($time);
 
 		if(isset($_POST['hidden'])){
-			$timespan['hidden'] = !empty($_POST['hidden']);
+			$timespan['hidden'] = !empty($_POST['hidden']) ? 1 : 0;
+		}
+
+		if(isset($_POST['effective_time'])){
+			$timespan['effective_time'] = rstrtotime($_POST['effective_time']);
+		}
+
+		if(isset($_POST['expiry_time'])){
+			$timespan['expiry_time'] = rstrtotime($_POST['expiry_time']);
 		}
 
 		$db->select_table('deliverytime');
@@ -210,16 +218,18 @@ case 'delivery':
 			$db->UPDATE($timespan, 'id='.$id);
 			$timespan['id'] = $id;
 		}else{
-
-
 			$db->INSERT($timespan);
 			$timespan['id'] = $db->insert_id();
 		}
 
-		foreach(array('time_deadline', 'time_from', 'time_to') as $var){
-			isset($timespan[$var]) && $timespan[$var] = gmdate('H:i:s', $timespan[$var]);
+		foreach(array('deadline', 'time_from', 'time_to') as $var){
+			isset($timespan[$var]) && $timespan[$var] = floor($timespan[$var] / 3600).gmdate(':i:s', $timespan[$var]);
 		}
 		
+		foreach(array('effective_time', 'expiry_time') as $var){
+			isset($timespan[$var]) && $timespan[$var] = rdate($timespan[$var]);
+		}
+
 		DeliveryTime::UpdateCache();
 		echo json_encode($timespan);
 		exit;
@@ -235,8 +245,12 @@ case 'delivery':
 	default:
 		$delivery_timespans = DeliveryTime::FetchAll();
 		foreach($delivery_timespans as &$s){
-			foreach(array('time_deadline', 'time_from', 'time_to') as $var){
-				$s[$var] = gmdate('H:i:s', $s[$var]);
+			foreach(array('deadline', 'time_from', 'time_to') as $var){
+				$s[$var] = floor($s[$var] / 3600).gmdate(':i:s', $s[$var]);
+			}
+
+			foreach(array('effective_time', 'expiry_time') as $var){
+				$s[$var] = rdate($s[$var]);
 			}
 		}
 		unset($s);

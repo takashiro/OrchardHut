@@ -12,9 +12,22 @@ class DeliveryTime{
 		if(!$timespans){
 			global $db;
 			$db->select_table('deliverytime');
-			$timespans = $db->MFETCH('*', 'hidden=0');
+			$timespans = $db->MFETCH('*');
 			writecache('deliverytime', $timespans);
 		}
+
+		return $timespans;
+	}
+
+	public static function FetchAllEffective(){
+		$timespans = array();
+
+		foreach(self::FetchAll() as $span){
+			if(empty($span['hidden']) && $span['effective_time'] <= TIMESTAMP && TIMESTAMP <= $span['expiry_time']){
+				$timespans[] = $span;
+			}
+		}
+
 		return $timespans;
 	}
 
