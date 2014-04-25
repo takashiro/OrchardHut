@@ -1,5 +1,8 @@
 <?php
 
+/*
+	Load the language pack (./view/$_G[style]/$type.lang.php) and translate $from into the local language
+*/
 function lang($type, $from = NULL){
 	$style = $GLOBALS['_G']['style'];
 	$file = './view/'.$style.'/'.$type.'.lang.php';
@@ -31,6 +34,9 @@ function lang($type, $from = NULL){
 	}
 }
 
+/*
+	short for "show message". It displays a prompt and exit the script, and then redirect to $url_forward in a few seconds.
+*/
 function showmsg($message, $url_forward = ''){
 	extract($GLOBALS, EXTR_SKIP);
 
@@ -70,6 +76,9 @@ function showmsg($message, $url_forward = ''){
 	exit();
 }
 
+/*
+	Redirect to $url using JavaScript. JavaScript redirect forces some browsers to refresh page caches.
+*/
 function redirect($url){
 	extract($GLOBALS, EXTR_SKIP);
 
@@ -78,7 +87,10 @@ function redirect($url){
 	exit;
 }
 
-//设置一个cookie, $extexpiry是有效时间长度
+/*
+	Set or unset a new cookie variable.
+	$extexpiry represents how long the new variable will exist. A year by default. 
+*/
 function rsetcookie($varname, $value = '', $extexpiry = -1){
 	global $_G;
 	$varname = $_G['config']['cookiepre'].$varname;
@@ -90,52 +102,16 @@ function rsetcookie($varname, $value = '', $extexpiry = -1){
 	}
 }
 
-//分页设置
-function multi($totalnum, $limit, $curpage, $baseurl){
-	$pagelimit = 9;
-	
-	$pagenum = ceil($totalnum / $limit);
-	if($pagenum <= 1){
-		return '';
-	}
-
-	$startpage = max($curpage - floor($pagelimit / 2), 1);
-	$endpage = min($curpage + floor($pagelimit / 2), $pagenum);
-	$pre = strstr($baseurl, '?') ? '&' : '?';
-	
-	$html = '<div id="multipage">';
-	
-	if($curpage > 1){
-		$html.= '<a href="'.$baseurl.$pre.'page=1">首页</a>';  //连续定义变量
-		$html.= '<a href="'.$baseurl.$pre.'page='.($curpage - 1).'">上一页</a>';
-	}
-
-	for($i = $startpage; $i < $curpage; $i++){
-		$html.= '<a href="'.$baseurl.$pre.'page='.$i.'">'.$i.'</a>';
-	}
-
-	$html.= '<a href="'.$baseurl.$pre.'page='.$i.'" class="current">'.$i.'</a>';
-
-	for($i = $i + 1; $i <= $endpage; $i++){
-		$html.= '<a href="'.$baseurl.$pre.'page='.$i.'">'.$i.'</a>';
-	}
-	
-	if($curpage<$pagenum) {
-		$html.= '<a href="'.$baseurl.$pre.'page='.($curpage + 1).'">下一页</a>';
-		$html.= '<a href="'.$baseurl.$pre.'page='.$pagenum.'">末页</a>';
-	}
-	
-	$html.= '&nbsp;共'.$pagenum.'页&nbsp;转到第<input type="text" id="mul_pagenumber" />页&nbsp;';
-	$html.= '<a href="javascript:changePage('."'".$baseurl.$pre.'page='."'".','.$pagenum.');">确定</a>';
-	$html.= '</div>';
-	
-	return $html;
-}
-
+/*
+	Write the variable $data into the file ./data/cache/$file.php
+*/
 function writecache($file, $data){
 	return file_put_contents(S_ROOT.'./data/cache/'.$file.'.php', '<?php return '.var_export($data, true).';?>');
 }
 
+/*
+	Read from the cache file ./data/cache/$file.php. It returns NULL when the file doesn't exist.
+*/
 function readcache($file){
 	if(file_exists(S_ROOT.'./data/cache/'.$file.'.php')){
 		return include S_ROOT.'./data/cache/'.$file.'.php';
@@ -144,10 +120,20 @@ function readcache($file){
 	}
 }
 
+/*
+	Write the variable $data into the file ./data/$file.php
+	Files here can't be deleted, unlike writecache().
+	$data may be stored here only and its deletion causes possible problems.
+*/
 function writedata($file, $data){
 	return file_put_contents(S_ROOT.'./data/'.$file.'.inc.php', '<?php return '.var_export($data, true).';?>');
 }
 
+/*
+	Read from the cache file ./data/$file.php. It returns NULL when the file doesn't exist.
+	Files here can't be deleted, unlike readcache().
+	$data may be stored here only and its deletion causes possible problems.
+*/
 function readdata($file){
 	$file = S_ROOT.'./data/'.$file.'.inc.php';
 	if(file_exists($file)){
@@ -179,6 +165,12 @@ function rhtmlspecialchars($str){
 	return $str;
 }
 
+/*
+	Include a template file from ./view/$_G[style]/$tpl.htm
+	The file will be parsed and cached into ./data/template/
+	We defined several statements used in template files like {if} {elseif} {/if} which
+	can be quoted with <!-- and --> as HTML comments. Template files must be parsed into PHP scripts before they run.
+*/
 function view($tpl){
 	global $_G;
 	$htmpath = S_ROOT.'./view/'.$_G['style'].'/'.$tpl.'.htm';
@@ -193,13 +185,16 @@ function view($tpl){
 }
 
 function rdate($dateline, $format = 'Y-m-d H:i:s'){
-	return gmdate($format, $dateline + $GLOBALS['_CONFIG']['timezone'] * 3600);
+	return gmdate($format, $dateline + TIMEZONE * 3600);
 }
 
 function rmktime($hour, $minute, $second, $month, $day, $year){
 	return gmmktime($hour, $minute, $second, $month, $day, $year) - TIMEZONE * 3600;
 }
 
+/*
+	Convert $date into a UNIX timestamp
+*/
 function datetotimestamp($date){
 	$date = explode('-', $date);
 	if(count($date) != 3){
@@ -213,6 +208,9 @@ function datetotimestamp($date){
 	return rmktime(0, 0, 0, $date[1], $date[2], $date[0]);
 }
 
+/*
+	Convert a time string Y-m-d H:i:s into a UNIX timestamp
+*/
 function rstrtotime($datetime){
 	$datetime = explode(' ', $datetime);
 	$date = explode('-', $datetime[0]);
@@ -238,6 +236,9 @@ function rstrtotime($datetime){
 	return rmktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
 }
 
+/*
+	Generate a random string of $length characters which are nothing but letters or numbers.
+*/
 function randomstr($length, $numeric = 0) {
 	PHP_VERSION < '4.2.0' ? mt_srand((double) microtime() * 1000000) : mt_srand();
 	$seed = base_convert(md5(print_r($_SERVER, 1).microtime()), 16, $numeric ? 10 : 35);
@@ -248,16 +249,6 @@ function randomstr($length, $numeric = 0) {
 		$hash .= $seed[mt_rand(0, $max)];
 	}
 	return $hash;
-}
-
-function rfilesize($size){
-	if($size < 1024){
-		return $size.'B';
-	}elseif($size < 1024 * 1024){
-		return (floor($size / 1024 * 100) / 100).'KB';
-	}else{
-		return (floor($size / 1024 / 1024 * 100) / 100).'MB';
-	}
 }
 
 function rheader($string, $replace = true, $http_response_code = 0) {
@@ -308,14 +299,6 @@ function writelog($logfile, $data){
 	}
 	fwrite($fp, "\r\n".$data);
 	fclose($fp);
-}
-
-function submitcheck($var){
-	if(isset($_POST[$var]) && ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($_SERVER['HTTP_REFERER']) || preg_replace("/https?:\/\/([^\:\/]+).*/i", "\\1", $_SERVER['HTTP_REFERER']) == preg_replace("/([^\:]+).*/", "\\1", $_SERVER['HTTP_HOST'])))){
-		return true;
-	}else{
-		return false;
-	}
 }
 
 ?>
