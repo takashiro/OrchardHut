@@ -34,7 +34,7 @@
 							<a href="home.php?action=view&orderid=$o[id]" class="view">[详细]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
 								<a href="home.php?action=delete&orderid=$o[id]">[取消]</a>
-							<!--{elseif $o['status'] == Order::Delivering}-->
+							<!--{elseif $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
 								<a href="home.php?action=mark_received&orderid=$o[id]">[签收]</a>
 							<!--{/if}-->
 						</td>

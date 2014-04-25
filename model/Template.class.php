@@ -23,6 +23,8 @@ class Template{
 		$template = preg_replace("/$var_regexp/es", "Template::addquote('<?{$tag}\\1?>')", $template);
 		$template = preg_replace("/\<\?\=\<\?\=$var_regexp\?\>\?\>/es", "Template::addquote('<?{$tag}\\1?>')", $template);
 
+		$template = preg_replace("/\{lang\s+([a-zA-Z0-9_]+?)\s+([a-zA-Z0-9_]+?)\}/ies", "lang('\\1','\\2')", $template);
+
 		$template = preg_replace("/[\n\r\t]*\{template\s+([a-z0-9_]+)\}[\n\r\t]*/ies", "Template::parse_subtemplate('\\1')", $template);
 		$template = preg_replace("/[\n\r\t]*\{template\s+(.+?)\}[\n\r\t]*/ies", "Template::parse_subtemplate('\\1')", $template);
 		$template = preg_replace("/[\n\r\t]*\{eval\s+(.+?)\}[\n\r\t]*/ies", "Template::stripvtags('<? \\1 ?>','')", $template);
@@ -82,13 +84,19 @@ class Template{
 		return "\n".file_get_contents(view($file))."\n";
 	}
 
-	static public function select($name, $option, $value = 0){
+	/*
+		The function generates a select element.
+		$name is the name of the select element, as an identifier in its form.
+		$option is an array whose values are the texts of each option and keys are the corresponding value submitted to server
+		$selected is the value of the selected element. Its default value is NULL, not 0, for 0 equals(==) any string other than pure digits like "123"
+	*/
+	static public function select($name, $option, $selected = NULL){
 		$html = '<select id="'.$name.'" name="'.$name.'">';
 		if(!is_array($option)){
 			$option = explode(',', $option);
 		}
-		foreach($option as $key => $val){
-			$html.= '<option value="'.$key.'"'.($value == $key ? ' selected="selected"' : '').'>'.$val.'</option>';
+		foreach($option as $value => $text){
+			$html.= '<option value="'.$value.'"'.($value == $selected ? ' selected="selected"' : '').'>'.$text.'</option>';
 		}
 		$html.= '</select>';
 		

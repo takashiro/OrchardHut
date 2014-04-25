@@ -4,11 +4,11 @@
 <style type="text/css">@import url(./plugin/datetimepicker/jquery.datetimepicker.css);</style>
 <script type="text/javascript">
 var lang = {
-	order_unsorted : '待出库',
-	order_sorted : '待配送',
-	order_delivering : '配送中',
-	order_received : '已签收',
-	order_rejected : '已拒收',
+	order_unsorted : '{lang common order_unsorted}',
+	order_sorted : '{lang common order_sorted}',
+	order_delivering : '{lang common order_delivering}',
+	order_received : '{lang common order_received}',
+	order_rejected : '{lang common order_rejected}',
 	confirm_to_mark_detail_in_stock : '您确认要将该项标记为有货吗？',
 	confirm_to_mark_detail_out_of_stock : '您确认要将该项标记为缺货吗？'
 };
@@ -79,7 +79,7 @@ $(function(){
 				<dt>订单号：</dt>
 				<dd><input type="text" name="orderid" style="width:3em" /></dd>
 				<dt>状态：</dt>
-				<dd>{echo Template::select('action', array('mark_unsorted' => '待出库', 'mark_sorted' => '待配送', 'mark_delivering' => '配送中', 'mark_received' => '已签收', 'mark_rejected' => '已拒收'))}</dd>
+				<dd>{echo Template::select('action', array('mark_unsorted' => lang('common', 'order_unsorted'), 'mark_sorted' => lang('common', 'order_sorted'), 'mark_delivering' => lang('common', 'order_delivering'), 'mark_received' => lang('common', 'order_received'), 'mark_rejected' => lang('common', 'order_rejected')))}</dd>
 			</dl>
 			<button type="submit">修改</button>
 			<a class="button" id="multi_mark_sorted" href="###" title="批量点击本页所有[已打包]按钮">本页已打包</a>

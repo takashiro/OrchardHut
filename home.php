@@ -30,7 +30,7 @@ case 'mark_received':
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	if($orderid > 0){
-		$db->query("UPDATE {$tpre}order SET status=".Order::Received." WHERE id=$orderid AND userid=$_USER[id] AND status=".Order::Delivering);
+		$db->query("UPDATE {$tpre}order SET status=".Order::Received." WHERE id=$orderid AND userid=$_USER[id] AND status IN (".Order::Sorted.",".Order::Delivering.")");
 		if($db->affected_rows() > 0){
 			$order = new Order;
 			$order->id = $orderid;
@@ -59,7 +59,7 @@ case 'view':
 	break;
 
 case 'deliveringnum':
-	$num = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid=$_USER[id] AND status=".Order::Delivering);
+	$num = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid=$_USER[id] AND status IN (".Order::Sorted.",".Order::Delivering.")");
 	echo $num;
 	exit;
 
