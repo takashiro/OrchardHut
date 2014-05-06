@@ -138,6 +138,8 @@ class Template{
 		
 		$html = '<div class="mpage">';
 
+		$html.= '<a href="###" class="current">'.$totalnum.'</a>';
+
 		if($page > 1){
 			if($page > 2){
 				$html.= '<a href="'.$url.$delimeter.'page=1'.'">'."首页".'</a>';

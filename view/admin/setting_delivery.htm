@@ -3,6 +3,7 @@
 <script type="text/javascript">
 $(function(){
 	$('#unit_list').editlist({
+		'edit' : '$mod_url&type=delivery&action=edit',
 		'delete' : '$mod_url&type=delivery&action=delete',
 		'attr' : ['deadline', 'time_from', 'time_to', 'effective_time', 'expiry_time', 'hidden'],
 		'buttons' : {'delete':'删除'}

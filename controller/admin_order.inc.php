@@ -18,7 +18,7 @@ switch($action){
 					$display_status[$status] = true;
 				}
 			}else{
-				$display_status = Order::$Status;
+				$display_status = array_slice(Order::$Status, 0, 3);
 			}
 
 			if(!$_G['admin']->hasPermission('order_sort')){

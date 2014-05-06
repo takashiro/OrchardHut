@@ -83,7 +83,7 @@ $(function(){
 	var delivered_num = parseInt(getcookie('delivering-order-number'), 10);
 	var cache_time = parseInt(getcookie('order-number-cache-time'), 10);
 	var current_time = parseInt(new Date().valueOf() / 1000);
-	if(isNaN(delivered_num) || isNaN(cache_time) || cache_time - current_time >= 1800){
+	if(isNaN(delivered_num) || isNaN(cache_time) || current_time - cache_time >= 1800){
 		$('#delivering-order-number').numbernotice(0);
 		$.post('home.php?action=deliveringnum', {}, function(data){
 			delivered_num = parseInt(data, 10);
