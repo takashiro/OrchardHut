@@ -39,12 +39,12 @@ switch($action){
 				if(isset($_REQUEST['time_start'])){
 					$time_start = empty($_REQUEST['time_start']) ? '' : rstrtotime($_REQUEST['time_start']);
 				}else{
-					$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 7, rdate(TIMESTAMP, 'Y'));
+					$time_start = rmktime(17, 30, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
 				}
 				if(isset($_REQUEST['time_end'])){
 					$time_end = empty($_REQUEST['time_end']) ? '' : rstrtotime($_REQUEST['time_end']);
 				}else{
-					$time_end = $time_start + 8 * 24 * 3600;
+					$time_end = $time_start + 1 * 24 * 3600;
 				}
 				
 				if($time_start !== ''){
