@@ -222,7 +222,7 @@ class Template{
 		unset($f);
 
 		if($with_ext){
-			$html.= '<input type="text" class="ext" placeholder="更详细的地址，如寝室号" />';
+			$html.= '<input type="text" class="ext" placeholder="更详细的单元及寝室号" />';
 		}
 		$html.= '</span>';
 

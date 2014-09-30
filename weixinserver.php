@@ -19,6 +19,12 @@ if($request['MsgType'] == 'event'){
 	if($request['Event'] == 'subscribe'){
 		$weixin->replyTextMessage($wx['subscribe_text']);
 	}
+	//click menu,  to-do "KEY"
+	if($request['Event'] == 'CLICK'){
+		$user = $request['FromUserName'];
+		$key = Authkey::Generate($user);
+		$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=login&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
+	}
 }elseif($request['MsgType'] == 'text'){
 	if(isset($wx['bind_keyword']) && Autoreply::MatchKeywords($wx['bind_keyword'], $request['Content'])){
 		$words = explode("\n", $wx['bind2_keyword']);
