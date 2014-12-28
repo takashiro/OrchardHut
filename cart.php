@@ -2,6 +2,7 @@
 
 require_once './core/init.inc.php';
 
+//Disallow guests opening the shopping cart
 if(!$_G['user']->isLoggedIn()){
 	redirect('memcp.php');
 }
@@ -10,11 +11,14 @@ $actions = array('order', 'deleteaddress');
 $action = isset($_POST['action']) && in_array($_POST['action'], $actions) ? $_POST['action'] : $actions[0];
 
 switch($action){
+	//Now the user is either listing everything in the shopping cart or submitting a new order.
 	case 'order':
-		$cart = $priceids = array();
-		$total_price = array();
-		$item_deleted = false;
+		$total_price = array();//Total prices of all the currency. Although there's only RMB.
+		$item_deleted = false;//It's a flag indicates some items were deleted out of date.
 
+		//$cart is an array of items, with the key standing for its price id and the value for the number.
+		//$priceids is array_keys($cart)
+		$cart = $priceids = array();
 		if(!empty($_COOKIE['in_cart'])){
 			$in_cart = explode(',', $_COOKIE['in_cart']);
 			foreach($in_cart as $item){
@@ -25,7 +29,7 @@ switch($action){
 			}
 		}
 
-		if($priceids){
+		if($priceids){//Now the shopping cart is not empty. Let's calculate as a cashier.
 			$priceids = implode(',', $priceids);
 			$products = $db->fetch_all("SELECT p.*,r.*,r.id AS priceid
 				FROM {$tpre}productprice r
@@ -60,7 +64,7 @@ switch($action){
 			$cart = &$filtered_cart;
 			$in_cart = implode(',', $in_cart);
 			rsetcookie('in_cart', $in_cart);
-		}else{
+		}else{//The shopping cart is empty... Some items may be out of date. Just empty the $products.
 			$products = array();
 		}
 
@@ -135,7 +139,7 @@ switch($action){
 
 			$db->select_table('addresscomponent');
 			$address_component = $db->MFETCH('formatid,id', 'id IN ('.implode(',', $address_component).')');
-			
+
 			//Validate Address Components
 			$format2component = array();
 			foreach($address_component as $c){
@@ -242,7 +246,7 @@ switch($action){
 				$product->$attr = $value;
 			}
 			$product->id = $p['productid'];
-			
+
 			$p = $product->toArray();
 			$p['icon'] = $product->getImage('icon');
 			$p['photo'] = $product->getImage('photo');
@@ -262,7 +266,7 @@ switch($action){
 
 		$db->select_table('deliveryaddress');
 		$delivery_addresses = $db->MFETCH('*', 'userid='.$_G['user']->id);
-		
+
 		foreach($delivery_addresses as &$a){
 			$a['address_text'] = '';
 			$query = $db->query("SELECT c.name
