@@ -7,9 +7,12 @@ $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) 
 
 switch($action){
 	case 'list':case 'search':
+		//显示（或导出Excel表格）订单列表
 		if($action == 'list'){
+			//保存查询条件，数组中的每个元素用AND连接构成一个WHERE子句
 			$condition = array();
 
+			//$display_status数组的键名即订单的状态，$display_status[X]为true则显示状态为X的订单
 			if(!empty($_POST['display_status']) && is_array($_POST['display_status'])){
 				$display_status = $_POST['display_status'];
 			}elseif(isset($_GET['display_status'])){
@@ -21,6 +24,7 @@ switch($action){
 				$display_status = array_slice(Order::$Status, 0, 3);
 			}
 
+			//判断当前管理员的权限，过滤掉无权限查看的订单
 			if(!$_G['admin']->hasPermission('order_sort')){
 				unset($display_status[Order::Unsorted]);
 			}
@@ -29,24 +33,29 @@ switch($action){
 				unset($display_status[Order::Sorted], $display_status[Order::Delivering]);
 			}
 
+			//输入了订单号，直接按订单号查询，忽略管理员权限外的其他条件
 			if(!empty($_REQUEST['orderid'])){
 				$condition[] = 'id='.intval($_REQUEST['orderid']);
 				$display_status[Order::Received] = $display_status[Order::Rejected] = true;
 
 				$time_start = '';
 				$time_end = '';
+
+			//没有订单号，所有条件均要考虑
 			}else{
+				//下单起始时间
 				if(isset($_REQUEST['time_start'])){
 					$time_start = empty($_REQUEST['time_start']) ? '' : rstrtotime($_REQUEST['time_start']);
 				}else{
 					$time_start = rmktime(17, 30, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
 				}
+				//下单截止时间
 				if(isset($_REQUEST['time_end'])){
 					$time_end = empty($_REQUEST['time_end']) ? '' : rstrtotime($_REQUEST['time_end']);
 				}else{
 					$time_end = $time_start + 1 * 24 * 3600;
 				}
-				
+
 				if($time_start !== ''){
 					$condition[] = 'o.dateline>='.$time_start;
 					$time_start = rdate($time_start, 'Y-m-d H:i');
@@ -60,6 +69,7 @@ switch($action){
 			$display_status = array_keys($display_status);
 			$condition[] = 'o.status IN ('.implode(',', $display_status).')';
 
+			//过滤掉送货地点不在当前管理员的管辖范围内的订单
 			$limitation_condition = array();
 			foreach($_G['admin']->getLimitations() as $componentid){
 				$limitation_condition[] = "o.id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE componentid=$componentid)";
@@ -69,6 +79,8 @@ switch($action){
 				$condition[] = '('.implode(' OR ', $limitation_condition).')';
 			}
 
+
+			//根据送货地址查询订单
 			$order_address = array();
 
 			$delivery_address = array();
@@ -98,6 +110,7 @@ switch($action){
 				$condition[] = 'o.id IN (SELECT orderid FROM '.$tpre.'orderaddresscomponent WHERE componentid IN ('.implode(',', $order_address).'))';
 			}
 
+			//根据用户ID查询订单
 			if(!empty($_REQUEST['userid'])){
 				$userid = intval($_REQUEST['userid']);
 				$condition[] = 'o.userid='.$userid;
@@ -105,6 +118,7 @@ switch($action){
 				$userid = '';
 			}
 
+			//根据收件人姓名查询订单
 			if(!empty($_REQUEST['addressee'])){
 				$addressee = trim($_REQUEST['addressee']);
 				$condition[] = 'o.addressee LIKE \'%'.$addressee.'%\'';
@@ -112,6 +126,7 @@ switch($action){
 				$addressee = '';
 			}
 
+			//根据手机号查询订单
 			if(!empty($_REQUEST['mobile'])){
 				$mobile = trim($_REQUEST['mobile']);
 				$condition[] = 'o.mobile=\''.$mobile.'\'';
@@ -119,6 +134,7 @@ switch($action){
 				$mobile = '';
 			}
 
+			//查询某个管理员管辖范围内的订单
 			if(!empty($_REQUEST['administrator'])){
 				$administrator = trim($_REQUEST['administrator']);
 				$limitation = $db->result_first("SELECT limitation FROM {$tpre}administrator WHERE account='$administrator'");
@@ -137,28 +153,44 @@ switch($action){
 				$administrator = '';
 			}
 
+			//连接成WHERE子句
 			$condition = implode(' AND ', $condition);
-			
+
+			//处理统计信息
 			$stat = array(
-				'statonly' => !empty($_REQUEST['stat']['statonly']),
-				'totalprice' => !empty($_REQUEST['stat']['totalprice']),
-				'item' => !empty($_REQUEST['stat']['item']),
+				'statonly' => !empty($_REQUEST['stat']['statonly']),		//仅显示统计信息
+				'totalprice' => !empty($_REQUEST['stat']['totalprice']),	//计算总价格
+				'item' => !empty($_REQUEST['stat']['item']),				//根据商品分类统计
 			);
 
-			$limit = 20;
-			$offset = ($page - 1) * $limit;
+			//判断显示格式，若为csv则导出Excel表格
+			$template_formats = array('html', 'csv');
+			$template_format = &$_REQUEST['format'];
+			if(empty($template_format) || !in_array($template_format, $template_formats)){
+				$template_format = $template_formats[0];
+			}
+
+			//从数据库中查询订单，实现分页
 			$pagenum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order o WHERE $condition");
 			if(!$stat['statonly']){
+				$limit_subsql = '';
+				if($template_format == 'html'){
+					$limit = 20;
+					$offset = ($page - 1) * $limit;
+					$limit_subsql = "LIMIT $offset,$limit";
+				}
+
 				$orders = $db->fetch_all("SELECT o.*,
 						(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND dateline<o.dateline) AS ordernum
 					FROM {$tpre}order o
 					WHERE $condition
 					ORDER BY o.status,o.dtime_from,o.dateline
-					LIMIT $offset,$limit");
+					$limit_subsql");
 			}else{
 				$orders = array();
 			}
 
+			//计算统计信息
 			$statdata = array();
 			if($stat['totalprice']){
 				$statdata['totalprice'] = $db->fetch_all("SELECT SUM(totalprice) AS price,priceunit FROM {$tpre}order o WHERE $condition GROUP BY priceunit");
@@ -185,6 +217,7 @@ switch($action){
 				$statdata['item'] = array();
 			}
 
+			//查询各个订单的详细内容（每种商品的购买数量、单项价格等）
 			if($orders){
 				$orderids = array();
 				foreach($orders as &$o){
@@ -213,6 +246,7 @@ switch($action){
 
 				foreach($orders as &$o){
 					$o['details'] = &$order_details[$o['id']];
+					is_array($o['details']) || $o['details'] = array();
 					$o['priceunit'] = Product::PriceUnits($o['priceunit']);
 					$o['address'] = &$order_addresses[$o['id']];
 				}
@@ -282,16 +316,10 @@ switch($action){
 		}
 
 		if($action == 'list'){
-			$formats = array('html', 'csv');
-			$format = &$_REQUEST['format'];
-			if(empty($format) || !in_array($format, $formats)){
-				$format = $formats[0];
-			}
-
-			if($format == 'html'){
+			if($template_format == 'html'){
 				include view('order_list');
 			}else{
-				include view('order_'.$format);
+				include view('order_'.$template_format);
 			}
 		}else{
 			include view('order_search');
@@ -354,7 +382,7 @@ switch($action){
 			$order->status = Order::Received;
 			$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
 		}
-		
+
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
@@ -370,7 +398,7 @@ switch($action){
 			$order->status = Order::Rejected;
 			$order->addLog($_G['admin'], Order::StatusChanged, Order::Rejected);
 		}
-		
+
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 

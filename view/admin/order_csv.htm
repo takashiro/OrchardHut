@@ -14,7 +14,7 @@
 {eval 	}}
 {eval 	echo $d['productname'];}
 {eval 	if($d['subtype']){}
-{eval 		echo $d['subtype'];}
+{eval 		echo '('.$d['subtype'].')';}
 {eval 	}}
 {eval 	echo $d['amount'] * $d['number'],$d['amountunit'],"\r\n";}
 {eval }}
