@@ -164,7 +164,7 @@ switch($action){
 			);
 
 			//判断显示格式，若为csv则导出Excel表格
-			$template_formats = array('html', 'csv');
+			$template_formats = array('html', 'csv', 'print');
 			$template_format = &$_REQUEST['format'];
 			if(empty($template_format) || !in_array($template_format, $template_formats)){
 				$template_format = $template_formats[0];
@@ -191,30 +191,32 @@ switch($action){
 			}
 
 			//计算统计信息
-			$statdata = array();
-			if($stat['totalprice']){
-				$statdata['totalprice'] = $db->fetch_all("SELECT SUM(totalprice) AS price,priceunit FROM {$tpre}order o WHERE $condition GROUP BY priceunit");
-				foreach($statdata['totalprice'] as &$total){
-					$total['priceunit'] = Product::PriceUnits($total['priceunit']);
+			if($template_format == 'html'){
+				$statdata = array();
+				if($stat['totalprice']){
+					$statdata['totalprice'] = $db->fetch_all("SELECT SUM(totalprice) AS price,priceunit FROM {$tpre}order o WHERE $condition GROUP BY priceunit");
+					foreach($statdata['totalprice'] as &$total){
+						$total['priceunit'] = Product::PriceUnits($total['priceunit']);
+					}
+					unset($total);
+				}else{
+					$statdata['totalprice'] = array();
 				}
-				unset($total);
-			}else{
-				$statdata['totalprice'] = array();
-			}
 
-			if($stat['item']){
-				$statdata['item'] = $db->fetch_all("SELECT d.productname,d.subtype,d.amountunit,SUM(d.amount*d.number) AS num,o.priceunit,SUM(d.subtotal) AS totalprice
-					FROM {$tpre}orderdetail d
-						LEFT JOIN {$tpre}order o ON d.orderid=o.id
-					WHERE $condition
-					GROUP BY d.productname,d.subtype,d.amountunit,o.priceunit");
+				if($stat['item']){
+					$statdata['item'] = $db->fetch_all("SELECT d.productname,d.subtype,d.amountunit,SUM(d.amount*d.number) AS num,o.priceunit,SUM(d.subtotal) AS totalprice
+						FROM {$tpre}orderdetail d
+							LEFT JOIN {$tpre}order o ON d.orderid=o.id
+						WHERE $condition
+						GROUP BY d.productname,d.subtype,d.amountunit,o.priceunit");
 
-				foreach($statdata['item'] as &$item){
-					$item['priceunit'] = Product::PriceUnits($item['priceunit']);
+					foreach($statdata['item'] as &$item){
+						$item['priceunit'] = Product::PriceUnits($item['priceunit']);
+					}
+					unset($item);
+				}else{
+					$statdata['item'] = array();
 				}
-				unset($item);
-			}else{
-				$statdata['item'] = array();
 			}
 
 			//查询各个订单的详细内容（每种商品的购买数量、单项价格等）
@@ -228,7 +230,7 @@ switch($action){
 				$orderids = implode(',', $orderids);
 
 				$order_details = array();
-				$query = $db->query("SELECT d.id,d.productname,d.subtype,d.amount,d.amountunit,d.number,d.orderid,d.state
+				$query = $db->query("SELECT d.id,d.productname,d.subtype,d.amount,d.amountunit,d.number,d.orderid,d.state,d.subtotal
 					FROM {$tpre}orderdetail d
 					WHERE d.orderid IN ($orderids)");
 				while($d = $db->fetch_array($query)){
@@ -245,10 +247,20 @@ switch($action){
 				}
 
 				foreach($orders as &$o){
-					$o['details'] = &$order_details[$o['id']];
-					is_array($o['details']) || $o['details'] = array();
+					$o['detail'] = &$order_details[$o['id']];
+					is_array($o['detail']) || $o['detail'] = array();
 					$o['priceunit'] = Product::PriceUnits($o['priceunit']);
 					$o['address'] = &$order_addresses[$o['id']];
+
+					if($template_format == 'print'){
+						$o['deliveryaddress'] = '';
+						foreach($o['address'] as $componentname){
+							$o['deliveryaddress'].= $componentname.' ';
+						}
+						$o['deliveryaddress'].= $o['extaddress'];
+
+						$o['dateline'] = rdate($o['dateline']);
+					}
 				}
 				unset($o);
 			}
@@ -416,16 +428,7 @@ switch($action){
 
 			$ordernum = $order->getUserOrderNum();
 			$order = $order->toReadable();
-			if(!empty($_CONFIG['ticket_tips'])){
-				$tips = explode("\n", $_CONFIG['ticket_tips']);
-				if(count($tips) > 0){
-					$tips = $tips[array_rand($tips)];
-				}else{
-					$tips = $tips[0];
-				}
-			}else{
-				$tips = '';
-			}
+			$order['ordernum'] = &$ordernum;
 
 			include view('order_print');
 		}

@@ -8,7 +8,7 @@
 {eval 	echo ',',$o['address'][$format['id']];}
 {eval }}
 {eval echo ',',$o['extaddress'],',',$o['addressee'],',"',$o['mobile'],'",',$o['ordernum'],',"';}
-{eval foreach($o['details'] as $d){}
+{eval foreach($o['detail'] as $d){}
 {eval 	if($d['state'] == 1){}
 {eval 		echo '[缺货]';}
 {eval 	}}

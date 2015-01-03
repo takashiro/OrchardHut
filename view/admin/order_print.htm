@@ -36,14 +36,18 @@ dl.orderdetail dd{
 	text-align:center;
 	overflow:hidden;
 	padding-top:5px;
+	margin-bottom:4em;
 }
 </style>
 </head>
 <body>
 
+<!--{eval $tips = empty($_CONFIG['ticket_tips']) ? array('') : explode("\n", $_CONFIG['ticket_tips']);}-->
+<!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
+<!--{loop $orders $order}-->
 <div class="header">
 	<img src="./view/default/image/print_logo.gif" />
-	<div class="tips">$tips</div>
+	<div class="tips">{echo $tips[array_rand($tips)]}</div>
 </div>
 
 <dl>
@@ -51,7 +55,7 @@ dl.orderdetail dd{
 	<dt>下单时间：</dt><dd>$order[dateline]</dd>
 	<dt>收件人：</dt><dd>$order[addressee]</dd>
 	<dt>联系电话：</dt><dd>$order[mobile]</dd>
-	<dt>订单量：</dt><dd>$ordernum</dd>
+	<dt>订单量：</dt><dd>$order[ordernum]</dd>
 	<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
 <dl>
 
@@ -69,6 +73,7 @@ dl.orderdetail dd{
 <div class="footer">
 	<img src="./view/default/image/print_qrcode.gif" />
 </div>
+<!--{/loop}-->
 
 <script type="text/javascript">
 window.print();
