@@ -9,7 +9,7 @@ $(function(){
 					'9月','10月','11月','12月',
 				],
 				dayOfWeek : [
-					"日", "一", "二", "三", 
+					"日", "一", "二", "三",
 					"四", "五", "六",
 				]
 			}
@@ -17,7 +17,7 @@ $(function(){
 		format : 'Y-m-d H:i',
 	});
 
-	$('#orderlist').on('click', '.mark_sorted, .mark_delivering, .mark_received, .mark_rejected', function(e){
+	$('#orderlist').on('click', '.mark_sorted, .mark_delivering, .mark_in_delivery_point, .mark_received, .mark_rejected', function(e){
 		var a = $(e.target);
 		var href = a.attr('href');
 		var td = a.parent().parent();
@@ -26,13 +26,19 @@ $(function(){
 				td.html(lang['order_sorted']);
 
 				if(admin.hasPermission('order_deliver_w')){
-					var button = $('<a></a>');
-					button.attr('class', 'mark_delivering');
-					button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
-					button.html('[' + lang['order_delivering'] + ']');
+					var delivering_button = $('<a></a>');
+					delivering_button.attr('class', 'mark_delivering');
+					delivering_button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
+					delivering_button.html('[' + lang['order_delivering'] + ']');
+
+					var indp_button = $('<a></a>');
+					indp_button.attr('class', 'mark_in_delivery_point');
+					indp_button.attr('href', href.replace('mark_sorted', 'mark_indp'));
+					indp_button.html('[' + lang['order_in_delivery_point'] + ']');
 
 					var div = $('<div></div>');
-					div.append(button);
+					div.append(delivering_button);
+					div.append(indp_button);
 					td.append(div);
 				}
 
@@ -40,9 +46,9 @@ $(function(){
 				tr.find('a.delete').remove();
 				tr.find('ul.order_detail').addClass('disabled');
 
-			}else if(a.hasClass('mark_delivering')){
-				td.html(lang['order_delivering']);
-				
+			}else if(a.hasClass('mark_delivering') || a.hasClass('mark_in_delivery_point')){
+				td.html(a.hasClass('mark_delivering') ? lang['order_delivering'] : lang['order_in_delivery_point']);
+
 				if(admin.hasPermission('order_deliver_w')){
 					var data = {'mark_received':'[' + lang['order_received'] + ']', 'mark_rejected':'[' + lang['order_rejected'] + ']'};
 					for(var action in data){
@@ -72,6 +78,10 @@ $(function(){
 
 	$('#multi_mark_delivering').click(function(){
 		$('a.mark_delivering').click();
+	});
+
+	$('#multi_mark_in_delivery_point').click(function(){
+		$('a.mark_in_delivery_point').click();
 	});
 
 	$('ul.order_detail').on('dblclick', 'li', function(e){

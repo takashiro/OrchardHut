@@ -7,6 +7,7 @@ var lang = {
 	order_unsorted : '{lang common order_unsorted}',
 	order_sorted : '{lang common order_sorted}',
 	order_delivering : '{lang common order_delivering}',
+	order_in_delivery_point : '{lang common order_in_delivery_point}',
 	order_received : '{lang common order_received}',
 	order_rejected : '{lang common order_rejected}',
 	confirm_to_mark_detail_in_stock : '您确认要将该项标记为有货吗？',
@@ -84,11 +85,12 @@ $(function(){
 				<dt>订单号：</dt>
 				<dd><input type="text" name="orderid" style="width:3em" /></dd>
 				<dt>状态：</dt>
-				<dd>{echo Template::select('action', array('mark_unsorted' => lang('common', 'order_unsorted'), 'mark_sorted' => lang('common', 'order_sorted'), 'mark_delivering' => lang('common', 'order_delivering'), 'mark_received' => lang('common', 'order_received'), 'mark_rejected' => lang('common', 'order_rejected')))}</dd>
+				<dd>{echo Template::select('action', array('mark_unsorted' => lang('common', 'order_unsorted'), 'mark_sorted' => lang('common', 'order_sorted'), 'mark_in_delivery_point' => lang('common', 'order_in_delivery_point'), 'mark_delivering' => lang('common', 'order_delivering'), 'mark_received' => lang('common', 'order_received'), 'mark_rejected' => lang('common', 'order_rejected')))}</dd>
 			</dl>
 			<button type="submit">修改</button>
 			<a class="button" id="multi_mark_sorted" href="###" title="批量点击本页所有[已打包]按钮">本页已打包</a>
 			<a class="button" id="multi_mark_delivering" href="###" title="批量点击本页所有[配送中]按钮">本页配送中</a>
+			<a class="button" id="multi_mark_in_delivery_point" href="###" title="批量点击本页所有[待自提]按钮">本页待自提</a>
 		</form>
 		<!--{/if}-->
 
@@ -137,7 +139,8 @@ $(function(){
 							<div><a class="mark_sorted" href="{$mod_url}&action=mark_sorted&orderid=$o[id]" title="将订单标记为已打包">[已打包]</a></div>
 							<!--{elseif $o['status'] == Order::Sorted && $_G['admin']->hasPermission('order_deliver_w')}-->
 							<div><a class="mark_delivering" href="{$mod_url}&action=mark_delivering&orderid=$o[id]" title="将订单标记为配送中">[配送中]</a></div>
-							<!--{elseif $o['status'] == Order::Delivering && $_G['admin']->hasPermission('order_deliver_w')}-->
+							<div><a class="mark_delivering" href="{$mod_url}&action=mark_indp&orderid=$o[id]" title="将订单标记为到达自提点">[待自提]</a></div>
+							<!--{elseif ($o['status'] == Order::Delivering || $o['status'] == Order::InDeliveryPoint) && $_G['admin']->hasPermission('order_deliver_w')}-->
 							<div><a class="mark_received" href="{$mod_url}&action=mark_received&orderid=$o[id]" title="将订单标记为已签收">[已签收]</a></div>
 							<div><a class="mark_rejected" href="{$mod_url}&action=mark_rejected&orderid=$o[id]" title="将订单标记为已拒收">[已拒收]</a></div>
 							<!--{/if}-->
