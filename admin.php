@@ -7,10 +7,6 @@ require_once './core/init.inc.php';
 $_G['admin'] = new Administrator;
 $_G['admin']->login();
 
-//Set template style
-$_G['style'] = 'admin';
-
-
 //Handle user login or logout requests
 if(!$_G['admin']->isLoggedIn()){
 	if($_POST && !empty($_POST['account']) && !empty($_POST['password'])){

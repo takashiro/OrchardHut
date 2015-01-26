@@ -1,37 +1,42 @@
 <?php
 
+function loadtranslation($target, $style, $type){
+	static $lang = array();
+	if(!isset($lang[$target][$style][$type])){
+		$file = S_ROOT.'view/'.$target.'/'.$style.'/'.$type.'.lang.php';
+		$lang[$target][$style][$type] = file_exists($file) ? include $file : array();
+	}
+
+	return $lang[$target][$style][$type];
+}
+
 /*
 	Load the language pack (./view/$_G[style]/$type.lang.php) and translate $from into the local language
 */
-function lang($type, $from = NULL){
-	$style = $GLOBALS['_G']['style'];
-	$file = './view/'.$style.'/'.$type.'.lang.php';
+function lang($type, $from){
+	$style = &$GLOBALS['_G']['style'];
+	$target = defined('IN_ADMINCP') ? 'admin' : 'user';
 
-	if(file_exists($file)){
-		$lang = include $file;
-	}else{
-		$style = 'default';
-		$file = './view/'.$style.'/'.$type.'.lang.php';
-		$lang = file_exists($file) ? include $file : array();
+	$lang = loadtranslation($target, $style, $type);
+	if(isset($lang[$from])){
+		return $lang[$from];
 	}
 
 	if($style != 'default'){
-		$default_lang = include './view/default/'.$type.'.lang.php';;
-		foreach($default_lang as $key => $value){
-			if(!isset($lang[$key])){
-				$lang[$key] = $value;
-			}
+		$lang = loadtranslation($target, 'default', $type);
+		if(isset($lang[$from])){
+			return $lang[$from];
 		}
 	}
 
-	if($from === NULL){
-		return $lang;
-	}elseif(isset($lang[$from])){
-		return $lang[$from];
-	}else{
-		trigger_error('undefined message in language pack: '.$from, E_USER_ERROR);
-		return $from;
+	if($target != 'user'){
+		$lang = loadtranslation('user', 'default', $type);
+		if(isset($lang[$from])){
+			return $lang[$from];
+		}
 	}
+
+	return $from;
 }
 
 /*
@@ -68,7 +73,7 @@ function showmsg($message, $url_forward = ''){
 				rsetcookie('http_referer', $_SERVER['HTTP_REFERER']);
 			break;
 		}
-		
+
 		include view('show_message');
 	}else{
 		echo json_encode(array('message' => $message, 'url_forward' => $url_forward));
@@ -89,7 +94,7 @@ function redirect($url){
 
 /*
 	Set or unset a new cookie variable.
-	$extexpiry represents how long the new variable will exist. A year by default. 
+	$extexpiry represents how long the new variable will exist. A year by default.
 */
 function rsetcookie($varname, $value = '', $extexpiry = -1){
 	global $_G;
@@ -160,7 +165,7 @@ function rhtmlspecialchars($str){
 			$str[$key] = rhtmlspecialchars($val);
 		}
 	}else{
-		$str = htmlspecialchars($str);  
+		$str = htmlspecialchars($str);
 	}
 	return $str;
 }
@@ -173,14 +178,19 @@ function rhtmlspecialchars($str){
 */
 function view($tpl){
 	global $_G;
-	$htmpath = S_ROOT.'./view/'.$_G['style'].'/'.$tpl.'.htm';
+
+	$target = defined('IN_ADMINCP') ? 'admin' : 'user';
+	$view_dir = S_ROOT.'view/'.$target.'/';
+
+	$htmpath = $view_dir.$_G['style'].'/'.$tpl.'.htm';
 	if(!file_exists($htmpath)){
-		$htmpath = S_ROOT.'./view/default/'.$tpl.'.htm';
+		$htmpath = $view_dir.'default/'.$tpl.'.htm';
 	}
-	$tplpath = S_ROOT.'./data/template/'.$_G['style'].'_'.$tpl.'.tpl.php';
+	$tplpath = S_ROOT.'./data/template/'.$target.'_'.$_G['style'].'_'.$tpl.'.tpl.php';
 	if(!file_exists($tplpath) || (!empty($_G['config']['refresh_template']) && filemtime($htmpath) > filemtime($tplpath))){
 		file_put_contents($tplpath, Template::parse_template($htmpath));
 	}
+
 	return $tplpath;
 }
 
@@ -293,7 +303,7 @@ function writelog($logfile, $data){
 	}
 
 	$fp = fopen($logfile, 'a');
-	flock($fp, LOCK_EX); 
+	flock($fp, LOCK_EX);
 	if($need_prefix){
 		fwrite($fp, '<?php exit;?>');
 	}

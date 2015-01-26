@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<link rel="shortcut icon" href="./view/$_G[style]/image/favicon.ico"/>
+<link rel="shortcut icon" href="./view/admin/$_G[style]/image/favicon.ico"/>
 <style type="text/css">
 body{
 	font-size:small;
@@ -46,7 +46,7 @@ dl.orderdetail dd{
 <!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
 <!--{loop $orders $order}-->
 <div class="header">
-	<img src="./view/default/image/print_logo.gif" />
+	<img src="./view/admin/$_G[style]/image/print_logo.gif" />
 	<div class="tips">{echo $tips[array_rand($tips)]}</div>
 </div>
 
@@ -71,7 +71,7 @@ dl.orderdetail dd{
 </dl>
 
 <div class="footer">
-	<img src="./view/default/image/print_qrcode.gif" />
+	<img src="./view/admin/$_G[style]/image/print_qrcode.gif" />
 </div>
 <!--{/loop}-->
 
