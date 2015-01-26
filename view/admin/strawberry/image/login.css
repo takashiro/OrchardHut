@@ -1,0 +1,27 @@
+
+.login_form{
+	border-radius:8px;
+	box-shadow:rgb(116, 116, 116) 0px 0px 8px 0px;
+	width:100%;
+	margin:40px auto;
+	background:white;
+	text-align:center;
+	padding-bottom:10px;
+}
+
+.login_form .header{
+	height:17px;
+	background:url(icon_watermelon.png) repeat-x;
+	background-size:auto 17px;
+	padding-top:17px;
+	margin-bottom:40px;
+}
+
+.login_form label, .login_form input{
+	display:block;
+	margin:auto;
+}
+
+.login_form input{
+	margin:10px auto;
+}
