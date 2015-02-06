@@ -2,7 +2,8 @@
 
 require_once './core/init.inc.php';
 
-$type = isset($_GET['type']) ? intval($_GET['type']) : 0;
+$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
+$type = max(1, $type);
 
 $db->select_table('product');
 $products = $db->MFETCH('*', 'type='.$type.' AND hide=0 ORDER BY displayorder');
