@@ -47,7 +47,7 @@ function showmsg($message, $url_forward = ''){
 
 	$message = lang('message', $message);
 
-	if(empty($_GET['ajax'])){
+	if(empty($_GET['ajax']) && empty($_GET['ajaxform'])){
 		switch($url_forward){
 			case 'back':
 				$url_forward = 'javascript:history.back()';

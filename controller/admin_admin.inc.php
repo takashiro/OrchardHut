@@ -83,7 +83,7 @@ switch($action){
 				}
 			}
 
-			redirect($mod_url);
+			showmsg('edit_succeed', $mod_url);
 		}
 
 		$a = $admin->toArray();
