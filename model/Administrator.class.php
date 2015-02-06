@@ -24,7 +24,7 @@ class Administrator extends User{
 			DBObject::fetchAttributesFromDB('*', 'id='.$id);
 		}
 	}
-	
+
 	public function __destruct(){
 		DBObject::__destruct();
 	}
@@ -46,6 +46,8 @@ class Administrator extends User{
 				'pwmd5' => '',
 				'nickname' => '',
 				'logintime' => '',
+				'realname' => '',
+				'mobile' => '',
 			);
 		}
 	}
@@ -96,7 +98,7 @@ class Administrator extends User{
 	public function isSuperAdmin(){
 		return $this->permission == -1;
 	}
-	
+
 	static public function Register($admin){
 		global $db;
 
@@ -112,10 +114,10 @@ class Administrator extends User{
 		}
 
 		$db->INSERT($attr);
-		
+
 		return $db->insert_id();
 	}
-	
+
 	public function changePassword($old, $new, $new2 = ''){
 		if(!$this->attr('id')){
 			return -3;
@@ -124,12 +126,12 @@ class Administrator extends User{
 		}elseif($new2 && $new != $new2){
 			return -2;
 		}
-		
+
 		$this->pwmd5 = rmd5($new);
 
 		return true;
 	}
-	
+
 	public function hasPermission($permission){
 		if(strpos($permission, '|') !== false){
 			$permissions = explode('|', $permission);
@@ -208,14 +210,14 @@ class Administrator extends User{
 
 		return $permission;
 	}
-	
+
 	static public function Delete($id){
 		global $db;
-		
+
 		if(!$id = intval($id)){
 			return -1;
 		}
-		
+
 		$db->select_table('administrator');
 		$db->DELETE('id='.$id.' AND permission!=-1');
 		return $db->affected_rows();
