@@ -16,3 +16,23 @@ function randomstr(length){
 
 	return str;
 }
+
+$(function(){
+	$('.menu > li').mouseenter(function(e){
+		var submenu = $(this).children('.submenu');
+		submenu.data('isSlidingDown', true);
+		submenu.slideDown(300, function(){
+			submenu.data('isSlidingDown', false);
+		});
+	});
+
+	$('.menu > li').mouseleave(function(){
+		var submenu = $(this).children('.submenu');
+		var menu_li = submenu.parent();
+		setTimeout(function(){
+			if(menu_li.is(':hover') || submenu.data('isSlidingDown'))
+				return false;
+			submenu.slideUp();
+		}, 500);
+	});
+});

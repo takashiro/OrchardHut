@@ -84,12 +84,15 @@ input:focus, select:focus, textarea:focus{
 .container{
 	margin: 0 auto;
 	min-width: 1000px;
-	min-height: 600px;
 	width: 100%;
 }
 
 .loginform{
 	width:470px;
+}
+
+header{
+	position: relative;
 }
 
 header h2{
@@ -102,18 +105,22 @@ header h2{
 }
 
 
-.profile{
+header .profile{
 	height: 35px;
-	background: #EEE;
-	margin: 5px 0;
 	font-size: 10pt;
+	color: #428BCA;
+	float: right;
+	width: 260px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
 }
 
-.profile .icon_home{
+header .profile .icon_home{
 	float: left;
 }
 
-.profile .account{
+header .profile .account{
 	float:left;
 	height:35px;
 	line-height:35px;
@@ -122,48 +129,94 @@ header h2{
 	font-size:middle;
 }
 
-.profile .operation{
+header .profile .operation{
 	height:35px;
 	line-height:35px;
 	float:right;
 }
 
-.profile .operation li{
+header .profile .operation li{
 	display:inline;
 	margin:0 1em;
 }
 
-header ul.menu{
-	background: white;
+.main{
+	padding-left: 130px;
+	position: relative;
+	background: #EBEBEB;
+}
+
+.main ul.menu{
 	text-align:center;
 	font-size:13pt;
-	margin:5px 0;
+	font-family: Arial;
+	width: 130px;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
-header ul.menu li{
-	width:16%;
-	display:inline-block;
+.main ul.menu > li{
 	transition:0.2s linear;
-	background: #428BCA;
-	border: #428BCA 1px solid;
 }
 
-header ul.menu li a{
+.main ul.menu > li a{
 	display:block;
 	width:100%;
-	color: white;
-	height:43px;
-	line-height:43px;
+	color: black;
+	height: 2.5em;
+	line-height: 2.5em;
 	transition:0.2s linear;
 }
 
-header ul.menu li:hover{
-	background: white;
-	border: #CCC 1px solid;
+.main ul.menu > li:hover{
+	background: #BFE8A7;
 }
 
-header ul.menu li a:hover{
+.main ul.menu > li a:hover{
 	color: #333;
+}
+
+.main ul.menu > li ul.submenu{
+	display: none;
+	background: #EBEBEB;
+}
+
+.main ul.menu > li ul.submenu > li{
+	font-size: 10pt;
+}
+
+.main ul.menu > li ul.submenu > li:hover{
+	font-size: 10pt;
+	background: #BFE8A7;
+}
+
+.main > .content{
+	background: white;
+	padding: 10px;
+	min-height: 530px;
+}
+
+ol.nav{
+	padding: 0;
+	background: #F5F5F5;
+	margin: 16px;
+	line-height: 2.5em;
+}
+
+ol.nav li{
+	display: inline;
+	margin: 0 0 0 0;
+}
+
+ol.nav li:nth-child(1){
+	padding-left: 1em;
+}
+
+ol.nav li:nth-child(n+2):before{
+    padding: 0px 5px;
+    color: #CCC;
+    content: "/ ";
 }
 
 footer{
@@ -312,18 +365,6 @@ input.number{
 	display:inline;
 	margin:0;
 	margin-right:0.5em;
-}
-
-ul.nav{
-	text-align:left;
-}
-
-ul.nav li{
-	margin:0 0 0 10px;
-	display:inline-block;
-	background:url(arrow_right.png) no-repeat;
-	background-position:center left;
-	padding-left:15px;
 }
 
 .mpage{
