@@ -93,9 +93,12 @@
 					for(var i = 0; i < options.attr.length; i++){
 						var attr = options.attr[i];
 						if(typeof data[attr] != 'undefined'){
-							if(input.is('select')){
+							var current_input = tr.parent().children(':last-child').children().eq(i).find('input,select,textarea');
+							if(current_input.is('select')){
 								tds.eq(i).attr('realvalue', data[attr]);
-								tds.eq(i).html(input.children(':selected').html());
+								var current_input = current_input.clone();
+								current_input.val(data[attr]);
+								tds.eq(i).html(current_input.children(':selected').html());
 							}else{
 								tds.eq(i).html(data[attr]);
 							}
@@ -118,7 +121,7 @@
 				var td = new_tr.children().eq(i);
 				var input = td.find('input,select,textarea');
 				var value = input.val();
-				
+
 				data[attr] = value;
 			}
 

@@ -348,7 +348,7 @@ class Product extends DBObject{
 		if($id > 0){
 			$productid = $this->id;
 			$db->UPDATE($attr, array('id' => $id, 'productid' => $productid));
-			
+
 			if(isset($storage['addnum'])){
 				$attr['addnum'] = '';
 				$num = $this->updateStorage($id, $storage['addnum']);
@@ -415,7 +415,7 @@ class Product extends DBObject{
 			return array(
 				'id' => 0,
 				'name' => '',
-				'type' => 0,
+				'type' => 1,
 				'introduction' => '',
 				'text_color' => '#000',
 				'background_color' => '#FFF',
@@ -439,12 +439,25 @@ class Product extends DBObject{
 		$db->DELETE($condition);
 	}
 
-	static private $Types = array('单卖', '果汁');
+	static private $Types = NULL;
 	static public function Types($typeid = -1){
-		if($typeid == -1 || !array_key_exists($typeid, self::$Types)){
+		if(self::$Types === NULL){
+			self::$Types = readcache('producttypes');
+			if(self::$Types === NULL){
+				global $db;
+				$db->select_table('producttype');
+				$types = $db->MFETCH('*', 'hidden=0 ORDER BY displayorder');
+				self::$Types = array();
+				foreach($types as $type){
+					self::$Types[$type['id']] = $type['name'];
+				}
+			}
+		}
+
+		if($typeid == -1){
 			return self::$Types;
 		}else{
-			return self::$Types[$typeid];
+			return isset(self::$Types[$typeid]) ? self::$Types[$typeid] : '';
 		}
 	}
 

@@ -37,6 +37,11 @@ switch($action){
 					$types = Product::Types();
 					if(array_key_exists($typeid, $types)){
 						$product->type = $typeid;
+					}else{
+						foreach($types as $typeid => $name){
+							$product->type = $typeid;
+							break;
+						}
 					}
 				}
 

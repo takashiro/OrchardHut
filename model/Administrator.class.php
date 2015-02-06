@@ -17,6 +17,8 @@ class Administrator extends User{
 		'address' => 0x40,
 		'order_sort' => 0x80,
 		'setting' => 0x100,
+		'productunit' => 0x200,
+		'producttype' => 0x400,
 	);
 
 	public function __construct($id = 0){

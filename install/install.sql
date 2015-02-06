@@ -215,6 +215,15 @@ CREATE TABLE IF NOT EXISTS `hut_productstorage` (
   KEY `productid` (`productid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `hut_producttype`;
+CREATE TABLE IF NOT EXISTS `hut_producttype` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(33) NOT NULL,
+  `displayorder` tinyint(3) unsigned NOT NULL,
+  `hidden` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `hut_productunit`;
 CREATE TABLE IF NOT EXISTS `hut_productunit` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,

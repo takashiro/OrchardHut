@@ -30,7 +30,13 @@
 		<section class="main">
 			<ul class="menu">
 					<li><a href="admin.php?mod=order">订单</a></li>
-					<li><a href="admin.php?mod=market">商品</a></li>
+					<li>
+						<a href="admin.php?mod=market">商品</a>
+						<ul class="submenu">
+							<li><a href="admin.php?mod=productunit">商品单位</a></li>
+							<li><a href="admin.php?mod=producttype">商品类型</a></li>
+						</ul>
+					</li>
 					<li><a href="admin.php?mod=announcement">公告</a></li>
 					<li><a href="admin.php?mod=address">地址</a></li>
 					<li><a href="admin.php?mod=admin">管理员</a></li>
@@ -38,7 +44,6 @@
 						<a href="admin.php?mod=setting">设置</a>
 						<ul class="submenu">
 							<li><a href="admin.php?mod=setting&type=system">系统</a></li>
-							<li><a href="admin.php?mod=setting&type=product">商品</a></li>
 							<li><a href="admin.php?mod=setting&type=delivery">配送</a></li>
 							<li><a href="admin.php?mod=setting&type=qqconnect">QQ互联</a></li>
 							<li><a href="admin.php?mod=setting&type=wxconnect">微信公众平台</a></li>
