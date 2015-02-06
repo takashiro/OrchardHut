@@ -45,12 +45,7 @@ function lang($type, $from){
 function showmsg($message, $url_forward = ''){
 	extract($GLOBALS, EXTR_SKIP);
 
-	static $lang = NULL;
-	$lang == NULL && $lang = lang('message');
-
-	if(isset($lang[$message])){
-		$message = $lang[$message];
-	}
+	$message = lang('message', $message);
 
 	if(empty($_GET['ajax'])){
 		switch($url_forward){
@@ -185,6 +180,10 @@ function view($tpl){
 	$htmpath = $view_dir.$_G['style'].'/'.$tpl.'.htm';
 	if(!file_exists($htmpath)){
 		$htmpath = $view_dir.'default/'.$tpl.'.htm';
+
+		if(defined('IN_ADMINCP') && !file_exists($htmpath)){
+			$htmpath = S_ROOT.'view/user/default/'.$tpl.'.htm';
+		}
 	}
 	$tplpath = S_ROOT.'./data/template/'.$target.'_'.$_G['style'].'_'.$tpl.'.tpl.php';
 	if(!file_exists($tplpath) || (!empty($_G['config']['refresh_template']) && filemtime($htmpath) > filemtime($tplpath))){

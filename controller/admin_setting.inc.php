@@ -33,19 +33,24 @@ case 'system':
 		isset($_CONFIG[$var]) || $_CONFIG[$var] = $v;
 	}
 
-	$_G['stylelist'] = array();
-	$styledir = S_ROOT.'view/';
-	$view = opendir($styledir);
-	while($style = readdir($view)){
-		if($style{0} == '.'){
-			continue;
-		}
+	$_G['stylelist'] = array(
+		'admin' => array(),
+		'user' => array(),
+	);
+	foreach($_G['stylelist'] as $template_type => &$stylelist){
+		$styledir = S_ROOT.'view/'.$template_type.'/';
+		$view = opendir($styledir);
+		while($style = readdir($view)){
+			if($style{0} == '.'){
+				continue;
+			}
 
-		if($style != 'admin' && is_dir($styledir.$style)){
-			$_G['stylelist'][$style] = $style;
+			if(is_dir($styledir.$style)){
+				$stylelist[$style] = $style;
+			}
 		}
 	}
-
+	unset($stylelist);
 	break;
 
 case 'product':
@@ -62,7 +67,7 @@ case 'product':
 			$unit['type'] = intval($_POST['type']);
 			$unit['type'] = $unit['type'] == 1 ? 1 : 2;
 		}
-		
+
 		if($id > 0){
 			$db->UPDATE($unit, 'id='.$id);
 			$unit['id'] = $id;
@@ -81,7 +86,7 @@ case 'product':
 		if($id > 0){
 			$db->DELETE('id='.$id);
 			writecache('productunits', NULL);
-			
+
 			echo $db->affected_rows();
 		}else{
 			echo 0;
@@ -129,7 +134,7 @@ case 'autoreply':
 	switch($action){
 	case 'edit':
 		$autoreply = array();
-		
+
 		if(!empty($_POST['keyword'])){
 			$autoreply['keyword'] = $_POST['keyword'];
 			$autoreply['keyword'] = explode("\n", $autoreply['keyword']);
@@ -180,7 +185,7 @@ case 'delivery':
 	switch($action){
 	case 'edit':
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
-		
+
 		$timespan = array();
 		if(isset($_POST['time_from'])){
 			$timespan['time_from'] = $_POST['time_from'];
@@ -225,7 +230,7 @@ case 'delivery':
 		foreach(array('deadline', 'time_from', 'time_to') as $var){
 			isset($timespan[$var]) && $timespan[$var] = floor($timespan[$var] / 3600).gmdate(':i:s', $timespan[$var]);
 		}
-		
+
 		foreach(array('effective_time', 'expiry_time') as $var){
 			isset($timespan[$var]) && $timespan[$var] = rdate($timespan[$var]);
 		}

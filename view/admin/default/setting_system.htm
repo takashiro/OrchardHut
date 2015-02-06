@@ -21,7 +21,7 @@ $(function(){
 	{template setting_menu}
 
 	<form action="$mod_url&type=system" method="post">
-	
+
 	<h2>个性化</h2>
 	<table>
 		<tr>
@@ -59,8 +59,8 @@ $(function(){
 			<td><input type="text" id="refversion" name="system[refversion]" value="$_CONFIG[refversion]" /></td>
 		</tr>
 		<tr>
-			<th><label>界面风格：</label></th>
-			<td>{echo Template::select('system[style]', $_G['stylelist'], $_CONFIG['style'])}</td>
+			<th><label>用户界面风格：</label></th>
+			<td>{echo Template::select('system[style]', $_G['stylelist']['user'], $_CONFIG['style'])}</td>
 		</tr>
 		<tr>
 			<th><label>其他配置：</label></th>
