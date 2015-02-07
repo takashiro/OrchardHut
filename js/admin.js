@@ -59,7 +59,7 @@ $(function(){
 		}, 500);
 	});
 
-	$('form').submit(function(){
+	$('form.toast').submit(function(){
 		var form = $(this);
 		var data = form.serialize();
 		var url = form.attr('action');
