@@ -13,7 +13,8 @@ $actions = array(
 	'print',
 	'delete',
 	'search',
-	'detail_outofstock'
+	'detail_outofstock',
+	'barcode',
 );
 $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
 
@@ -442,7 +443,7 @@ switch($action){
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
-	case 'print':
+	case 'print':case 'barcode':
 		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 		if($orderid > 0){
 			$order = new Order($orderid);
@@ -458,7 +459,7 @@ switch($action){
 			$order = $order->toReadable();
 			$order['ordernum'] = &$ordernum;
 
-			include view('order_print');
+			include view('order_'.$action);
 		}
 	break;
 

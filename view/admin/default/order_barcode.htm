@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>$_CONFIG[sitename]管理面板</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="shortcut icon" href="./view/admin/$_G[style]/image/favicon.ico" />
+<script type="text/javascript" src="./plugin/jquery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="./plugin/jquery.ean13/jquery-ean13.min.js"></script>
+<script type="text/javascript">
+function id2barcode(id){
+	var barcode = '690';	//stands for China
+	var leading_zero_num = 9 - id.length;
+	for(var i = 0; i < leading_zero_num; i++){
+		barcode += '0';
+	}
+	barcode += id;
+	return barcode;
+}
+</script>
+<style type="text/css">
+body{
+	font-size: small;
+	width: 10cm;
+	padding: 0;
+	margin: 5px;
+	font-family: 宋体;
+	font-weight: bold;
+}
+
+canvas{
+	width: 9cm;
+	height: 4.5cm;
+	margin: 0.25cm 0.5cm;
+}
+
+table{
+	width: 100%;
+	border:black 2px solid;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+table th, table td{
+	border:black 2px solid;
+}
+
+table th{
+	text-align: right;
+}
+
+.signature{
+	height: 5em;
+}
+</style>
+</head>
+<body>
+
+<!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
+<!--{loop $orders $order}-->
+
+<table>
+	<tr>
+		<td colspan="2">
+			<canvas id="barcode_$order[id]"></canvas>
+			<script type="text/javascript">$('#barcode_$order[id]').EAN13(id2barcode('$order[id]'));</script>
+		</td>
+	</tr>
+	<tr>
+		<th>收货地址</th>
+		<td>$order[deliveryaddress]</td>
+	</tr>
+	<tr>
+		<th>收件人</th>
+		<td>$order[addressee]</td>
+	</tr>
+	<tr>
+		<th>电话</th>
+		<td>$order[mobile]</td>
+	</tr>
+	<tr>
+		<th>下单时间</th>
+		<td>$order[dateline]</td>
+	</tr>
+	<tr>
+		<th>订单号</th>
+		<td>$order[id]</td>
+	</tr>
+	<tr>
+		<th>总金额</th>
+		<td>$order[totalprice] $order[priceunit]</td>
+	</tr>
+	<tr>
+		<th>客户签收</th>
+		<td colspan="3" class="signature"></td>
+	</tr>
+</table>
+
+<!--{/loop}-->
+
+<script type="text/javascript">
+window.print();
+</script>
+
+</body>
+</html>
