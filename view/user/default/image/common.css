@@ -305,17 +305,17 @@ footer ul.button_list{
 	overflow:hidden;
 }
 
-footer ul.button_list li{
-	width:23%;
+footer ul.button_list > li{
+	width:32%;
 	display:inline-block;
 	border-right:#e54c4c 1px solid;
 }
 
-footer ul.button_list li:last-child{
+footer ul.button_list > li:last-child{
 	border-right:0px solid;
 }
 
-footer ul.button_list li a{
+footer ul.button_list > li > a{
 	display:block;
 	width:100%;
 	color:white;
@@ -324,32 +324,27 @@ footer ul.button_list li a{
 	transition:0.2s linear;
 }
 
-footer ul.button_list li:hover{
+footer ul.button_list > li:hover{
 	background:url(icon_activebg.jpg) repeat-x;
 	background-color:#fe6565;
 	background-size:auto 54px;
 }
 
-footer ul.button_list li a:hover{
+footer ul.button_list > li a:hover{
 	text-shadow:0 0 4px #ffcccc;
 }
 
-footer ul.button_list #myorder a{
+footer ul.button_list #myorder > a{
 	background:url(icon_myorder.png) no-repeat;
 	background-position:center 10px;
 }
 
-footer ul.button_list #buyfruit a{
+footer ul.button_list #buy > a{
 	background:url(icon_buyfruit.png) no-repeat;
 	background-position:center 10px;
 }
 
-footer ul.button_list #buyjuice a{
-	background:url(icon_buypackage.png) no-repeat;
-	background-position:center 10px;
-}
-
-footer ul.button_list #cart a{
+footer ul.button_list #cart > a{
 	background:url(icon_cart.png) no-repeat;
 	background-position:center 10px;
 	position:relative;
@@ -369,6 +364,26 @@ footer ul.button_list .number_notice{
 
 footer ul.button_list #delivering-order-number.number_notice{
 	margin-left:-16px;
+}
+
+footer ul.button_list .submenu{
+	width: 32%;
+	font-size: 11pt;
+}
+
+footer ul.button_list .submenu a{
+	border-radius: 4px;
+	background:url(icon_activebg.jpg) repeat-x;
+	display: block;
+	color: white;
+	line-height: 3em;
+	margin: 1px;
+}
+
+.dropmenu > .submenu{
+	display: none;
+	position: absolute;
+	width: 100%;
 }
 
 .debug{
@@ -665,7 +680,7 @@ footer ul.button_list #delivering-order-number.number_notice{
 }
 
 .edit_form{
-	
+
 }
 
 .edit_form table{
