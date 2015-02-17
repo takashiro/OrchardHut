@@ -401,7 +401,7 @@ ul.order_detail li.outofstock{
 	text-decoration:line-through;
 }
 
-.toast{
+div.toast{
 	background: #DFF0D8;
 	border: #D6E9C6 1px solid;
 	color: #3C763D;
