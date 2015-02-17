@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `message` text NOT NULL,
   `dtime_from` int(11) unsigned NOT NULL,
   `dtime_to` int(11) unsigned NOT NULL,
+  `deliveryfee` decimal(5,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `dateline` (`dateline`)
@@ -222,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `hut_producttype` (
   `displayorder` tinyint(3) unsigned NOT NULL,
   `hidden` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productunit`;
 CREATE TABLE IF NOT EXISTS `hut_productunit` (

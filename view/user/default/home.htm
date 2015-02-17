@@ -27,7 +27,7 @@
 				<!--{loop $orders $o}-->
 					<tr>
 						<td>$o[items]</td>
-						<td>{$o[totalprice]}{$o[priceunit]}</td>
+						<td>{$o[totalprice]}{$o[priceunit]}<!--{if $o['deliveryfee'] > 0}--><p class="deliveryfee">含运费$o[deliveryfee]元</p><!--{/if}--></td>
 						<td>$o[id]</td>
 						<td>{echo Order::$Status[$o['status']]}</td>
 						<td>

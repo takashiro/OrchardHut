@@ -76,6 +76,8 @@ switch($action){
 			}
 		}
 
+		$deliveryfee = readdata('deliveryfee');
+
 		if($_POST){
 			$addressid = !empty($_POST['deliveryaddressid']) ? intval($_POST['deliveryaddressid']) : 0;
 
@@ -222,6 +224,9 @@ switch($action){
 				}
 				unset($p);
 
+				$order->deliveryfee = $deliveryfee[$order->dtime_from ? 'normal' : 'pickup']['value'];
+				$order->totalprice += $order->deliveryfee;
+
 				$succeeded = $order->insert();
 				$succeeded && $order_succeeded = true;
 			}
@@ -297,8 +302,6 @@ switch($action){
 		unset($s);
 
 		DeliveryTime::SortByTimeFrom($delivery_timespans);
-
-		$deliveryfee = readdata('deliveryfee');
 
 		include view('cart');
 	break;

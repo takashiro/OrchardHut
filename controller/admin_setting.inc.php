@@ -204,11 +204,16 @@ case 'delivery':
 		break;
 	case 'config':
 		$deliveryfee = readdata('deliveryfee');
-		empty($deliveryfee) && $deliveryfee = array('pickup' => 0, 'normal' => 0);
+		$feeunits = Product::PriceUnits();
 
 		foreach(array('pickup', 'normal') as $var){
-			if(isset($_POST['deliveryfee'][$var])){
-				$deliveryfee[$var] = max(0, intval($_POST['deliveryfee'][$var]));
+			is_array($deliveryfee[$var]) || $deliveryfee[$var] = array();
+
+			if(isset($_POST['deliveryfee'][$var]['value'])){
+				$deliveryfee[$var]['value'] = max(0, floatval($_POST['deliveryfee'][$var]['value']));
+			}
+			if(isset($_POST['deliveryfee'][$var]['unit'])){
+				$deliveryfee[$var]['unit'] = max(0, floatval($_POST['deliveryfee'][$var]['unit']));
 			}
 		}
 
@@ -217,7 +222,7 @@ case 'delivery':
 
 	default:
 		$deliveryfee = readdata('deliveryfee');
-		empty($deliveryfee) && $deliveryfee = array('pickup' => 0, 'normal' => 0);
+		$feeunits = Product::PriceUnits();
 
 		$delivery_timespans = DeliveryTime::FetchAll();
 		foreach($delivery_timespans as &$s){

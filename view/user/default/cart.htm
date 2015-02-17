@@ -2,9 +2,11 @@
 
 <script type="text/javascript">
 var deliveryfee = {echo json_encode($deliveryfee)};
+var price_units = {echo json_encode(Product::PriceUnits())};
 $(function(){
 	$('input[name="deliverytime"]').click(function(){
-		$('#deliveryfee').html($(this).val() == 0 ? deliveryfee.pickup : deliveryfee.normal);
+		var fee = $(this).val() == 0 ? deliveryfee.pickup : deliveryfee.normal;
+		$('#deliveryfee').html(fee.value + price_units[fee.unit]);
 	});
 });
 </script>
@@ -88,7 +90,7 @@ $(function(){
 				</div>
 			</div>
 			<div class="lightbox deliverytime">
-				<h1>收货时间 (运费：<span id="deliveryfee">0</span>元)</h1>
+				<h1>收货时间 (运费：<span id="deliveryfee">-</span>)</h1>
 				<div class="content">
 					<ul class="mselect">
 						<li class="checked"><input type="radio" name="deliverytime" value="0" checked="checked" />自提</li>

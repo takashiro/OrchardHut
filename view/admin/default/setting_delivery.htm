@@ -24,9 +24,9 @@ $(function(){
 		<table>
 			<tr>
 				<th><label>自提：</label></th>
-				<td><input type="text" name="deliveryfee[pickup]" value="$deliveryfee[pickup]" />元</td>
+				<td><input type="text" name="deliveryfee[pickup][value]" value="$deliveryfee[pickup][value]" />{echo Template::select('deliveryfee[pickup][unit]', $feeunits, $deliveryfee['pickup']['unit'])}</td>
 				<th><label>送货上门：</label></th>
-				<td><input type="text" name="deliveryfee[normal]" value="$deliveryfee[normal]" />元</td>
+				<td><input type="text" name="deliveryfee[normal][value]" value="$deliveryfee[normal][value]" />{echo Template::select('deliveryfee[normal][unit]', $feeunits, $deliveryfee['normal']['unit'])}</td>
 			</tr>
 		</table>
 
