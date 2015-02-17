@@ -121,10 +121,9 @@ $(function(){
 		}
 	});
 
-	$('.announcement a').click(function(e){
-		var a = $(e.target);
-		var detail = a.prev();
-		var title = detail.prev();
+	$('.announcement .title').click(function(e){
+		var title = $(e.target);
+		var detail = title.next();
 		popup_message(title.html(), detail.html());
 	});
 

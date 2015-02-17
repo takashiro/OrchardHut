@@ -157,6 +157,11 @@ button.remove{
 	margin:10px 0;
 }
 
+.announcement .body .content li .title{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 .announcement .body .content li .detail{
 	display:none;
 }
