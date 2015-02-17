@@ -17,6 +17,25 @@ $(function(){
 	<li>配送</li>
 </ol>
 
+<div class="box edit_form">
+	<h2>配送费用设置</h2>
+
+	<form class="toast" action="$mod_url&type=delivery&action=config" method="post">
+		<table>
+			<tr>
+				<th><label>自提：</label></th>
+				<td><input type="text" name="deliveryfee[pickup]" value="$deliveryfee[pickup]" />元</td>
+				<th><label>送货上门：</label></th>
+				<td><input type="text" name="deliveryfee[normal]" value="$deliveryfee[normal]" />元</td>
+			</tr>
+		</table>
+
+		<div class="post_buttons">
+			<button type="submit">修改设置</button>
+		</div>
+	</form>
+</div>
+
 <div class="box">
 	<h2>每日配送时间段设置</h2>
 	<div id="unit_list" class="list">

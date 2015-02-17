@@ -298,6 +298,8 @@ switch($action){
 
 		DeliveryTime::SortByTimeFrom($delivery_timespans);
 
+		$deliveryfee = readdata('deliveryfee');
+
 		include view('cart');
 	break;
 

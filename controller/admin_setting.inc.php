@@ -202,7 +202,23 @@ case 'delivery':
 			echo 1;
 		}
 		break;
+	case 'config':
+		$deliveryfee = readdata('deliveryfee');
+		empty($deliveryfee) && $deliveryfee = array('pickup' => 0, 'normal' => 0);
+
+		foreach(array('pickup', 'normal') as $var){
+			if(isset($_POST['deliveryfee'][$var])){
+				$deliveryfee[$var] = max(0, intval($_POST['deliveryfee'][$var]));
+			}
+		}
+
+		writedata('deliveryfee', $deliveryfee);
+		showmsg('成功设置配送费用！');
+
 	default:
+		$deliveryfee = readdata('deliveryfee');
+		empty($deliveryfee) && $deliveryfee = array('pickup' => 0, 'normal' => 0);
+
 		$delivery_timespans = DeliveryTime::FetchAll();
 		foreach($delivery_timespans as &$s){
 			foreach(array('deadline', 'time_from', 'time_to') as $var){

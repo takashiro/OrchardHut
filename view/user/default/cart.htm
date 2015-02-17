@@ -1,5 +1,14 @@
 {template header}
 
+<script type="text/javascript">
+var deliveryfee = {echo json_encode($deliveryfee)};
+$(function(){
+	$('input[name="deliverytime"]').click(function(){
+		$('#deliveryfee').html($(this).val() == 0 ? deliveryfee.pickup : deliveryfee.normal);
+	});
+});
+</script>
+
 <div class="box cart">
 	<h1>我的购物车</h1>
 	<div class="content">
@@ -79,11 +88,12 @@
 				</div>
 			</div>
 			<div class="lightbox deliverytime">
-				<h1>收货时间</h1>
+				<h1>收货时间 (运费：<span id="deliveryfee">0</span>元)</h1>
 				<div class="content">
 					<ul class="mselect">
+						<li class="checked"><input type="radio" name="deliverytime" value="0" checked="checked" />自提</li>
 						<!--{loop $delivery_timespans $i $s}-->
-						<li{if $i == 0} class="checked"{/if}><input type="radio" name="deliverytime" value="$s[id]" {if $i == 0} checked="checked"{/if} />{echo rdate($s['time_from'], 'm月d日 H:i')}~{echo rdate($s['time_to'], 'H:i')}</li>
+						<li><input type="radio" name="deliverytime" value="$s[id]" />{echo rdate($s['time_from'], 'm月d日 H:i')}~{echo rdate($s['time_to'], 'H:i')}</li>
 						<!--{/loop}-->
 					</ul>
 				</div>
