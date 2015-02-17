@@ -28,6 +28,17 @@ var User = {'id':{if $_G['user']->isLoggedIn()}$_USER[id]{else}0{/if}};
 	</div>
 </div>
 
+<div class="product_type">
+	<div class="wrapper">
+		<ul>
+		<!--{loop Product::Types() $typeid $typename}-->
+			<li {if $type == $typeid}class="current"{/if}><a href="market.php?type=$typeid">$typename</a></li>
+		<!--{/loop}-->
+		</ul>
+		<div class="more">▽</div>
+	</div>
+</div>
+
 <ul class="product_list">
 	<!--{loop $products $p}-->
 	<li>

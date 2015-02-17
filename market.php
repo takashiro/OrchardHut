@@ -2,8 +2,10 @@
 
 require_once './core/init.inc.php';
 
-$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
-$type = max(1, $type);
+$type = isset($_GET['type']) ? intval($_GET['type']) : -1;
+$all_types = Product::Types();
+isset($all_types[$type]) || $type = current(array_keys($all_types));
+unset($all_types);
 
 $db->select_table('product');
 $products = $db->MFETCH('*', 'type='.$type.' AND hide=0 ORDER BY displayorder');

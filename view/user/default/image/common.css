@@ -184,6 +184,58 @@ button.remove{
 	background:url(sticker_right.png) no-repeat;
 }
 
+.product_type{
+	font-size: 14pt;
+	margin: 4px 0 4px 0;
+	position: relative;
+	height: 2.3em;
+}
+
+.product_type .wrapper{
+	height: 2.3em;
+	overflow: hidden;
+}
+
+.product_type_fixed .wrapper{
+	position: fixed;
+	z-index: 3;
+	top: 0;
+	overflow: hidden;
+}
+
+.product_type .more, .product_type ul li{
+	display: inline-block;
+	background: #FD7170;
+	border: #EA6363 1px solid;
+	color: white;
+	width: 32%;
+	margin: 2px 0.5%;
+	line-height: 2em;
+	text-align: center;
+}
+
+.product_type ul{
+	margin-right: 2.5em;
+}
+
+.product_type .more{
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+	width: 2em;
+}
+
+.product_type ul li.current{
+	background: #FEFBE8;
+	color: #FD7170;
+}
+
+.product_type ul li a{
+	color: inherit;
+	display: block;
+}
+
 ul.product_list{
 	background:white;
 	width:100%;
@@ -311,7 +363,7 @@ footer ul.button_list{
 }
 
 footer ul.button_list > li{
-	width:32%;
+	width:23%;
 	display:inline-block;
 	border-right:#e54c4c 1px solid;
 }
@@ -345,7 +397,13 @@ footer ul.button_list #myorder > a{
 }
 
 footer ul.button_list #myaccount > a{
-	background:url(icon_buyfruit.png) no-repeat;
+	background:url(icon_home.png) no-repeat;
+	background-size: 20px;
+	background-position:center 10px;
+}
+
+footer ul.button_list #buy > a{
+	background:url(icon_buypackage.png) no-repeat;
 	background-position:center 10px;
 }
 
@@ -365,6 +423,7 @@ footer ul.button_list .number_notice{
 	position:absolute;
 	bottom:22px;
 	margin-left:-10px;
+	display: none;
 }
 
 footer ul.button_list #delivering-order-number.number_notice{

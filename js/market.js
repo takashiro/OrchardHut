@@ -127,6 +127,44 @@ $(function(){
 		popup_message(title.html(), detail.html());
 	});
 
+	$('.product_type .more').click(function(e){
+		var more = $(e.target);
+		var wrapper = more.parent();
+		var ul = wrapper.children('ul');
+		if(ul.children().length <= 3){
+			more.animate({opacity: 0.4});
+			more.unbind('click');
+		}else{
+			var original_height = wrapper.data('original_height');
+			if(!original_height){
+				wrapper.data('original_height', wrapper.height());
+				wrapper.animate({height: ul.height()});
+			}else{
+				wrapper.data('original_height', '');
+				wrapper.animate({height: original_height});
+			}
+		}
+	});
+
+	$(window).scroll(function(){
+		var product_type = $('.product_type');
+		var offset_top = product_type.offset().top - $(window).scrollTop();
+		if(product_type.hasClass('product_type_fixed')){
+			if(offset_top > 0){
+				product_type.removeClass('product_type_fixed');
+			}
+		}else{
+			if(offset_top <= 0){
+				product_type.addClass('product_type_fixed');
+			}
+		}
+	});
+
+	$('.product_type').each(function(){
+		$(this).children('.wrapper').css('width', $(this).width());
+		$(this).children('.wrapper').css('height', $(this).height());
+	});
+
 	$('.product_list').on('click', '.icon, .name', function(e){
 		var target = $(this);
 		var detail = target.is('.icon') ? target.next() : target.parent();
