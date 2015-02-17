@@ -8,14 +8,7 @@
 	<footer>
 		<ul class="button_list">
 			<li id="myorder"><a href="home.php">我的订单<span id="delivering-order-number" class="number_notice">0</span></a></li>
-			<li id="buy" class="dropmenu">
-				<a href="###">购买</a>
-				<ul class="submenu">
-				<!--{loop Product::Types() $typeid $typename}-->
-					<li><a href="market.php?type=$typeid">$typename</a></li>
-				<!--{/loop}-->
-				</ul>
-			</li>
+			<li id="myaccount"><a href="account.php" onclick="alert('施工中……');return false;">我的账户</a></li>
 			<li id="cart"><a href="cart.php">购物车<span id="cart-goods-number" class="number_notice">0</span></a></li>
 		</ul>
 	</footer>
