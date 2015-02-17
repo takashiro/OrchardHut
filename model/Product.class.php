@@ -65,7 +65,7 @@ class Product extends DBObject{
 		if(!empty($this->$attr)){
 			return './data/attachment/product_'.$this->id.'_'.$attr.'.png';
 		}else{
-			return './view/default/image/product_unknown_icon.png';
+			return './view/user/default/image/product_unknown_icon.png';
 		}
 	}
 
