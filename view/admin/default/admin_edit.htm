@@ -68,6 +68,7 @@ $(function(){
 					<!--{if $_G['admin']->hasPermission('market')}--><span>{echo Template::checkbox('p[market]', '管理商品', $admin->hasPermission('market'))}</span><!--{/if}-->
 					<!--{if $_G['admin']->hasPermission('announcement')}--><span>{echo Template::checkbox('p[announcement]', '管理公告', $admin->hasPermission('announcement'))}</span><!--{/if}-->
 					<!--{if $_G['admin']->hasPermission('address')}--><span>{echo Template::checkbox('p[address]', '管理地址', $admin->hasPermission('address'))}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('prepaidreward')}--><span>{echo Template::checkbox('p[prepaidreward]', '充值设定', $admin->hasPermission('prepaidreward'))}</span><!--{/if}-->
 				</div>
 			</td>
 		</tr>

@@ -1,0 +1,42 @@
+<!--{template header}-->
+
+<script type="text/javascript">
+$(function(){
+	$('#prepaidreward_list').editlist({
+		'edit' : '$mod_url&action=edit',
+		'delete' : '$mod_url&action=delete',
+		'attr' : ['minamount', 'maxamount', 'reward', 'etime_start', 'etime_end'],
+		'buttons' : {'delete':'删除'}
+	});
+});
+</script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li>充值奖励</li>
+</ol>
+
+<div class="box">
+	<h1>充值奖励设置</h1>
+
+	<div id="prepaidreward_list" class="list">
+		<table>
+			<thead><tr><td>最小充值金额</td><td>最大充值金额</td><td>充值奖励</td><td>生效时间</td><td>失效时间</td><td>操作</td></tr></thead>
+			<tbody>
+				<!--{loop $prepaidrewards $r}-->
+				<tr primaryvalue="$r[id]"><td>$r[minamount]</td><td>$r[maxamount]</td><td>$r[reward]</td><td>$r[etime_start]</td><td>$r[etime_end]</td><td></td></tr>
+				<!--{/loop}-->
+				<tr>
+					<td><input /></td>
+					<td><input /></td>
+					<td><input /></td>
+					<td><input /></td>
+					<td><input /></td>
+					<td><button type="button" class="add">添加</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--{template footer}-->

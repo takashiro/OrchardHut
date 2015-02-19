@@ -19,6 +19,7 @@ class Administrator extends User{
 		'setting' => 0x100,
 		'productunit' => 0x200,
 		'producttype' => 0x400,
+		'prepaidreward' => 0x800,
 	);
 
 	public function __construct($id = 0){
