@@ -20,6 +20,7 @@ class Administrator extends User{
 		'productunit' => 0x200,
 		'producttype' => 0x400,
 		'prepaidreward' => 0x800,
+		'salereport' => 0x1000,
 	);
 
 	public function __construct($id = 0){
