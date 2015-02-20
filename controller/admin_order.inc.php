@@ -396,7 +396,12 @@ switch($action){
 	break;
 
 	case 'mark_indp':
-		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
+		if(empty($_GET['orderid'])){
+			include view('order_markindp');
+			exit;
+		}
+
+		if(!$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
 		if(!$order->belongToAddress($_G['admin']->getLimitations())){
