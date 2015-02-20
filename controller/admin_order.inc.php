@@ -355,9 +355,11 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if($_G['admin']->isSuperAdmin() && $order->status != Order::Unsorted){
-			$order->status = Order::Unsorted;
-			$order->addLog($_G['admin'], Order::StatusChanged, Order::Unsorted);
+		if($order->exists()){
+			if($_G['admin']->isSuperAdmin() && $order->status != Order::Unsorted){
+				$order->status = Order::Unsorted;
+				$order->addLog($_G['admin'], Order::StatusChanged, Order::Unsorted);
+			}
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
@@ -367,13 +369,15 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if(!$order->belongToAddress($_G['admin']->getLimitations())){
-			exit('permission denied');
-		}
+		if($order->exists()){
+			if(!$order->belongToAddress($_G['admin']->getLimitations())){
+				exit('permission denied');
+			}
 
-		if($order->status == Order::Unsorted || $_G['admin']->isSuperAdmin()){
-			$order->status = Order::Sorted;
-			$order->addLog($_G['admin'], Order::StatusChanged, Order::Sorted);
+			if($order->status == Order::Unsorted || $_G['admin']->isSuperAdmin()){
+				$order->status = Order::Sorted;
+				$order->addLog($_G['admin'], Order::StatusChanged, Order::Sorted);
+			}
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
@@ -383,13 +387,15 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if(!$order->belongToAddress($_G['admin']->getLimitations())){
-			exit('permission denied');
-		}
+		if($order->exists()){
+			if(!$order->belongToAddress($_G['admin']->getLimitations())){
+				exit('permission denied');
+			}
 
-		if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
-			$order->status = Order::Delivering;
-			$order->addLog($_G['admin'], Order::StatusChanged, Order::Delivering);
+			if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
+				$order->status = Order::Delivering;
+				$order->addLog($_G['admin'], Order::StatusChanged, Order::Delivering);
+			}
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
@@ -404,13 +410,15 @@ switch($action){
 		if(!$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if(!$order->belongToAddress($_G['admin']->getLimitations())){
-			exit('permission denied');
-		}
+		if($order->exists()){
+			if(!$order->belongToAddress($_G['admin']->getLimitations())){
+				exit('permission denied');
+			}
 
-		if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
-			$order->status = Order::InDeliveryPoint;
-			$order->addLog($_G['admin'], Order::StatusChanged, Order::InDeliveryPoint);
+			if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
+				$order->status = Order::InDeliveryPoint;
+				$order->addLog($_G['admin'], Order::StatusChanged, Order::InDeliveryPoint);
+			}
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
@@ -420,13 +428,15 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if(!$order->belongToAddress($_G['admin']->getLimitations())){
-			exit('permission denied');
-		}
+		if($order->exists()){
+			if(!$order->belongToAddress($_G['admin']->getLimitations())){
+				exit('permission denied');
+			}
 
-		if(($order->status == Order::Delivering || $order->status == Order::InDeliveryPoint) || $_G['admin']->isSuperAdmin()){
-			$order->status = Order::Received;
-			$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
+			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryPoint) || $_G['admin']->isSuperAdmin()){
+				$order->status = Order::Received;
+				$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
+			}
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
@@ -436,13 +446,15 @@ switch($action){
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
-		if(!$order->belongToAddress($_G['admin']->formatid, $_G['admin']->componentid)){
-			exit('permission denied');
-		}
+		if($order->exists()){
+			if(!$order->belongToAddress($_G['admin']->formatid, $_G['admin']->componentid)){
+				exit('permission denied');
+			}
 
-		if(($order->status == Order::Delivering || $order->status == Order::InDeliveryPoint) || $_G['admin']->isSuperAdmin()){
-			$order->status = Order::Rejected;
-			$order->addLog($_G['admin'], Order::StatusChanged, Order::Rejected);
+			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryPoint) || $_G['admin']->isSuperAdmin()){
+				$order->status = Order::Rejected;
+				$order->addLog($_G['admin'], Order::StatusChanged, Order::Rejected);
+			}
 		}
 
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
@@ -452,12 +464,13 @@ switch($action){
 		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 		if($orderid > 0){
 			$order = new Order($orderid);
-			if(!$order->belongToAddress($_G['admin']->getLimitations())){
-				exit('access denied');
-			}
 
 			if($order->id <= 0){
 				exit('the order has been canceled');
+			}
+
+			if(!$order->belongToAddress($_G['admin']->getLimitations())){
+				exit('access denied');
 			}
 
 			$ordernum = $order->getUserOrderNum();
