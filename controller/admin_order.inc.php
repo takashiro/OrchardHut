@@ -177,7 +177,7 @@ switch($action){
 			);
 
 			//判断显示格式，若为csv则导出Excel表格
-			$template_formats = array('html', 'csv', 'print');
+			$template_formats = array('html', 'csv', 'print', 'barcode');
 			$template_format = &$_REQUEST['format'];
 			if(empty($template_format) || !in_array($template_format, $template_formats)){
 				$template_format = $template_formats[0];
@@ -265,7 +265,7 @@ switch($action){
 					$o['priceunit'] = Product::PriceUnits($o['priceunit']);
 					$o['address'] = &$order_addresses[$o['id']];
 
-					if($template_format == 'print'){
+					if($template_format == 'print' || $template_format == 'barcode'){
 						$o['deliveryaddress'] = '';
 						foreach($o['address'] as $componentname){
 							$o['deliveryaddress'].= $componentname.' ';

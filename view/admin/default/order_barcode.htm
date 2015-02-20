@@ -12,11 +12,13 @@
 <script type="text/javascript">
 function id2barcode(id){
 	var barcode = '690';	//stands for China
+
 	var leading_zero_num = 9 - id.length;
 	for(var i = 0; i < leading_zero_num; i++){
 		barcode += '0';
 	}
 	barcode += id;
+
 	return barcode;
 }
 </script>
@@ -30,30 +32,62 @@ body{
 	font-weight: bold;
 }
 
-canvas{
+.barcode{
+	border:black 2px solid;
+	border-bottom: 0 solid;
+	text-align: center;
+	padding: 0.3cm 0;
+}
+
+.barcode canvas{
 	width: 9cm;
 	height: 4.5cm;
-	margin: 0.25cm 0.5cm;
 }
 
-table{
-	width: 100%;
-	border:black 2px solid;
-	border-spacing: 0;
-	border-collapse: collapse;
+dl.detail{
+	border:black 1px solid;
+	margin: 0;
+	background: black;
 }
 
-table th, table td{
-	border:black 2px solid;
+dl.detail dt, dl.detail dd{
+	border:black 1px solid;
+	display: inline-block;
+	padding: 2px;
+	background: white;
 }
 
-table th{
+dl.detail dt{
 	text-align: right;
+	width: 131px;
+	border-right: 0px solid;
+}
+
+dl.detail dd{
+	width: 233px;
+	margin: 0;
+	float: right;
+	border-left: 0px solid;
 }
 
 .signature{
-	height: 5em;
+	border: black 1px solid;
+	border-top: 0 solid;
+	margin-bottom: 40px;
 }
+
+.signature h4{
+	margin: 0;
+	border: black 1px solid;
+	border-top: 0 solid;
+	padding: 2px;
+}
+
+.signature .content{
+	height: 6em;
+	border: black 1px solid;
+}
+
 </style>
 </head>
 <body>
@@ -61,47 +95,36 @@ table th{
 <!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
 <!--{loop $orders $order}-->
 
-<table>
-	<tr>
-		<td colspan="2">
-			<canvas id="barcode_$order[id]"></canvas>
-			<script type="text/javascript">$('#barcode_$order[id]').EAN13(id2barcode('$order[id]'));</script>
-		</td>
-	</tr>
-	<tr>
-		<th>收货地址</th>
-		<td>$order[deliveryaddress]</td>
-	</tr>
-	<tr>
-		<th>收件人</th>
-		<td>$order[addressee]</td>
-	</tr>
-	<tr>
-		<th>电话</th>
-		<td>$order[mobile]</td>
-	</tr>
-	<tr>
-		<th>下单时间</th>
-		<td>$order[dateline]</td>
-	</tr>
-	<tr>
-		<th>订单号</th>
-		<td>$order[id]</td>
-	</tr>
-	<tr>
-		<th>总金额</th>
-		<td>$order[totalprice] $order[priceunit]</td>
-	</tr>
-	<tr>
-		<th>客户签收</th>
-		<td colspan="3" class="signature"></td>
-	</tr>
-</table>
+<script type="text/javascript">
+$(function(){
+	$('#barcode_$order[id]').EAN13(id2barcode('$order[id]'));
+});
+</script>
+
+<div class="barcode"><canvas id="barcode_$order[id]"></canvas></div>
+<dl class="detail">
+	<dt>收货地址</dt>
+	<dd>$order[deliveryaddress]</dd>
+	<dt>收件人</dt>
+	<dd>$order[addressee]</dd>
+	<dt>电话</dt>
+	<dd>$order[mobile]</dd>
+	<dt>下单时间</dt>
+	<dd>$order[dateline]</dd>
+	<dt>订单号</dt>
+	<dd>$order[id]</dd>
+	<dt>总金额</dt>
+	<dd>$order[totalprice] $order[priceunit]</dd>
+</dl>
+<div class="signature">
+	<h4>客户签收</h4>
+	<div class="content"></div>
+</div>
 
 <!--{/loop}-->
 
 <script type="text/javascript">
-window.print();
+//window.print();
 </script>
 
 </body>
