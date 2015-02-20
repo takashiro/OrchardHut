@@ -413,6 +413,15 @@ div.toast{
 	padding: 1em;
 }
 
+div.toast_list p{
+	background: #DFF0D8;
+	border: #D6E9C6 1px solid;
+	color: #3C763D;
+	line-height: 2em;
+	width: 60%;
+	margin: 5px auto;
+}
+
 /* Date time picker */
 .xdsoft_datetimepicker  .xdsoft_calendar td.xdsoft_today{
 	color:#31B0D5 !important;
