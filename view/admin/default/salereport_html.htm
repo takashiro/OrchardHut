@@ -15,6 +15,8 @@
 			<dl>
 				<dt>时间：</dt>
 				<dd><input type="text" name="time_start" class="datetime" value="$time_start" /> - <input type="text" name="time_end" class="datetime" value="$time_end" /></dd>
+				<dt>送货地址：</dt>
+				<dd>{echo Template::tselect('delivery_address', $address_format, $address_components, false, isset($order_address[0]) && empty($order_address[1]) ? $order_address[0] : 0)}</dd>
 			</dl>
 			<button type="submit" name="format" value="html">统计</button>
 		</form>
@@ -24,9 +26,6 @@
 				<thead>
 					<tr>
 						<td>产品名称</td>
-					<!--{loop Address::Format() $f}-->
-						<td>$f[name]</td>
-					<!--{/loop}-->
 						<td>销售数量</td>
 						<td>销售金额</td>
 					</tr>
@@ -35,18 +34,12 @@
 				<!--{loop $items $p}-->
 					<tr>
 						<td>$p[productname]</td>
-					<!--{loop Address::Format() $f}-->
-						<td>$f[name]</td>
-					<!--{/loop}-->
 						<td>$p[amount] $p[amountunit]</td>
 						<td>$p[totalprice] 元</td>
 					</tr>
 				<!--{/loop}-->
 					<tr>
 						<td>总计金额</td>
-					<!--{loop Address::Format() $f}-->
-						<td></td>
-					<!--{/loop}-->
 						<td></td>
 						<td>$statistic[totalprice] 元</td>
 					</tr>

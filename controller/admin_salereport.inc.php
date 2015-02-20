@@ -28,8 +28,35 @@ if($time_end){
 	$condition[] = 'o.dateline<='.$time_end;
 }
 
-$condition = implode(' AND ', $condition);
+//根据送货地址统计报表
+$order_address = array();
 
+$delivery_address = array();
+if(!empty($_REQUEST['delivery_address'])){
+	$delivery_address = &$_REQUEST['delivery_address'];
+	$componentid = NULL;
+	$delivery_address = explode(',', $delivery_address);
+	foreach($delivery_address as $format_order => $id){
+		$id = intval($id);
+		if($id <= 0){
+			$format_order--;
+			break;
+		}
+
+		$componentid = $id;
+	}
+
+	if($format_order >= 0 && $componentid !== NULL){
+		$order_address[] = $componentid;
+	}
+}
+
+if($order_address){
+	$order_address = array_unique($order_address);
+	$condition[] = 'o.id IN (SELECT orderid FROM '.$tpre.'orderaddresscomponent WHERE componentid IN ('.implode(',', $order_address).'))';
+}
+
+$condition = implode(' AND ', $condition);
 $items = $db->fetch_all("SELECT d.productid,d.productname,d.amountunit,SUM(d.amount*d.number) AS amount,d.subtype,SUM(d.subtotal) AS totalprice
 	FROM {$tpre}orderdetail d
 		LEFT JOIN {$tpre}order o ON o.id=d.orderid
@@ -46,6 +73,14 @@ foreach($items as $item){
 
 $time_start = rdate($time_start);
 $time_end = rdate($time_end);
+
+
+$address_format = Address::Format();
+$address_components = Address::Components();
+foreach($address_format as $f){
+	array_unshift($address_components, array('id' => 0, 'formatid' => $f['id'], 'name' => '不限', 'parentid' => 0));
+}
+
 include view('salereport_'.$format);
 
 ?>
