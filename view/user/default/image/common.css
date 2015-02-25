@@ -189,6 +189,7 @@ button.remove{
 	margin: 4px 0 4px 0;
 	position: relative;
 	height: 2.3em;
+	z-index: 3;
 }
 
 .product_type .wrapper{
@@ -198,7 +199,6 @@ button.remove{
 
 .product_type_fixed .wrapper{
 	position: fixed;
-	z-index: 3;
 	top: 0;
 	overflow: hidden;
 }
