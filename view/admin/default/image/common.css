@@ -110,7 +110,6 @@ header .profile{
 	font-size: 10pt;
 	color: #428BCA;
 	float: right;
-	width: 260px;
 	position: absolute;
 	bottom: 0;
 	right: 0;
@@ -121,15 +120,15 @@ header .profile .icon_home{
 }
 
 header .profile .account{
-	float:left;
+	float: left;
 	height:35px;
 	line-height:35px;
-	margin-left:0.5em;
 	font-weight:bold;
 	font-size:middle;
 }
 
 header .profile .operation{
+	margin: 0 1.5em 0 3em;
 	height:35px;
 	line-height:35px;
 	float:right;
@@ -137,7 +136,7 @@ header .profile .operation{
 
 header .profile .operation li{
 	display:inline;
-	margin:0 1em;
+	margin:0 0.5em;
 }
 
 .main{
