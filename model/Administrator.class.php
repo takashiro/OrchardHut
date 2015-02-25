@@ -21,6 +21,7 @@ class Administrator extends User{
 		'producttype' => 0x400,
 		'prepaidreward' => 0x800,
 		'salereport' => 0x1000,
+		'bankaccount' => 0x2000,
 	);
 
 	public function __construct($id = 0){

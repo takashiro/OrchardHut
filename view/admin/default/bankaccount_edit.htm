@@ -1,0 +1,40 @@
+<!--{template header}-->
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=bankaccount">资金账户</a></li>
+	<li>编辑账户</li>
+</ol>
+
+<div class="box edit_form">
+	<!--{if $id}-->
+	<h1>编辑账户 - $a[remark]</h1>
+	<!--{else}-->
+	<h1>添加新账户</h1>
+	<!--{/if}-->
+
+	<form class="toast" action="$mod_url&action=edit" method="post">
+	<input type="hidden" id="id" name="id" value="$a[id]" />
+	<table>
+		<tr>
+			<th><label>备注名称：</label></th>
+			<td><input type="text" name="remark" value="$a[remark]" /></td>
+		</tr>
+		<tr>
+			<th><label>自提点设置：</label></th>
+			<td>
+				<ul>
+					<li>{echo Template::tselect('addressrange', $address_format, $address_components, false, $a['addressrange'])}</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">确定<!--{echo $id ? '编辑' : '添加'}--></button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->

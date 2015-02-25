@@ -1,0 +1,34 @@
+<!--{template header}-->
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=admin">资金账户</a></li>
+	<li>账户列表</li>
+</ol>
+
+<div class="box list">
+	<h1>资金账户</h1>
+	<div class="headactions">
+		<a href="$mod_url&action=edit">添加新账户</a>
+	</div>
+
+	<div class="content">
+		<table>
+			<thead><tr><td>ID</td><td>账号</td><td>余额</td><td width="120">操作</td></tr></thead>
+			<tbody>
+			<!--{loop $accounts $u}-->
+			<tr>
+				<td>$u[id]</td>
+				<td>$u[remark]</td>
+				<td>$u[amount]</td>
+				<td><a href="$mod_url&action=edit&id=$u[id]">[编辑]</a> <a href="$mod_url&action=delete&id=$u[id]">[删除]</a></td>
+			</tr>
+			<!--{/loop}-->
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{echo Template::mpage($pagenum, $page, $limit, $mod_url)}
+
+<!--{template footer}-->
