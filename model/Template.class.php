@@ -33,17 +33,17 @@ class Template{
 
 		//{eval *expression*}
 		$template = preg_replace_callback("/[\n\r\t]*\{eval\s+(.+?)\}[\n\r\t]*/is", function($matches){
-			return self::stripvtags('<? '.$matches[1].' ?>','');
+			return Template::stripvtags('<? '.$matches[1].' ?>','');
 		}, $template);
 
 		//{echo *expression*}
 		$template = preg_replace_callback("/[\n\r\t]*\{echo\s+(.+?)\}[\n\r\t]*/is", function($matches){
-			return self::stripvtags('<? echo '.$matches[1].'; ?>','');
+			return Template::stripvtags('<? echo '.$matches[1].'; ?>','');
 		}, $template);
 
 		//{elseif}
 		$template = preg_replace_callback("/([\n\r\t]*)\{elseif\s+(.+?)\}([\n\r\t]*)/is", function($matches){
-			return self::stripvtags($matches[1].'<? } elseif('.$matches[2].') { ?>'.$matches[3],'');
+			return Template::stripvtags($matches[1].'<? } elseif('.$matches[2].') { ?>'.$matches[3],'');
 		}, $template);
 
 		//{else}
@@ -52,13 +52,13 @@ class Template{
 		//{loop $var $key $value}
 		for($i = 0; $i < self::$StatementNext; $i++) {
 			$template = preg_replace_callback("/[\n\r\t]*\{loop\s+(\S+)\s+(\S+)\}[\n\r]*(.+?)[\n\r]*\{\/loop\}[\n\r\t]*/is", function($matches){
-				return self::stripvtags('<? if(is_array('.$matches[1].')) { foreach('.$matches[1].' as '.$matches[2].') { ?>', $matches[3].'<? } } ?>');
+				return Template::stripvtags('<? if(is_array('.$matches[1].')) { foreach('.$matches[1].' as '.$matches[2].') { ?>', $matches[3].'<? } } ?>');
 			}, $template);
 			$template = preg_replace_callback("/[\n\r\t]*\{loop\s+(\S+)\s+(\S+)\s+(\S+)\}[\n\r\t]*(.+?)[\n\r\t]*\{\/loop\}[\n\r\t]*/is", function($matches){
-				return self::stripvtags('<? if(is_array('.$matches[1].')) { foreach('.$matches[1].' as '.$matches[2].' => '.$matches[3].') { ?>', $matches[4].'<? } } ?>');
+				return Template::stripvtags('<? if(is_array('.$matches[1].')) { foreach('.$matches[1].' as '.$matches[2].' => '.$matches[3].') { ?>', $matches[4].'<? } } ?>');
 			}, $template);
 			$template = preg_replace_callback("/([\n\r\t]*)\{if\s+(.+?)\}([\n\r]*)(.+?)([\n\r]*)\{\/if\}([\n\r\t]*)/is", function($matches){
-				return self::stripvtags($matches[1].'<? if('.$matches[2].') { ?>'.$matches[3], $matches[4].$matches[5].'<? } ?>'.$matches[6]);
+				return Template::stripvtags($matches[1].'<? if('.$matches[2].') { ?>'.$matches[3], $matches[4].$matches[5].'<? } ?>'.$matches[6]);
 			}, $template);
 		}
 
@@ -72,24 +72,24 @@ class Template{
 		return $template;
 	}
 
-	static protected function transamp($matches) {
+	static public function transamp($matches) {
 		$str = str_replace('&', '&amp;', $matches[0]);
 		$str = str_replace('&amp;amp;', '&amp;', $str);
 		$str = str_replace('\"', '"', $str);
 		return $str;
 	}
 
-	static protected function echovar($matches) {
+	static public function echovar($matches) {
 		return '<?='.str_replace("\\\"", "\"", preg_replace("/\[([a-zA-Z0-9_\-\.\x7f-\xff]+)\]/s", "['\\1']", $matches[1])).'?>';
 	}
 
-	static protected function stripvtags($expr, $statement) {
+	static public function stripvtags($expr, $statement) {
 		$expr = str_replace("\\\"", "\"", preg_replace("/\<\?\=(\\\$.+?)\?\>/s", "\\1", $expr));
 		$statement = str_replace("\\\"", "\"", $statement);
 		return $expr.$statement;
 	}
 
-	static protected function stripblock($matches) {
+	static public function stripblock($matches) {
 		$var = &$matches[1];
 		$s = &$matches[2];
 		$s = str_replace('\\"', '"', $s);
@@ -106,7 +106,7 @@ class Template{
 		return "<?\n$constadd\$$var = <<<EOF\n".$s."\nEOF;\n?>";
 	}
 
-	static protected function parse_subtemplate($matches){
+	static public function parse_subtemplate($matches){
 		return "\n".file_get_contents(view($matches[1]))."\n";
 	}
 
