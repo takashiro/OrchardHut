@@ -1,9 +1,9 @@
 <?php
 
 class Template{
-	static public function parse_template($tplfile){
-		$nest = 6;
+	static protected $StatementNext = 6;
 
+	static public function parse_template($tplfile){
 		if(!@$fp = fopen($tplfile, 'r')) {
 			exit("Current template file '$tplfile' not found or have no access!");
 		}
@@ -13,59 +13,85 @@ class Template{
 
 		$var_regexp = "((\\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)(\[[a-zA-Z0-9_\-\.\"\'\[\]\$\x7f-\xff]+\])*)";
 		$const_regexp = "([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)";
-		$tag = '=';
 
 		$template = preg_replace("/([\n\r]+)\t+/s", "\\1", $template);
 		$template = preg_replace("/\<\!\-\-\{(.+?)\}\-\-\>/s", "{\\1}", $template);
 		$template = str_replace("{LF}", "<?=\"\\n\"?>", $template);
 
-		$template = preg_replace("/\{(\\\$[a-zA-Z0-9_\[\]\'\"\$\.\x7f-\xff]+)\}/s", "<?{$tag}\\1?>", $template);
-		$template = preg_replace("/$var_regexp/es", "Template::addquote('<?{$tag}\\1?>')", $template);
-		$template = preg_replace("/\<\?\=\<\?\=$var_regexp\?\>\?\>/es", "Template::addquote('<?{$tag}\\1?>')", $template);
+		$template = preg_replace("/\{(\\\$[a-zA-Z0-9_\[\]\'\"\$\.\x7f-\xff]+)\}/s", "<?=\\1?>", $template);
 
-		$template = preg_replace("/\{lang\s+([a-zA-Z0-9_]+?)\s+([a-zA-Z0-9_]+?)\}/ies", "lang('\\1','\\2')", $template);
+		$template = preg_replace_callback("/$var_regexp/s", 'Template::echovar', $template);
+		$template = preg_replace_callback("/\<\?\=\<\?\=$var_regexp\?\>\?\>/s", 'Template::echovar', $template);
 
-		$template = preg_replace("/[\n\r\t]*\{template\s+([a-z0-9_]+)\}[\n\r\t]*/ies", "Template::parse_subtemplate('\\1')", $template);
-		$template = preg_replace("/[\n\r\t]*\{template\s+(.+?)\}[\n\r\t]*/ies", "Template::parse_subtemplate('\\1')", $template);
-		$template = preg_replace("/[\n\r\t]*\{eval\s+(.+?)\}[\n\r\t]*/ies", "Template::stripvtags('<? \\1 ?>','')", $template);
-		$template = preg_replace("/[\n\r\t]*\{echo\s+(.+?)\}[\n\r\t]*/ies", "Template::stripvtags('<? echo \\1; ?>','')", $template);
-		$template = preg_replace("/([\n\r\t]*)\{elseif\s+(.+?)\}([\n\r\t]*)/ies", "Template::stripvtags('\\1<? } elseif(\\2) { ?>\\3','')", $template);
+		$template = preg_replace_callback("/\{lang\s+([a-zA-Z0-9_]+?)\s+([a-zA-Z0-9_]+?)\}/is", function($matches){
+			return lang($matches[1], $matches[2]);
+		}, $template);
+
+		//{template *template_name*}
+		$template = preg_replace_callback("/[\n\r\t]*\{template\s+([a-z0-9_]+)\}[\n\r\t]*/is", 'Template::parse_subtemplate', $template);
+		$template = preg_replace_callback("/[\n\r\t]*\{template\s+(.+?)\}[\n\r\t]*/i", 'Template::parse_subtemplate', $template);
+
+		//{eval *expression*}
+		$template = preg_replace_callback("/[\n\r\t]*\{eval\s+(.+?)\}[\n\r\t]*/is", function($matches){
+			return self::stripvtags('<? '.$matches[1].' ?>','');
+		}, $template);
+
+		//{echo *expression*}
+		$template = preg_replace_callback("/[\n\r\t]*\{echo\s+(.+?)\}[\n\r\t]*/is", function($matches){
+			return self::stripvtags('<? echo '.$matches[1].'; ?>','');
+		}, $template);
+
+		//{elseif}
+		$template = preg_replace_callback("/([\n\r\t]*)\{elseif\s+(.+?)\}([\n\r\t]*)/is", function($matches){
+			return self::stripvtags($matches[1].'<? } elseif('.$matches[2].') { ?>'.$matches[3],'');
+		}, $template);
+
+		//{else}
 		$template = preg_replace("/([\n\r\t]*)\{else\}([\n\r\t]*)/is", "\\1<? } else { ?>\\2", $template);
 
-		for($i = 0; $i < $nest; $i++) {
-			$template = preg_replace("/[\n\r\t]*\{loop\s+(\S+)\s+(\S+)\}[\n\r]*(.+?)[\n\r]*\{\/loop\}[\n\r\t]*/ies", "Template::stripvtags('<? if(is_array(\\1)) { foreach(\\1 as \\2) { ?>','\\3<? } } ?>')", $template);
-			$template = preg_replace("/[\n\r\t]*\{loop\s+(\S+)\s+(\S+)\s+(\S+)\}[\n\r\t]*(.+?)[\n\r\t]*\{\/loop\}[\n\r\t]*/ies", "Template::stripvtags('<? if(is_array(\\1)) { foreach(\\1 as \\2 => \\3) { ?>','\\4<? } } ?>')", $template);
-			$template = preg_replace("/([\n\r\t]*)\{if\s+(.+?)\}([\n\r]*)(.+?)([\n\r]*)\{\/if\}([\n\r\t]*)/ies", "Template::stripvtags('\\1<? if(\\2) { ?>\\3','\\4\\5<? } ?>\\6')", $template);
+		//{loop $var $key $value}
+		for($i = 0; $i < self::$StatementNext; $i++) {
+			$template = preg_replace_callback("/[\n\r\t]*\{loop\s+(\S+)\s+(\S+)\}[\n\r]*(.+?)[\n\r]*\{\/loop\}[\n\r\t]*/is", function($matches){
+				return self::stripvtags('<? if(is_array('.$matches[1].')) { foreach('.$matches[1].' as '.$matches[2].') { ?>', $matches[3].'<? } } ?>');
+			}, $template);
+			$template = preg_replace_callback("/[\n\r\t]*\{loop\s+(\S+)\s+(\S+)\s+(\S+)\}[\n\r\t]*(.+?)[\n\r\t]*\{\/loop\}[\n\r\t]*/is", function($matches){
+				return self::stripvtags('<? if(is_array('.$matches[1].')) { foreach('.$matches[1].' as '.$matches[2].' => '.$matches[3].') { ?>', $matches[4].'<? } } ?>');
+			}, $template);
+			$template = preg_replace_callback("/([\n\r\t]*)\{if\s+(.+?)\}([\n\r]*)(.+?)([\n\r]*)\{\/if\}([\n\r\t]*)/is", function($matches){
+				return self::stripvtags($matches[1].'<? if('.$matches[2].') { ?>'.$matches[3], $matches[4].$matches[5].'<? } ?>'.$matches[6]);
+			}, $template);
 		}
 
-		$template = preg_replace("/\{$const_regexp\}/s", "<?{$tag}\\1?>", $template);
+		$template = preg_replace("/\{$const_regexp\}/s", "<?=\\1?>", $template);
 		$template = preg_replace("/ \?\>[\n\r]*\<\? /s", " ", $template);
 
-		$template = preg_replace("/\"(http)?[\w\.\/:]+\?[^\"]+?&[^\"]+?\"/e", "Template::transamp('\\0')", $template);
+		$template = preg_replace_callback("/\"(http)?[\w\.\/:]+\?[^\"]+?&[^\"]+?\"/", 'Template::transamp', $template);
 
-		$template = preg_replace("/[\n\r\t]*\{block\s+([a-zA-Z0-9_]+)\}(.+?)\{\/block\}/ies", "Template::stripblock('\\1', '\\2')", $template);
+		$template = preg_replace_callback("/[\n\r\t]*\{block\s+([a-zA-Z0-9_]+)\}(.+?)\{\/block\}/is", 'Template::stripblock', $template);
 
 		return $template;
 	}
 
-	static public function transamp($str) {
-		$str = str_replace('&', '&amp;', $str);
+	static protected function transamp($matches) {
+		$str = str_replace('&', '&amp;', $matches[0]);
 		$str = str_replace('&amp;amp;', '&amp;', $str);
 		$str = str_replace('\"', '"', $str);
 		return $str;
 	}
 
-	static public function addquote($var) {
-		return str_replace("\\\"", "\"", preg_replace("/\[([a-zA-Z0-9_\-\.\x7f-\xff]+)\]/s", "['\\1']", $var));
+	static protected function echovar($matches) {
+		return '<?='.str_replace("\\\"", "\"", preg_replace("/\[([a-zA-Z0-9_\-\.\x7f-\xff]+)\]/s", "['\\1']", $matches[1])).'?>';
 	}
 
-	static public function stripvtags($expr, $statement) {
+	static protected function stripvtags($expr, $statement) {
 		$expr = str_replace("\\\"", "\"", preg_replace("/\<\?\=(\\\$.+?)\?\>/s", "\\1", $expr));
 		$statement = str_replace("\\\"", "\"", $statement);
 		return $expr.$statement;
 	}
 
-	static public function stripblock($var, $s) {
+	static protected function stripblock($matches) {
+		$var = &$matches[1];
+		$s = &$matches[2];
 		$s = str_replace('\\"', '"', $s);
 		$s = preg_replace("/<\?=\\\$(.+?)\?>/", "{\$\\1}", $s);
 		preg_match_all("/<\?=(.+?)\?>/e", $s, $constary);
@@ -80,8 +106,8 @@ class Template{
 		return "<?\n$constadd\$$var = <<<EOF\n".$s."\nEOF;\n?>";
 	}
 
-	static public function parse_subtemplate($file){
-		return "\n".file_get_contents(view($file))."\n";
+	static protected function parse_subtemplate($matches){
+		return "\n".file_get_contents(view($matches[1]))."\n";
 	}
 
 	/*
