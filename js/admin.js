@@ -29,13 +29,16 @@ function makeToast(data){
 
 	if(data.url_forward != undefined){
 		setTimeout(function(){
-			if(data.url_forward == 'refresh'){
-				location.reload();
-			}else if(data.url_forward == 'back'){
-				history.back();
-			}else{
-				location.href = data.url_forward;
-			}
+			toast.fadeOut(500, function(){
+				toast.remove();
+				if(data.url_forward == 'refresh'){
+					location.reload();
+				}else if(data.url_forward == 'back'){
+					history.back();
+				}else{
+					location.href = data.url_forward;
+				}
+			});
 		}, 1500);
 	}
 }
