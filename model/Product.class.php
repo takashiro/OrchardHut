@@ -348,7 +348,7 @@ class Product extends DBObject{
 		if($id > 0){
 			$productid = $this->id;
 			$db->UPDATE($attr, array('id' => $id, 'productid' => $productid));
-			
+
 			if(isset($storage['addnum'])){
 				$attr['addnum'] = '';
 				$num = $this->updateStorage($id, $storage['addnum']);
@@ -439,7 +439,7 @@ class Product extends DBObject{
 		$db->DELETE($condition);
 	}
 
-	static private $Types = array('单卖', '果汁');
+	static private $Types = array(1 => '单卖', 2 => '果汁');
 	static public function Types($typeid = -1){
 		if($typeid == -1 || !array_key_exists($typeid, self::$Types)){
 			return self::$Types;
