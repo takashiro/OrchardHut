@@ -1,4 +1,4 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -64,6 +64,15 @@ CREATE TABLE IF NOT EXISTS `hut_autoreply` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `keyword` text NOT NULL,
   `reply` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `hut_bankaccount`;
+CREATE TABLE IF NOT EXISTS `hut_bankaccount` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `remark` varchar(50) NOT NULL,
+  `amount` decimal(9,2) NOT NULL,
+  `addressrange` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -226,6 +235,18 @@ CREATE TABLE IF NOT EXISTS `hut_productstorage` (
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `hut_productstoragelog`;
+CREATE TABLE IF NOT EXISTS `hut_productstoragelog` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `storageid` mediumint(8) unsigned NOT NULL,
+  `dateline` int(10) unsigned NOT NULL,
+  `amount` int(11) NOT NULL,
+  `totalcosts` decimal(9,2) NOT NULL,
+  `adminid` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `dateline` (`dateline`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_producttype`;
 CREATE TABLE IF NOT EXISTS `hut_producttype` (
