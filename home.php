@@ -59,7 +59,9 @@ case 'view':
 	break;
 
 case 'deliveringnum':
-	$num = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid=$_USER[id] AND status IN (".Order::Sorted.",".Order::Delivering.")");
+	$status = array(Order::Sorted, Order::Delivering, Order::InDeliveryPoint);
+	$status = implode(',', $status);
+	$num = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid=$_USER[id] AND status IN (".$status.")");
 	echo $num;
 	exit;
 
