@@ -34,7 +34,7 @@ function makeToast(data){
 				if(data.url_forward == 'refresh'){
 					location.reload();
 				}else if(data.url_forward == 'back'){
-					history.back();
+					toast.remove();
 				}else{
 					location.href = data.url_forward;
 				}
