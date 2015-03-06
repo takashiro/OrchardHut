@@ -38,7 +38,7 @@ class Template{
 
 		//{echo *expression*}
 		$template = preg_replace_callback("/[\n\r\t]*\{echo\s+(.+?)\}[\n\r\t]*/is", function($matches){
-			return Template::stripvtags('<? echo '.$matches[1].'; ?>','');
+			return Template::stripvtags('<?php echo '.$matches[1].';?>','');
 		}, $template);
 
 		//{elseif}
