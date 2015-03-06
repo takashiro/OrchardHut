@@ -7,6 +7,8 @@ return array(
 	'order_in_delivery_point' => '待自提',
 	'order_received' => '已签收',
 	'order_rejected' => '已拒收',
+
+	'mobile' => '手机',
 );
 
 ?>
