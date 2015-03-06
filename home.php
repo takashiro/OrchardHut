@@ -35,8 +35,7 @@ case 'mark_received':
 		$new_status = Order::Received;
 		$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND userid=$_USER[id] AND status IN ($old_status)");
 		if($db->affected_rows() > 0){
-			$order = new Order;
-			$order->id = $orderid;
+			$order = new Order($orderid);
 			$order->addLog($_G['user'], Order::StatusChanged, Order::Received);
 
 			rsetcookie('order-number-cache-time', 0);

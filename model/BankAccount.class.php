@@ -7,6 +7,11 @@ class BankAccount extends DBObject{
 	const ERROR_INVALID_INSUFFICIENT_AMOUNT = -2;
 	const ERROR_TARGET_NOT_EXIST = -3;
 
+	const OPERATION_TRANSFER = 0;
+	const OPERATION_ORDER_INCOME = 1;
+
+	const OPERATOR_SYSTEM = 0;
+
 	public function __construct($id = 0){
 		if($id = intval($id)){
 			$this->fetchAttributesFromDB('*', 'id='.$id);
@@ -26,14 +31,28 @@ class BankAccount extends DBObject{
 		}
 	}
 
-	protected function addLog($log){
+	public function updateAmount($delta){
+		global $db, $tpre;
+		$extrasql = $delta <= 0 ? ' AND amount>='.(-$delta) : '';
+		$db->query("UPDATE {$tpre}bankaccount SET amount=amount+{$delta} WHERE id={$this->id}".$extrasql);
+		return $db->affected_rows() > 0;
+	}
+
+	protected function addLog($operation, $delta, $reason, $operatorid, $targetaccountid){
 		if(!$this->id || $this->id <= 0)
 			return 0;
 
 		global $db;
 		$db->select_table('bankaccountlog');
-		$log['accountid'] = $this->id;
-		$log['dateline'] = TIMESTAMP;
+		$log = array(
+			'accountid' => $this->id,
+			'dateline' => TIMESTAMP,
+			'delta' => $delta,
+			'reason' => $reason,
+			'operation' => $operation,
+			'operatorid' => $operatorid,
+			'targetaccountid' => $targetaccountid,
+		);
 		$db->INSERT($log);
 		return $db->insert_id();
 	}
@@ -50,20 +69,10 @@ class BankAccount extends DBObject{
 		if($delta > 0 && $target > 0){
 			global $_G, $db, $tpre;
 			//@todo: Begin Transaction
-			$db->query("UPDATE {$tpre}bankaccount SET amount=amount-$delta WHERE id={$this->id} AND amount>=$delta");
-			if($db->affected_rows() > 0){
+			if($this->updateAmount(-$delta)){
 				$db->query("UPDATE {$tpre}bankaccount SET amount=amount+$delta WHERE id=$target");
 				if($db->affected_rows() > 0){
-					$log = array(
-						'accountid' => $this->id,
-						'delta' => -$delta,
-						'reason' => $reason,
-						'operatorid' => $_G['admin']->id,
-						'targetaccountid' => $target,
-					);
-					$db->select_table('bankaccountlog');
-					$db->INSERT($log);
-
+					$this->addLog(self::OPERATION_TRANSFER, -$delta, $reason, $_G['admin']->id, $target);
 					//@todo: commit
 					return true;
 				}else{
@@ -76,6 +85,47 @@ class BankAccount extends DBObject{
 		}
 
 		return $error;
+	}
+
+	static public function __on_order_log_added($order, $log){
+		if($log['operation'] != Order::StatusChanged)
+			return;
+
+
+		if($log['extra'] == Order::Received){
+			global $db, $tpre, $_G;
+
+			$components = $order->getAddressComponents();
+			$componentids = array(0);
+			foreach($components as $c){
+				$componentids[] = $c['componentid'];
+			}
+			$componentids = implode(',', $componentids);
+			$bankaccountid = $db->result_first("SELECT a.id
+				FROM {$tpre}bankaccount a
+					LEFT JOIN {$tpre}addresscomponent c ON c.id=a.addressrange
+					LEFT JOIN {$tpre}addressformat f ON f.id=c.formatid
+				WHERE addressrange IN ($componentids)
+				ORDER BY f.displayorder DESC
+				LIMIT 1");
+
+			if($bankaccountid){
+				$bankaccount = new BankAccount;
+				$bankaccount->id = $bankaccountid;
+
+				//@todo: Begin transaction
+				if($bankaccount->updateAmount($order->totalprice)){
+					$bankaccount->addLog(
+						self::OPERATION_ORDER_INCOME,
+						$order->totalprice,
+						lang('common', 'order').lang('common', 'order_received'),
+						self::OPERATOR_SYSTEM,
+						$order->id
+					);
+					//@todo: commit
+				}
+			}
+		}
 	}
 }
 
