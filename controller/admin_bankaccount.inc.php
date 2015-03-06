@@ -2,11 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'edit', 'delete');
 $action = &$_GET['action'];
-if(!in_array($action, $actions)){
-	$action = $actions[0];
-}
 
 $db->select_table('bankaccount');
 
@@ -77,6 +73,50 @@ switch($action){
 			showmsg('您确认删除该资金账户吗？', 'confirm');
 		}
 
+	break;
+
+	case 'transfer':
+		$accounts = array();
+		$account_amount = array();
+		foreach($db->MFETCH('id,remark,amount') as $a){
+			$accounts[$a['id']] = $a['remark'];
+			$account_amount[$a['id']] = $a['amount'];
+		}
+		unset($a);
+
+		$sourceaccount = isset($_REQUEST['sourceaccount']) ? intval($_REQUEST['sourceaccount']) : 0;
+		$targetaccount = isset($_REQUEST['targetaccount']) ? intval($_REQUEST['targetaccount']) : 0;
+
+		if($_POST && isset($accounts[$sourceaccount]) && $accounts[$targetaccount]){
+			$delta = floatval($_POST['delta']);
+			if($account_amount[$sourceaccount] < $delta){
+				showmsg('insufficient_source_account', 'back');
+			}elseif($delta <= 0){
+				showmsg('are_you_kidding_me', 'back');
+			}
+
+			//@todo: Begin Transaction
+			$db->query("UPDATE {$tpre}bankaccount SET amount=amount-$delta WHERE id=$sourceaccount AND amount>=$delta");
+			if($db->affected_rows() > 0){
+				$db->query("UPDATE {$tpre}bankaccount SET amount=amount+$delta WHERE id=$targetaccount");
+
+				$log = array(
+					'accountid' => $sourceaccount,
+					'delta' => $delta,
+					'reason' => isset($_POST['reason']) ? $_POST['reason'] : '',
+					'operatorid' => $_G['admin']->id,
+					'targetaccountid' => $targetaccount,
+					'dateline' => TIMESTAMP,
+				);
+				$db->select_table('bankaccountlog');
+				$db->INSERT($log);
+			}
+			//@todo: End Transaction, commit
+
+			showmsg('successfully_transfered', 'refresh');
+		}
+
+		include view('bankaccount_transfer');
 	break;
 
 	case 'list':default:

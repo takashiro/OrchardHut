@@ -14,14 +14,18 @@
 
 	<div class="content">
 		<table>
-			<thead><tr><td>ID</td><td>账号</td><td>余额</td><td width="120">操作</td></tr></thead>
+			<thead><tr><td>ID</td><td>账号</td><td>余额</td><td width="180">操作</td></tr></thead>
 			<tbody>
 			<!--{loop $accounts $u}-->
 			<tr>
 				<td>$u[id]</td>
 				<td>$u[remark]</td>
 				<td>$u[amount]</td>
-				<td><a href="$mod_url&action=edit&id=$u[id]">[编辑]</a> <a href="$mod_url&action=delete&id=$u[id]">[删除]</a></td>
+				<td>
+					<a href="$mod_url&action=edit&id=$u[id]">[编辑]</a>
+					<a href="$mod_url&action=delete&id=$u[id]">[删除]</a>
+					<a href="$mod_url&action=transfer&sourceaccount=$u[id]">[转账]</a>
+				</td>
 			</tr>
 			<!--{/loop}-->
 			</tbody>
