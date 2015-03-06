@@ -310,4 +310,34 @@ function writelog($logfile, $data){
 	fclose($fp);
 }
 
+function runhooks($hookid, $arguments = array()){
+	$hookScripts = readcache('hookscript');
+	if($hookScripts === NULL){
+		$hookScripts = array();
+		$classFiles = scandir(S_ROOT.'model/');
+		foreach($classFiles as $classFile){
+			if(substr_compare($classFile, '.class.php', -10) != 0)
+				continue;
+
+			$className = substr($classFile, 0, strlen($classFile) - 10);
+			$methods = get_class_methods($className);
+			foreach($methods as $method){
+				if(strncmp($method, '__on_', 5) == 0){
+					$event = substr($method, 5);
+					$hookScripts[$event][] = $className;
+				}
+			}
+		}
+
+		writecache('hookscript', $hookScripts);
+	}
+
+	if(isset($hookScripts[$hookid])){
+		foreach($hookScripts[$hookid] as $className){
+			$func = $className.'::__on_'.$hookid;
+			call_user_func_array($func, $arguments);
+		}
+	}
+}
+
 ?>
