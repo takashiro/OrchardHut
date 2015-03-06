@@ -157,6 +157,7 @@ header .profile .operation li{
 
 .main ul.menu > li{
 	transition:0.2s linear;
+	position: relative;
 }
 
 .main ul.menu > li a{
@@ -179,6 +180,8 @@ header .profile .operation li{
 .main ul.menu > li ul.submenu{
 	display: none;
 	background: #EBEBEB;
+	position: absolute;
+	width: 120px;
 }
 
 .main ul.menu > li ul.submenu > li{

@@ -44,10 +44,19 @@ function makeToast(data){
 }
 
 $(function(){
+	$('.menu > li > .submenu').each(function(){
+		var submenu = $(this);
+		var menu = submenu.parent();
+		submenu.css({
+			top: 0,
+			left: menu.outerWidth() + 1,
+		});
+	});
+
 	$('.menu > li').mouseenter(function(e){
 		var submenu = $(this).children('.submenu');
 		submenu.data('isSlidingDown', true);
-		submenu.slideDown(300, function(){
+		submenu.fadeIn(300, function(){
 			submenu.data('isSlidingDown', false);
 		});
 	});
@@ -58,8 +67,8 @@ $(function(){
 		setTimeout(function(){
 			if(menu_li.is(':hover') || submenu.data('isSlidingDown'))
 				return false;
-			submenu.slideUp();
-		}, 500);
+			submenu.fadeOut(300);
+		}, 200);
 	});
 
 	$('form.toast').submit(function(){
