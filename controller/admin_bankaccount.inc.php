@@ -13,10 +13,10 @@ switch($action){
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
 		if($_POST){
-			$bankaccount = array();
+			$bankaccount = new BankAccount($id);
 
 			if(isset($_POST['remark'])){
-				$bankaccount['remark'] = trim($_POST['remark']);
+				$bankaccount->remark = trim($_POST['remark']);
 			}
 
 			if(isset($_POST['addressrange'])){
@@ -27,30 +27,19 @@ switch($action){
 				}while($components && empty($componentid));
 
 				if($componentid){
-					$bankaccount['addressrange'] = $componentid;
+					$bankaccount->addressrange = $componentid;
 				}
 			}
 
-			if($id > 0){
-				$db->UPDATE($bankaccount, 'id='.$id);
-			}else{
-				$db->INSERT($bankaccount);
+			if($id <= 0){
+				$bankaccount->insert();
 			}
 
 			showmsg('edit_succeed', $mod_url);
 		}
 
 
-		if($id > 0){
-			$a = $db->FETCH('*', 'id='.$id);
-		}else{
-			$a = array(
-				'id' => 0,
-				'remark' => '',
-				'amount' => 0,
-				'addressrange' => 0,
-			);
-		}
+		$a = new BankAccount($id);
 
 		$address_format = Address::Format();
 		$address_components = Address::Components();
@@ -58,6 +47,7 @@ switch($action){
 			array_unshift($address_components, array('id' => 0, 'formatid' => $format['id'], 'name' => '不限', 'parentid' => 0));
 		}
 
+		$a = $a->toReadable();
 		include view('bankaccount_edit');
 	break;
 
@@ -67,7 +57,7 @@ switch($action){
 		}
 
 		if(!empty($_GET['confirm'])){
-			Administrator::Delete($id);
+			BankAccount::Delete($id);
 			redirect($mod_url);
 		}else{
 			showmsg('您确认删除该资金账户吗？', 'confirm');
@@ -76,6 +66,34 @@ switch($action){
 	break;
 
 	case 'transfer':
+		$sourceaccount = isset($_REQUEST['sourceaccount']) ? intval($_REQUEST['sourceaccount']) : 0;
+		$targetaccount = isset($_REQUEST['targetaccount']) ? intval($_REQUEST['targetaccount']) : 0;
+
+		if($_POST){
+			$delta = floatval($_POST['delta']);
+			if($delta <= 0){
+				showmsg('the_number_you_must_be_kidding_me', 'back');
+			}
+
+			$bankaccount = new BankAccount($sourceaccount);
+			$result = $bankaccount->transferTo($targetaccount, $delta, isset($_POST['reason']) ? $_POST['reason'] : '');
+
+			if($result === true){
+				showmsg('successfully_transfered', 'refresh');
+			}else{
+				switch($result){
+				case BankAccount::ERROR_INVALID_INSUFFICIENT_AMOUNT:
+					showmsg('source_account_is_insufficient', 'back');
+				case BankAccount::ERROR_TARGET_NOT_EXIST:
+					showmsg('target_does_not_exist', 'back');
+				case BankAccount::ERROR_INVALID_ARGUMENT:
+					showmsg('invalid_argument_received', 'back');
+				default:
+					showmsg('unknown_error', 'back');
+				}
+			}
+		}
+
 		$accounts = array();
 		$account_amount = array();
 		foreach($db->MFETCH('id,remark,amount') as $a){
@@ -83,38 +101,6 @@ switch($action){
 			$account_amount[$a['id']] = $a['amount'];
 		}
 		unset($a);
-
-		$sourceaccount = isset($_REQUEST['sourceaccount']) ? intval($_REQUEST['sourceaccount']) : 0;
-		$targetaccount = isset($_REQUEST['targetaccount']) ? intval($_REQUEST['targetaccount']) : 0;
-
-		if($_POST && isset($accounts[$sourceaccount]) && $accounts[$targetaccount]){
-			$delta = floatval($_POST['delta']);
-			if($account_amount[$sourceaccount] < $delta){
-				showmsg('insufficient_source_account', 'back');
-			}elseif($delta <= 0){
-				showmsg('are_you_kidding_me', 'back');
-			}
-
-			//@todo: Begin Transaction
-			$db->query("UPDATE {$tpre}bankaccount SET amount=amount-$delta WHERE id=$sourceaccount AND amount>=$delta");
-			if($db->affected_rows() > 0){
-				$db->query("UPDATE {$tpre}bankaccount SET amount=amount+$delta WHERE id=$targetaccount");
-
-				$log = array(
-					'accountid' => $sourceaccount,
-					'delta' => $delta,
-					'reason' => isset($_POST['reason']) ? $_POST['reason'] : '',
-					'operatorid' => $_G['admin']->id,
-					'targetaccountid' => $targetaccount,
-					'dateline' => TIMESTAMP,
-				);
-				$db->select_table('bankaccountlog');
-				$db->INSERT($log);
-			}
-			//@todo: End Transaction, commit
-
-			showmsg('successfully_transfered', 'refresh');
-		}
 
 		include view('bankaccount_transfer');
 	break;
