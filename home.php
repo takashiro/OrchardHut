@@ -30,7 +30,10 @@ case 'mark_received':
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	if($orderid > 0){
-		$db->query("UPDATE {$tpre}order SET status=".Order::Received." WHERE id=$orderid AND userid=$_USER[id] AND status IN (".Order::Sorted.",".Order::Delivering.")");
+		$old_status = array(Order::Sorted, Order::Delivering, Order::InDeliveryPoint);
+		$old_status = implode(',', $old_status);
+		$new_status = Order::Received;
+		$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND userid=$_USER[id] AND status IN ($old_status)");
 		if($db->affected_rows() > 0){
 			$order = new Order;
 			$order->id = $orderid;
