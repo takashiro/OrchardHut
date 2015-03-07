@@ -1,13 +1,11 @@
 <?php
 
-ob_start();
 require_once './core/init.inc.php';
-ob_clean();
 
 $wx = readdata('wxconnect');
 $weixin = new WeixinServer($wx['token'], $wx['account']);
-$request = $weixin->getRequest();
 
+$request = $weixin->getRequest();
 if(!$request){
 	if($weixin->isValidRequest()){
 		exit($_GET['echostr']);
