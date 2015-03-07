@@ -102,7 +102,7 @@ class Order extends DBObject{
 				return false;
 			}
 		}
-		
+
 		$this->totalprice += $d['number'] * $d['price'];
 
 		$this->detail[] = array(
@@ -158,7 +158,7 @@ class Order extends DBObject{
 			$c['orderid'] = $this->id;
 		}
 		unset($c);
-		
+
 		$db->select_table('orderaddresscomponent');
 		$db->INSERTS($this->address_components);
 
@@ -175,7 +175,7 @@ class Order extends DBObject{
 		$result = parent::Delete($orderid, $extra);
 		if($result){
 			global $db, $tpre;
-			
+
 			$db->select_table('orderdetail');
 			$details = $db->MFETCH('storageid,amount,number', 'orderid='.$orderid.' AND storageid IS NOT NULL');
 			foreach($details as $d){

@@ -68,7 +68,7 @@ function showmsg($message, $url_forward = ''){
 				rsetcookie('http_referer', $_SERVER['HTTP_REFERER']);
 			break;
 		}
-		
+
 		include view('show_message');
 	}else{
 		echo json_encode(array('message' => $message, 'url_forward' => $url_forward));
@@ -89,7 +89,7 @@ function redirect($url){
 
 /*
 	Set or unset a new cookie variable.
-	$extexpiry represents how long the new variable will exist. A year by default. 
+	$extexpiry represents how long the new variable will exist. A year by default.
 */
 function rsetcookie($varname, $value = '', $extexpiry = -1){
 	global $_G;
@@ -160,7 +160,7 @@ function rhtmlspecialchars($str){
 			$str[$key] = rhtmlspecialchars($val);
 		}
 	}else{
-		$str = htmlspecialchars($str);  
+		$str = htmlspecialchars($str);
 	}
 	return $str;
 }
@@ -293,7 +293,7 @@ function writelog($logfile, $data){
 	}
 
 	$fp = fopen($logfile, 'a');
-	flock($fp, LOCK_EX); 
+	flock($fp, LOCK_EX);
 	if($need_prefix){
 		fwrite($fp, '<?php exit;?>');
 	}

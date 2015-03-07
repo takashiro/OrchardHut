@@ -99,7 +99,7 @@ class Template{
 			$html.= '<option value="'.$value.'"'.($value == $selected ? ' selected="selected"' : '').'>'.$text.'</option>';
 		}
 		$html.= '</select>';
-		
+
 		return $html;
 	}
 
@@ -111,10 +111,10 @@ class Template{
 		foreach($option as $key => $val){
 			$html.= '<input type="radio" name="'.$name.'" value="'.$key.'"'.($value == $key ? ' checked="checked"' : '').' /><span class="checkbox">'.$val.'</span>';
 		}
-		
+
 		return $html;
 	}
-	
+
 	/*
 		Function mpage (short for multiple page) generate HTML codes for multiple pages. It's a paging function.
 		$totalnum is the total number of rows of data.
@@ -128,14 +128,14 @@ class Template{
 			$url = $_SERVER['SCRIPT_FILENAME'].($_SERVER['QUERY_STRING'] ? '?'.$_SERVER['QUERY_STRING'] : '');
 		}
 		$delimeter = strpos($url, '?') !== false ? '&' : '?';
-		
+
 		$maxpage = ceil($totalnum / $limit);
 		if($maxpage <= 1){
 			return '';
 		}
-		
+
 		$page = min($maxpage, max(1, intval($page)));
-		
+
 		$html = '<div class="mpage">';
 
 		$html.= '<a href="###" class="current">'.$totalnum.'</a>';
@@ -164,10 +164,10 @@ class Template{
 		}
 
 		$html.= '</div>';
-		
+
 		return $html;
 	}
-	
+
 	static public function checkbox($name, $tips, $value = false){
 		return '<input type="checkbox" id="'.$name.'" name="'.$name.'"'.($value ? ' checked="checked"' : '').' /><label for="'.$name.'">'.$tips.'</label>';
 	}
@@ -187,7 +187,7 @@ class Template{
 
 	static public function tselect($name, $formats, $components, $with_ext = true, $componentid = 0){
 		$value = array($componentid);
-		
+
 		$find_parent = array();
 		foreach($components as $c){
 			$find_parent[$c['id']] = $c['parentid'];

@@ -48,7 +48,7 @@ if($action == 'login'){
 	if(!$_G['user']->isLoggedIn()){
 		showmsg('binding_require_user_logged_in', 'back');
 	}
-	
+
 	if(!array_key_exists('user', $_GET) || !array_key_exists('key', $_GET)){
 		showmsg('unexpected_link_with_inadequate_parameters', 'index.php');
 	}

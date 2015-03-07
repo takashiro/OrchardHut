@@ -106,7 +106,7 @@ class XML{
 
 	static function StringToDOM($xml){
 		$xml = preg_replace('/>\s+</s', '><', $xml);
-		
+
 		$dom = new DOMDocument('1.0', 'utf-8');
 		$dom->loadXML($xml);
 
