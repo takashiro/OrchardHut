@@ -178,10 +178,11 @@ header .profile .operation li{
 }
 
 .main ul.menu > li ul.submenu{
-	display: none;
 	background: #EBEBEB;
 	position: absolute;
 	width: 120px;
+	display: none;
+	border-left: white 1px solid;
 }
 
 .main ul.menu > li ul.submenu > li{

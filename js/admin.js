@@ -49,26 +49,31 @@ $(function(){
 		var menu = submenu.parent();
 		submenu.css({
 			top: 0,
-			left: menu.outerWidth() + 1,
+			left: menu.outerWidth(),
 		});
 	});
 
-	$('.menu > li').mouseenter(function(e){
+	$('.menu > li').mouseenter(function(){
 		var submenu = $(this).children('.submenu');
-		submenu.data('isSlidingDown', true);
-		submenu.fadeIn(300, function(){
-			submenu.data('isSlidingDown', false);
+		if(submenu.is(':visible') && submenu.css('opacity') >= 1.0)
+			return;
+		var offset_left = $(this).outerWidth();
+		submenu.css({'left' : offset_left - 10, 'opacity' : 0.0});
+		submenu.show();
+		submenu.data('isShowing', true);
+		submenu.animate({'left' : offset_left, 'opacity' : 1.0}, 300, 'swing', function(){
+			submenu.data('isShowing', false);
 		});
 	});
 
 	$('.menu > li').mouseleave(function(){
-		var submenu = $(this).children('.submenu');
-		var menu_li = submenu.parent();
+		var submenu = $(this).find('.submenu');
 		setTimeout(function(){
-			if(menu_li.is(':hover') || submenu.data('isSlidingDown'))
-				return false;
+			var li = submenu.parent();
+			if(li.is(':hover') || submenu.data('isShowing'))
+				return;
 			submenu.fadeOut(300);
-		}, 200);
+		}, 300);
 	});
 
 	$('form.toast').submit(function(){
