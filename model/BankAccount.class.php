@@ -68,12 +68,12 @@ class BankAccount extends DBObject{
 		$error = self::ERROR_INVALID_ARGUMENT;
 		if($delta > 0 && $target > 0){
 			global $_G, $db, $tpre;
-			//@todo: Begin Transaction
+			$db->query('START TRANSACTION');
 			if($this->updateAmount(-$delta)){
 				$db->query("UPDATE {$tpre}bankaccount SET amount=amount+$delta WHERE id=$target");
 				if($db->affected_rows() > 0){
 					$this->addLog(self::OPERATION_TRANSFER, -$delta, $reason, $_G['admin']->id, $target);
-					//@todo: commit
+					$db->query('COMMIT');
 					return true;
 				}else{
 					$error = ERROR_TARGET_NOT_EXIST;
@@ -81,7 +81,7 @@ class BankAccount extends DBObject{
 			}else{
 				$error = ERROR_INVALID_INSUFFICIENT_AMOUNT;
 			}
-			//@todo: Roll back transaction
+			$db->query('ROLLBACK');
 		}
 
 		return $error;
@@ -113,7 +113,7 @@ class BankAccount extends DBObject{
 				$bankaccount = new BankAccount;
 				$bankaccount->id = $bankaccountid;
 
-				//@todo: Begin transaction
+				$db->query('START TRANSACTION');
 				if($bankaccount->updateAmount($order->totalprice)){
 					$bankaccount->addLog(
 						self::OPERATION_ORDER_INCOME,
@@ -122,8 +122,9 @@ class BankAccount extends DBObject{
 						self::OPERATOR_SYSTEM,
 						$order->id
 					);
-					//@todo: commit
+					$db->query('COMMIT');
 				}
+				$db->query('ROLLBACK');
 			}
 		}
 	}
