@@ -53,7 +53,7 @@ class Mysql {
 	function fetch_first($sql) {
 		return $this->fetch_array($this->query($sql));
 	}
-	
+
 	function fetch_all($sql){
 		$query = $this->query($sql);
 		$result = array();
@@ -140,16 +140,16 @@ class Mysql {
 	function close() {
 		return mysql_close($this->link);
 	}
-	
+
 	function halt($message) {
 		trigger_error($message, E_USER_ERROR);
 		exit;
 	}
-	
+
 	function select_table($tablename){
 		$this->tablename = $tablename;
 	}
-	
+
 	function set_tablepre($tpre){
 		$this->tpre = $tpre;
 	}
@@ -162,7 +162,7 @@ class Mysql {
 		is_array($fields) && $fields = '`'.implode('`,`', $fields).'`';
 		return $this->query("SELECT $fields FROM `{$this->tpre}{$this->tablename}` WHERE $condition");
 	}
-	
+
 	function FETCH($fields, $condition = '1'){
 		if(is_array($condition)){
 			$condition = self::ToCondition($condition);
@@ -180,7 +180,7 @@ class Mysql {
 		is_array($fields) && $fields = '`'.implode('`,`', $fields).'`';
 		return $this->fetch_all("SELECT $fields FROM `{$this->tpre}{$this->tablename}` WHERE $condition");
 	}
-	
+
 	function RESULTF($field, $condition = '1'){
 		if(is_array($condition)){
 			$condition = self::ToCondition($condition);
@@ -188,7 +188,7 @@ class Mysql {
 
 		return $this->result_first("SELECT $field FROM `{$this->tpre}{$this->tablename}` WHERE $condition");
 	}
-	
+
 	function UPDATE($node, $condition = '1', $priority = ''){
 		if(empty($node)){
 			return false;
@@ -210,11 +210,11 @@ class Mysql {
 		$priority = '' ? '' : 'LOW_PRIORITY';
 		return $this->query("UPDATE $priority `{$this->tpre}{$this->tablename}` SET $sql WHERE $condition");
 	}
-	
+
 	function INSERT($node, $replace = false, $extra = ''){
 		$action = $replace ? 'REPLACE' : 'INSERT';
 		$fields = implode('`,`',array_keys($node));
-		
+
 		$values = array_values($node);
 		foreach($values as &$value){
 			if($value !== NULL){
@@ -228,7 +228,7 @@ class Mysql {
 
 		return $this->query("$action $extra INTO `{$this->tpre}{$this->tablename}` (`$fields`) VALUES ($values)");
 	}
-	
+
 	function INSERTS($nodes, $replace = false, $extra = ''){
 		if(!$nodes || !is_array($nodes)){
 			return false;
@@ -237,7 +237,7 @@ class Mysql {
 		$action = $replace ? 'REPLACE' : 'INSERT';
 
 		$nodes = array_values($nodes);
-		
+
 		$fields = array_keys($nodes[0]);
 
 		$values = array();
@@ -253,7 +253,7 @@ class Mysql {
 		$fields = implode('`,`', $fields);
 		return $this->query("$action $extra INTO `{$this->tpre}{$this->tablename}` (`$fields`) VALUES $values");
 	}
-		
+
 	function DELETE($condition, $priority = 'LOW_PRIORITY'){
 		if(is_array($condition)){
 			$condition = self::ToCondition($condition);

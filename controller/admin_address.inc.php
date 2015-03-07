@@ -65,7 +65,7 @@ if($data == 'format'){
 					'displayorder' => intval($_POST['displayorder']),
 					'parentid' => intval($_GET['parentid']),
 				);
-				
+
 				if($component['parentid'] > 0){
 					$parent_format = $db->RESULTF('formatid', 'id='.$component['parentid']);
 					$format = Address::Format();
