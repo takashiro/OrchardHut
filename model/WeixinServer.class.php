@@ -28,12 +28,13 @@ class WeixinServer{
 			return false;
 		}
 
-		if(empty($GLOBALS['HTTP_RAW_POST_DATA'])){
+		$input = file_get_contents('php://input');
+		if(empty($input)){
 			return false;
 		}
 
 		$request = new XML;
-		$request->loadXML($GLOBALS['HTTP_RAW_POST_DATA']);
+		$request->loadXML($input);
 		$request = $request->toArray();
 		$request = $request['xml'];
 		$this->client_openid = $request['FromUserName'];
@@ -43,7 +44,7 @@ class WeixinServer{
 	function replyTextMessage($content, $to_user = NULL){
 		$to_user == NULL && $to_user = $this->client_openid;
 		$from_user = $this->server_id;
-		
+
 		$xml = "<xml>
 			<ToUserName><![CDATA[$to_user]]></ToUserName>
 			<FromUserName><![CDATA[$from_user]]></FromUserName>
