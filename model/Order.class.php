@@ -77,6 +77,10 @@ class Order extends DBObject{
 		return $this->id == $db->RESULTF('orderid', $condition);
 	}
 
+	public function getDetails(){
+		return $this->detail;
+	}
+
 	//warning: you must call insert() after all the details has been added
 	public function addDetail($d){
 		global $db, $tpre;
