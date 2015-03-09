@@ -78,27 +78,16 @@ $(function(){
 					<!--{/loop}-->
 				</dd>
 			</dl>
-			<button type="submit" name="format" value="html">查找</button>
-			<button type="submit" name="format" value="csv">导出Excel</button>
-			<button type="submit" name="format" value="print">批量打印小票</button>
-			<button type="submit" name="format" value="barcode">批量打印条码</button>
+			<div class="post_buttons">
+				<button type="submit" name="format" value="html">查找</button>
+				<button type="submit" name="format" value="csv">导出Excel</button>
+				<button type="submit" name="format" value="print">批量打印小票</button>
+				<button type="submit" name="format" value="barcode">批量打印条码</button>
+				<button id="multi_mark_sorted" title="批量点击本页所有[已打包]按钮">本页已打包</button>
+				<button id="multi_mark_delivering" title="批量点击本页所有[配送中]按钮">本页配送中</button>
+				<button id="multi_mark_in_delivery_point" title="批量点击本页所有[待自提]按钮">本页待自提</button>
+			</div>
 		</form>
-
-		<!--{if $_G['admin']->isSuperAdmin()}-->
-		<form id="condition_form" class="quick_search" action="admin.php" method="get">
-			<input type="hidden" name="mod" value="order" />
-			<dl>
-				<dt>订单号：</dt>
-				<dd><input type="text" name="orderid" style="width:3em" /></dd>
-				<dt>状态：</dt>
-				<dd>{echo Template::select('action', array('mark_unsorted' => lang('common', 'order_unsorted'), 'mark_sorted' => lang('common', 'order_sorted'), 'mark_indp' => lang('common', 'order_in_delivery_point'), 'mark_delivering' => lang('common', 'order_delivering'), 'mark_received' => lang('common', 'order_received'), 'mark_rejected' => lang('common', 'order_rejected')))}</dd>
-			</dl>
-			<button type="submit">修改</button>
-			<a class="button" id="multi_mark_sorted" href="###" title="批量点击本页所有[已打包]按钮">本页已打包</a>
-			<a class="button" id="multi_mark_delivering" href="###" title="批量点击本页所有[配送中]按钮">本页配送中</a>
-			<a class="button" id="multi_mark_in_delivery_point" href="###" title="批量点击本页所有[待自提]按钮">本页待自提</a>
-		</form>
-		<!--{/if}-->
 
 		<div id="orderlist" class="list" style="font-size:10pt">
 			<table>

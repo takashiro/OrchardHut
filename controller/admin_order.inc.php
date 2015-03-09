@@ -2,21 +2,8 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array(
-	'list',
-	'mark_unsorted',
-	'mark_sorted',
-	'mark_delivering',
-	'mark_indp',
-	'mark_received',
-	'mark_rejected',
-	'print',
-	'delete',
-	'search',
-	'detail_outofstock',
-	'barcode',
-);
-$action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
+$action = &$_REQUEST['action'];
+empty($action) && $action = 'list';
 
 switch($action){
 	case 'list':case 'search':
@@ -523,6 +510,13 @@ switch($action){
 
 		echo json_encode($result);
 	break;
+
+	case 'changestate':
+		include view('order_changestate');
+		break;
+
+	default:
+		showmsg('illegal_operation');
 }
 
 ?>
