@@ -13,6 +13,7 @@ class Order extends DBObject{
 	const InDeliveryPoint = 5;
 
 	//Alipay State
+	public static $AlipayState;
 	public static $AlipayStateEnum;
 	const WaitBuyerPay = 1;		//交易创建，等待买家付款。
 	const TradeClosed = 2;		//在指定时间段内未支付时关闭的交易；在交易完成全额退款成功时关闭的交易。
@@ -267,12 +268,20 @@ class Order extends DBObject{
 }
 
 Order::$Status = array(
-	0 => lang('common', 'order_unsorted'),
-	1 => lang('common', 'order_sorted'),
-	2 => lang('common', 'order_delivering'),
-	5 => lang('common', 'order_in_delivery_point'),
-	3 => lang('common', 'order_received'),
-	4 => lang('common', 'order_rejected'),
+	Order::Unsorted => lang('common', 'order_unsorted'),
+	Order::Sorted => lang('common', 'order_sorted'),
+	Order::Delivering => lang('common', 'order_delivering'),
+	Order::InDeliveryPoint => lang('common', 'order_in_delivery_point'),
+	Order::Received => lang('common', 'order_received'),
+	Order::Rejected => lang('common', 'order_rejected'),
+);
+
+Order::$AlipayState = array(
+	Order::WaitBuyerPay => lang('common', 'order_waitbuyerpay'),
+	Order::TradeClosed => lang('common', 'order_tradeclosed'),
+	Order::TradeSuccess => lang('common', 'order_tradesuccess'),
+	Order::TradePending => lang('common', 'order_tradepending'),
+	Order::TradeFinished => lang('common', 'order_tradefinished'),
 );
 
 Order::$AlipayStateEnum = array(

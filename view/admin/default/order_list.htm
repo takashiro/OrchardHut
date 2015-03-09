@@ -102,7 +102,8 @@ $(function(){
 						<td>历史订单</td>
 						<td>物品</td>
 						<td>价格</td>
-						<td width="60">状态</td>
+						<td width="60">物流状态</td>
+						<td>付款状态</td>
 						<td width="100">下单时间</td>
 						<td width="100">收货时间</td>
 						<td width="50">操作</td>
@@ -139,6 +140,10 @@ $(function(){
 							<div><a class="mark_received" href="{$mod_url}&action=mark_received&orderid=$o[id]" title="将订单标记为已签收">[已签收]</a></div>
 							<div><a class="mark_rejected" href="{$mod_url}&action=mark_rejected&orderid=$o[id]" title="将订单标记为已拒收">[已拒收]</a></div>
 							<!--{/if}-->
+						</td>
+						<td>
+							<div>{echo Order::$PaymentMethod[$o['paymentmethod']]}</div>
+							<!--{if $o['alipaystate']}-->{echo Order::$AlipayState[$o['alipaystate']]}<!--{/if}-->
 						</td>
 						<td>{echo rdate($o['dateline'])}</td>
 						<td>

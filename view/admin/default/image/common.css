@@ -291,7 +291,7 @@ footer{
 
 .list table thead tr{
 	border:0 solid;
-	line-height: 2em;
+	padding: 0.5em 0;
 }
 
 .list table thead tr td{

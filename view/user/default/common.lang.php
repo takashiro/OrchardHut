@@ -11,6 +11,12 @@ return array(
 	'order_paidwithcash' => '货到付款(现金)',
 	'order_paidonline' => '在线支付',
 
+	'order_waitbuyerpay' => '等待付款',
+	'order_tradeclosed' => '交易关闭',
+	'order_tradesuccess' =>	'交易成功',
+	'order_tradepending' =>	'等待收款',
+	'order_tradefinished' => '交易结束',
+
 	'mobile' => '手机',
 );
 
