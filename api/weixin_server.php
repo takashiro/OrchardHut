@@ -1,6 +1,6 @@
 <?php
 
-require_once './core/init.inc.php';
+require_once '../core/init.inc.php';
 
 $wx = readdata('wxconnect');
 $weixin = new WeixinServer($wx['token'], $wx['account']);
