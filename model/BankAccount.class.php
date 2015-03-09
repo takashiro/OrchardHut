@@ -31,6 +31,10 @@ class BankAccount extends DBObject{
 		}
 	}
 
+	public function toReadable(){
+		return $this->toArray();
+	}
+
 	public function updateAmount($delta){
 		global $db, $tpre;
 		$extrasql = $delta <= 0 ? ' AND amount>='.(-$delta) : '';
