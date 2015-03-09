@@ -332,6 +332,10 @@ input.narrow{
 	width:2.5em;
 }
 
+input.dnarrow{
+	width: 5em;
+}
+
 input.number{
 	text-align:center;
 }

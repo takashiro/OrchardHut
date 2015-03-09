@@ -6,29 +6,7 @@ tr.selectable{
 }
 </style>
 
-<script type="text/javascript">
-$(function(){
-	$('input.amount, input.punit').change(function(){
-		var tr = $(this).parent().parent();
-		var amount = tr.find('.amount');
-		var punit = tr.find('.punit');
-		var tunit = tr.find('.tunit');
-		tunit.text(parseInt(amount.val(), 10) * parseFloat(punit.val()));
-
-		var totalprice = 0;
-		$('.tunit').each(function(){
-			totalprice += parseFloat($(this).text());
-		});
-		$('#totalprice').text(totalprice);
-	});
-
-	$('tr.selectable').click(function(){
-		var radio = $(this).children('td').eq(0).children('input');
-		$('input[type="radio"][name="' + radio.attr('name') + '"]').prop('checked', false);
-		radio.prop('checked', true);
-	});
-});
-</script>
+<script type="text/javascript" src="{__TEMPLATEROOT__}js/productstorage.js"></script>
 
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
@@ -53,8 +31,8 @@ $(function(){
 							<td>$s[remark]</td>
 							<td>{$s[num]}{$s[amountunit]}</td>
 							<td><input type="text" name="amount[{$s[id]}]" class="amount number narrow" value="0" />$s[amountunit]</td>
-							<td><input type="text" name="price[{$s[id]}]" class="punit number narrow" value="0" />$s[priceunit]</td>
-							<td><span class="tunit">0</span>$s[priceunit]</td>
+							<td><input type="text" name="price[{$s[id]}]" class="unitprice number dnarrow" value="0.00" />$s[priceunit]</td>
+							<td><input type="text" class="subtotal number dnarrow" value="0.00" />$s[priceunit]</td>
 						</tr>
 					<!--{/loop}-->
 						<tr>
