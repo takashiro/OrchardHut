@@ -19,6 +19,10 @@ return array(
 	'source_account_is_insufficient' => '账户金额不足，不能转出。',
 	'target_does_not_exist' => '目标账户不存在。',
 	'invalid_argument_received' => '非法参数。',
+
+	'storage_is_updated' => '库存成功更新！',
+	'insufficient_bank_account' => '账户资金不足。',
+	'no_storage_need_updating' => '没有库存需要更新。',
 );
 
 ?>

@@ -480,7 +480,7 @@ class Product extends DBObject{
 
 	static private $AmountUnits = null;
 	static public function AmountUnits($id = -1){
-		if(self::$AmountUnits == null){
+		if(self::$AmountUnits === null){
 			self::$AmountUnits = self::Units(2);
 		}
 
@@ -495,7 +495,7 @@ class Product extends DBObject{
 
 	static private $PriceUnits = null;
 	static public function PriceUnits($id = -1){
-		if(self::$PriceUnits == null){
+		if(self::$PriceUnits === null){
 			self::$PriceUnits = self::Units(1);
 		}
 		if($id == -1){

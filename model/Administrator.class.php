@@ -13,6 +13,7 @@ class Administrator extends User{
 		'order_deliver_w' => 0x4,
 		'admin' => 0x8,
 		'market' => 0x10,
+		'productstorage' => 0x10,
 		'announcement' => 0x20,
 		'address' => 0x40,
 		'order_sort' => 0x80,

@@ -1,0 +1,99 @@
+{template header}
+
+<style type="text/css">
+tr.selectable{
+	cursor: pointer;
+}
+</style>
+
+<script type="text/javascript">
+$(function(){
+	$('input.amount, input.punit').change(function(){
+		var tr = $(this).parent().parent();
+		var amount = tr.find('.amount');
+		var punit = tr.find('.punit');
+		var tunit = tr.find('.tunit');
+		tunit.text(parseInt(amount.val(), 10) * parseFloat(punit.val()));
+
+		var totalprice = 0;
+		$('.tunit').each(function(){
+			totalprice += parseFloat($(this).text());
+		});
+		$('#totalprice').text(totalprice);
+	});
+
+	$('tr.selectable').click(function(){
+		var radio = $(this).children('td').eq(0).children('input');
+		$('input[type="radio"][name="' + radio.attr('name') + '"]').prop('checked', false);
+		radio.prop('checked', true);
+	});
+});
+</script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=product">商品</a></li>
+	<li>库存管理</li>
+</ol>
+
+<div class="box">
+	<h1>商品库存</h1>
+	<div class="content">
+		<form action="$mod_url&action=import" method="post">
+			<div class="list">
+				<table>
+					<thead>
+						<tr><td>商品名称</td><td>库存编号</td><td>库存备注</td><td>余量</td><td>进货量</td><td>成本单价</td><td>成本小计</td></tr>
+					</thead>
+					<tbody>
+					<!--{loop $storages $s}-->
+						<tr>
+							<td>$s[productname]</td>
+							<td>$s[id]</td>
+							<td>$s[remark]</td>
+							<td>{$s[num]}{$s[amountunit]}</td>
+							<td><input type="text" name="amount[{$s[id]}]" class="amount number narrow" value="0" />$s[amountunit]</td>
+							<td><input type="text" name="price[{$s[id]}]" class="punit number narrow" value="0" />$s[priceunit]</td>
+							<td><span class="tunit">0</span>$s[priceunit]</td>
+						</tr>
+					<!--{/loop}-->
+						<tr>
+							<td>总计</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><span id="totalprice">0</span>元</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<h1>进货账号</h1>
+			<div class="list">
+				<table>
+					<thead>
+						<tr><td>选择</td><td>账号备注</td><td>账号余额</td></tr>
+					</thead>
+					<tbody>
+					<!--{loop $bankaccounts $a}-->
+						<tr class="selectable">
+							<td><input type="radio" name="bankaccount" value="$a[id]" /></td>
+							<td>$a[remark]</td>
+							<td>$a[amount]</td>
+						</tr>
+					<!--{/loop}-->
+					</tbody>
+				</table>
+			</div>
+
+			<div class="post_buttons">
+				<button type="submit">提交进货单</button>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+{template footer}

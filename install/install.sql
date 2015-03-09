@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `hut_productstorage` (
   `num` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productstoragelog`;
 CREATE TABLE IF NOT EXISTS `hut_productstoragelog` (
@@ -260,9 +260,11 @@ CREATE TABLE IF NOT EXISTS `hut_productstoragelog` (
   `amount` int(11) NOT NULL,
   `totalcosts` decimal(9,2) NOT NULL,
   `adminid` mediumint(8) unsigned NOT NULL,
+  `productname` varchar(50) NOT NULL,
+  `storageremark` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dateline` (`dateline`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_producttype`;
 CREATE TABLE IF NOT EXISTS `hut_producttype` (
@@ -300,6 +302,10 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `wxopenid` (`wxopenid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `hut_bankaccountlog`
+  ADD CONSTRAINT `accountid` FOREIGN KEY (`accountid`) REFERENCES `hut_bankaccount` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
