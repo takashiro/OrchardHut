@@ -1,15 +1,65 @@
 <?php
 
 class Template{
+	static public $SOURCE_DIR;
+
 	static protected $StatementNext = 6;
 
-	static public function parse_template($tplfile){
-		if(!@$fp = fopen($tplfile, 'r')) {
-			exit("Current template file '$tplfile' not found or have no access!");
-		}
+	protected $type;
+	protected $style;
+	protected $name;
 
-		$template = @fread($fp, filesize($tplfile));
-		fclose($fp);
+	function __construct($type, $style, $name){
+		$this->type = $type;
+		$this->style = $style;
+		$this->name = $name;
+	}
+
+	public function lastModifiedTime(){
+		$sourcePath = $this->getSourcePath();
+		return file_exists($sourcePath) ? filemtime($sourcePath) : -1;
+	}
+
+	public function getType(){
+		return $this->type;
+	}
+
+	public function getStyle(){
+		return $this->name;
+	}
+
+	public function getName(){
+		return $this->name;
+	}
+
+	public function getDirectoryPath(){
+		return self::$SOURCE_DIR.$this->type.'/'.$this->style.'/';
+	}
+
+	public function getOriginalSourcePath(){
+		return $this->getDirectoryPath().$this->name.'.htm';
+	}
+
+	public function getSourcePath(){
+		$htmpath = $this->getDirectoryPath().$this->name.'.htm';
+		if(!file_exists($htmpath)){
+			$htmpath = self::$SOURCE_DIR.$this->type.'/default/'.$this->name.'.htm';
+
+			if($this->type != 'user' && !file_exists($htmpath)){
+				$htmpath = self::$SOURCE_DIR.'user/default/'.$this->name.'.htm';
+			}
+		}
+		return $htmpath;
+	}
+
+	public function getTemplateRoot(){
+		return './view/'.$this->type.'/'.$this->style.'/';
+	}
+
+	public function parse(){
+		$template = file_get_contents($this->getSourcePath());
+		if($template === false)
+			exit("Current template file {$this->templateFile} not found or have no access!");
 
 		$var_regexp = "((\\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)(\[[a-zA-Z0-9_\-\.\"\'\[\]\$\x7f-\xff]+\])*)";
 		$const_regexp = "([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)";
@@ -62,6 +112,10 @@ class Template{
 			}, $template);
 		}
 
+		$template = preg_replace_callback("/\{__{$const_regexp}__\}/s", function($matches){
+			$const = str_replace('_', '', $matches[1]);
+			return $this->{'get'.$const}();
+		}, $template);
 		$template = preg_replace("/\{$const_regexp\}/s", "<?=\\1?>", $template);
 		$template = preg_replace("/ \?\>[\n\r]*\<\? /s", " ", $template);
 
@@ -255,5 +309,7 @@ class Template{
 		return $html;
 	}
 }
+
+Template::$SOURCE_DIR = S_ROOT.'view/';
 
 ?>

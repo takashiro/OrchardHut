@@ -171,26 +171,21 @@ function rhtmlspecialchars($str){
 	We defined several statements used in template files like {if} {elseif} {/if} which
 	can be quoted with <!-- and --> as HTML comments. Template files must be parsed into PHP scripts before they run.
 */
-function view($tpl){
+function view($templateName){
 	global $_G;
 
 	$target = defined('IN_ADMINCP') ? 'admin' : 'user';
-	$view_dir = S_ROOT.'view/'.$target.'/';
+	$filePath = S_ROOT.'data/template/'.$target.'_'.$_G['style'].'_'.$templateName.'.tpl.php';
 
-	$htmpath = $view_dir.$_G['style'].'/'.$tpl.'.htm';
-	if(!file_exists($htmpath)){
-		$htmpath = $view_dir.'default/'.$tpl.'.htm';
-
-		if(defined('IN_ADMINCP') && !file_exists($htmpath)){
-			$htmpath = S_ROOT.'view/user/default/'.$tpl.'.htm';
+	$forced_parse = !file_exists($filePath);
+	if($forced_parse || !empty($_G['config']['refresh_template'])){
+		$template = new Template($target, $_G['style'], $templateName);
+		if($forced_parse || $template->lastModifiedTime() > filemtime($filePath)){
+			file_put_contents($filePath, $template->parse());
 		}
 	}
-	$tplpath = S_ROOT.'./data/template/'.$target.'_'.$_G['style'].'_'.$tpl.'.tpl.php';
-	if(!file_exists($tplpath) || (!empty($_G['config']['refresh_template']) && filemtime($htmpath) > filemtime($tplpath))){
-		file_put_contents($tplpath, Template::parse_template($htmpath));
-	}
 
-	return $tplpath;
+	return $filePath;
 }
 
 function rdate($dateline, $format = 'Y-m-d H:i:s'){
