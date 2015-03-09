@@ -16,7 +16,10 @@ case 'delete':
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	if($orderid > 0){
-		Order::Delete($orderid, "userid=$_USER[id] AND status=0");
+		//@todo: Return fee here
+		$paidstate = array(Order::TradeSuccess, Order::TradeFinished);
+		$paidstate = implode(',', $paidstate);
+		Order::Delete($orderid, "userid=$_USER[id] AND status=0 AND alipaystate NOT IN ($paidstate)");
 		showmsg('successfully_canceled_order', 'home.php');
 	}
 
