@@ -57,6 +57,11 @@ dl.orderdetail dd{
 	<dt>联系电话：</dt><dd>$order[mobile]</dd>
 	<dt>订单量：</dt><dd>$order[ordernum]</dd>
 	<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
+	<dt>付款状态：</dt>
+	<dd>
+		{echo Order::$PaymentMethod[$order['paymentmethod']]}
+		<!--{if $order['alipaystate']}-->({echo Order::$AlipayState[$order['alipaystate']]})<!--{/if}-->
+	</dd>
 </dl>
 
 <dl class="orderdetail">

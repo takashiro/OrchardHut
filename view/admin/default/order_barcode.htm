@@ -115,6 +115,11 @@ $(function(){
 	<dd>$order[id]</dd>
 	<dt>总金额</dt>
 	<dd>$order[totalprice] $order[priceunit]</dd>
+	<dt>付款状态：</dt>
+	<dd>
+		{echo Order::$PaymentMethod[$order['paymentmethod']]}
+		<!--{if $order['alipaystate']}-->({echo Order::$AlipayState[$order['alipaystate']]})<!--{/if}-->
+	</dd>
 </dl>
 <div class="signature">
 	<h4>客户签收</h4>
