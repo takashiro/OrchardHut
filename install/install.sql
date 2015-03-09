@@ -138,6 +138,9 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `dtime_from` int(11) unsigned NOT NULL,
   `dtime_to` int(11) unsigned NOT NULL,
   `deliveryfee` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `paymentmethod` tinyint(4) NOT NULL,
+  `alipaytradeid` varchar(255) NOT NULL,
+  `alipaystate` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `dateline` (`dateline`)
@@ -263,7 +266,8 @@ CREATE TABLE IF NOT EXISTS `hut_productstoragelog` (
   `productname` varchar(50) NOT NULL,
   `storageremark` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `dateline` (`dateline`)
+  KEY `dateline` (`dateline`),
+  KEY `adminid` (`adminid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_producttype`;
