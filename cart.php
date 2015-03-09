@@ -207,6 +207,9 @@ switch($action){
 				$db->INSERTS($delivery_address_components);
 			}
 
+			$order->paymentmethod = isset($_POST['paymentmethod']) ? intval($_POST['paymentmethod']) : Order::PaidWithCash;
+			isset(Order::$PaymentMethod[$order->paymentmethod]) || $order->paymentmethod = Order::PaidWithCash;
+
 			$order_succeeded = false;
 			foreach($total_price as $unit => $total){
 				$order->clearDetail();
@@ -234,10 +237,11 @@ switch($action){
 			rsetcookie('in_cart', '');
 
 			if($order_succeeded){
+				$url_forward = $order->paymentmethod == Order::PaidWithCash ? 'home.php' : 'alipay.php?orderid='.$order->id;
 				if(!$item_deleted){
-					showmsg('successfully_submitted_order', 'home.php');
+					showmsg('successfully_submitted_order', $url_forward);
 				}else{
-					showmsg('successfully_submitted_order_with_item_deleted', 'home.php');
+					showmsg('successfully_submitted_order_with_item_deleted', $url_forward);
 				}
 			}else{
 				showmsg('failed_to_submit_order', 'market.php');

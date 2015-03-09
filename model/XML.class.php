@@ -12,6 +12,9 @@ class XML{
 	}
 
 	function loadXML($xml, $tag = '', $index = 0){
+		if(empty($xml))
+			return false;
+
 		$xml = preg_replace('/>\s+</s', '><', $xml);
 
 		$dom = new DOMDocument($this->version, $this->encoding);
@@ -24,6 +27,7 @@ class XML{
 		}
 
 		$this->data = self::DOMToArray($body);
+		return true;
 	}
 
 	function setVersion($version){

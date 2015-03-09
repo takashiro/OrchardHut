@@ -20,13 +20,13 @@ class SimpleClassLoader{
 }
 spl_autoload_register('SimpleClassLoader::Load');
 
-require_once './core/global.func.php';
+require_once S_ROOT.'./core/global.func.php';
 
 $PHP_SELF = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
 
 //程序配置及关键信息
-$_G['config'] = (include './data/config.inc.php') + (include './data/stconfig.inc.php');
-$_G['config']['db'] = include './data/dbconfig.inc.php';
+$_G['config'] = (include S_ROOT.'./data/config.inc.php') + (include S_ROOT.'./data/stconfig.inc.php');
+$_G['config']['db'] = include S_ROOT.'./data/dbconfig.inc.php';
 $_CONFIG = &$_G['config'];
 
 $_G['root_url'] = htmlspecialchars('http://'.$_SERVER['HTTP_HOST'].preg_replace("/\/+(api|archiver|wap)?\/*$/i", '', substr($PHP_SELF, 0, strrpos($PHP_SELF, '/'))).'/');

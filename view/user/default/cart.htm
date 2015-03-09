@@ -65,6 +65,16 @@ $(function(){
 				</div>
 			</div>
 			<div class="lightbox deliveryaddress">
+				<h1>付款方式</h1>
+				<div class="content">
+					<ul class="mselect">
+					<!--{loop Order::$PaymentMethod $methodid $label}-->
+						<li><input type="radio" name="paymentmethod" value="$methodid" />$label</li>
+					<!--{/loop}-->
+					</ul>
+				</div>
+			</div>
+			<div class="lightbox deliveryaddress">
 				<h1>收货地址</h1>
 				<div class="content">
 					<ul class="mselect">

@@ -27,7 +27,7 @@
 				<!--{loop $orders $o}-->
 					<tr>
 						<td>$o[items]</td>
-						<td>{$o[totalprice]}{$o[priceunit]}<!--{if $o['deliveryfee'] > 0}--><p class="deliveryfee">含运费$o[deliveryfee]元</p><!--{/if}--></td>
+						<td>{$o[totalprice]}{$o[priceunit]}<!--{if $o['deliveryfee'] > 0}--><p class="deliveryfee">(含运费$o[deliveryfee]元)</p><!--{/if}--></td>
 						<td>$o[id]</td>
 						<td>{echo Order::$Status[$o['status']]}</td>
 						<td>
@@ -36,6 +36,9 @@
 								<a href="home.php?action=delete&orderid=$o[id]">[取消]</a>
 							<!--{elseif $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
 								<a href="home.php?action=mark_received&orderid=$o[id]">[签收]</a>
+							<!--{/if}-->
+							<!--{if $o['paymentmethod'] == Order::PaidOnline && $o['alipaystate'] != Order::TradeSuccess && $o['alipaystate'] != Order::TradeFinished}-->
+								<a href="alipay.php?orderid=$o[id]">[付款]</a>
 							<!--{/if}-->
 						</td>
 					</tr>
