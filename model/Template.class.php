@@ -112,10 +112,13 @@ class Template{
 			}, $template);
 		}
 
-		$template = preg_replace_callback("/\{__{$const_regexp}__\}/s", function($matches){
+
+		$th = $this;
+		$template = preg_replace_callback("/\{__{$const_regexp}__\}/s", function($matches) use(&$th){
 			$const = str_replace('_', '', $matches[1]);
-			return $this->{'get'.$const}();
+			return $th->{'get'.$const}();
 		}, $template);
+
 		$template = preg_replace("/\{$const_regexp\}/s", "<?=\\1?>", $template);
 		$template = preg_replace("/ \?\>[\n\r]*\<\? /s", " ", $template);
 
