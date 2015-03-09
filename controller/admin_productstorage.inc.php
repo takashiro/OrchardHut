@@ -77,10 +77,12 @@ default:
 	foreach($storages as $s)
 		$storageids[] = $s['id'];
 	$storageids = implode(',', $storageids);
-	$query = $db->query("SELECT storageid,amountunit,priceunit FROM {$tpre}productprice WHERE storageid IS NOT NULL AND storageid IN ($storageids)");
+	$query = $db->query("SELECT storageid,subtype,amountunit,priceunit FROM {$tpre}productprice WHERE storageid IS NOT NULL AND storageid IN ($storageids)");
 	while($p = $db->fetch_row($query)){
-		$storageHash[$p[0]]['amountunit'][] = $p[1];
-		$storageHash[$p[0]]['priceunit'][] = $p[2];
+		$s = &$storageHash[$p[0]];
+		$s['subtype'][] = $p[1];
+		$s['amountunit'][] = $p[2];
+		$s['priceunit'][] = $p[3];
 	}
 
 	foreach($storages as &$s){

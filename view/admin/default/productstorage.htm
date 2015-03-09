@@ -4,6 +4,10 @@
 tr.selectable{
 	cursor: pointer;
 }
+p.subtype{
+	font-size: 9pt;
+	margin: 0;
+}
 </style>
 
 <script type="text/javascript" src="{__TEMPLATEROOT__}js/productstorage.js"></script>
@@ -26,7 +30,12 @@ tr.selectable{
 					<tbody>
 					<!--{loop $storages $s}-->
 						<tr>
-							<td>$s[productname]</td>
+							<td>
+								$s[productname]
+								<!--{loop $s['subtype'] $subtype}-->
+								<p class="subtype">$subtype</p>
+								<!--{/loop}-->
+							</td>
 							<td>$s[id]</td>
 							<td>$s[remark]</td>
 							<td>{$s[num]}{$s[amountunit]}</td>
