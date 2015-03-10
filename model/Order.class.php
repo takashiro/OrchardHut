@@ -16,6 +16,7 @@ class Order extends DBObject{
 	public static $PaymentMethod;
 	const PaidWithCash = 0;
 	const PaidOnline = 1;
+	const PaidWithWallet = 2;
 
 	private $detail = array();
 	private $address_components = array();
@@ -329,6 +330,7 @@ Order::$Status = array(
 Order::$PaymentMethod = array(
 	Order::PaidWithCash => lang('common', 'order_paidwithcash'),
 	Order::PaidOnline => lang('common', 'order_paidonline'),
+	Order::PaidWithWallet => lang('common', 'order_paidwithwallet'),
 );
 
 ?>

@@ -8,8 +8,10 @@ return array(
 	'order_in_delivery_point' => '待自提',
 	'order_received' => '已签收',
 	'order_rejected' => '已拒收',
+
 	'order_paidwithcash' => '货到付现',
-	'order_paidonline' => '在线支付',
+	'order_paidonline' => '支付宝',
+	'order_paidwithwallet' => '钱包余额',
 
 	'alipay_waitbuyerpay' => '待付款',
 	'alipay_tradeclosed' => '关闭',
