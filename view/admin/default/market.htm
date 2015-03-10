@@ -53,4 +53,6 @@ $(function(){
 	</div>
 </div>
 
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.(empty($_GET['type']) ? '': '&type='.$_GET['type']))}
+
 {template footer}

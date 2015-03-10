@@ -2,13 +2,26 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'edit', 'delete', 'editprice', 'deleteprice', 'editcountdown', 'deletecountdown', 'editstorage', 'deletestorage');
-$action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET['action'] : $actions[0];
+$action = &$_GET['action'];
+empty($action) && $action = 'list';
 
 switch($action){
 	case 'list':
+		$condition = array();
+
+		if(isset($_GET['type'])){
+			$_GET['type'] = intval($_GET['type']);
+			$condition[] = 'type='.$_GET['type'];
+		}
+
+		$limit = 20;
+		$offset = ($page - 1) * $limit;
+
+		$condition = $condition ? implode(' AND ', $condition) : '1';
 		$db->select_table('product');
-		$products = $db->MFETCH('*', '1 ORDER BY type,hide,displayorder');
+		$products = $db->MFETCH('*', $condition.' ORDER BY type,hide,displayorder LIMIT '.$offset.','.$limit);
+		$pagenum = $db->RESULTF('COUNT(*)', $condition);
+
 		include view('market');
 	break;
 
