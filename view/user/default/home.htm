@@ -31,11 +31,11 @@
 						<td>$o[id]</td>
 						<td>{echo Order::$Status[$o['status']]}</td>
 						<td>
-							<a href="home.php?action=view&orderid=$o[id]" class="view">[详细]</a>
+							<a href="order.php?action=view&orderid=$o[id]" class="view">[详细]</a>
 							<!--{if $o['status'] == Order::Unsorted && $o['alipaystate'] != AlipayNotify::TradeSuccess && $o['alipaystate'] != AlipayNotify::TradeFinished}-->
-								<a href="home.php?action=delete&orderid=$o[id]">[取消]</a>
+								<a href="order.php?action=delete&orderid=$o[id]">[取消]</a>
 							<!--{elseif $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
-								<a href="home.php?action=mark_received&orderid=$o[id]">[签收]</a>
+								<a href="order.php?action=mark_received&orderid=$o[id]">[签收]</a>
 							<!--{/if}-->
 							<!--{if $o['paymentmethod'] == Order::PaidOnline && $o['alipaystate'] != AlipayNotify::TradeSuccess && $o['alipaystate'] != AlipayNotify::TradeFinished}-->
 								<a href="alipay.php?orderid=$o[id]">[付款]</a>
@@ -49,6 +49,6 @@
 	</div>
 </div>
 
-{eval echo Template::mpage($pagenum, $page, $limit, 'home.php')}
+{eval echo Template::mpage($pagenum, $page, $limit, 'order.php')}
 
 {template footer}

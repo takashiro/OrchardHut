@@ -20,7 +20,7 @@ case 'delete':
 		$paidstate = array(AlipayNotify::TradeSuccess, AlipayNotify::TradeFinished);
 		$paidstate = implode(',', $paidstate);
 		Order::Delete($orderid, "userid=$_USER[id] AND status=0 AND alipaystate NOT IN ($paidstate)");
-		showmsg('successfully_canceled_order', 'home.php');
+		showmsg('successfully_canceled_order', 'order.php');
 	}
 
 	showmsg('order_not_exist', 'back');
@@ -42,7 +42,7 @@ case 'mark_received':
 			$order->addLog($_G['user'], Order::StatusChanged, Order::Received);
 
 			rsetcookie('order-number-cache-time', 0);
-			showmsg('successfully_received', 'home.php');
+			showmsg('successfully_received', 'order.php');
 		}
 	}
 

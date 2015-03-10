@@ -40,7 +40,7 @@ $call_back_url = $_G['root_url'].'alipay_callback.php';
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //操作中断返回地址
-$merchant_url = $_G['root_url'].'home.php';
+$merchant_url = $_G['root_url'].'order.php';
 //用户付款中途退出返回商户的地址。需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //卖家支付宝帐户

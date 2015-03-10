@@ -30,7 +30,7 @@ if($action == 'login'){
 			$_G['user']->qqopenid = $open_id;
 			$_G['user']->nickname = $user_info['nickname'];
 
-			redirect('home.php');
+			redirect('order.php');
 		}else{
 			$user = new User;
 
@@ -70,7 +70,7 @@ if($action == 'login'){
 
 	$_G['user']->qqopenid = NULL;
 
-	showmsg('successfully_unbinded_qq', 'home.php');
+	showmsg('successfully_unbinded_qq', 'order.php');
 }
 
 ?>

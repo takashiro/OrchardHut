@@ -237,7 +237,7 @@ switch($action){
 			rsetcookie('in_cart', '');
 
 			if($order_succeeded){
-				$url_forward = $order->paymentmethod == Order::PaidWithCash ? 'home.php' : 'alipay.php?orderid='.$order->id;
+				$url_forward = $order->paymentmethod == Order::PaidWithCash ? 'order.php' : 'alipay.php?orderid='.$order->id;
 				if(!$item_deleted){
 					showmsg('successfully_submitted_order', $url_forward);
 				}else{

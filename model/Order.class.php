@@ -313,7 +313,7 @@ class Order extends DBObject{
 		}*/
 
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
-			showmsg('成功支付订单！很快为您配送哦~', 'home.php');
+			showmsg('成功支付订单！很快为您配送哦~', 'order.php');
 	}
 }
 
