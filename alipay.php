@@ -110,20 +110,5 @@ $parameter = array(
 
 //建立请求
 $alipaySubmit = new AlipaySubmit($alipay_config);
-$html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
-
+$alipaySubmit->submit($parameter);
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>支付宝即时到账交易接口</title>
-<style type="text/css">
-body{display: none;}
-</style>
-</head>
-<body>
-<?php echo $html_text;?>
-</body>
-</html>
