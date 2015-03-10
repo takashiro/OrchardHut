@@ -1,0 +1,65 @@
+{template header}
+
+<div class="box">
+	<h1>我的钱包</h1>
+	<div class="content">
+		<div class="profile">
+			<div class="icon_home"></div>
+			<div class="account">$_USER[account]</div>
+			<ul class="operation">
+				<li><a href="memcp.php">修改个人信息</a></li>
+				<li><a href="memcp.php?action=logout">退出</a></li>
+			</ul>
+		</div>
+
+		<div class="edit_form">
+			<form action="alipay.php" method="get">
+				<table>
+					<tr>
+						<th><label>余额：</label></th>
+						<td>{echo $_G['user']->wallet}元</td>
+					</tr>
+					<tr>
+						<th><label>充值：</label></th>
+						<td><input type="text" name="recharge" value="50.00" />元</td>
+					</tr>
+				</table>
+
+				<div class="post_buttons">
+					<button type="submit">充值</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="order_list">
+			<table>
+				<thead>
+					<tr>
+						<td>充值时间</td>
+						<td>充值金额</td>
+						<td>支付状态</td>
+						<td width="48">操作</td>
+					</tr>
+				</thead>
+				<tbody>
+				<!--{loop $walletlog $l}-->
+					<tr>
+						<td>{echo rdate($l['dateline'])}</td>
+						<td>{$l[delta]}元</td>
+						<td><!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeStatus[$l['alipaystate']]}<!--{/if}--></td>
+						<td>
+							<!--{if $l['alipaystate'] != AlipayNotify::TradeSuccess && $l['alipaystate'] != AlipayNotify::TradeFinished}-->
+								<a href="alipay.php?walletlogid=$l[id]">[付款]</a>
+							<!--{/if}-->
+						</td>
+					</tr>
+				<!--{/loop}-->
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{eval echo Template::mpage($pagenum, $page, $limit, 'home.php')}
+
+{template footer}

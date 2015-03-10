@@ -57,7 +57,7 @@ class Wallet{
 				writelog('alipaycallback', array('ORDER_NOT_EXIST', $orderid, $trade_no, $result));
 				showmsg('订单不存在，错误已记录。');
 			}
-			$order->alipaystate = Order::TradeSuccess;
+			$order->alipaystate = AlipayNotify::TradeSuccess;
 			$order->alipaytradeid = $trade_no;
 		}else{
 			exit('unexpected result: '.$result);
