@@ -35,10 +35,10 @@
 			<table>
 				<thead>
 					<tr>
-						<td>充值时间</td>
+						<td width="110">充值时间</td>
 						<td>充值金额</td>
 						<td>支付状态</td>
-						<td width="48">操作</td>
+						<td>充值状态</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -46,11 +46,9 @@
 					<tr>
 						<td>{echo rdate($l['dateline'])}</td>
 						<td>{$l[delta]}元</td>
-						<td><!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeStatus[$l['alipaystate']]}<!--{/if}--></td>
+						<td><!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeState[$l['alipaystate']]}<!--{/if}--></td>
 						<td>
-							<!--{if $l['alipaystate'] != AlipayNotify::TradeSuccess && $l['alipaystate'] != AlipayNotify::TradeFinished}-->
-								<a href="alipay.php?walletlogid=$l[id]">[付款]</a>
-							<!--{/if}-->
+							<!--{if $l['recharged']}-->成功<!--{else}-->进行中<!--{/if}-->
 						</td>
 					</tr>
 				<!--{/loop}-->

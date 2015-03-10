@@ -2,9 +2,6 @@
 
 require_once './core/init.inc.php';
 
-if(empty($_GET['orderid']))
-	showmsg('illegal_operation');
-
 $_G['alipaytrade'] = array(
 	'out_trade_no' => '',
 	'subject' => '',
