@@ -220,13 +220,22 @@ switch($action){
 			$order->deliveryfee = $deliveryfee[$order->dtime_from ? 'normal' : 'pickup']['value'];
 			$order->totalprice += $order->deliveryfee;
 
+			if($order->paymentmethod == Order::PaidWithWallet){
+				$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id=$_USER[id] AND wallet>={$order->totalprice}");
+				if($db->affected_rows() <= 0){
+					$order->paymentmethod = Order::PaidWithCash;
+				}else{
+					$order->alipaystate = AlipayNotify::TradeSuccess;
+				}
+			}
+
 			$succeeded = $order->insert();
 			$succeeded && $order_succeeded = true;
 
 			rsetcookie('in_cart', '');
 
 			if($order_succeeded){
-				$url_forward = $order->paymentmethod == Order::PaidWithCash ? 'order.php' : 'alipay.php?orderid='.$order->id;
+				$url_forward = $order->paymentmethod != Order::PaidOnline ? 'order.php' : 'alipay.php?orderid='.$order->id;
 				if(!$item_deleted){
 					showmsg('successfully_submitted_order', $url_forward);
 				}else{
