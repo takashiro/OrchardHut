@@ -198,5 +198,31 @@ class AlipayNotify {
 
 		return $responseTxt;
 	}
+
+	//Alipay State
+	public static $TradeState;
+	public static $TradeStateEnum;
+	const WaitBuyerPay = 1;		//交易创建，等待买家付款。
+	const TradeClosed = 2;		//在指定时间段内未支付时关闭的交易；在交易完成全额退款成功时关闭的交易。
+	const TradeSuccess = 3;		//交易成功，且可对该交易做操作，如：多级分润、退款等。
+	const TradePending = 4;		//等待卖家收款（买家付款后，如果卖家账号被冻结）。
+	const TradeFinished = 5;	//交易成功且结束，即不可再做任何操作
 }
+
+AlipayNotify::$TradeState = array(
+	AlipayNotify::WaitBuyerPay => lang('common', 'alipay_waitbuyerpay'),
+	AlipayNotify::TradeClosed => lang('common', 'alipay_tradeclosed'),
+	AlipayNotify::TradeSuccess => lang('common', 'alipay_tradesuccess'),
+	AlipayNotify::TradePending => lang('common', 'alipay_tradepending'),
+	AlipayNotify::TradeFinished => lang('common', 'alipay_tradefinished'),
+);
+
+AlipayNotify::$TradeStateEnum = array(
+	'WAIT_BUYER_PAY' => AlipayNotify::WaitBuyerPay,
+	'TRADE_CLOSED' => AlipayNotify::TradeClosed,
+	'TRADE_SUCCESS' => AlipayNotify::TradeSuccess,
+	'TRADE_PENDING' => AlipayNotify::TradePending,
+	'TRADE_FINISHED' => AlipayNotify::TradeFinished,
+);
+
 ?>

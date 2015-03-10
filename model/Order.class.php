@@ -12,15 +12,6 @@ class Order extends DBObject{
 	const Rejected = 4;
 	const InDeliveryPoint = 5;
 
-	//Alipay State
-	public static $AlipayState;
-	public static $AlipayStateEnum;
-	const WaitBuyerPay = 1;		//交易创建，等待买家付款。
-	const TradeClosed = 2;		//在指定时间段内未支付时关闭的交易；在交易完成全额退款成功时关闭的交易。
-	const TradeSuccess = 3;		//交易成功，且可对该交易做操作，如：多级分润、退款等。
-	const TradePending = 4;		//等待卖家收款（买家付款后，如果卖家账号被冻结）。
-	const TradeFinished = 5;	//交易成功且结束，即不可再做任何操作
-
 	//Payment Method
 	public static $PaymentMethod;
 	const PaidWithCash = 0;
@@ -266,17 +257,17 @@ class Order extends DBObject{
 			WHERE l.orderid={$this->id}");
 	}
 
-	static protected $AlipayOrderPrefix = 'O';
+	static protected $AlipayTradeNoPrefix = 'O';
 	static public function __on_alipay_started(){
-		if(isset($_GET['orderid']){
+		if(isset($_GET['orderid'])){
 			global $_G;
 			$order = new Order($_GET['orderid']);
 			if($order->exists() && $order->userid == $_G['user']->id){
 				//商户网站订单系统中唯一订单号，必填
-				$_G['alipaytrade']['out_trade_no'] = self::$AlipayOrderPrefix.$order->id;
+				$_G['alipaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
 
 				//订单名称
-				$_G['alipaytrade']['subject'] = $_CONFIG['sitename'].'订单'.$out_trade_no;
+				$_G['alipaytrade']['subject'] = $_G['config']['sitename'].'订单'.$order->id;
 
 				//付款金额
 				$_G['alipaytrade']['total_fee'] = $order->totalprice + $order->deliveryfee;
@@ -287,20 +278,20 @@ class Order extends DBObject{
 	}
 
 	static public function __on_alipay_notified($out_trade_no, $trade_no, $trade_status){
-		$prefix_len = strlen(self::$AlipayOrderPrefix);
-		if(strncmp($out_trade_no, self::$AlipayOrderPrefix, $prefix_len) == 0){
+		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
+		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, $prefix_len) == 0){
 			$order = new Order(substr($out_trade_no, $prefix_len));
 			if(!$order->exists()){
 				writelog('alipaynotify', array('ORDER_NOT_EXIST', $out_trade_no, $trade_no, $trade_status));
 				exit;
 			}
 
-			if(!isset(Order::$AlipayStateEnum[$trade_status])){
+			if(!isset(AlipayNotify::$TradeStateEnum[$trade_status])){
 				writelog('alipaynotify', array('UNEXPECTED_ORDER_STATE', $out_trade_no, $trade_no, $trade_status));
 				exit;
 			}
 
-			$order->alipaystate = Order::$AlipayStateEnum[$trade_status];
+			$order->alipaystate = AlipayNotify::$TradeStateEnum[$trade_status];
 			$order->alipaytradeid = $trade_no;
 		}
 	}
@@ -321,7 +312,7 @@ class Order extends DBObject{
 			exit('unexpected result: '.$result);
 		}*/
 
-		if(strncmp($out_trade_no, self::$AlipayOrderPrefix, strlen(self::$AlipayOrderPrefix)) == 0)
+		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
 			showmsg('成功支付订单！很快为您配送哦~', 'home.php');
 	}
 }
@@ -333,22 +324,6 @@ Order::$Status = array(
 	Order::InDeliveryPoint => lang('common', 'order_in_delivery_point'),
 	Order::Received => lang('common', 'order_received'),
 	Order::Rejected => lang('common', 'order_rejected'),
-);
-
-Order::$AlipayState = array(
-	Order::WaitBuyerPay => lang('common', 'order_waitbuyerpay'),
-	Order::TradeClosed => lang('common', 'order_tradeclosed'),
-	Order::TradeSuccess => lang('common', 'order_tradesuccess'),
-	Order::TradePending => lang('common', 'order_tradepending'),
-	Order::TradeFinished => lang('common', 'order_tradefinished'),
-);
-
-Order::$AlipayStateEnum = array(
-	'WAIT_BUYER_PAY' => Order::WaitBuyerPay,
-	'TRADE_CLOSED' => Order::TradeClosed,
-	'TRADE_SUCCESS' => Order::TradeSuccess,
-	'TRADE_PENDING' => Order::TradePending,
-	'TRADE_FINISHED' => Order::TradeFinished,
 );
 
 Order::$PaymentMethod = array(

@@ -118,7 +118,7 @@ $(function(){
 	<dt>付款状态：</dt>
 	<dd>
 		{echo Order::$PaymentMethod[$order['paymentmethod']]}
-		<!--{if $order['alipaystate']}-->({echo Order::$AlipayState[$order['alipaystate']]})<!--{/if}-->
+		<!--{if $order['alipaystate']}-->({echo AlipayNotify::$TradeState[$order['alipaystate']]})<!--{/if}-->
 	</dd>
 </dl>
 <div class="signature">
