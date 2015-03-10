@@ -130,7 +130,6 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `dateline` int(11) unsigned NOT NULL,
   `status` tinyint(1) unsigned NOT NULL,
   `totalprice` decimal(9,2) unsigned NOT NULL,
-  `priceunit` mediumint(8) unsigned NOT NULL,
   `extaddress` varchar(50) NOT NULL,
   `addressee` varchar(50) NOT NULL,
   `mobile` varchar(11) NOT NULL,
@@ -227,7 +226,6 @@ CREATE TABLE IF NOT EXISTS `hut_productprice` (
   `productid` mediumint(8) unsigned NOT NULL,
   `subtype` varchar(100) DEFAULT NULL,
   `price` decimal(9,2) NOT NULL,
-  `priceunit` mediumint(8) unsigned NOT NULL,
   `amount` int(11) unsigned NOT NULL,
   `amountunit` mediumint(8) unsigned NOT NULL,
   `displayorder` tinyint(4) NOT NULL,
@@ -284,6 +282,7 @@ CREATE TABLE IF NOT EXISTS `hut_productunit` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `type` tinyint(1) NOT NULL,
+  `hidden` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -299,6 +298,7 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   `regtime` int(11) unsigned NOT NULL,
   `qqopenid` varchar(32) DEFAULT NULL,
   `wxopenid` varchar(32) DEFAULT NULL,
+  `wallet` decimal(9,2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`),
   UNIQUE KEY `qqopenid` (`qqopenid`),
@@ -306,6 +306,20 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `wxopenid` (`wxopenid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `hut_userwalletlog`;
+CREATE TABLE IF NOT EXISTS `hut_userwalletlog` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` mediumint(8) unsigned NOT NULL,
+  `dateline` int(11) unsigned NOT NULL,
+  `delta` decimal(9,2) NOT NULL,
+  `cost` decimal(9,2) NOT NULL,
+  `alipaytradeid` varchar(255) NOT NULL,
+  `alipaystate` tinyint(4) NOT NULL,
+  `recharged` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 ALTER TABLE `hut_bankaccountlog`
