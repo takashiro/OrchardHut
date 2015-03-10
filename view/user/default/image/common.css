@@ -490,6 +490,12 @@ footer ul.button_list .submenu a{
 	font-weight:normal;
 }
 
+.lightbox h1 em{
+	font-style: normal;
+	font-size: 10pt;
+	margin: 0 0.5em;
+}
+
 .lightbox .content{
 	margin-bottom:10px;
 }

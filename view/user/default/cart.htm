@@ -57,15 +57,15 @@ $(function(){
 			</div>
 		</div>
 
-		<form action="$PHP_SELF" method="post">
+		<form action="cart.php" method="post">
 			<div class="lightbox message">
 				<h1>购物留言</h1>
 				<div class="content">
 					<input type="text" name="message" placeholder="你有什么想告诉我们的吗？" />
 				</div>
 			</div>
-			<div class="lightbox deliveryaddress">
-				<h1>付款方式</h1>
+			<div class="lightbox">
+				<h1>付款方式<em>钱包余额：{$_USER[wallet]}元</em></h1>
 				<div class="content">
 					<ul class="mselect">
 					<!--{loop Order::$PaymentMethod $methodid $label}-->
@@ -83,7 +83,7 @@ $(function(){
 						<!--{/loop}-->
 						<li><input type="radio" name="deliveryaddressid" value="0" />使用新地址</li>
 					</ul>
-					<table>
+					<table id="new_address_table" style="display:none">
 						<tr>
 							<th><label>地址：</label></th>
 							<td>{echo Template::tselect('deliveryaddress', Address::Format(), Address::Components())}</td>
@@ -100,7 +100,7 @@ $(function(){
 				</div>
 			</div>
 			<div class="lightbox deliverytime">
-				<h1>收货时间 (运费：<span id="deliveryfee">-</span>)</h1>
+				<h1>收货时间 <em>(运费：<span id="deliveryfee"> - </span>)</em></h1>
 				<div class="content">
 					<ul class="mselect">
 						<li class="checked"><input type="radio" name="deliverytime" value="0" checked="checked" />自提</li>

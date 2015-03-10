@@ -80,6 +80,14 @@ $(function(){
 		}
 	});
 
+	$('input[type="radio"][name="deliveryaddressid"]').change(function(){
+		if(parseInt($(this).val(), 10) == 0){
+			$('#new_address_table').show();
+		}else{
+			$('#new_address_table').hide();
+		}
+	});
+
 	var delivered_num = parseInt(getcookie('delivering-order-number'), 10);
 	var cache_time = parseInt(getcookie('order-number-cache-time'), 10);
 	var current_time = parseInt(new Date().valueOf() / 1000);
