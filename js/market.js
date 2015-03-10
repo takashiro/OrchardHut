@@ -160,11 +160,6 @@ $(function(){
 		}
 	});
 
-	$('.product_type').each(function(){
-		$(this).children('.wrapper').css('width', $(this).width());
-		$(this).children('.wrapper').css('height', $(this).height());
-	});
-
 	$('.product_list').on('click', '.icon, .name', function(e){
 		var target = $(this);
 		var detail = target.is('.icon') ? target.next() : target.parent();

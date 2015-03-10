@@ -201,6 +201,7 @@ button.remove{
 	position: fixed;
 	top: 0;
 	overflow: hidden;
+	width: 100%;
 }
 
 .product_type .more, .product_type ul li{
@@ -208,7 +209,7 @@ button.remove{
 	background: #FD7170;
 	border: #EA6363 1px solid;
 	color: white;
-	width: 31%;
+	width: 31.5%;
 	margin: 2px 0.5%;
 	line-height: 2em;
 	text-align: center;
@@ -223,7 +224,7 @@ button.remove{
 	top: 0;
 	right: 0;
 	cursor: pointer;
-	width: 2em;
+	width: 42px;
 }
 
 .product_type ul li.current{
