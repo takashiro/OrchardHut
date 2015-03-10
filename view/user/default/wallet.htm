@@ -31,14 +31,19 @@
 			</form>
 		</div>
 
+		<!--{if !empty($prepaidreward)}-->
+		<!--{loop $prepaidreward $r}-->充{$r[minamount]} - {$r[maxamount]}元返{$r[reward]}元，<!--{/loop}-->快来撑死我吧~
+		<!--{/if}-->
+
 		<div class="order_list">
 			<table>
 				<thead>
 					<tr>
-						<td width="110">充值时间</td>
-						<td>充值金额</td>
-						<td>支付状态</td>
-						<td>充值状态</td>
+						<td width="110">充值<br />时间</td>
+						<td>充值<br />金额</td>
+						<td>支付<br />金额</td>
+						<td>支付<br />状态</td>
+						<td>充值<br />状态</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -46,6 +51,7 @@
 					<tr>
 						<td>{echo rdate($l['dateline'])}</td>
 						<td>{$l[delta]}元</td>
+						<td>{$l[cost]}元</td>
 						<td><!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeState[$l['alipaystate']]}<!--{/if}--></td>
 						<td>
 							<!--{if $l['recharged']}-->成功<!--{else}-->进行中<!--{/if}-->

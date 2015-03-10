@@ -10,10 +10,12 @@ class Wallet{
 			$log = array(
 				'uid' => $_G['user']->id,
 				'dateline' => TIMESTAMP,
-				'delta' => floatval($_GET['recharge']),
+				'cost' => floatval($_GET['recharge']),
 			);
 
-			if($log['delta'] > 0){
+			$log['cost'] = round($log['cost'] * 100) / 100;
+
+			if($log['cost'] > 0){
 				$db->select_table('userwalletlog');
 				$db->INSERT($log);
 				$id = $db->insert_id();
@@ -25,7 +27,7 @@ class Wallet{
 				$_G['alipaytrade']['subject'] = $_G['config']['sitename'].'充值'.$id;
 
 				//付款金额
-				$_G['alipaytrade']['total_fee'] = $log['delta'];
+				$_G['alipaytrade']['total_fee'] = $log['cost'];
 			}else{
 				showmsg('the_number_you_must_be_kidding_me', 'back');
 			}
@@ -49,8 +51,19 @@ class Wallet{
 				global $tpre;
 				$db->query("UPDATE {$tpre}userwalletlog SET recharged=1 WHERE id='$id'");
 				if($db->affected_rows() > 0){
-					$log = $db->fetch_first("SELECT uid,delta FROM {$tpre}userwalletlog WHERE id='$id'");
-					$db->query("UPDATE {$tpre}user SET wallet=wallet+$log[delta] WHERE id=$log[uid]");
+					$log = $db->fetch_first("SELECT uid,cost FROM {$tpre}userwalletlog WHERE id='$id'");
+					$fee = $log['cost'];
+					$timestamp = TIMESTAMP;
+					$extrafee = $db->result_first("SELECT reward
+						FROM {$tpre}prepaidreward
+						WHERE minamount<=$fee AND maxamount>=$fee
+							AND etime_start<=$timestamp AND etime_end>=$timestamp
+						ORDER BY reward DESC
+						LIMIT 1");
+					$fee += $extrafee;
+
+					$db->query("UPDATE {$tpre}userwalletlog SET delta=$fee WHERE id='$id'");
+					$db->query("UPDATE {$tpre}user SET wallet=wallet+$fee WHERE id=$log[uid]");
 				}
 			}
 		}

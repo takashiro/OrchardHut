@@ -63,6 +63,8 @@ return array(
 	'click_here_and_login' => '点击这里登录',
 	'and_reply' => '然后回复',
 	'click_and_enter_shop' => '点击进入商城',
+
+	'the_number_you_must_be_kidding_me' => '这金额……你一定是在逗我……',
 );
 
 ?>

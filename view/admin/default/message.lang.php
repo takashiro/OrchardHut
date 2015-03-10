@@ -14,7 +14,6 @@ return array(
 	'successfully_updated_qqconnect_config' => '成功修改QQ互联设置！',
 	'successfully_updated_wxconnect_config' => '成功修改微信互联设置！',
 
-	'the_number_you_must_be_kidding_me' => '这金额……你一定是在逗我……',
 	'successfully_transfered' => '成功转账！',
 	'source_account_is_insufficient' => '账户金额不足，不能转出。',
 	'target_does_not_exist' => '目标账户不存在。',
