@@ -269,7 +269,7 @@ class Order extends DBObject{
 				$_G['alipaytrade']['subject'] = $_G['config']['sitename'].'订单'.$order->id;
 
 				//付款金额
-				$_G['alipaytrade']['total_fee'] = $order->totalprice + $order->deliveryfee;
+				$_G['alipaytrade']['total_fee'] = $order->totalprice;
 			}else{
 				showmsg('order_not_exist');
 			}
