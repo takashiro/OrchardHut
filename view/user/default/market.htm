@@ -53,7 +53,7 @@ var User = {'id':{if $_G['user']->isLoggedIn()}$_USER[id]{else}0{/if}};
 					<!--{loop $p['rule'] $r}-->
 						<li product-id="$p[id]" price-id="$r[id]" storage-id="$r[storageid]" quantity-limit="$r[quantitylimit]">
 							<span class="subtype" style="color:#$p[text_color];">$r[subtype]<!--{if $r['is_countdown']}--><div class="countdown" style="background:#$p[text_color]">降</div><!--{/if}--></span>
-							<span class="price" style="color:#$p[text_color];">$r[price]</span><span class="priceunit">$r[priceunit]</span><span class="amount" style="color:#$p[text_color];">$r[amount]</span><span class="amountunit" style="color:#$p[text_color];">$r[amountunit]</span>
+							<span class="price" style="color:#$p[text_color];">$r[price]</span><span class="priceunit">{echo Product::$PriceUnit}</span><span class="amount" style="color:#$p[text_color];">$r[amount]</span><span class="amountunit" style="color:#$p[text_color];">$r[amountunit]</span>
 							<div class="order_input numberbox"><!--{if $r['amount'] > 1}--><div class="unit">x{$r[amount]}</div><!--{/if}--></div>
 						</li>
 					<!--{/loop}-->

@@ -91,7 +91,6 @@ class Product extends DBObject{
 		}
 
 		foreach($prices as &$p){
-			$p['priceunit'] = self::PriceUnits($p['priceunit']);
 			$p['amountunit'] = self::AmountUnits($p['amountunit']);
 			$p['price'] = floatval($p['price']);
 			$p['amount'] = floatval($p['amount']);
@@ -134,7 +133,6 @@ class Product extends DBObject{
 		}
 
 		foreach($prices as &$p){
-			$p['priceunit'] = self::PriceUnits($p['priceunit']);
 			$p['amountunit'] = self::AmountUnits($p['amountunit']);
 			$p['price'] = floatval($p['price']);
 			$p['amount'] = floatval($p['amount']);
@@ -156,7 +154,6 @@ class Product extends DBObject{
 				ORDER BY p.displayorder");
 			if($to_readable){
 				foreach($prices as &$p){
-					$p['priceunit'] = self::PriceUnits($p['priceunit']);
 					$p['amountunit'] = self::AmountUnits($p['amountunit']);
 					$p['price'] = floatval($p['price']);
 					$p['amount'] = floatval($p['amount']);
@@ -179,10 +176,6 @@ class Product extends DBObject{
 
 		if(isset($price['price'])){
 			$update['price'] = floatval($price['price']);
-		}
-
-		if(isset($price['priceunit'])){
-			$update['priceunit'] = intval($price['priceunit']);
 		}
 
 		if(isset($price['amount'])){
@@ -241,7 +234,6 @@ class Product extends DBObject{
 				ORDER BY p.displayorder");
 			if($to_readable){
 				foreach($prices as &$p){
-					$p['priceunit'] = self::PriceUnits($p['priceunit']);
 					$p['amountunit'] = self::AmountUnits($p['amountunit']);
 					$p['price'] = floatval($p['price']);
 					$p['amount'] = floatval($p['amount']);
@@ -461,6 +453,10 @@ class Product extends DBObject{
 		}
 	}
 
+	static public function RefreshCache(){
+		writecache('productunits', NULL);
+	}
+
 	static private function Units($type){
 		$units = readcache('productunits');
 
@@ -468,7 +464,7 @@ class Product extends DBObject{
 			global $db;
 			$db->select_table('productunit');
 			$units = array();
-			foreach($db->MFETCH('id,name,type') as $u){
+			foreach($db->MFETCH('id,name,type', 'hidden=0') as $u){
 				$units[$u['type']][$u['id']] = $u['name'];
 			}
 
@@ -493,6 +489,7 @@ class Product extends DBObject{
 		}
 	}
 
+	static public $PriceUnit;
 	static private $PriceUnits = null;
 	static public function PriceUnits($id = -1){
 		if(self::$PriceUnits === null){
@@ -507,5 +504,7 @@ class Product extends DBObject{
 		}
 	}
 }
+
+Product::$PriceUnit = current(Product::PriceUnits());
 
 ?>

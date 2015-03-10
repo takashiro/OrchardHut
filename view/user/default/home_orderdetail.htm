@@ -12,11 +12,11 @@
 			<dt>用户留言：</dt><dd>$order[message]</dd>
 			<dt>物品：</dt><dd><dl class="order_detail">
 					<!--{loop $order['detail'] $d}-->
-					<dt><!--{if $d['state'] == 1}-->[缺货] <!--{/if}-->$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number']} $d[amountunit]</dt>
-					<dd>$d[subtotal] $order[priceunit]</dd>
+					<dt><!--{if $d['state'] == 1}-->[缺货] <!--{/if}-->$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number']}{$d[amountunit]}</dt>
+					<dd>{$d[subtotal]}{echo Product::$PriceUnit}</dd>
 					<!--{/loop}-->
 			</dl></dd>
-			<dt>总计：</dt><dd>$order[totalprice] $order[priceunit]</dd>
+			<dt>总计：</dt><dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
 
 			<dt>订单状态：</dt><dd><ul>
 				<li>{$order[dateline]}，您在{$_CONFIG[sitename]}下单</li>

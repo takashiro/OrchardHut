@@ -74,7 +74,7 @@ var product_id = $product[id];
 					<td>$p[id]</td>
 					<td>$p[subtype]</td>
 					<td>$p[price]</td>
-					<td realvalue="$p[priceunit]">{echo Product::PriceUnits($p['priceunit'])}</td>
+					<td>{echo Product::$PriceUnit}</td>
 					<td>$p[amount]</td>
 					<td realvalue="$p[amountunit]">{echo Product::AmountUnits($p['amountunit'])}</td>
 					<td>$p[storageid]</td>
@@ -87,7 +87,7 @@ var product_id = $product[id];
 					<td></td>
 					<td><input type="text" /></td>
 					<td><input type="text" class="number narrow" value="1" /></td>
-					<td>{echo Template::select('', Product::PriceUnits())}</td>
+					<td>{echo Product::$PriceUnit}</td>
 					<td><input type="text" class="number narrow" value="1" /></td>
 					<td>{echo Template::select('', Product::AmountUnits())}</td>
 					<td><input type="text" class="number narrow storageid" /></td>
@@ -124,7 +124,7 @@ var product_id = $product[id];
 					<td>$p[masked_priceid]</td>
 					<td>$p[subtype]</td>
 					<td>$p[price]</td>
-					<td realvalue="$p[priceunit]">{echo Product::PriceUnits($p['priceunit'])}</td>
+					<td>{echo Product::$PriceUnit}</td>
 					<td>$p[amount]</td>
 					<td realvalue="$p[amountunit]">{echo Product::AmountUnits($p['amountunit'])}</td>
 					<td>{echo rdate($p['start_time'])}</td>
@@ -139,7 +139,7 @@ var product_id = $product[id];
 					<td><input type="text" class="number narrow" /></td>
 					<td><input type="text" /></td>
 					<td><input type="text" class="number narrow" value="1" /></td>
-					<td>{echo Template::select('', Product::PriceUnits())}</td>
+					<td>{echo Product::$PriceUnit}</td>
 					<td><input type="text" class="number narrow" value="1" /></td>
 					<td>{echo Template::select('', Product::AmountUnits())}</td>
 					<td><input type="text" /></td>

@@ -34,14 +34,14 @@
 				<!--{loop $items $p}-->
 					<tr>
 						<td>$p[productname]</td>
-						<td>$p[amount] $p[amountunit]</td>
-						<td>$p[totalprice] 元</td>
+						<td>{$p[amount]}{$p[amountunit]}</td>
+						<td>{$p[totalprice]}{echo Product::$PriceUnit}</td>
 					</tr>
 				<!--{/loop}-->
 					<tr>
 						<td>总计金额</td>
 						<td></td>
-						<td>$statistic[totalprice] 元</td>
+						<td>{$statistic[totalprice]}{echo Product::$PriceUnit}</td>
 					</tr>
 				</tbody>
 			</table>

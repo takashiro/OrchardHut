@@ -18,6 +18,6 @@
 {eval 	}}
 {eval 	echo $d['amount'] * $d['number'],$d['amountunit'],"\r\n";}
 {eval }}
-{eval echo '",',$o['totalprice'],$o['priceunit'],',',Order::$Status[$o['status']],',',rdate($o['dateline']),',',$o['message'],"\r\n";}
+{eval echo '",',$o['totalprice'],Product::$PriceUnit,',',Order::$Status[$o['status']],',',rdate($o['dateline']),',',$o['message'],"\r\n";}
 {eval }}
 {eval exit;}

@@ -28,7 +28,7 @@ case 'edit':
 		$unit['id'] = $db->insert_id();
 	}
 
-	writecache('productunits', NULL);
+	Product::RefreshCache();
 
 	echo json_encode($unit);
 	exit;
@@ -37,7 +37,7 @@ case 'delete':
 	$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 	if($id > 0){
 		$db->DELETE('id='.$id);
-		writecache('productunits', NULL);
+		Product::RefreshCache();
 
 		echo $db->affected_rows();
 	}else{

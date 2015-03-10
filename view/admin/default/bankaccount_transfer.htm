@@ -63,16 +63,16 @@ $(function(){
 				<tr>
 					<th>来源账号：</th>
 					<td width="200">{echo Template::select('sourceaccount', $accounts, $sourceaccount);}</td>
-					<td>可用余额：<span id="sourceamount">-</span>元</td>
+					<td>可用余额：<span id="sourceamount">-</span>{echo Product::$PriceUnit}</td>
 				</tr>
 				<tr>
 					<th>目标账号：</th>
 					<td>{echo Template::select('targetaccount', array());}</td>
-					<td>可用余额：<span id="targetamount">-</span>元</td>
+					<td>可用余额：<span id="targetamount">-</span>{echo Product::$PriceUnit}</td>
 				</tr>
 				<tr>
 					<th>转账金额：</th>
-					<td><input type="text" id="delta" name="delta" value="0.00" />元</td>
+					<td><input type="text" id="delta" name="delta" value="0.00" />{echo Product::$PriceUnit}</td>
 					<td></td>
 				</tr>
 				<tr>

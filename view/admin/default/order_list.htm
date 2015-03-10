@@ -128,7 +128,7 @@ $(function(){
 							<!--{/loop}-->
 							</ul>
 						</td>
-						<td><span class="totalprice">$o[totalprice]</span> $o[priceunit]</td>
+						<td><span class="totalprice">$o[totalprice]</span>{echo Product::$PriceUnit}</td>
 						<td>
 							{echo Order::$Status[$o['status']]}
 							<!--{if $o['status'] == Order::Unsorted && $_G['admin']->hasPermission('order_sort_w')}-->
@@ -170,7 +170,7 @@ $(function(){
 						<td colspan="{echo count(Address::Format()) + 1}"></td>
 						<td colspan="2"></td>
 						<td>$item[productname]<!--{if !empty($item['subtype'])}-->($item[subtype])<!--{/if}--> $item[num] $item[amountunit]</td>
-						<td>$item[totalprice] $item[priceunit]</td>
+						<td>{$item[totalprice]}{echo Product::$PriceUnit}</td>
 						<td colspan="4"></td>
 					</tr>
 					<!--{/loop}-->
@@ -181,8 +181,7 @@ $(function(){
 						<td colspan="{echo count(Address::Format()) + 1}"></td>
 						<td colspan="2"></td>
 						<td>$pagenum 个订单</td>
-						<td><!--{loop $statdata['totalprice'] $total}-->$total[price] $total[priceunit]<!--{/loop}-->
-						</td>
+						<td>{$statdata['totalprice']}{echo Product::$PriceUnit}</td>
 						<td colspan="5"></td>
 					</tr>
 				<!--{/if}-->

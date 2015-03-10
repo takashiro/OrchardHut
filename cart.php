@@ -13,7 +13,7 @@ $action = isset($_POST['action']) && in_array($_POST['action'], $actions) ? $_PO
 switch($action){
 	//Now the user is either listing everything in the shopping cart or submitting a new order.
 	case 'order':
-		$total_price = array();//Total prices of all the currency. Although there's only RMB.
+		$total_price = 0.00;
 		$item_deleted = false;//It's a flag indicates some items were deleted out of date.
 
 		//$cart is an array of items, with the key standing for its price id and the value for the number.
@@ -123,11 +123,7 @@ switch($action){
 				$p['number'] = $cart[$p['id']];
 				$p['subtotal'] = $p['price'] * $p['number'];
 
-				if(array_key_exists($p['priceunit'], $total_price)){
-					$total_price[$p['priceunit']] += $p['subtotal'];
-				}else{
-					$total_price[$p['priceunit']] = $p['subtotal'];
-				}
+				$total_price += $p['subtotal'];
 			}
 			unset($p);
 
@@ -211,28 +207,21 @@ switch($action){
 			isset(Order::$PaymentMethod[$order->paymentmethod]) || $order->paymentmethod = Order::PaidWithCash;
 
 			$order_succeeded = false;
-			foreach($total_price as $unit => $total){
-				$order->clearDetail();
 
-				$order->priceunit = $unit;
+			foreach($products as &$p){
+				$succeeded = $order->addDetail($p);
+				$succeeded || $item_deleted = true;
 
-				foreach($products as &$p){
-					if($p['priceunit'] == $unit){
-						$succeeded = $order->addDetail($p);
-						$succeeded || $item_deleted = true;
-
-						$totalamount = $p['amount'] * $p['number'];
-						$db->query("UPDATE LOW_PRIORITY {$tpre}product SET soldout=soldout+$totalamount WHERE id=$p[productid]");
-					}
-				}
-				unset($p);
-
-				$order->deliveryfee = $deliveryfee[$order->dtime_from ? 'normal' : 'pickup']['value'];
-				$order->totalprice += $order->deliveryfee;
-
-				$succeeded = $order->insert();
-				$succeeded && $order_succeeded = true;
+				$totalamount = $p['amount'] * $p['number'];
+				$db->query("UPDATE LOW_PRIORITY {$tpre}product SET soldout=soldout+$totalamount WHERE id=$p[productid]");
 			}
+			unset($p);
+
+			$order->deliveryfee = $deliveryfee[$order->dtime_from ? 'normal' : 'pickup']['value'];
+			$order->totalprice += $order->deliveryfee;
+
+			$succeeded = $order->insert();
+			$succeeded && $order_succeeded = true;
 
 			rsetcookie('in_cart', '');
 
@@ -262,13 +251,8 @@ switch($action){
 			$p['number'] = $number;
 			$p['subtotal'] = $p['price'] * $p['number'];
 
-			if(array_key_exists($p['priceunit'], $total_price)){
-				$total_price[$p['priceunit']] += $p['subtotal'];
-			}else{
-				$total_price[$p['priceunit']] = $p['subtotal'];
-			}
+			$total_price += $p['subtotal'];
 
-			$p['priceunit'] = Product::PriceUnits($p['priceunit']);
 			$p['amountunit'] = Product::AmountUnits($p['amountunit']);
 		}
 		unset($p);

@@ -40,8 +40,8 @@ p.subtype{
 							<td>$s[remark]</td>
 							<td>{$s[num]}{$s[amountunit]}</td>
 							<td><input type="text" name="amount[{$s[id]}]" class="amount number narrow" value="0" />$s[amountunit]</td>
-							<td><input type="text" name="price[{$s[id]}]" class="unitprice number dnarrow" value="0.00" />$s[priceunit]</td>
-							<td><input type="text" class="subtotal number dnarrow" value="0.00" />$s[priceunit]</td>
+							<td><input type="text" name="price[{$s[id]}]" class="unitprice number dnarrow" value="0.00" />{echo Product::$PriceUnit}</td>
+							<td><input type="text" class="subtotal number dnarrow" value="0.00" />{echo Product::$PriceUnit}</td>
 						</tr>
 					<!--{/loop}-->
 						<tr>
@@ -51,7 +51,7 @@ p.subtype{
 							<td></td>
 							<td></td>
 							<td></td>
-							<td><span id="totalprice">0</span>元</td>
+							<td><span id="totalprice">0</span>{echo Product::$PriceUnit}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -68,7 +68,7 @@ p.subtype{
 						<tr class="selectable">
 							<td><input type="radio" name="bankaccount" value="$a[id]" /></td>
 							<td>$a[remark]</td>
-							<td>$a[amount]</td>
+							<td>{$a[amount]}{echo Product::$PriceUnit}</td>
 						</tr>
 					<!--{/loop}-->
 					</tbody>

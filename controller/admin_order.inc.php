@@ -195,26 +195,17 @@ switch($action){
 			if($template_format == 'html'){
 				$statdata = array();
 				if($stat['totalprice']){
-					$statdata['totalprice'] = $db->fetch_all("SELECT SUM(totalprice) AS price,priceunit FROM {$tpre}order o WHERE $condition GROUP BY priceunit");
-					foreach($statdata['totalprice'] as &$total){
-						$total['priceunit'] = Product::PriceUnits($total['priceunit']);
-					}
-					unset($total);
+					$statdata['totalprice'] = $db->result_first("SELECT SUM(totalprice) FROM {$tpre}order o WHERE $condition");
 				}else{
-					$statdata['totalprice'] = array();
+					$statdata['totalprice'] = 0.00;
 				}
 
 				if($stat['item']){
-					$statdata['item'] = $db->fetch_all("SELECT d.productname,d.subtype,d.amountunit,SUM(d.amount*d.number) AS num,o.priceunit,SUM(d.subtotal) AS totalprice
+					$statdata['item'] = $db->fetch_all("SELECT d.productname,d.subtype,d.amountunit,SUM(d.amount*d.number) AS num,SUM(d.subtotal) AS totalprice
 						FROM {$tpre}orderdetail d
 							LEFT JOIN {$tpre}order o ON d.orderid=o.id
 						WHERE $condition
-						GROUP BY d.productname,d.subtype,d.amountunit,o.priceunit");
-
-					foreach($statdata['item'] as &$item){
-						$item['priceunit'] = Product::PriceUnits($item['priceunit']);
-					}
-					unset($item);
+						GROUP BY d.productname,d.subtype,d.amountunit");
 				}else{
 					$statdata['item'] = array();
 				}
@@ -250,7 +241,6 @@ switch($action){
 				foreach($orders as &$o){
 					$o['detail'] = &$order_details[$o['id']];
 					is_array($o['detail']) || $o['detail'] = array();
-					$o['priceunit'] = Product::PriceUnits($o['priceunit']);
 					$o['address'] = &$order_addresses[$o['id']];
 
 					if($template_format == 'print' || $template_format == 'barcode'){

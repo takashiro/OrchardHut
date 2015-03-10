@@ -17,11 +17,11 @@
 				<table>
 					<tr>
 						<th><label>余额：</label></th>
-						<td>{echo $_G['user']->wallet}元</td>
+						<td>{echo $_G['user']->wallet}{echo Product::$PriceUnit}</td>
 					</tr>
 					<tr>
 						<th><label>充值：</label></th>
-						<td><input type="text" name="recharge" value="50.00" />元</td>
+						<td><input type="text" name="recharge" value="50.00" />{echo Product::$PriceUnit}</td>
 					</tr>
 				</table>
 
@@ -32,7 +32,7 @@
 		</div>
 
 		<!--{if !empty($prepaidreward)}-->
-		<!--{loop $prepaidreward $r}-->充{$r[minamount]} - {$r[maxamount]}元返{$r[reward]}元，<!--{/loop}-->快来撑死我吧~
+		<!--{loop $prepaidreward $r}-->充{$r[minamount]} - {$r[maxamount]}{echo Product::$PriceUnit}返{$r[reward]}{echo Product::$PriceUnit}，<!--{/loop}-->快来撑死我吧~
 		<!--{/if}-->
 
 		<div class="order_list">
@@ -50,8 +50,8 @@
 				<!--{loop $walletlog $l}-->
 					<tr>
 						<td>{echo rdate($l['dateline'])}</td>
-						<td>{$l[delta]}元</td>
-						<td>{$l[cost]}元</td>
+						<td>{$l[delta]}{echo Product::$PriceUnit}</td>
+						<td>{$l[cost]}{echo Product::$PriceUnit}</td>
 						<td><!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeState[$l['alipaystate']]}<!--{/if}--></td>
 						<td>
 							<!--{if $l['recharged']}-->成功<!--{else}-->进行中<!--{/if}-->

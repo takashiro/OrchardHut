@@ -26,7 +26,7 @@ $(function(){
 						<li product-id="$p[productid]" price-id="$p[priceid]">
 							<span class="subtype" style="color:#$p[text_color];">$p[subtype]</span>
 							<span class="price" style="color:#$p[text_color];">$p[price]</span>
-							<span class="priceunit">$p[priceunit]</span>
+							<span class="priceunit">{echo Product::$PriceUnit}</span>
 							<span class="amount" style="color:#$p[text_color];">$p[amount]</span>
 							<span class="amountunit" style="color:#$p[text_color];">$p[amountunit]</span>
 							x
@@ -35,7 +35,7 @@ $(function(){
 					</ul>
 					<div class="subtotal">
 						<div class="money_icon" style="background:#$p[icon_background]">￥</div>
-						小计：<span class="number">$p[subtotal]</span> <span class="unit">$p[priceunit]</span>
+						小计：<span class="number">$p[subtotal]</span> <span class="unit">{echo Product::$PriceUnit}</span>
 					</div>
 					<button type="button" class="remove"></button>
 				</div>
@@ -50,10 +50,8 @@ $(function(){
 			<div class="icon"></div>
 			总计：
 			<div class="prices">
-				<!--{loop $total_price $price_unit $price}-->
-				<span class="number" id="total_price">$price</span>
-				<span class="unit">{echo Product::PriceUnits($price_unit)}</span>
-				<!--{/loop}-->
+				<span class="number" id="total_price">$total_price</span>
+				<span class="unit">{echo Product::$PriceUnit}</span>
 			</div>
 		</div>
 

@@ -66,9 +66,9 @@ dl.orderdetail dd{
 
 <dl class="orderdetail">
 	<!--{loop $order['detail'] $d}-->
-	<dt><!--{if $d['state'] == 1}-->[缺货]<!--{/if}-->$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number']} $d[amountunit]</dt><dd>$d[subtotal] $order[priceunit]</dd>
+	<dt><!--{if $d['state'] == 1}-->[缺货]<!--{/if}-->$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number']} $d[amountunit]</dt><dd>{$d[subtotal]}{echo Product::$PriceUnit}</dd>
 	<!--{/loop}-->
-	<dt>总计：</dt><dd>$order[totalprice] $order[priceunit]</dd>
+	<dt>总计：</dt><dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
 </dl>
 
 <dl>

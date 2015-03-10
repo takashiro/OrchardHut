@@ -54,8 +54,6 @@ class Order extends DBObject{
 		}
 		$attr['deliveryaddress'].= $attr['extaddress'];
 
-		$attr['priceunit'] = Product::PriceUnits($attr['priceunit']);
-
 		return $attr;
 	}
 
