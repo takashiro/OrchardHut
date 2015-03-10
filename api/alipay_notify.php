@@ -34,26 +34,16 @@ if($verify_result){//验证成功
 	}
 
 	if(!empty($doc->getElementsByTagName('notify')->item(0)->nodeValue)){
-		//商户订单号
-		$out_trade_no = $doc->getElementsByTagName('out_trade_no')->item(0)->nodeValue;
-		//支付宝交易号
-		$trade_no = $doc->getElementsByTagName('trade_no')->item(0)->nodeValue;
-		//交易状态
-		$trade_status = $doc->getElementsByTagName('trade_status')->item(0)->nodeValue;
+		$alipaytrade = array(
+			//商户订单号
+			$doc->getElementsByTagName('out_trade_no')->item(0)->nodeValue,
+			//支付宝交易号
+			$doc->getElementsByTagName('trade_no')->item(0)->nodeValue,
+			//交易状态
+			$doc->getElementsByTagName('trade_status')->item(0)->nodeValue,
+		);
 
-		$order = new Order($out_trade_no);
-		if(!$order->exists()){
-			writelog('alipaynotify', array('ORDER_NOT_EXIST', $out_trade_no, $trade_no, $trade_status));
-			exit;
-		}
-
-		if(!isset(Order::$AlipayStateEnum[$trade_status])){
-			writelog('alipaynotify', array('UNEXPECTED_ORDER_STATE', $out_trade_no, $trade_no, $trade_status));
-			exit;
-		}
-
-		$order->alipaystate = Order::$AlipayStateEnum[$trade_status];
-		$order->alipaytradeid = $trade_no;
+		runhooks('alipay_notified', $alipaytrade);
 
 		exit('success');
 	}

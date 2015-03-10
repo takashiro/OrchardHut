@@ -265,6 +265,65 @@ class Order extends DBObject{
 				LEFT JOIN {$tpre}orderdetail d ON l.operation IN ($detailop) AND d.id=l.extra
 			WHERE l.orderid={$this->id}");
 	}
+
+	static protected $AlipayOrderPrefix = 'O';
+	static public function __on_alipay_started(){
+		if(isset($_GET['orderid']){
+			global $_G;
+			$order = new Order($_GET['orderid']);
+			if($order->exists() && $order->userid == $_G['user']->id){
+				//商户网站订单系统中唯一订单号，必填
+				$_G['alipaytrade']['out_trade_no'] = self::$AlipayOrderPrefix.$order->id;
+
+				//订单名称
+				$_G['alipaytrade']['subject'] = $_CONFIG['sitename'].'订单'.$out_trade_no;
+
+				//付款金额
+				$_G['alipaytrade']['total_fee'] = $order->totalprice + $order->deliveryfee;
+			}else{
+				showmsg('order_not_exist');
+			}
+		}
+	}
+
+	static public function __on_alipay_notified($out_trade_no, $trade_no, $trade_status){
+		$prefix_len = strlen(self::$AlipayOrderPrefix);
+		if(strncmp($out_trade_no, self::$AlipayOrderPrefix, $prefix_len) == 0){
+			$order = new Order(substr($out_trade_no, $prefix_len));
+			if(!$order->exists()){
+				writelog('alipaynotify', array('ORDER_NOT_EXIST', $out_trade_no, $trade_no, $trade_status));
+				exit;
+			}
+
+			if(!isset(Order::$AlipayStateEnum[$trade_status])){
+				writelog('alipaynotify', array('UNEXPECTED_ORDER_STATE', $out_trade_no, $trade_no, $trade_status));
+				exit;
+			}
+
+			$order->alipaystate = Order::$AlipayStateEnum[$trade_status];
+			$order->alipaytradeid = $trade_no;
+		}
+	}
+
+	static public function __on_alipay_callback_executed($out_trade_no, $trade_no, $result){
+		global $_G;
+
+		//以异步通知为准，此处不处理
+		/*if($result == 'success'){
+			$order = new Order($orderid);
+			if(!$order->exists()){
+				writelog('alipaycallback', array('ORDER_NOT_EXIST', $orderid, $trade_no, $result));
+				showmsg('订单不存在，错误已记录。');
+			}
+			$order->alipaystate = Order::TradeSuccess;
+			$order->alipaytradeid = $trade_no;
+		}else{
+			exit('unexpected result: '.$result);
+		}*/
+
+		if(strncmp($out_trade_no, self::$AlipayOrderPrefix, strlen(self::$AlipayOrderPrefix)) == 0)
+			showmsg('成功支付订单！很快为您配送哦~', 'home.php');
+	}
 }
 
 Order::$Status = array(

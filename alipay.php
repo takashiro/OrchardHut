@@ -5,10 +5,16 @@ require_once './core/init.inc.php';
 if(empty($_GET['orderid']))
 	showmsg('illegal_operation');
 
-$order = new Order($_GET['orderid']);
-if(!$order->exists() || $order->userid != $_G['user']->id){
+$_G['alipaytrade'] = array(
+	'out_trade_no' => '',
+	'subject' => '',
+	'total_fee' => 0.00,
+);
+
+runhooks('alipay_started');
+
+if(empty($_G['alipaytrade']['out_trade_no']) || empty($_G['alipaytrade']['subject']) || !is_numeric($_G['alipaytrade']['total_fee']))
 	showmsg('illegal_operation');
-}
 
 require_once S_ROOT.'controller/alipay_init.inc.php';
 
@@ -44,17 +50,8 @@ $merchant_url = $_G['root_url'].'home.php';
 $seller_email = $alipay_config['email'];
 //必填
 
-//商户订单号
-$out_trade_no = $order->id;
-//商户网站订单系统中唯一订单号，必填
-
-//订单名称
-$subject = $_CONFIG['sitename'].'订单'.$out_trade_no;
-//必填
-
-//付款金额
-$total_fee = $order->totalprice + $order->deliveryfee;
-//必填
+extract($_G['alipaytrade']);
+unset($_G['alipaytrade']);
 
 //请求业务参数详细
 $req_data = '<direct_trade_create_req>'
