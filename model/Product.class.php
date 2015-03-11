@@ -174,6 +174,10 @@ class Product extends DBObject{
 			$update['subtype'] = $price['subtype'];
 		}
 
+		if(isset($price['briefintro'])){
+			$update['briefintro'] = $price['briefintro'];
+		}
+
 		if(isset($price['price'])){
 			$update['price'] = floatval($price['price']);
 		}

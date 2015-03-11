@@ -77,7 +77,7 @@ $(function(){
 			brief.addClass('brief');
 			brief.html('多个品种可选');
 			if(list.length == 2){
-				if(list.eq(0).children('.subtype').html() == '' && list.eq(1).children('.subtype').html() == ''){
+				if(list.eq(0).find('.subtype').html() == '' && list.eq(1).find('.subtype').html() == ''){
 					brief.html('');
 					brief.append(list.eq(0).children('span').clone());
 					brief.append($.parseHTML('<span class="split"> / </span>'));
@@ -86,10 +86,10 @@ $(function(){
 			}else{
 				var prev = null;
 				list.each(function(){
-					if(prev != null && prev == $(this).children('.subtype').html()){
-						$(this).children('.subtype').html('');
+					if(prev != null && prev == $(this).find('.subtype').html()){
+						$(this).children('.intro').html('');
 					}else{
-						prev = $(this).children('.subtype').html();
+						prev = $(this).find('.subtype').html();
 					}
 				});
 			}

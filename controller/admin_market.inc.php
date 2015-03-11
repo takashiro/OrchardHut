@@ -77,6 +77,10 @@ switch($action){
 					}
 				}
 
+				if(isset($_POST['briefintro'])){
+					$product->briefintro = $_POST['briefintro'];
+				}
+
 				if(isset($_POST['introduction'])){
 					$product->introduction = $_POST['introduction'];
 				}

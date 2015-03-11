@@ -22,7 +22,7 @@ var product_id = $product[id];
 		<form class="toast" action="###" method="post" enctype="multipart/form-data">
 			<table>
 				<tr><th>名称</th><td><input type="text" name="name" value="$product[name]" /></td></tr>
-				<tr><th>介绍</th><td><textarea name="introduction">$product[introduction]</textarea></td></tr>
+				<tr><th>简要介绍</th><td><input type="text" name="briefintro" value="$product[briefintro]" /><span class="tips">显示于商品名称下方</span></td></tr>
 				<tr>
 					<th>图标</th>
 					<td>
@@ -41,6 +41,7 @@ var product_id = $product[id];
 						<input type="file" name="photo" />
 					</td>
 				</tr>
+				<tr><th>介绍</th><td><textarea name="introduction">$product[introduction]</textarea><span class="tips">显示在实物照片下方</span></td></tr>
 				<tr><th>文字颜色</th><td><input type="text" name="text_color" class="color" value="#$product[text_color]" /></td></tr>
 				<tr><th>背景颜色</th><td><input type="text" name="background_color" class="color" value="#$product[background_color]" /></td></tr>
 				<tr><th>图标背景</th><td><input type="text" name="icon_background" class="color" value="#$product[icon_background]" /></td></tr>
@@ -58,7 +59,8 @@ var product_id = $product[id];
 		<table>
 			<thead>
 				<tr>
-					<td>价格编号</td>
+					<td>编号</td>
+					<td>分类</td>
 					<td>说明</td>
 					<td colspan="2">价格</td>
 					<td colspan="2">数量</td>
@@ -73,6 +75,7 @@ var product_id = $product[id];
 				<tr primaryvalue="$p[id]">
 					<td>$p[id]</td>
 					<td>$p[subtype]</td>
+					<td>$p[briefintro]</td>
 					<td>$p[price]</td>
 					<td>{echo Product::$PriceUnit}</td>
 					<td>$p[amount]</td>
@@ -86,6 +89,7 @@ var product_id = $product[id];
 				<tr>
 					<td></td>
 					<td><input type="text" /></td>
+					<td><input type="text" /></td>
 					<td><input type="text" class="number narrow" value="1" /></td>
 					<td>{echo Product::$PriceUnit}</td>
 					<td><input type="text" class="number narrow" value="1" /></td>
@@ -98,6 +102,14 @@ var product_id = $product[id];
 			</tbody>
 		</table>
 	</div>
+	<div class="notice">
+		<ol>
+			<li>“显示顺序”的数值越小，显示位置越靠后。</li>
+			<li>“分类”连续相同时在页面中只显示第一条以简化界面。</li>
+			<li>“说明”显示在“分类”右侧，只用于前台的界面显示，订单中不可见。</li>
+			<li>“库存”中填写下方库存管理的“库存号”，多个价格可关联至同一个库存。</li>
+		</ol>
+	</div>
 </div>
 
 <div class="box">
@@ -107,6 +119,7 @@ var product_id = $product[id];
 			<thead>
 				<tr>
 					<td>原价编号</td>
+					<td>分类</td>
 					<td>说明</td>
 					<td colspan="2">价格</td>
 					<td colspan="2">数量</td>
@@ -123,6 +136,7 @@ var product_id = $product[id];
 				<tr primaryvalue="$p[id]">
 					<td>$p[masked_priceid]</td>
 					<td>$p[subtype]</td>
+					<td>$p[briefintro]</td>
 					<td>$p[price]</td>
 					<td>{echo Product::$PriceUnit}</td>
 					<td>$p[amount]</td>
@@ -137,6 +151,7 @@ var product_id = $product[id];
 				<!--{/loop}-->
 				<tr>
 					<td><input type="text" class="number narrow" /></td>
+					<td><input type="text" /></td>
 					<td><input type="text" /></td>
 					<td><input type="text" class="number narrow" value="1" /></td>
 					<td>{echo Product::$PriceUnit}</td>
