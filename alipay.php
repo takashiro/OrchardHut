@@ -2,6 +2,21 @@
 
 require_once './core/init.inc.php';
 
+/* To make use of the following codes, you have to add the rewrite rules below.
+RewriteEngine On
+RewriteBase /
+RewriteRule ^alipay(.*)\.htm$ alipay.php?querystring=$1
+*/
+if(empty($_GET['skipprotector']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
+	if(empty($_GET['querystring'])){
+		rheader('Location: alipay'.base64_encode($_SERVER['QUERY_STRING']).'.htm');
+	}else{
+		$protected_url = 'alipay.php?'.base64_decode($_GET['querystring']).'&skipprotector=1';
+		include view('protector');
+	}
+	exit;
+}
+
 $_G['alipaytrade'] = array(
 	'out_trade_no' => '',
 	'subject' => '',
