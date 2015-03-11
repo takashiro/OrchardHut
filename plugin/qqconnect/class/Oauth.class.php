@@ -19,7 +19,7 @@ class Oauth{
     protected $recorder;
     public $urlUtils;
     protected $error;
-    
+
 
     function __construct(){
         $this->recorder = new Recorder();
@@ -40,7 +40,7 @@ class Oauth{
         $keysArr = array(
             "response_type" => "code",
             "client_id" => $appid,
-            "redirect_uri" => $callback,
+            "redirect_uri" => urlencode($callback),
             "state" => $state,
             "scope" => $scope
         );
