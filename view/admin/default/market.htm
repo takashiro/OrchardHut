@@ -19,6 +19,15 @@ $(function(){
 <div class="box">
 	<h1>商品管理</h1>
 	<div class="content">
+		<form id="condition_form" class="quick_search" action="admin.php" method="get">
+			<input type="hidden" name="mod" value="$_GET[mod]" />
+			<dl>
+				<dt>商品名称：</dt>
+				<dd><input type="text" name="productname" /></dd>
+			</dl>
+			<button type="submit">查找</button>
+		</form>
+
 		<div id="productlist" class="list edit_list">
 			<table>
 				<thead>

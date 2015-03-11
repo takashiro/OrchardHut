@@ -9,7 +9,12 @@ switch($action){
 	case 'list':
 		$condition = array();
 
-		if(isset($_GET['type'])){
+		if(isset($_GET['productname'])){
+			$_GET['productname'] = trim($_GET['productname']);
+			$condition[] = 'name LIKE \'%'.$_GET['productname'].'%\'';
+		}
+
+		if(!empty($_GET['type'])){
 			$_GET['type'] = intval($_GET['type']);
 			$condition[] = 'type='.$_GET['type'];
 		}
