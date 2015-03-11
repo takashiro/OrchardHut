@@ -47,7 +47,8 @@ dl.orderdetail dd{
 <!--{loop $orders $order}-->
 <div class="header">
 	<img src="./view/admin/$_G[style]/image/print_logo.gif" />
-	<div class="tips">{echo $tips[array_rand($tips)]}</div>
+	<div class="tips">$_CONFIG[ticket_extrainfo]</div>
+	<div class="tips"><!--{if $tips}-->{echo $tips[array_rand($tips)]}<!--{/if}--></div>
 </div>
 
 <dl>

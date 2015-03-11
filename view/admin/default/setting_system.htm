@@ -33,6 +33,13 @@ $(function(){
 			<td><input type="text" name="system[sitename]" value="$_CONFIG[sitename]" /></td>
 		</tr>
 		<tr>
+			<th><label>小票附加信息：</label></th>
+			<td>
+				<input type="text" name="system[ticket_extrainfo]" value="$_CONFIG[ticket_extrainfo]" />
+				<span class="tips">显示在小票顶端</span>
+			</td>
+		</tr>
+		<tr>
 			<th><label>小票箴言：</label></th>
 			<td>
 				<textarea name="system[ticket_tips]">$_CONFIG[ticket_tips]</textarea>
