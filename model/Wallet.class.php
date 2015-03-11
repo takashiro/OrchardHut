@@ -72,21 +72,9 @@ class Wallet{
 	static public function __on_alipay_callback_executed($out_trade_no, $trade_no, $result){
 		global $_G;
 
-		//以异步通知为准，此处不处理
-		/*if($result == 'success'){
-			$order = new Order($orderid);
-			if(!$order->exists()){
-				writelog('alipaycallback', array('ORDER_NOT_EXIST', $orderid, $trade_no, $result));
-				showmsg('订单不存在，错误已记录。');
-			}
-			$order->alipaystate = AlipayNotify::TradeSuccess;
-			$order->alipaytradeid = $trade_no;
-		}else{
-			exit('unexpected result: '.$result);
-		}*/
-
+		//以异步通知为准，此处不处理只通知
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
-			showmsg('成功充值！钱包又鼓起来啦~', 'wallet.php');
+			showmsg('wallet_is_successfully_recharged', 'wallet.php');
 	}
 }
 

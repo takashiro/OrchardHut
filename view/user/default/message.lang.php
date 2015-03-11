@@ -65,6 +65,9 @@ return array(
 	'click_and_enter_shop' => '点击进入商城',
 
 	'the_number_you_must_be_kidding_me' => '这金额……你一定是在逗我……',
+
+	'the_order_is_successfully_paid' => '成功支付订单！很快为您配送哦~',
+	'wallet_is_successfully_recharged' => '成功充值！钱包又鼓起来啦~',
 );
 
 ?>

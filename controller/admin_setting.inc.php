@@ -98,7 +98,7 @@ case 'delivery':
 		}
 
 		writedata('deliveryfee', $deliveryfee);
-		showmsg('成功设置配送费用！');
+		showmsg('successfully_updated_delivery_config');
 
 	default:
 		$deliveryfee = readdata('deliveryfee');

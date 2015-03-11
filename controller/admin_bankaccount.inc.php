@@ -60,7 +60,7 @@ switch($action){
 			BankAccount::Delete($id);
 			redirect($mod_url);
 		}else{
-			showmsg('您确认删除该资金账户吗？', 'confirm');
+			showmsg('confirm_to_delete_bank_account', 'confirm');
 		}
 
 	break;

@@ -42,13 +42,13 @@ if($_POST){
 	);
 	writeconfig('config', $config);
 	writeconfig('config_bak_'.randomstr(3), $config);
-	
+
 	$stconfig = array(
 		'salt' => randomstr(32),
 	);
 	writeconfig('stconfig', $stconfig);
 	writeconfig('stconfig_bak_'.randomstr(3), $stconfig);
-	
+
 	$dbconfig = array(
 		'type' => $_POST['db']['type'],
 		'charset' => 'utf8',
@@ -61,7 +61,7 @@ if($_POST){
 	);
 	writeconfig('dbconfig', $dbconfig);
 	writeconfig('dbconfig_bak_'.randomstr(3), $dbconfig);
-	
+
 	$_G['config'] = array_merge($config, $stconfig);
 	$_G['config']['db'] = $dbconfig;
 
@@ -78,7 +78,7 @@ if($_POST){
 		}
 	}
 	if(!$database_exists){
-		showmsg('您指定的数据库'.$dbconfig['name'].'不存在。');
+		exit('您指定的数据库'.$dbconfig['name'].'不存在。');
 	}
 	$db->select_db($dbconfig['name']);
 
@@ -104,7 +104,7 @@ if($_POST){
 
 		$in_sql = true;
 		$sql.= $line[$i];
-		
+
 		if(substr($line[$i], -1) == ';'){
 			$in_sql = false;
 			if($dbconfig['tpre'] != 'hut_'){
@@ -123,7 +123,7 @@ if($_POST){
 
 	//安装标记
 	touch(S_ROOT.'./data/install.lock');
-	
+
 	showmsg('安装成功！请手动删除网站根目录下install目录，防止重复安装以及其他可能出现的问题。', '../');
 }
 ?>
@@ -146,7 +146,7 @@ if($_POST){
 		</ul>
 		<div class="right"></div>
 	</div>
-	
+
 	<div class="content">
 		<form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
 		<h1>数据库配置</h1>
@@ -160,7 +160,7 @@ if($_POST){
 			<tr><th><label>数据库名：</label></th><td><input type="text" id="db[name]" name="db[name]" value="<?php echo $_G['config']['db']['name']?>" /></td></tr>
 			<tr><th><label>是否持续链接：</label></th><td><input type="radio" id="db[pconnect]" name="db[pconnect]" value="0" checked="checked" />否 <input type="radio" id="db[pconnect]" name="db[pconnect]" value="0" />是</td></tr>
 		</table>
-		
+
 		<h1>系统设置</h1>
 		<table>
 			<tr><th><label>站点名称：</label></th><td><input type="text" id="config[sitename]" name="config[sitename]" /></td></tr>
@@ -168,9 +168,9 @@ if($_POST){
 			<tr><th><label>初始管理员账号：</label></th><td><input type="text" id="admin[account]" name="admin[account]" /></td></tr>
 			<tr><th><label>初始管理员密码：</label></th><td><input type="text" id="admin[password]" name="admin[password]" /></td></tr>
 		</table>
-		
+
 		<button type="submit">开始安装</button>
-		
+
 		</form>
 	</div>
 
