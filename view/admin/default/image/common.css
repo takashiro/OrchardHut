@@ -28,7 +28,7 @@ ul{
 	margin:0;
 }
 
-li{
+ul li{
 	list-style:none;
 }
 
@@ -348,6 +348,7 @@ input.number{
 .edit_form .tips{
 	color:gray;
 	text-align:left;
+	margin: 0.5em;
 }
 
 .edit_form tr:hover .tips{
@@ -427,6 +428,21 @@ div.toast_list p{
 	line-height: 2em;
 	width: 60%;
 	margin: 5px auto;
+}
+
+.notice{
+	font-size: 10pt;
+	text-align: left;
+	background: #DFF0D8;
+	border: #D6E9C6 1px solid;
+	padding: 0.3em 1em;
+	color: #3C763D;
+	margin: 6px 40px;
+}
+
+.notice ol{
+	margin: 0;
+	padding-left: 1em;
 }
 
 /* Date time picker */
