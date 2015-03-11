@@ -2,7 +2,6 @@
 
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
-	<li><a href="admin.php?mod=setting">设置</a></li>
 	<li>系统</li>
 </ol>
 
@@ -24,7 +23,7 @@ $(function(){
 
 <div class="box edit_form">
 	<h1>系统设置</h1>
-	<form class="toast" action="$mod_url&type=system" method="post">
+	<form class="toast" action="$mod_url" method="post">
 
 	<h2>个性化</h2>
 	<table>
@@ -46,14 +45,18 @@ $(function(){
 				<span class="tips">每行一条，系统随机选择一条打印</span>
 			</td>
 		</tr>
-	</table>
-
-	<h2>开发选项</h2>
-	<table>
 		<tr>
 			<th><label>时区设置：</label></th>
 			<td><input type="text" name="system[timezone]" value="$_CONFIG[timezone]" /></td>
 		</tr>
+		<tr>
+			<th><label>用户界面风格：</label></th>
+			<td>{echo Template::select('system[style]', $_G['stylelist']['user'], $_CONFIG['style'])}</td>
+		</tr>
+	</table>
+
+	<h2>开发选项</h2>
+	<table>
 		<tr>
 			<th><label>时间修正：</label></th>
 			<td>
@@ -68,10 +71,6 @@ $(function(){
 		<tr>
 			<th><label>外接资源后缀：</label></th>
 			<td><input type="text" id="refversion" name="system[refversion]" value="$_CONFIG[refversion]" /></td>
-		</tr>
-		<tr>
-			<th><label>用户界面风格：</label></th>
-			<td>{echo Template::select('system[style]', $_G['stylelist']['user'], $_CONFIG['style'])}</td>
 		</tr>
 		<tr>
 			<th><label>其他配置：</label></th>

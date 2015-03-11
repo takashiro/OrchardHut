@@ -3,8 +3,8 @@
 <script type="text/javascript">
 $(function(){
 	$('#unit_list').editlist({
-		'edit' : '$mod_url&type=delivery&action=edit',
-		'delete' : '$mod_url&type=delivery&action=delete',
+		'edit' : '$mod_url&action=edit',
+		'delete' : '$mod_url&action=delete',
 		'attr' : ['deadline', 'time_from', 'time_to', 'effective_time', 'expiry_time', 'hidden'],
 		'buttons' : {'delete':'删除'}
 	});
@@ -13,14 +13,13 @@ $(function(){
 
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
-	<li><a href="admin.php?mod=setting">设置</a></li>
 	<li>配送</li>
 </ol>
 
 <div class="box edit_form">
 	<h2>配送费用设置</h2>
 
-	<form class="toast" action="$mod_url&type=delivery&action=config" method="post">
+	<form class="toast" action="$mod_url&action=config" method="post">
 		<table>
 			<tr>
 				<th><label>自提：</label></th>

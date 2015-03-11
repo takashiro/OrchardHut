@@ -17,13 +17,15 @@ class Administrator extends User{
 		'announcement' => 0x20,
 		'address' => 0x40,
 		'order_sort' => 0x80,
-		'setting' => 0x100,
+		'system' => 0x100,
 		'weixin' => 0x100,
 		'productunit' => 0x200,
 		'producttype' => 0x400,
 		'prepaidreward' => 0x800,
 		'salereport' => 0x1000,
 		'bankaccount' => 0x2000,
+		'qqconnect' => 0x100,
+		'delivery' => 0x100,
 	);
 
 	public function __construct($id = 0){
