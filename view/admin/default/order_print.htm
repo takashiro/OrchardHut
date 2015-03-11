@@ -42,12 +42,12 @@ dl.orderdetail dd{
 </head>
 <body>
 
-<!--{eval $tips = empty($_CONFIG['ticket_tips']) ? array('') : explode("\n", $_CONFIG['ticket_tips']);}-->
+<!--{eval $tips = empty($ticketconfig['tips']) ? array('') : explode("\n", $ticketconfig['tips']);}-->
 <!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
 <!--{loop $orders $order}-->
 <div class="header">
 	<img src="./view/admin/$_G[style]/image/print_logo.gif" />
-	<div class="tips">$_CONFIG[ticket_extrainfo]</div>
+	<div class="tips">$ticketconfig[extrainfo]</div>
 	<div class="tips"><!--{if $tips}-->{echo $tips[array_rand($tips)]}<!--{/if}--></div>
 </div>
 

@@ -251,6 +251,8 @@ switch($action){
 						$o['deliveryaddress'].= $o['extaddress'];
 
 						$o['dateline'] = rdate($o['dateline']);
+
+						$ticketconfig = readdata('ticket');
 					}
 				}
 				unset($o);
@@ -454,6 +456,8 @@ switch($action){
 			$ordernum = $order->getUserOrderNum();
 			$order = $order->toReadable();
 			$order['ordernum'] = &$ordernum;
+
+			$ticketconfig = readdata('ticket');
 
 			include view('order_'.$action);
 		}
