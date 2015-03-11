@@ -40,10 +40,10 @@
 				<thead>
 					<tr>
 						<td width="110">充值<br />时间</td>
-						<td>充值<br />金额</td>
+						<td>充值<br />状态</td>
+						<td>已充<br />金额</td>
 						<td>支付<br />金额</td>
 						<td>支付<br />状态</td>
-						<td>充值<br />状态</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -56,12 +56,13 @@
 								{echo rdate($l['dateline'], 'Y-m-d H:i')}
 							<!--{/if}-->
 						</td>
-						<td>{$l[delta]}{echo Product::$PriceUnit}</td>
-						<td>{$l[cost]}{echo Product::$PriceUnit}</td>
-						<td><!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeState[$l['alipaystate']]}<!--{/if}--></td>
 						<td>
 							<!--{if $l['recharged']}-->成功<!--{else}-->进行中<!--{/if}-->
 						</td>
+						<td>{$l[delta]}{echo Product::$PriceUnit}</td>
+						<td>{$l[cost]}{echo Product::$PriceUnit}</td>
+						<td><!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeState[$l['alipaystate']]}<!--{/if}--></td>
+
 					</tr>
 				<!--{/loop}-->
 				</tbody>
