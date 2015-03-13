@@ -235,11 +235,14 @@ switch($action){
 			rsetcookie('in_cart', '');
 
 			if($order_succeeded){
-				$url_forward = $order->paymentmethod != Order::PaidOnline ? 'order.php' : 'alipay.php?orderid='.$order->id;
+				if($order->paymentmethod == Order::PaidOnline){
+					redirect('alipay.php?orderid='.$order->id);
+				}
+
 				if(!$item_deleted){
-					showmsg('successfully_submitted_order', $url_forward);
+					showmsg('successfully_submitted_order', 'order.php');
 				}else{
-					showmsg('successfully_submitted_order_with_item_deleted', $url_forward);
+					showmsg('successfully_submitted_order_with_item_deleted', 'order.php');
 				}
 			}else{
 				showmsg('failed_to_submit_order', 'market.php');
