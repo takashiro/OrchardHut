@@ -77,11 +77,12 @@ while($l = $db->fetch_array($query)){
 	$logs[] = $l;
 }
 
+$operation_order_income = BankAccount::OPERATION_ORDER_INCOME;
 $query = $db->query("SELECT $fields, o.dateline, d.subtotal AS delta
 	FROM {$tpre}orderdetail d
 		LEFT JOIN {$tpre}product p ON p.id=d.productid
 		LEFT JOIN {$tpre}order o ON o.id=d.orderid
-		LEFT JOIN {$tpre}bankaccountlog al ON al.targetid=o.id
+		LEFT JOIN {$tpre}bankaccountlog al ON al.operation=$operation_order_income AND al.targetid=o.id
 		LEFT JOIN {$tpre}bankaccount a ON a.id=al.accountid
 	WHERE $condition AND d.state=0 AND o.status=".Order::Received);
 
