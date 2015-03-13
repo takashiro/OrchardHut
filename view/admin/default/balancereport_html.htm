@@ -1,0 +1,83 @@
+{template header}
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=prouct">账户</a></li>
+	<li>毛利报表</li>
+</ol>
+
+<script type="text/javascript" src="./js/datetime.js"></script>
+
+<div class="box">
+	<h1>毛利报表</h1>
+	<div class="content">
+		<form class="quick_search" action="$mod_url" method="post">
+			<dl>
+				<dt>时间：</dt>
+				<dd><input type="text" name="time_start" class="datetime" value="$time_start" /> - <input type="text" name="time_end" class="datetime" value="$time_end" /></dd>
+				<dt>资金账号：</dt>
+				<dd>{echo Template::select('bankaccountid', $bankaccounts, $bankaccountid)}</dd>
+				<dt>产品类型：</dt>
+				<dd>{echo Template::select('producttype', $producttypes, $producttype)}</dd>
+				<dt>产品：</dt>
+				<dd>{echo Template::select('productid', array(0 => '不限'))}</dd>
+			</dl>
+			<button type="submit" name="format" value="html">统计</button>
+		</form>
+
+
+		<div class="list">
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<td>时间</td>
+						<td>账号</td>
+						<td>金额</td>
+						<td>商品</td>
+						<td>原因</td>
+					</tr>
+				</thead>
+				<tbody>
+				<!--{loop $logs $l}-->
+					<tr>
+						<th></th>
+						<td>{echo rdate($l['dateline'])}</td>
+						<td>$l[bankaccount]</td>
+						<td><!--{if $l['delta'] > 0}-->+<!--{/if}-->{$l[delta]}{echo Product::$PriceUnit}</td>
+						<td>$l[productname]</td>
+						<td>$l[reason]</td>
+					</tr>
+				<!--{/loop}-->
+					<tr>
+						<th></th>
+						<td></td>
+						<td>总支出</td>
+						<td>-{$stat[out]}{echo Product::$PriceUnit}</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<th></th>
+						<td></td>
+						<td>总收入</td>
+						<td>+{$stat[in]}{echo Product::$PriceUnit}</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<th></th>
+						<td></td>
+						<td>利润</td>
+						<td>{$stat[all]}{echo Product::$PriceUnit}</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{template footer}

@@ -9,6 +9,7 @@ class BankAccount extends DBObject{
 
 	const OPERATION_TRANSFER = 0;
 	const OPERATION_ORDER_INCOME = 1;
+	const OPERATION_PRODUCT_IMPORT = 2;
 
 	const OPERATOR_SYSTEM = 0;
 
@@ -42,7 +43,7 @@ class BankAccount extends DBObject{
 		return $db->affected_rows() > 0;
 	}
 
-	protected function addLog($operation, $delta, $reason, $operatorid, $targetaccountid){
+	protected function addLog($operation, $delta, $reason, $operatorid, $targetid){
 		if(!$this->id || $this->id <= 0)
 			return 0;
 
@@ -55,7 +56,7 @@ class BankAccount extends DBObject{
 			'reason' => $reason,
 			'operation' => $operation,
 			'operatorid' => $operatorid,
-			'targetaccountid' => $targetaccountid,
+			'targetid' => $targetid,
 		);
 		$db->INSERT($log);
 		return $db->insert_id();

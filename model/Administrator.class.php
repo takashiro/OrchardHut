@@ -27,6 +27,7 @@ class Administrator extends User{
 		'qqconnect' => 0x100,
 		'delivery' => 0x100,
 		'ticket' => 0x100,
+		'balancereport' => 0x100,
 	);
 
 	public function __construct($id = 0){

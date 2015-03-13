@@ -48,9 +48,27 @@ case 'import':
 	if($logs){
 		$db->query("UPDATE {$tpre}bankaccount SET amount=amount-$totalcosts WHERE id=$bankaccount AND amount>=$totalcosts");
 		if($db->affected_rows() > 0){
+			$bankaccountlog = array(
+				'accountid' => $bankaccount,
+				'delta' => -$totalcosts,
+				'reason' => lang('common', 'storage_import'),
+				'operatorid' => $_G['admin']->id,
+				'operation' => BankAccount::OPERATION_PRODUCT_IMPORT,
+				'targetid' => 0,
+				'dateline' => TIMESTAMP,
+			);
+			$db->select_table('bankaccountlog');
+			$db->INSERT($bankaccountlog);
+			$bankaccountlogid = $db->insert_id();
 			$db->query('COMMIT');
+
+			foreach($logs as &$l){
+				$l['bankaccountlogid'] = $bankaccountlogid;
+			}
+			unset($l);
 			$db->select_table('productstoragelog');
 			$db->INSERTS($logs);
+
 			showmsg('storage_is_updated', 'refresh');
 		}else{
 			$db->query('ROLLBACK');
