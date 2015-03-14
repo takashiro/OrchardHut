@@ -265,6 +265,10 @@ class Product extends DBObject{
 			}
 
 			$db->UPDATE($update, array('id' => $id));
+
+			$update['start_time'] = rdate($update['start_time']);
+			$update['end_time'] = rdate($update['end_time']);
+
 			return array_merge($price, $update);
 		}else if(!empty($price['id'])){
 			@$countdown = array(
