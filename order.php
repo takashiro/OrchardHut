@@ -70,6 +70,25 @@ case 'deliveringnum':
 	echo $num;
 	exit;
 
+case 'pay':
+	if(isset($_GET['orderid'])){
+		$orderid = intval($_GET['orderid']);
+		$order = new Order($orderid);
+
+		if(!$order->exists()){
+			showmsg('order_not_exist', 'back');
+		}
+
+		if(!empty($order->alipaystate)){
+			showmsg('your_alipay_wallet_is_processing_the_order', 'back');
+		}
+	}else{
+		showmsg('illegal_operation');
+	}
+
+	include view('order_pay');
+	break;
+
 default:
 	$limit = 10;
 	$offset = ($page - 1) * $limit;

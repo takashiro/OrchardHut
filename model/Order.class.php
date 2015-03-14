@@ -262,6 +262,7 @@ class Order extends DBObject{
 			global $_G;
 			$order = new Order($_GET['orderid']);
 			if($order->exists() && $order->userid == $_G['user']->id){
+				$order->paymentmethod = Order::PaidOnline;
 				//商户网站订单系统中唯一订单号，必填
 				$_G['alipaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
 
@@ -290,6 +291,7 @@ class Order extends DBObject{
 				exit;
 			}
 
+			$order->paymentmethod = Order::PaidOnline;
 			$order->alipaystate = AlipayNotify::$TradeStateEnum[$trade_status];
 			$order->alipaytradeid = $trade_no;
 		}

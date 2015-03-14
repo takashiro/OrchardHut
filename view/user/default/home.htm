@@ -37,8 +37,8 @@
 							<!--{elseif $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
 								<a href="order.php?action=mark_received&orderid=$o[id]">[签收]</a>
 							<!--{/if}-->
-							<!--{if $o['paymentmethod'] == Order::PaidOnline && $o['alipaystate'] != AlipayNotify::TradeSuccess && $o['alipaystate'] != AlipayNotify::TradeFinished}-->
-								<a href="alipay.php?orderid=$o[id]">[付款]</a>
+							<!--{if $o['paymentmethod'] != Order::PaidWithCash && empty($o['alipaystate'])}-->
+								<a href="order.php?action=pay&orderid=$o[id]">[付款]</a>
 							<!--{/if}-->
 						</td>
 					</tr>

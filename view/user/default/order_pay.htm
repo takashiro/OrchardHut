@@ -1,0 +1,19 @@
+{template header}
+
+<style type="text/css">
+li a{
+	display: block;
+}
+</style>
+
+<div class="box">
+	<h1>付款方式</h1>
+	<div class="content">
+		<ul class="mselect">
+			<li><a href="{if $order->totalprice <= $_G['user']->wallet}wallet.php?orderid=$orderid{else}javascript:alert('余额不足');{/if}">钱包余额 (可用{$_USER[wallet]}{echo Product::$PriceUnit})</a></li>
+			<li><a href="alipay.php?orderid=$orderid">支付宝</a></li>
+		</ul>
+	</div>
+</div>
+
+{template footer}

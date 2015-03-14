@@ -68,6 +68,7 @@ return array(
 
 	'the_order_is_successfully_paid' => '成功支付订单！很快为您配送哦~',
 	'wallet_is_successfully_recharged' => '成功充值！钱包又鼓起来啦~',
+	'your_alipay_wallet_is_processing_the_order' => '您的支付宝钱包已经在处理该订单，耐心等待哦~',
 );
 
 ?>
