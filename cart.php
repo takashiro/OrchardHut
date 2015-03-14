@@ -121,6 +121,7 @@ switch($action){
 
 			foreach($products as &$p){
 				$p['number'] = $cart[$p['id']];
+				$p['price'] = floatval($p['price']);
 				$p['subtotal'] = $p['price'] * $p['number'];
 
 				$total_price += $p['subtotal'];
@@ -264,6 +265,7 @@ switch($action){
 			$p['icon'] = $product->getImage('icon');
 			$p['photo'] = $product->getImage('photo');
 			$p['number'] = $number;
+			$p['price'] = floatval($p['price']);
 			$p['subtotal'] = $p['price'] * $p['number'];
 
 			$total_price += $p['subtotal'];
@@ -271,6 +273,21 @@ switch($action){
 			$p['amountunit'] = Product::AmountUnits($p['amountunit']);
 		}
 		unset($p);
+
+		Product::FetchFilteredPrices($products);
+		$priceids = array();
+		foreach($products as $product){
+			foreach($product['rule'] as $price){
+				$priceids[] = $price['id'];
+			}
+		}
+		$quantity_limit = array();
+		if($_G['user']->isLoggedIn()){
+			$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid=$_USER[id]");
+			while($l = $db->fetch_array($query)){
+				$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
+			}
+		}
 
 		$db->select_table('deliveryaddress');
 		$delivery_addresses = $db->MFETCH('*', 'userid='.$_G['user']->id);

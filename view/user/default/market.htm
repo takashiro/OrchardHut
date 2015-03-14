@@ -1,16 +1,6 @@
 {template header}
 
-<script type="text/javascript" src="./js/market.js?$_CONFIG[refversion]"></script>
-<script type="text/javascript">
-var lang = {
-	'storage_inadequate':'啊哦，库存不足了，不能再加了~',
-	'out_of_product_quantity_limit':'您过去购买量%bought，每人限购量%limit，不能再加了哦~',
-	'log_in_to_buy':'您需要先登录才能选购本限购价格的商品哦~'
-};
-var ProductStorage = {echo json_encode(Product::AllStorages())};
-var ProductQuantityLimit = {echo json_encode($quantity_limit)};
-var User = {'id':{if $_G['user']->isLoggedIn()}$_USER[id]{else}0{/if}};
-</script>
+{template market_js}
 
 <div class="announcement">
 	<div class="sticker_left"></div>

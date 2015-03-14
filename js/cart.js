@@ -62,6 +62,25 @@ $(function(){
 		}
 	});
 
+	$('.cart .product_list .order_input input').change(function(e){
+		var input = $(e.target);
+		var numberbox = input.parent();
+		var li = numberbox.parent();
+		var rule = li.parent();
+		var detail = rule.parent();
+		var subtotal = detail.children('.subtotal');
+
+		var new_input = parseInt(input.val(), 10);
+		var new_subtotal = isNaN(new_input) ? 0 : new_input * parseFloat(li.children('.price').text());
+		subtotal.children('.number').text(new_subtotal.toFixed(2));
+
+		var new_total = 0.0;
+		$('.cart .product_list .subtotal').each(function(){
+			new_total += parseFloat($(this).children('.number').text());
+		});
+		$('#total_price').text(new_total.toFixed(2));
+	});
+
 	$('#cart-goods-number').numbernotice(cart_number());
 
 	$('.deliveryaddress ul li a.remove').click(function(e){

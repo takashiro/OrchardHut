@@ -1,5 +1,7 @@
 {template header}
 
+{template market_js}
+
 <div class="box cart">
 	<h1>我的购物车</h1>
 	<div class="content">
@@ -12,14 +14,12 @@
 				<div class="detail" style="background:#$p[background_color]">
 					<div class="name" style="color:#$p[text_color];">$p[name]</div>
 					<ul class="rule">
-						<li product-id="$p[productid]" price-id="$p[priceid]">
-							<span class="subtype" style="color:#$p[text_color];">$p[subtype]</span>
-							<span class="price" style="color:#$p[text_color];">$p[price]</span>
-							<span class="priceunit">{echo Product::$PriceUnit}</span>
-							<span class="amount" style="color:#$p[text_color];">$p[amount]</span>
-							<span class="amountunit" style="color:#$p[text_color];">$p[amountunit]</span>
-							x
-							<span class="number">$p[number]</span>
+						<li product-id="$p[productid]" price-id="$p[priceid]" storage-id="$p[storageid]" quantity-limit="$p[quantitylimit]">
+							<span class="intro">
+								<span class="subtype" style="color:#$p[text_color];">$p[subtype]</span>
+							</span>
+							<span class="price" style="color:#$p[text_color];">$p[price]</span><span class="priceunit">{echo Product::$PriceUnit}</span><span class="amount" style="color:#$p[text_color];">$p[amount]</span><span class="amountunit" style="color:#$p[text_color];">$p[amountunit]</span>
+							<div class="order_input numberbox"></div>
 						</li>
 					</ul>
 					<div class="subtotal">

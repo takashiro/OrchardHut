@@ -613,14 +613,22 @@ footer ul.button_list .submenu a{
 	text-align:center;
 }
 
+.cart ul.product_list{
+	box-shadow: none;
+}
+
+.cart > .content{
+	margin: 0;
+}
+
 .cart .subtotal{
 	padding-left:1em;
 }
 
 .cart button.remove{
 	position:absolute;
-	top:0;
-	right:0;
+	top: -12px;
+	right: 0;
 }
 
 .cart .total{

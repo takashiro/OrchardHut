@@ -69,6 +69,10 @@ return array(
 	'the_order_is_successfully_paid' => '成功支付订单！很快为您配送哦~',
 	'wallet_is_successfully_recharged' => '成功充值！钱包又鼓起来啦~',
 	'your_alipay_wallet_is_processing_the_order' => '您的支付宝钱包已经在处理该订单，耐心等待哦~',
+
+	'storage_inadequate' => '啊哦，库存不足了，不能再加了~',
+	'out_of_product_quantity_limit' => '您过去购买量%bought，每人限购量%limit，不能再加了哦~',
+	'log_in_to_buy' => '您需要先登录才能选购本限购价格的商品哦~',
 );
 
 ?>
