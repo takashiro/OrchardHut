@@ -1,16 +1,5 @@
 {template header}
 
-<script type="text/javascript">
-var deliveryfee = {echo json_encode($deliveryfee)};
-var price_units = {echo json_encode(Product::PriceUnits())};
-$(function(){
-	$('input[name="deliverytime"]').click(function(){
-		var fee = $(this).val() == 0 ? deliveryfee.pickup : deliveryfee.normal;
-		$('#deliveryfee').html(fee.value + price_units[fee.unit]);
-	});
-});
-</script>
-
 <div class="box cart">
 	<h1>我的购物车</h1>
 	<div class="content">
@@ -97,11 +86,19 @@ $(function(){
 					</table>
 				</div>
 			</div>
-			<div class="lightbox deliverytime">
-				<h1>收货时间 <em>(运费：<span id="deliveryfee"> - </span>)</em></h1>
+			<div class="lightbox deliverymethod">
+				<h1>配送方式</h1>
 				<div class="content">
 					<ul class="mselect">
-						<li class="checked"><input type="radio" name="deliverytime" value="0" checked="checked" />自提</li>
+						<li class="checked"><input type="radio" name="deliverymethod" value="{echo Order::StationDelivery}" checked="checked" onclick="$('.deliverytime').hide()" />自提点取货 (运费：{echo $deliveryconfig['fee'][Order::StationDelivery]}{echo Product::$PriceUnit})</li>
+						<li><input type="radio" name="deliverymethod" value="{echo Order::HomeDelivery}" onclick="$('.deliverytime').show()" />送货上门 (运费：{echo $deliveryconfig['fee'][Order::HomeDelivery]}{echo Product::$PriceUnit})</li>
+					</ul>
+				</div>
+			</div>
+			<div class="lightbox deliverytime" style="display:none">
+				<h1>收货时间</h1>
+				<div class="content">
+					<ul class="mselect">
 						<!--{loop $delivery_timespans $i $s}-->
 						<li><input type="radio" name="deliverytime" value="$s[id]" />{echo rdate($s['time_from'], 'm月d日 H:i')}~{echo rdate($s['time_to'], 'H:i')}</li>
 						<!--{/loop}-->

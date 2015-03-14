@@ -18,6 +18,11 @@ class Order extends DBObject{
 	const PaidOnline = 1;
 	const PaidWithWallet = 2;
 
+	//Delivery Method
+	public static $DeliveryMethod;
+	const HomeDelivery = 0;
+	const StationDelivery = 1;
+
 	private $detail = array();
 	private $address_components = array();
 	private $quantity_limit = array();
@@ -317,6 +322,11 @@ Order::$PaymentMethod = array(
 	Order::PaidWithCash => lang('common', 'order_paidwithcash'),
 	Order::PaidOnline => lang('common', 'order_paidonline'),
 	Order::PaidWithWallet => lang('common', 'order_paidwithwallet'),
+);
+
+Order::$DeliveryMethod = array(
+	Order::HomeDelivery => lang('common', 'home_delivery'),
+	Order::StationDelivery => lang('common', 'station_delivery'),
 );
 
 ?>

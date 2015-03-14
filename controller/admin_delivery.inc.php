@@ -69,21 +69,19 @@ case 'delete':
 	}
 	break;
 case 'config':
-	$deliveryfee = readdata('deliveryfee');
+	$deliveryconfig = array();
 
-	foreach(array('pickup', 'normal') as $var){
-		is_array($deliveryfee[$var]) || $deliveryfee[$var] = array();
-
-		if(isset($_POST['deliveryfee'][$var]['value'])){
-			$deliveryfee[$var]['value'] = max(0, floatval($_POST['deliveryfee'][$var]['value']));
+	foreach(Order::$DeliveryMethod as $methodid => $name){
+		if(isset($_POST['fee'][$methodid])){
+			$deliveryconfig['fee'][$methodid] = max(0, floatval($_POST['fee'][$methodid]));
 		}
 	}
 
-	writedata('deliveryfee', $deliveryfee);
+	writedata('deliveryconfig', $deliveryconfig);
 	showmsg('successfully_updated_delivery_config');
 
 default:
-	$deliveryfee = readdata('deliveryfee');
+	$deliveryconfig = readdata('deliveryconfig');
 
 	$delivery_timespans = DeliveryTime::FetchAll();
 	foreach($delivery_timespans as &$s){

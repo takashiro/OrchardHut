@@ -19,6 +19,9 @@ return array(
 	'alipay_tradepending' => '待收款',
 	'alipay_tradefinished' => '结束',
 
+	'home_delivery' => '送货上门',
+	'station_delivery' => '自提点取货',
+
 	'mobile' => '手机',
 );
 

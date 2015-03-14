@@ -147,10 +147,10 @@ $(function(){
 						</td>
 						<td>{echo rdate($o['dateline'])}</td>
 						<td>
-						<!--{if $o['dtime_from']}-->
-							{echo rdate($o['dtime_from'], 'Y-m-d H:i')} - {echo rdate($o['dtime_to'], 'H:i')}
-						<!--{else}-->
+						<!--{if $o['deliverymethod'] == Order::StationDelivery}-->
 							自提
+						<!--{elseif $o['dtime_from'] && $o['dtime_to']}-->
+							{echo rdate($o['dtime_from'], 'Y-m-d H:i')} - {echo rdate($o['dtime_to'], 'H:i')}
 						<!--{/if}-->
 						</td>
 						<td>

@@ -76,7 +76,7 @@ switch($action){
 			}
 		}
 
-		$deliveryfee = readdata('deliveryfee');
+		$deliveryconfig = readdata('deliveryconfig');
 
 		if($_POST){
 			$addressid = !empty($_POST['deliveryaddressid']) ? intval($_POST['deliveryaddressid']) : 0;
@@ -217,7 +217,10 @@ switch($action){
 			}
 			unset($p);
 
-			$order->deliveryfee = $deliveryfee[$order->dtime_from ? 'normal' : 'pickup']['value'];
+			$order->deliverymethod = isset($_POST['deliverymethod']) ? intval($_POST['deliverymethod']) : Order::HomeDelivery;
+			isset(Order::$DeliveryMethod[$order->deliverymethod]) || $order->deliverymethod = Order::HomeDelivery;
+
+			$order->deliveryfee = $deliveryconfig['fee'][$order->deliverymethod];
 			$order->totalprice += $order->deliveryfee;
 
 			if($order->paymentmethod == Order::PaidWithWallet){
