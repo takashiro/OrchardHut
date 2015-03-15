@@ -44,7 +44,7 @@ class WeixinAPI extends CUrl{
 	}
 
 	public function restoreConfig(){
-		$result = readdata('weixinapi');
+		$result = readcache('wxconnect');
 		if($result){
 			if(isset($result['accessToken'])){
 				$this->accessToken = $result['accessToken'];
@@ -53,24 +53,23 @@ class WeixinAPI extends CUrl{
 			if(isset($result['accessTokenExpireTime'])){
 				$this->accessTokenExpireTime = $result['accessTokenExpireTime'];
 			}
+		}
 
-			if(isset($result['appId'])){
-				$this->appId = $result['appId'];
-			}
+		$result = readdata('wxconnect');
+		if(isset($result['app_id'])){
+			$this->appId = $result['app_id'];
+		}
 
-			if(isset($result['appSecret'])){
-				$this->appSecret = $result['appSecret'];
-			}
+		if(isset($result['app_secret'])){
+			$this->appSecret = $result['app_secret'];
 		}
 	}
 
 	public function saveConfig(){
 		$result = array();
-		$result['appId'] = $this->appId;
-		$result['appSecret'] = $this->appSecret;
 		$result['accessToken'] = $this->accessToken;
 		$result['accessTokenExpireTime'] = $this->accessTokenExpireTime;
-		writedata('weixinapi', $result);
+		writecache('wxconnect', $result);
 	}
 
 	public function getAccessToken($force_refresh = false){
@@ -78,7 +77,7 @@ class WeixinAPI extends CUrl{
 			$result = $this->request('token?grant_type=client_credential&appid='.$this->appId.'&secret='.$this->appSecret);
 			if(isset($result['access_token'])){
 				$this->accessToken = $result['access_token'];
-				$this->accessTokenExpireTime = $result['expires_in'];
+				$this->accessTokenExpireTime = $result['expires_in'] + TIMESTAMP;
 			}else{
 				$this->accessToken = '';
 				$this->accessTokenExpireTime = 0;

@@ -78,15 +78,20 @@ case 'autoreply':
 
 default:
 	$type = 'config';
+
 	$wxconnect = readdata('wxconnect');
-	foreach(array('account', 'token', 'subscribe_text', 'entershop_keyword', 'bind_keyword', 'bind2_keyword') as $var){
-		isset($wxconnect[$var]) || $wxconnect[$var] = '';
-		isset($_POST['wxconnect'][$var]) && $wxconnect[$var] = $_POST['wxconnect'][$var];
-	}
+	$wxconnect_fields = array('app_id', 'app_secret', 'account', 'token', 'subscribe_text', 'entershop_keyword', 'bind_keyword', 'bind2_keyword');
 
 	if($_POST){
+		foreach($wxconnect_fields as $var){
+			$wxconnect[$var] = isset($_POST['wxconnect'][$var]) ? $_POST['wxconnect'][$var] : '';
+		}
 		writedata('wxconnect', $wxconnect);
 		showmsg('successfully_updated_wxconnect_config', 'refresh');
+	}
+
+	foreach($wxconnect_fields as $var){
+		isset($wxconnect[$var]) || $wxconnect[$var] = '';
 	}
 }
 
