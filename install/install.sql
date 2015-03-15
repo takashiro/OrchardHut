@@ -134,6 +134,7 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `addressee` varchar(50) NOT NULL,
   `mobile` varchar(11) NOT NULL,
   `message` text NOT NULL,
+  `deliverymethod` tinyint(4) NOT NULL,
   `dtime_from` int(11) unsigned NOT NULL,
   `dtime_to` int(11) unsigned NOT NULL,
   `deliveryfee` decimal(5,2) NOT NULL DEFAULT '0.00',
