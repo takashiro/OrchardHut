@@ -86,7 +86,18 @@ case 'pay':
 		showmsg('illegal_operation');
 	}
 
-	include view('order_pay');
+	$paymentconfig = readdata('payment');
+	if($paymentconfig['enabled_method'][Order::PaidOnline] && $paymentconfig['enabled_method'][Order::PaidWithWallet]){
+		include view('order_pay');
+		exit;
+	}elseif($paymentconfig['enabled_method'][Order::PaidOnline]){
+		redirect('alipay.php?orderid='.$orderid);
+	}elseif($paymentconfig['enabled_method'][Order::PaidWithWallet]){
+		redirect('wallet.php?orderid='.$orderid);
+	}else{
+		showmsg('payment_is_now_disabled', 'back');
+	}
+
 	break;
 
 default:

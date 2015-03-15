@@ -28,6 +28,7 @@ class Administrator extends User{
 		'delivery' => 0x100,
 		'ticket' => 0x100,
 		'balancereport' => 0x100,
+		'payment' => 0x100,
 	);
 
 	public function __construct($id = 0){

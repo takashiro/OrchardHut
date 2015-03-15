@@ -2,7 +2,12 @@
 
 require_once './core/init.inc.php';
 
+$paymentconfig = readdata('payment');
 if(isset($_GET['orderid'])){
+	if(empty($paymentconfig['enabled_method'][Order::PaidWithWallet])){
+		showmsg('wallet_payment_is_disabled');
+	}
+
 	$order = new Order($_GET['orderid']);
 	if(!$order->exists()){
 		showmsg('order_not_exist', 'back');

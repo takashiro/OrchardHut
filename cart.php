@@ -77,6 +77,7 @@ switch($action){
 		}
 
 		$deliveryconfig = readdata('deliveryconfig');
+		$paymentconfig = readdata('payment');
 
 		if($_POST){
 			$addressid = !empty($_POST['deliveryaddressid']) ? intval($_POST['deliveryaddressid']) : 0;
@@ -206,6 +207,14 @@ switch($action){
 
 			$order->paymentmethod = isset($_POST['paymentmethod']) ? intval($_POST['paymentmethod']) : Order::PaidWithCash;
 			isset(Order::$PaymentMethod[$order->paymentmethod]) || $order->paymentmethod = Order::PaidWithCash;
+			if(empty($paymentconfig['enabled_method'][$order->paymentmethod])){
+				foreach($paymentconfig['enabled_method'] as $methodid => $enabled){
+					if($enabled){
+						$order->paymentmethod = $methodid;
+						break;
+					}
+				}
+			}
 
 			$order_succeeded = false;
 

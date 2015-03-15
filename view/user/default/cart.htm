@@ -56,7 +56,9 @@
 				<div class="content">
 					<ul class="mselect">
 					<!--{loop Order::$PaymentMethod $methodid $label}-->
+						<!--{if !empty($paymentconfig['enabled_method'][$methodid])}-->
 						<li><input type="radio" name="paymentmethod" value="$methodid" />$label</li>
+						<!--{/if}-->
 					<!--{/loop}-->
 					</ul>
 				</div>

@@ -29,6 +29,7 @@
 
 		<section class="main">
 			<ul class="menu">
+					<!--{if $_G['admin']->hasPermission('order')}-->
 					<li>
 						<a href="admin.php?mod=order">订单</a>
 						<ul class="submenu">
@@ -40,6 +41,8 @@
 							<li><a href="admin.php?mod=ticket">小票设置</a></li>
 						</ul>
 					</li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('market')}-->
 					<li>
 						<a href="admin.php?mod=market">商品</a>
 						<ul class="submenu">
@@ -49,12 +52,31 @@
 							<li><a href="admin.php?mod=producttype">商品类型</a></li>
 						</ul>
 					</li>
-					<li><a href="admin.php?mod=prepaidreward">充值</a></li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('payment')}-->
+					<li>
+						<a href="admin.php?mod=payment">支付</a>
+						<ul class="submenu">
+							<li><a href="admin.php?mod=prepaidreward">充值奖励</a></li>
+						</ul>
+					</li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('announcement')}-->
 					<li><a href="admin.php?mod=announcement">公告</a></li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('address')}-->
 					<li><a href="admin.php?mod=address">地址</a></li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('delivery')}-->
 					<li><a href="admin.php?mod=delivery">配送</a></li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('bankaccount')}-->
 					<li><a href="admin.php?mod=bankaccount">账户</a></li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('admin')}-->
 					<li><a href="admin.php?mod=admin">管理员</a></li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('weixin')}-->
 					<li>
 						<a href="admin.php?mod=weixin">微信</a>
 						<ul class="submenu">
@@ -62,7 +84,12 @@
 							<li><a href="admin.php?mod=weixin&type=menu">菜单</a></li>
 						</ul>
 					</li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('qqconnect')}-->
 					<li><a href="admin.php?mod=qqconnect">QQ互联</a></li>
+					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('system')}-->
 					<li><a href="admin.php?mod=system">系统</a></li>
+					<!--{/if}-->
 			</ul>
 			<section class="content">
