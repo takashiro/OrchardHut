@@ -618,7 +618,7 @@ footer ul.button_list .submenu a{
 }
 
 .cart > .content{
-	margin: 0;
+	margin: 0 3px;
 }
 
 .cart .subtotal{
