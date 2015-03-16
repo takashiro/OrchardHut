@@ -96,10 +96,8 @@ if(!empty($_CONFIG['debugmode'])){
 
 //错误日志
 if(!empty($_CONFIG['log_error'])){
-	function custom_error_log($errno, $errstr, $errfile, $errline){
-		global $PHP_SELF, $_G;
-		writelog('error', $errno."\t".$errstr."\t".$errfile."\t".$errline."\t".$_G['user']->id."\t".$PHP_SELF."\t".json_encode($_POST)."\t".json_encode($_GET));
-		return false;
+	function custom_error_log($errorLevel, $errorMessage, $errorFile, $errorLine){
+		return include S_ROOT.'controller/core_handleerror.inc.php';
 	}
 	set_error_handler('custom_error_log', E_ALL | E_STRICT);
 }
