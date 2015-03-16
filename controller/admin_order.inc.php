@@ -36,7 +36,7 @@ switch($action){
 
 			//输入了订单号，直接按订单号查询，忽略管理员权限外的其他条件
 			if(!empty($_REQUEST['orderid'])){
-				$condition[] = 'id='.intval($_REQUEST['orderid']);
+				$condition[] = 'o.id='.intval($_REQUEST['orderid']);
 				$display_status[Order::Received] = $display_status[Order::Rejected] = true;
 
 				$time_start = '';
@@ -48,7 +48,7 @@ switch($action){
 				if(isset($_REQUEST['time_start'])){
 					$time_start = empty($_REQUEST['time_start']) ? '' : rstrtotime($_REQUEST['time_start']);
 				}else{
-					$time_start = rmktime(17, 30, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+					$time_start = rmktime(16, 00, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
 				}
 				//下单截止时间
 				if(isset($_REQUEST['time_end'])){
