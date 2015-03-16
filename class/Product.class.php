@@ -448,6 +448,8 @@ class Product extends DBObject{
 				foreach($types as $type){
 					self::$Types[$type['id']] = $type['name'];
 				}
+
+				writecache('producttypes', self::$Types);
 			}
 		}
 
@@ -460,6 +462,7 @@ class Product extends DBObject{
 
 	static public function RefreshCache(){
 		writecache('productunits', NULL);
+		writecache('producttypes', NULL);
 	}
 
 	static private function Units($type){
