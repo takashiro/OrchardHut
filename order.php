@@ -62,7 +62,7 @@ case 'view':
 	$orderlog = $order->getLogs();
 	$order = $order->toReadable();
 
-	include view('home_orderdetail');
+	include view('order_detail');
 	break;
 
 case 'deliveringnum':
@@ -136,7 +136,7 @@ default:
 		unset($o);
 	}
 
-	include view('home');
+	include view('order_list');
 }
 
 ?>
