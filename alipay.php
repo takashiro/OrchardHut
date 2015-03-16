@@ -34,7 +34,7 @@ runhooks('alipay_started');
 if(empty($_G['alipaytrade']['out_trade_no']) || empty($_G['alipaytrade']['subject']) || !is_numeric($_G['alipaytrade']['total_fee']))
 	showmsg('illegal_operation');
 
-require_once S_ROOT.'controller/alipay_init.inc.php';
+require_once submodule('alipay', 'init');
 
 /**************************调用授权接口alipay.wap.trade.create.direct获取授权码token**************************/
 

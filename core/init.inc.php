@@ -12,13 +12,9 @@ set_time_limit(0);
 ob_start();
 
 //类自动加载
-class SimpleClassLoader{
-	static public function Load($classname){
-		$file_path = S_ROOT.'./model/'.$classname.'.class.php';
-		require_once $file_path;
-	}
-}
-spl_autoload_register('SimpleClassLoader::Load');
+spl_autoload_register(function($classname){
+	require_once S_ROOT.'./class/'.$classname.'.class.php';
+});
 
 require_once S_ROOT.'./core/global.func.php';
 
@@ -96,20 +92,18 @@ if(!empty($_CONFIG['debugmode'])){
 
 //错误日志
 if(!empty($_CONFIG['log_error'])){
-	function custom_error_log($errorLevel, $errorMessage, $errorFile, $errorLine){
-		return include S_ROOT.'controller/core_handleerror.inc.php';
-	}
-	set_error_handler('custom_error_log', E_ALL | E_STRICT);
+	set_error_handler(function($errorLevel, $errorMessage, $errorFile, $errorLine){
+		return include submodule('core', 'handleerror');
+	}, E_ALL | E_STRICT);
 }
 
 if(!defined('IN_ADMINCP')){
 	//用户访问日志
 	if(!empty($_CONFIG['log_request'])){
-		function custom_request_log(){
+		register_shutdown_function(function(){
 			global $_G;
 			writelog('request', $_G['request_log']."\t".(microtime(true) - $_G['starttime'])."\t".$_G['db']->querynum);
-		}
-		register_shutdown_function('custom_request_log');
+		});
 
 		$_G['request_log'] = $_G['user']->id."\t".$PHP_SELF."\t".json_encode($_POST)."\t".json_encode($_GET);
 	}

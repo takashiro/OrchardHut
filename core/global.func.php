@@ -188,6 +188,10 @@ function view($templateName){
 	return $filePath;
 }
 
+function submodule($module, $submodule){
+	return S_ROOT.'submodule/'.$module.'_'.$submodule.'.inc.php';
+}
+
 function rdate($dateline, $format = 'Y-m-d H:i:s'){
 	return gmdate($format, $dateline + TIMEZONE * 3600);
 }
@@ -283,14 +287,14 @@ function rmd5($str){
 }
 
 function writelog($logfile, $data){
-	include S_ROOT.'controller/core_writelog.inc.php';
+	include submodule('core', 'writelog');
 }
 
 function runhooks($hookid, $arguments = array()){
 	$hookScripts = readcache('hookscript');
 	if($hookScripts === NULL){
 		$hookScripts = array();
-		$classFiles = scandir(S_ROOT.'model/');
+		$classFiles = scandir(S_ROOT.'class/');
 		foreach($classFiles as $classFile){
 			if(substr_compare($classFile, '.class.php', -10) != 0)
 				continue;

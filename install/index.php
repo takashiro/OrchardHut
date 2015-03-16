@@ -3,12 +3,12 @@
 define('S_ROOT', dirname(dirname(__FILE__)).'/');//网站根目录常量
 error_reporting(0);//Debug
 
-if(PHP_VERSION < '5.3'){
-	exit('本系统要求PHP版本至少5.3');
+if(PHP_VERSION < '5.5'){
+	exit('本系统要求PHP版本至少5.5');
 }
 
 function __autoload($classname){
-	require_once S_ROOT.'./model/'.$classname.'.class.php';
+	require_once S_ROOT.'./class/'.$classname.'.class.php';
 }
 
 function writeconfig($config, $value){

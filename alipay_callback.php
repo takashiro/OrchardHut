@@ -1,7 +1,7 @@
 <?php
 
 require_once './core/init.inc.php';
-require_once S_ROOT.'controller/alipay_init.inc.php';
+require_once submodule('alipay', 'init');
 
 //计算得出通知验证结果
 $alipayNotify = new AlipayNotify($alipay_config);

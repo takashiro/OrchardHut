@@ -28,7 +28,7 @@ $_ADMIN = $_G['admin']->toReadable();
 //Include the requested module
 $public_mod = array('home', 'memcp');
 $mod = isset($_GET['mod']) ? trim($_GET['mod']) : 'home';
-$module = './controller/admin_'.$mod.'.inc.php';
+$module = submodule('admin', $mod);
 $mod_url = 'admin.php?mod='.$mod;
 if(file_exists($module)){
 	if(!in_array($mod, $public_mod) && !$_G['admin']->hasPermission($mod)){
@@ -38,7 +38,7 @@ if(file_exists($module)){
 	include $module;
 }else{
 	$mod_url = 'admin.php?mod=home';
-	include './controller/admin_home.inc.php';
+	include submodule('admin', 'home');
 }
 
 ?>
