@@ -283,26 +283,7 @@ function rmd5($str){
 }
 
 function writelog($logfile, $data){
-	$logfile = S_ROOT.'./data/log/'.rdate(TIMESTAMP, 'Ymd').'_'.$logfile.'.log.php';
-
-	$need_prefix = !file_exists($logfile);
-
-	if(is_array($data)){
-		foreach($data as $k => $v){
-			$data[$k] = User::ip()."\t".TIMESTAMP."\t".$v;
-		}
-		$data = implode("\r\n", $data);
-	}else{
-		$data = User::ip()."\t".TIMESTAMP."\t".$data;
-	}
-
-	$fp = fopen($logfile, 'a');
-	flock($fp, LOCK_EX);
-	if($need_prefix){
-		fwrite($fp, '<?php exit;?>');
-	}
-	fwrite($fp, "\r\n".$data);
-	fclose($fp);
+	include S_ROOT.'controller/core_writelog.inc.php';
 }
 
 function runhooks($hookid, $arguments = array()){
