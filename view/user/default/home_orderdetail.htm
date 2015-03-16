@@ -44,16 +44,18 @@
 							正在为您配送
 						<!--{elseif $log['extra'] == Order::Received}-->
 							<!--{if $log['operatorgroup'] == Order::UserOperated}-->
-							已签收订单
+							签收订单
 							<!--{else}-->
-							已送达您手中
+							送达您手中
 							<!--{/if}-->
 						<!--{elseif $log['extra'] == Order::Rejected}-->
 							<!--{if $log['operatorgroup'] == Order::UserOperated}-->
-							已拒收订单
+							拒收订单
 							<!--{else}-->
-							已被您拒收订单
+							被您拒收订单
 							<!--{/if}-->
+						<!--{elseif $log['extra'] == Order::Canceled}-->
+							取消订单
 						<!--{/if}-->
 					<!--{elseif $log['operation'] == Order::DetailInStock || $log['operation'] == Order::DetailOutOfStock}-->
 						将 $log[productname]<!--{if $log['subtype']}-->($log[subtype])<!--{/if}-->{echo $log['amount'] * $log['number']}{$log[amountunit]} 标记为<!--{if $log['operation'] == Order::DetailInStock}-->有货<!--{else}-->缺货<!--{/if}-->

@@ -15,11 +15,13 @@ case 'delete':
 	}
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
-	if($orderid > 0){
-		//@todo: Return fee here
-		$paidstate = array(AlipayNotify::TradeSuccess, AlipayNotify::TradeFinished);
-		$paidstate = implode(',', $paidstate);
-		Order::Delete($orderid, "userid=$_USER[id] AND status=0 AND alipaystate NOT IN ($paidstate)");
+	$new_status = Order::Canceled;
+	$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND status=0");
+	if($db->affected_rows() > 0){
+		$order = new Order;
+		$order->id = $orderid;
+		$order->addLog($_G['user'], Order::StatusChanged, Order::Canceled);
+		//@todo: Automatically return fee here
 		showmsg('successfully_canceled_order', 'order.php');
 	}
 

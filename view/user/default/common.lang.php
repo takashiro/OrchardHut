@@ -8,6 +8,7 @@ return array(
 	'order_in_delivery_point' => '待自提',
 	'order_received' => '已签收',
 	'order_rejected' => '已拒收',
+	'order_canceled' => '已取消',
 
 	'order_paidwithcash' => '货到付现',
 	'order_paidonline' => '支付宝',

@@ -21,8 +21,12 @@ switch($action){
 					$display_status[$status] = true;
 				}
 			}else{
-				$display_status = Order::$Status;
-				unset($display_status[Order::Received], $display_status[Order::Rejected]);
+				$display_status = array(
+					Order::Unsorted => true,
+					Order::Sorted => true,
+					Order::Delivering => true,
+					Order::InDeliveryPoint => true,
+				);
 			}
 
 			//判断当前管理员的权限，过滤掉无权限查看的订单

@@ -9,7 +9,7 @@ if(isset($_GET['orderid'])){
 	}
 
 	$order = new Order($_GET['orderid']);
-	if(!$order->exists()){
+	if(!$order->exists() || $order->status == Order::Canceled){
 		showmsg('order_not_exist', 'back');
 	}
 

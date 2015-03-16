@@ -11,6 +11,7 @@ class Order extends DBObject{
 	const Received = 3;
 	const Rejected = 4;
 	const InDeliveryPoint = 5;
+	const Canceled = 6;
 
 	//Payment Method
 	public static $PaymentMethod;
@@ -266,7 +267,7 @@ class Order extends DBObject{
 		if(isset($_GET['orderid'])){
 			global $_G;
 			$order = new Order($_GET['orderid']);
-			if($order->exists() && $order->userid == $_G['user']->id){
+			if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
 				$order->paymentmethod = Order::PaidOnline;
 				//商户网站订单系统中唯一订单号，必填
 				$_G['alipaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
@@ -287,12 +288,12 @@ class Order extends DBObject{
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, $prefix_len) == 0){
 			$order = new Order(substr($out_trade_no, $prefix_len));
 			if(!$order->exists()){
-				writelog('alipaynotify', array('ORDER_NOT_EXIST', $out_trade_no, $trade_no, $trade_status));
+				writelog('alipaynotify', "ORDER_NOT_EXIST\t$out_trade_no\t$trade_no\t$trade_status");
 				exit;
 			}
 
 			if(!isset(AlipayNotify::$TradeStateEnum[$trade_status])){
-				writelog('alipaynotify', array('UNEXPECTED_ORDER_STATE', $out_trade_no, $trade_no, $trade_status));
+				writelog('alipaynotify', "UNEXPECTED_ORDER_STATE\t$out_trade_no\t$trade_no\t$trade_status");
 				exit;
 			}
 
@@ -316,6 +317,7 @@ Order::$Status = array(
 	Order::InDeliveryPoint => lang('common', 'order_in_delivery_point'),
 	Order::Received => lang('common', 'order_received'),
 	Order::Rejected => lang('common', 'order_rejected'),
+	Order::Canceled => lang('common', 'order_canceled'),
 );
 
 Order::$PaymentMethod = array(
