@@ -24,6 +24,8 @@ return array(
 	'storage_is_updated' => '库存成功更新！',
 	'insufficient_bank_account' => '账户资金不足。',
 	'no_storage_need_updating' => '没有库存需要更新。',
+
+	'cache_files_are_deleted' => '缓存已清空。',
 );
 
 ?>

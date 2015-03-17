@@ -90,7 +90,12 @@
 					<li><a href="admin.php?mod=qqconnect">QQ互联</a></li>
 					<!--{/if}-->
 					<!--{if $_G['admin']->hasPermission('system')}-->
-					<li><a href="admin.php?mod=system">系统</a></li>
+					<li>
+						<a href="admin.php?mod=system">系统</a>
+						<ul class="submenu">
+							<li><a href="admin.php?mod=cache">缓存</a></li>
+						</ul>
+					</li>
 					<!--{/if}-->
 			</ul>
 			<section class="content">

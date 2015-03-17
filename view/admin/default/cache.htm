@@ -1,0 +1,33 @@
+{template header}
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=system">系统</a></li>
+	<li>缓存管理</li>
+</ol>
+
+<div class="box">
+	<form action="$mod_url&action=cleardatacache" class="toast" method="post">
+		<h2>数据缓存</h2>
+		<ul class="filenames">
+		<!--{loop $cacheList $cache}-->
+			{echo Template::checkbox('cache['.$cache.']', $cache, true)}
+		<!--{/loop}-->
+		</ul>
+		<div class="post_buttons">
+			<button type="submit">清空</button>
+		</div>
+	</form>
+
+	<form action="$mod_url&action=cleartemplatecache" class="toast" method="post">
+		<h2>模板缓存</h2>
+		<!--{loop $templateList $name}-->
+			{echo Template::checkbox('template['.$name.']', $name)}
+		<!--{/loop}-->
+		<div class="post_buttons">
+			<button type="submit">清空</button>
+		</div>
+	</form>
+</div>
+
+{template footer}
