@@ -7,28 +7,34 @@ class Administrator extends User{
 	const COOKIE_VAR = 'rcadmininfo';
 
 	static private $Permission = array(
-		'all' => 0,
 		'order_deliver' => 0x1,
 		'order_sort_w' => 0x2,
 		'order_deliver_w' => 0x4,
 		'admin' => 0x8,
 		'market' => 0x10,
-		'productstorage' => 0x10,
 		'announcement' => 0x20,
 		'address' => 0x40,
 		'order_sort' => 0x80,
 		'system' => 0x100,
-		'weixin' => 0x100,
 		'productunit' => 0x200,
 		'producttype' => 0x400,
 		'prepaidreward' => 0x800,
 		'salereport' => 0x1000,
+		'balancereport' => 0x1000,
 		'bankaccount' => 0x2000,
-		'qqconnect' => 0x100,
-		'delivery' => 0x100,
-		'ticket' => 0x100,
-		'balancereport' => 0x100,
-		'payment' => 0x100,
+		'delivery' => 0x4000,
+		'ticket' => 0x8000,
+		'productstorage' => 0x10000,
+		'payment' => 0x20000,
+		'weixin' => 0x40000,
+		'qqconnect' => 0x80000,
+	);
+
+	static public $SpecialPermission = array(
+		'order_sort' => true,
+		'order_sort_w' => true,
+		'order_deliver' => true,
+		'order_deliver_w' => true,
 	);
 
 	public function __construct($id = 0){

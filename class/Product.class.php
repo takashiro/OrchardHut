@@ -345,20 +345,8 @@ class Product extends DBObject{
 		if($id > 0){
 			$productid = $this->id;
 			$db->UPDATE($attr, array('id' => $id, 'productid' => $productid));
-
-			if(isset($storage['addnum'])){
-				$attr['addnum'] = '';
-				$num = $this->updateStorage($id, $storage['addnum']);
-				if($num !== false){
-					$attr['num'] = $num;
-				}
-			}
 		}else{
 			$attr['productid'] = $this->id;
-
-			if(isset($storage['addnum'])){
-				$attr['num'] = intval($storage['addnum']);
-			}
 
 			$db->INSERT($attr);
 			$attr['id'] = $db->insert_id();

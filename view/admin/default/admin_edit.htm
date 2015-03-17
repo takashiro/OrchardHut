@@ -63,13 +63,13 @@ $(function(){
 		<tr>
 			<th><label>全局权限：</label></th>
 			<td>
-				<div class="spanlist permissions">
-					<!--{if $_G['admin']->hasPermission('admin')}--><span title="拥有此权限的管理员可以任意分配自己拥有的权限给其他管理员">{echo Template::checkbox('p[admin]', '编辑管理员', $admin->hasPermission('admin'))}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('market')}--><span>{echo Template::checkbox('p[market]', '管理商品', $admin->hasPermission('market'))}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('announcement')}--><span>{echo Template::checkbox('p[announcement]', '管理公告', $admin->hasPermission('announcement'))}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('address')}--><span>{echo Template::checkbox('p[address]', '管理地址', $admin->hasPermission('address'))}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('prepaidreward')}--><span>{echo Template::checkbox('p[prepaidreward]', '充值设定', $admin->hasPermission('prepaidreward'))}</span><!--{/if}-->
-				</div>
+				<dl class="spanlist permissions">
+				<!--{loop Administrator::GetAllPermissionNames() $permission}-->
+					<!--{if empty(Administrator::$SpecialPermission[$permission]) && $_G['admin']->hasPermission($permission)}-->
+					<span title="{echo lang('common', 'permission_'.$permission.'_comment')}">{echo template::checkbox("p[$permission]", lang('common', 'permission_'.$permission), $admin->hasPermission($permission))}</span>
+					<!--{/if}-->
+				<!--{/loop}-->
+				</dl>
 			</td>
 		</tr>
 		<tr>
