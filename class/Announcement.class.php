@@ -6,7 +6,7 @@ class Announcement extends DBObject{
 	function __construct($id = 0){
 		$id = intval($id);
 		if($id > 0){
-			parent::fetchAttributesFromDB('*', 'id='.$id);
+			$this->fetch('*', 'id='.$id);
 		}
 	}
 

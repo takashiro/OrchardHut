@@ -57,9 +57,10 @@ class Template{
 	}
 
 	public function parse(){
-		$template = file_get_contents($this->getSourcePath());
+		$source_path = $this->getSourcePath();
+		$template = file_get_contents($source_path);
 		if($template === false)
-			exit("Current template file {$this->templateFile} not found or have no access!");
+			exit("Current template file {$source_path} not found or have no access!");
 
 		$var_regexp = "((\\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)(\[[a-zA-Z0-9_\-\.\"\'\[\]\$\x7f-\xff]+\])*)";
 		$const_regexp = "([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)";

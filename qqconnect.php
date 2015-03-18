@@ -34,7 +34,7 @@ if($action == 'login'){
 		}else{
 			$user = new User;
 
-			$user->fetchAttributesFromDB('*', array('qqopenid' => $open_id));
+			$user->fetch('*', array('qqopenid' => $open_id));
 			if($user->id <= 0){
 				$user->account = $open_id;
 				$user->pwmd5 = '';

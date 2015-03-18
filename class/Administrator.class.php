@@ -42,12 +42,12 @@ class Administrator extends User{
 
 	public function __construct($id = 0){
 		if($id = intval($id)){
-			DBObject::fetchAttributesFromDB('*', 'id='.$id);
+			$this->fetch('*', 'id='.$id);
 		}
 	}
 
 	public function __destruct(){
-		DBObject::__destruct();
+		parent::__destruct();
 	}
 
 	public function getLimitations(){
@@ -88,7 +88,7 @@ class Administrator extends User{
 					'id' => intval($cookie['id']),
 				);
 
-				DBObject::fetchAttributesFromDB('*', $cookie);
+				$this->fetch('*', $cookie);
 			}
 			return $this->isLoggedIn();
 
@@ -98,7 +98,7 @@ class Administrator extends User{
 				'pwmd5' => rmd5($pw),
 			);
 
-			DBObject::fetchAttributesFromDB('*', $condition);
+			$this->fetch('*', $condition);
 
 			if($this->isLoggedIn()){
 				$this->logged = true;

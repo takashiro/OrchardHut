@@ -31,7 +31,7 @@ class Order extends DBObject{
 	public function __construct($id = 0){
 		$id = intval($id);
 		if($id > 0){
-			parent::fetchAttributesFromDB('*', 'id='.$id);
+			$this->fetch('*', 'id='.$id);
 
 			global $db, $tpre;
 			$this->detail = $db->fetch_all("SELECT * FROM {$tpre}orderdetail d WHERE orderid=$id");

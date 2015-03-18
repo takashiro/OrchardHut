@@ -28,7 +28,7 @@ class DBObject{
 		}
 	}
 
-	function fetchAttributesFromDB($item, $condition){
+	function fetch($item, $condition){
 		global $db;
 		if(is_array($item)){
 			$item = implode(',', $item);

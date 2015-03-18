@@ -15,7 +15,7 @@ class BankAccount extends DBObject{
 
 	public function __construct($id = 0){
 		if($id = intval($id)){
-			$this->fetchAttributesFromDB('*', 'id='.$id);
+			$this->fetch('*', 'id='.$id);
 		}
 	}
 

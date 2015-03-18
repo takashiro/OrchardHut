@@ -23,9 +23,9 @@ if($action == 'login'){
 		$user = new User;
 
 		$open_id = $_GET['user'];
-		$user->fetchAttributesFromDB('*', array('wxopenid' => $open_id));
+		$user->fetch('*', array('wxopenid' => $open_id));
 		if($user->id <= 0){
-			$user->fetchAttributesFromDB('*', array('account' => $open_id));
+			$user->fetch('*', array('account' => $open_id));
 			if($user->id > 0){
 				$user->wxopenid = $open_id;
 			}

@@ -5,7 +5,7 @@ class Authkey extends DBObject{
 	const PRIMARY_KEY = 'user';
 
 	public function __construct($user){
-		parent::fetchAttributesFromDB('*', array('user' => $user));
+		$this->fetch('*', array('user' => $user));
 	}
 
 	public function isExpired(){

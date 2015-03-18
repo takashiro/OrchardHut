@@ -31,7 +31,7 @@ class User extends DBObject{
 					'id' => intval($cookie['id']),
 					static::AUTH_FIELD => $cookie[static::AUTH_FIELD],
 				);
-				parent::fetchAttributesFromDB('*', $cookie);
+				$this->fetch('*', $cookie);
 
 				if($this->isLoggedIn()){
 					return true;
@@ -45,7 +45,7 @@ class User extends DBObject{
 				$method => $account,
 				'pwmd5' => rmd5($password),
 			);
-			parent::fetchAttributesFromDB('*', $condition);
+			$this->fetch('*', $condition);
 
 			if($this->isLoggedIn()){
 				$cookie = array('id' => $this->attr['id'], static::AUTH_FIELD => $this->attr(static::AUTH_FIELD));
