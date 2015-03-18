@@ -1,0 +1,44 @@
+{template header}
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=product">商品</a></li>
+	<li><a href="admin.php?mod=productstorage">库存管理</a></li>
+	<li>详细记录</li>
+</ol>
+
+<div class="box list">
+	<h2>库存管理记录 - {echo rdate($log['dateline'])}</h2>
+	<p>操作人： $log[realname] ，资金账户：$log[remark]</p>
+	<table>
+		<thead>
+			<tr>
+				<td>库存号</td>
+				<td>产品</td>
+				<td>库存备注</td>
+				<td>进货数量</td>
+				<td>金额</td>
+			</tr>
+		</thead>
+		<tbody>
+			<!--{loop $items $l}-->
+			<tr>
+				<td>$l[storageid]</td>
+				<td>$l[productname]</td>
+				<td>$l[storageremark]</td>
+				<td>$l[amount]</td>
+				<td>{$l[totalcosts]}{echo Product::$PriceUnit}</td>
+			</tr>
+			<!--{/loop}-->
+			<tr>
+				<td></td>
+				<td>总计</td>
+				<td></td>
+				<td></td>
+				<td>{echo abs($log['delta'])}{echo Product::$PriceUnit}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+{template footer}

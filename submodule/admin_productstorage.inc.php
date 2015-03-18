@@ -79,6 +79,54 @@ case 'import':
 	showmsg('no_storage_need_updating', 'refresh');
 	break;
 
+case 'log':
+	$operation = BankAccount::OPERATION_PRODUCT_IMPORT;
+	$condition = array("l.operation=$operation");
+
+	if(!empty($_REQUEST['time_start'])){
+		$time_start = rstrtotime($_REQUEST['time_start']);
+		$condition[] = "l.dateline>=$time_start";
+	}else{
+		$time_start = '';
+	}
+
+	if(!empty($_REQUEST['time_end'])){
+		$time_end = rstrtotime($_REQUEST['time_end']);
+		$condition[] = "l.dateline<=$time_end";
+	}else{
+		$time_end = '';
+	}
+
+	$condition = implode(' AND ', $condition);
+
+	$limit = 20;
+	$offset = ($page - 1) * $limit;
+	$logs = $db->fetch_all("SELECT l.*,b.remark,a.realname
+		FROM {$tpre}bankaccountlog l
+			LEFT JOIN {$tpre}bankaccount b ON b.id=l.accountid
+			LEFT JOIN {$tpre}administrator a ON a.id=l.operatorid
+		wHERE $condition
+		ORDER BY l.dateline DESC");
+
+	$total = $db->result_first("SELECT COUNT(*) FROM {$tpre}bankaccountlog l WHERE $condition");
+
+	$time_start && $time_start = rdate($time_start);
+	$time_end && $time_end = rdate($time_end);
+	include view('productstorage_log');
+	break;
+
+case 'importdetail':
+	$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+	$table = $db->select_table('productstoragelog');
+	$items = $table->fetch_all('*', 'bankaccountlogid='.$id);
+	$log = $db->fetch_first("SELECT l.*,b.remark,a.realname
+		FROM {$tpre}bankaccountlog l
+			LEFT JOIN {$tpre}bankaccount b ON b.id=l.accountid
+			LEFT JOIN {$tpre}administrator a ON a.id=l.operatorid
+		wHERE l.id=$id");
+	include view('productstorage_importdetail');
+	break;
+
 default:
 	$storages = $db->fetch_all("SELECT s.*, p.name as productname
 		FROM {$tpre}productstorage s
