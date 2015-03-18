@@ -106,7 +106,7 @@ class WeixinAPI extends CUrl{
 		if(empty($menu)){
 			$this->request('menu/delete?access_token='.$access_token);
 		}else{
-			is_string($menu) || $menu = self::json_encode($menu);
+			is_string($menu) || $menu = json_encode($menu, JSON_UNESCAPED_UNICODE);
 			$this->request('menu/create?access_token='.$access_token, $menu);
 		}
 
@@ -124,50 +124,10 @@ class WeixinAPI extends CUrl{
 			'msgtype' => 'text',
 			'text' => array('content' => $text),
 		);
-		$message = self::json_encode($message);
+		$message = json_encode($message, JSON_UNESCAPED_UNICODE);
 
 		$result = $this->request('message/custom/send?access_token='.$access_token, $message);
 		return !$this->hasError();
-	}
-
-	static public function json_encode($data){
-		if(PHP_VERSION >= '5.4'){
-			return json_encode($data, JSON_UNESCAPED_UNICODE);
-		}
-
-		if(!is_array($data)){
-			if(is_numeric($data)){
-				return $data;
-			}elseif(is_string($data)){
-				return '"'.addslashes($data).'"';
-			}else{
-				return $data ? 'true' : 'false';
-			}
-		}
-
-		$is_assoc = false;
-		$max = count($data);
-		for($i = 0; $i < $max; $i++){
-			if(!isset($data[$i])){
-				$is_assoc = true;
-				break;
-			}
-		}
-
-		if($is_assoc){
-			$result = '{';
-			foreach($data as $key => $value){
-				$result.= self::json_encode($key).':'.self::json_encode($value).',';
-			}
-			$result{strlen($result) - 1} = '}';
-		}else{
-			$result = '[';
-			foreach ($data as $value) {
-				$result.= self::json_encode($value).',';
-			}
-			$result{strlen($result) - 1} = ']';
-		}
-		return $result;
 	}
 }
 
