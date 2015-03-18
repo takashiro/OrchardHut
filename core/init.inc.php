@@ -72,7 +72,7 @@ if(!empty($_CONFIG['cookiepre'])){
 }
 
 //转义处理
-foreach(array('_POST', '_GET', '_COOKIE') as $request){
+foreach(array('_POST', '_GET', '_COOKIE', '_REQUEST') as $request){
 	get_magic_quotes_gpc() || ${$request} = raddslashes(${$request});
 	${$request} = rhtmlspecialchars(${$request});
 }
