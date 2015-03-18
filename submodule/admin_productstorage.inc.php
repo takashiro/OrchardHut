@@ -26,6 +26,9 @@ case 'import':
 		$unitprice = floatval($_POST['price'][$storageid]);
 		$subtotalcosts = $amount * $unitprice;
 
+		$importamount = floatval($_POST['importamount'][$storageid]);
+		$importamountunit = Product::AmountUnits(intval($_POST['importamountunit'][$storageid]));
+
 		$db->query("UPDATE {$tpre}productstorage SET num=num+$amount WHERE id=$storageid");
 		if($db->affected_rows > 0){
 			$s = $db->fetch_first("SELECT p.name AS productname, s.remark
@@ -40,6 +43,8 @@ case 'import':
 				'adminid' => $_G['admin']->id,
 				'productname' => $s['productname'],
 				'storageremark' => $s['remark'],
+				'importamount' => $importamount,
+				'importamountunit' => $importamountunit,
 			);
 			$totalcosts += $subtotalcosts;
 		}
