@@ -59,7 +59,7 @@ if(!empty($_CONFIG['cookiepre'])){
 	$cookie = array();
 	$cookiepre_length = strlen($_CONFIG['cookiepre']);
 	foreach($_COOKIE as $k => $v){
-		if(substr($k, 0, $cookiepre_length) == $_CONFIG['cookiepre']){
+		if(strncmp($k, $_CONFIG['cookiepre'], $cookiepre_length) === 0){
 			$cookie[substr($k, $cookiepre_length)] = $v;
 		}
 	}
