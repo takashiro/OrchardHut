@@ -105,7 +105,7 @@ if($_POST){
 		$in_sql = true;
 		$sql.= $line[$i];
 
-		if(substr($line[$i], -1) == ';'){
+		if(substr_compare($line[$i], ';', -1) === 0){
 			$in_sql = false;
 			if($dbconfig['tpre'] != 'hut_'){
 				$sql = preg_replace('/`hut\_(.*?)`/is', "`{$dbconfig['tpre']}\\1`", $sql);

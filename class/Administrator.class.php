@@ -168,9 +168,9 @@ class Administrator extends User{
 		if(isset(self::$Permission[$permission])){
 			return ($this->attr('permission') & self::$Permission[$permission]) == self::$Permission[$permission];
 		}else{
-			$strlen = strlen($permission) + 1;
+			$strlen = strlen($permission);
 			foreach(self::$Permission as $perm => $pbit){
-				if(substr($perm, 0, $strlen) == $permission.'_'){
+				if(strncmp($perm, $permission, $strlen) === 0 && isset($perm{$strlen}) && $perm{$strlen} == '_'){
 					if($this->hasPermission($perm)){
 						return true;
 					}
