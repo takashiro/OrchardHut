@@ -24,7 +24,7 @@ case 'menu':
 	break;
 
 case 'autoreply':
-	$db->select_table('autoreply');
+	$table = $db->select_table('autoreply');
 
 	$action = &$_GET['action'];
 	switch($action){
@@ -47,11 +47,11 @@ case 'autoreply':
 
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 		if($id > 0){
-			$db->UPDATE($autoreply, 'id='.$id);
+			$table->update($autoreply, 'id='.$id);
 			$autoreply['id'] = $id;
 		}else{
-			$db->INSERT($autoreply);
-			$autoreply['id'] = $db->insert_id();
+			$table->insert($autoreply);
+			$autoreply['id'] = $table->insert_id();
 		}
 
 		Autoreply::RefreshCache();
@@ -64,15 +64,15 @@ case 'autoreply':
 		if($id > 0){
 			Autoreply::RefreshCache();
 
-			$db->DELETE('id='.$id);
-			echo $db->affected_rows();
+			$table->delete('id='.$id);
+			echo $db->affected_rows;
 		}else{
 			echo 0;
 		}
 		exit;
 
 	default:
-		$autoreply = $db->MFETCH('*');
+		$autoreply = $table->fetch_all('*');
 	}
 	break;
 

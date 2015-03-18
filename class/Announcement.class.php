@@ -4,6 +4,7 @@ class Announcement extends DBObject{
 	const TABLE_NAME = 'announcement';
 
 	function __construct($id = 0){
+		parent::__construct();
 		$id = intval($id);
 		if($id > 0){
 			$this->fetch('*', 'id='.$id);
@@ -30,8 +31,8 @@ class Announcement extends DBObject{
 				self::$PotentialAnnouncements = readcache('announcements');
 				if(self::$PotentialAnnouncements === NULL){
 					global $db;
-					$db->select_table('announcement');
-					self::$PotentialAnnouncements = $db->MFETCH('*', 'time_end>='.TIMESTAMP.' ORDER BY displayorder,time_start DESC,time_end');
+					$table = $db->select_table('announcement');
+					self::$PotentialAnnouncements = $table->fetch_all('*', 'time_end>='.TIMESTAMP.' ORDER BY displayorder,time_start DESC,time_end');
 					writecache('announcements', self::$PotentialAnnouncements);
 				}
 			}

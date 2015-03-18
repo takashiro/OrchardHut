@@ -14,6 +14,7 @@ class BankAccount extends DBObject{
 	const OPERATOR_SYSTEM = 0;
 
 	public function __construct($id = 0){
+		parent::__construct();
 		if($id = intval($id)){
 			$this->fetch('*', 'id='.$id);
 		}
@@ -40,7 +41,7 @@ class BankAccount extends DBObject{
 		global $db, $tpre;
 		$extrasql = $delta <= 0 ? ' AND amount>='.(-$delta) : '';
 		$db->query("UPDATE {$tpre}bankaccount SET amount=amount+{$delta} WHERE id={$this->id}".$extrasql);
-		return $db->affected_rows() > 0;
+		return $db->affected_rows > 0;
 	}
 
 	protected function addLog($operation, $delta, $reason, $operatorid, $targetid){
@@ -48,7 +49,7 @@ class BankAccount extends DBObject{
 			return 0;
 
 		global $db;
-		$db->select_table('bankaccountlog');
+		$table = $db->select_table('bankaccountlog');
 		$log = array(
 			'accountid' => $this->id,
 			'dateline' => TIMESTAMP,
@@ -58,8 +59,8 @@ class BankAccount extends DBObject{
 			'operatorid' => $operatorid,
 			'targetid' => $targetid,
 		);
-		$db->INSERT($log);
-		return $db->insert_id();
+		$table->insert($log);
+		return $table->insert_id();
 	}
 
 	public function transferTo($target, $delta, $reason = ''){
@@ -76,7 +77,7 @@ class BankAccount extends DBObject{
 			$db->query('START TRANSACTION');
 			if($this->updateAmount(-$delta)){
 				$db->query("UPDATE {$tpre}bankaccount SET amount=amount+$delta WHERE id=$target");
-				if($db->affected_rows() > 0){
+				if($db->affected_rows > 0){
 					$this->addLog(self::OPERATION_TRANSFER, -$delta, $reason, $_G['admin']->id, $target);
 					$db->query('COMMIT');
 					return true;

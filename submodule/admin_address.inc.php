@@ -7,7 +7,7 @@ $actions = array('list', 'edit', 'delete');
 $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET['action'] : $actions[0];
 
 if($data == 'format'){
-	$db->select_table('addressformat');
+	$table = $db->select_table('addressformat');
 
 	if($action == 'edit'){
 		$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
@@ -17,10 +17,10 @@ if($data == 'format'){
 		);
 
 		if($id > 0){
-			$db->UPDATE($format, 'id='.$id);
+			$table->update($format, 'id='.$id);
 		}else{
-			$db->INSERT($format);
-			$id = $db->insert_id();
+			$table->insert($format);
+			$id = $table->insert_id();
 		}
 
 		$format['id'] = $id;
@@ -29,8 +29,8 @@ if($data == 'format'){
 	}elseif($action == 'delete'){
 		$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
 		if($id > 0){
-			$db->DELETE('id='.$id);
-			echo $db->affected_rows();
+			$table->delete('id='.$id);
+			echo $db->affected_rows;
 		}else{
 			echo 0;
 		}
@@ -41,7 +41,7 @@ if($data == 'format'){
 	}
 
 }else{
-	$db->select_table('addresscomponent');
+	$table = $db->select_table('addresscomponent');
 
 	if($_POST){
 		if($action == 'edit'){
@@ -56,7 +56,7 @@ if($data == 'format'){
 					$component['displayorder'] = intval($_POST['displayorder']);
 				}
 
-				$db->UPDATE($component, 'id='.$id);
+				$table->update($component, 'id='.$id);
 				$component['id'] = $id;
 
 			}else{
@@ -67,7 +67,7 @@ if($data == 'format'){
 				);
 
 				if($component['parentid'] > 0){
-					$parent_format = $db->RESULTF('formatid', 'id='.$component['parentid']);
+					$parent_format = $table->result_first('formatid', 'id='.$component['parentid']);
 					$format = Address::Format();
 					while($format && $format[0]['id'] != $parent_format){
 						array_shift($format);
@@ -76,13 +76,13 @@ if($data == 'format'){
 						$component['formatid'] = $format[1]['id'];
 					}
 				}else{
-					$db->select_table('addressformat');
-					$component['formatid'] = $db->RESULTF('id', '1 ORDER BY displayorder LIMIT 1');
+					$table = $db->select_table('addressformat');
+					$component['formatid'] = $table->result_first('id', '1 ORDER BY displayorder LIMIT 1');
 				}
 
-				$db->select_table('addresscomponent');
-				$db->INSERT($component);
-				$component['id'] = $db->insert_id();
+				$table = $db->select_table('addresscomponent');
+				$table->insert($component);
+				$component['id'] = $table->insert_id();
 			}
 
 			echo json_encode($component);
@@ -96,10 +96,10 @@ if($data == 'format'){
 
 				while($delete_id){
 					$delete_id = implode(',', $delete_id);
-					$db->DELETE("id IN ($delete_id)");
-					$affected_rows += $db->affected_rows();
+					$table->delete("id IN ($delete_id)");
+					$affected_rows += $db->affected_rows;
 
-					$nodes = $db->MFETCH('id', "parentid IN ($delete_id)");
+					$nodes = $table->fetch_all('id', "parentid IN ($delete_id)");
 					$delete_id = array();
 					foreach($nodes as $n){
 						$delete_id[] = $n['id'];
@@ -118,13 +118,13 @@ if($data == 'format'){
 	$prev_address = array();
 	$cur = $parentid;
 	while($cur){
-		$a = $db->FETCH('id,name,parentid', 'id='.$cur);
+		$a = $table->fetch_first('id,name,parentid', 'id='.$cur);
 		$prev_address[] = $a;
 		$cur = $a['parentid'];
 	}
 	$prev_address = array_reverse($prev_address);
 
-	$address_components = $db->MFETCH('*', 'parentid='.$parentid.' ORDER BY displayorder,id');
+	$address_components = $table->fetch_all('*', 'parentid='.$parentid.' ORDER BY displayorder,id');
 
 	include view('address_component');
 }

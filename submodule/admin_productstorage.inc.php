@@ -27,7 +27,7 @@ case 'import':
 		$subtotalcosts = $amount * $unitprice;
 
 		$db->query("UPDATE {$tpre}productstorage SET num=num+$amount WHERE id=$storageid");
-		if($db->affected_rows() > 0){
+		if($db->affected_rows > 0){
 			$s = $db->fetch_first("SELECT p.name AS productname, s.remark
 				FROM {$tpre}productstorage s
 					LEFT JOIN {$tpre}product p ON p.id=s.productid
@@ -47,7 +47,7 @@ case 'import':
 
 	if($logs){
 		$db->query("UPDATE {$tpre}bankaccount SET amount=amount-$totalcosts WHERE id=$bankaccount AND amount>=$totalcosts");
-		if($db->affected_rows() > 0){
+		if($db->affected_rows > 0){
 			$bankaccountlog = array(
 				'accountid' => $bankaccount,
 				'delta' => -$totalcosts,
@@ -57,17 +57,17 @@ case 'import':
 				'targetid' => 0,
 				'dateline' => TIMESTAMP,
 			);
-			$db->select_table('bankaccountlog');
-			$db->INSERT($bankaccountlog);
-			$bankaccountlogid = $db->insert_id();
+			$table = $db->select_table('bankaccountlog');
+			$table->insert($bankaccountlog);
+			$bankaccountlogid = $table->insert_id();
 			$db->query('COMMIT');
 
 			foreach($logs as &$l){
 				$l['bankaccountlogid'] = $bankaccountlogid;
 			}
 			unset($l);
-			$db->select_table('productstoragelog');
-			$db->INSERTS($logs);
+			$table = $db->select_table('productstoragelog');
+			$table->multi_insert($logs);
 
 			showmsg('storage_is_updated', 'refresh');
 		}else{
@@ -96,7 +96,7 @@ default:
 		$storageids[] = $s['id'];
 	$storageids = implode(',', $storageids);
 	$query = $db->query("SELECT storageid,subtype,amountunit FROM {$tpre}productprice WHERE storageid IS NOT NULL AND storageid IN ($storageids)");
-	while($p = $db->fetch_row($query)){
+	while($p = $query->fetch_row()){
 		$s = &$storageHash[$p[0]];
 		$s['subtype'][] = $p[1];
 		$s['amountunit'][] = $p[2];
@@ -112,8 +112,8 @@ default:
 	}
 	unset($s);
 
-	$db->select_table('bankaccount');
-	$bankaccounts = $db->MFETCH('*');
+	$table = $db->select_table('bankaccount');
+	$bankaccounts = $table->fetch_all('*');
 
 	include view('productstorage');
 }

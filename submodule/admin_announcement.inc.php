@@ -7,8 +7,8 @@ $action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) 
 
 switch($action){
 	case 'list':
-		$db->select_table('announcement');
-		$announcements = $db->MFETCH('*', '1 ORDER BY displayorder,time_start DESC,time_end');
+		$table = $db->select_table('announcement');
+		$announcements = $table->fetch_all('*', '1 ORDER BY displayorder,time_start DESC,time_end');
 		include view('announcement_list');
 	break;
 
@@ -90,9 +90,9 @@ switch($action){
 	case 'delete':
 		if(isset($_POST['id'])){
 			$id = intval($_POST['id']);
-			$db->select_table('announcement');
-			$db->DELETE('id='.$id);
-			echo $db->affected_rows();
+			$table = $db->select_table('announcement');
+			$table->delete('id='.$id);
+			echo $db->affected_rows;
 		}
 	break;
 }

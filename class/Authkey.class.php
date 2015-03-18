@@ -32,7 +32,7 @@ class Authkey extends DBObject{
 
 	public static function Generate($user, $expiry = NULL){
 		global $db;
-		$db->select_table('authkey');
+		$table = $db->select_table('authkey');
 
 		$authkey = array(
 			'user' => $user,
@@ -40,7 +40,7 @@ class Authkey extends DBObject{
 			'expiry' => $expiry == NULL ? TIMESTAMP + 5 * 60 : $expiry,
 		);
 
-		$db->INSERT($authkey, true);
+		$table->insert($authkey, true);
 
 		return $authkey['key'];
 	}

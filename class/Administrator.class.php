@@ -41,6 +41,7 @@ class Administrator extends User{
 	);
 
 	public function __construct($id = 0){
+		parent::__construct();
 		if($id = intval($id)){
 			$this->fetch('*', 'id='.$id);
 		}
@@ -128,15 +129,15 @@ class Administrator extends User{
 			'pwmd5' => rmd5($admin['password']),
 		);
 
-		$db->select_table('administrator');
+		$table = $db->select_table('administrator');
 
-		if($db->RESULTF('id', array('account' => $attr['account'])) > 0){
+		if($table->result_first('id', array('account' => $attr['account'])) > 0){
 			return self::DUPLICATED_ACCOUNT;
 		}
 
-		$db->INSERT($attr);
+		$table->insert($attr);
 
-		return $db->insert_id();
+		return $table->insert_id();
 	}
 
 	public function changePassword($old, $new, $new2 = ''){
@@ -232,16 +233,16 @@ class Administrator extends User{
 		return $permission;
 	}
 
-	static public function Delete($id){
+	static public function Delete($id, $extra = ''){
 		global $db;
 
 		if(!$id = intval($id)){
 			return -1;
 		}
 
-		$db->select_table('administrator');
-		$db->DELETE('id='.$id.' AND permission!=-1');
-		return $db->affected_rows();
+		$table = $db->select_table('administrator');
+		$table->delete('id='.$id.' AND permission!=-1', $extra);
+		return $db->affected_rows;
 	}
 
 	const DUPLICATED_ACCOUNT = -1;

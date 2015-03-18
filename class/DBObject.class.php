@@ -1,17 +1,24 @@
 <?php
 
-class DBObject{
+abstract class DBObject{
 	protected $attr = array();
 	protected $oattr = array();
 	protected $update = array();
+	protected $table = null;
 
 	const PRIMARY_KEY = 'id';
 
-	function __destruct(){
+	static function table(){
 		global $db;
+		return $db->select_table(static::TABLE_NAME);
+	}
 
-		$db->select_table(static::TABLE_NAME);
+	function __construct(){
+		global $db;
+		$this->table = self::table();
+	}
 
+	function __destruct(){
 		$id = $this->attr(static::PRIMARY_KEY);
 		if($id > 0){
 			if($this->oattr){
@@ -23,13 +30,12 @@ class DBObject{
 			}
 
 			if($this->update){
-				$db->UPDATE($this->update, static::PRIMARY_KEY.'=\''.$this->attr(static::PRIMARY_KEY).'\'');
+				$this->table->update($this->update, static::PRIMARY_KEY.'=\''.$this->attr(static::PRIMARY_KEY).'\'');
 			}
 		}
 	}
 
 	function fetch($item, $condition){
-		global $db;
 		if(is_array($item)){
 			$item = implode(',', $item);
 		}
@@ -41,8 +47,7 @@ class DBObject{
 			$condition = implode(' AND ', $c);
 		}
 
-		$db->select_table(static::TABLE_NAME);
-		$this->attr = $this->oattr = $db->FETCH($item, $condition);
+		$this->attr = $this->oattr = $this->table->fetch_first($item, $condition);
 	}
 
 	public function exists(){
@@ -82,49 +87,42 @@ class DBObject{
 	}
 
 	public function insert(){
-		global $db;
-		$db->select_table(static::TABLE_NAME);
-		$db->INSERT($this->attr);
+		$this->table->INSERT($this->attr);
 
-		$this->attr(static::PRIMARY_KEY, $db->insert_id());
+		$this->attr(static::PRIMARY_KEY, $this->table->insert_id());
 		return $this->attr(static::PRIMARY_KEY);
 	}
 
 	public function deleteFromDB(){
-		global $db;
-		$db->select_table(static::TABLE_NAME);
-		$db->DELETE(array(static::PRIMARY_KEY => $this->attr(static::PRIMARY_KEY)));
+		$this->table->delete(array(static::PRIMARY_KEY => $this->attr(static::PRIMARY_KEY)));
 		$this->attr = $this->oattr = array();
 	}
 
 	static public function Delete($id, $extra = ''){
-		global $db;
 		$id = intval($id);
-		$db->select_table(static::TABLE_NAME);
 
 		if($extra){
 			$extra = ' AND ('.$extra.')';
 		}
 
-		$db->DELETE(static::PRIMARY_KEY.'='.$id.$extra);
-		return $db->affected_rows();
+		$this->table->delete(static::PRIMARY_KEY.'='.$id.$extra);
+		return $this->table->affected_rows();
 	}
 
 	static public function Exist($id, $field = ''){
-		global $db;
-
 		if(!$field){
 			$field = static::PRIMARY_KEY;
 		}
 
-		$db->select_table(static::TABLE_NAME);
-		return $db->RESULTF($field, '`'.$field.'`=\''.$id.'\' LIMIT 1');
+		global $db;
+		$table = $db->select_table(static::TABLE_NAME);
+		return $table->result_first($field, '`'.$field.'`=\''.$id.'\' LIMIT 1');
 	}
 
 	static public function Count(){
 		global $db;
-		$db->select_table(static::TABLE_NAME);
-		return $db->RESULTF('COUNT(*)');
+		$table = $db->select_table(static::TABLE_NAME);
+		return $table->result_first('COUNT(*)');
 	}
 }
 

@@ -11,8 +11,8 @@ class DeliveryTime{
 		$timespans = readcache('deliverytime');
 		if(!$timespans){
 			global $db;
-			$db->select_table('deliverytime');
-			$timespans = $db->MFETCH('*');
+			$table = $db->select_table('deliverytime');
+			$timespans = $table->fetch_all('*');
 			writecache('deliverytime', $timespans);
 		}
 

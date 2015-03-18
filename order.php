@@ -17,7 +17,7 @@ case 'delete':
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	$new_status = Order::Canceled;
 	$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND status=0");
-	if($db->affected_rows() > 0){
+	if($db->affected_rows > 0){
 		$order = new Order;
 		$order->id = $orderid;
 		$order->addLog($_G['user'], Order::StatusChanged, Order::Canceled);
@@ -39,7 +39,7 @@ case 'mark_received':
 		$old_status = implode(',', $old_status);
 		$new_status = Order::Received;
 		$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND userid=$_USER[id] AND status IN ($old_status)");
-		if($db->affected_rows() > 0){
+		if($db->affected_rows > 0){
 			$order = new Order($orderid);
 			$order->addLog($_G['user'], Order::StatusChanged, Order::Received);
 
@@ -106,10 +106,10 @@ default:
 	$limit = 10;
 	$offset = ($page - 1) * $limit;
 
-	$db->select_table('order');
+	$table = $db->select_table('order');
 	$condition = 'userid='.$_G['user']->id;
-	$orders = $db->MFETCH('*', $condition." ORDER BY id DESC LIMIT $offset,$limit");
-	$pagenum = $db->RESULTF('COUNT(*)', $condition);
+	$orders = $table->fetch_all('*', $condition." ORDER BY id DESC LIMIT $offset,$limit");
+	$pagenum = $table->result_first('COUNT(*)', $condition);
 
 	if($orders){
 		$orderids = array();

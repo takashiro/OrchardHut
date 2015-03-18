@@ -4,7 +4,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 $action = &$_GET['action'];
 
-$db->select_table('bankaccount');
+$table = $db->select_table('bankaccount');
 
 $id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
@@ -96,7 +96,7 @@ switch($action){
 
 		$accounts = array();
 		$account_amount = array();
-		foreach($db->MFETCH('id,remark,amount') as $a){
+		foreach($table->fetch_all('id,remark,amount') as $a){
 			$accounts[$a['id']] = $a['remark'];
 			$account_amount[$a['id']] = $a['amount'];
 		}
@@ -108,8 +108,8 @@ switch($action){
 	case 'list':default:
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
-		$accounts = $db->MFETCH('*', "1 LIMIT $offset,$limit");
-		$pagenum = $db->RESULTF('COUNT(*)');
+		$accounts = $table->fetch_all('*', "1 LIMIT $offset,$limit");
+		$pagenum = $table->result_first('COUNT(*)');
 		include view('bankaccount_list');
 	break;
 }

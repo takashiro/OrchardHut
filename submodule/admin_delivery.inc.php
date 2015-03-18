@@ -39,13 +39,13 @@ case 'edit':
 		$timespan['expiry_time'] = rstrtotime($_POST['expiry_time']);
 	}
 
-	$db->select_table('deliverytime');
+	$table = $db->select_table('deliverytime');
 	if($id > 0){
-		$db->UPDATE($timespan, 'id='.$id);
+		$table->update($timespan, 'id='.$id);
 		$timespan['id'] = $id;
 	}else{
-		$db->INSERT($timespan);
-		$timespan['id'] = $db->insert_id();
+		$table->insert($timespan);
+		$timespan['id'] = $table->insert_id();
 	}
 
 	foreach(array('deadline', 'time_from', 'time_to') as $var){
@@ -62,8 +62,8 @@ case 'edit':
 case 'delete':
 	@$id = intval($_REQUEST['id']);
 	if($id > 0){
-		$db->select_table('deliverytime');
-		$db->DELETE('id='.$id);
+		$table = $db->select_table('deliverytime');
+		$table->delete('id='.$id);
 		DeliveryTime::UpdateCache();
 		echo 1;
 	}

@@ -98,8 +98,8 @@ switch($action){
 					showmsg('invalid_delivery_address_with_inadquate_components', 'back');
 				}
 			}else{
-				$db->select_table('deliveryaddress');
-				$address = $db->FETCH('*', 'id='.$addressid);
+				$table = $db->select_table('deliveryaddress');
+				$address = $table->fetch_all('*', 'id='.$addressid);
 				if(!$address || $address['userid'] != $_G['user']->id){
 					showmsg('delivery_address_id_not_exist');
 				}
@@ -110,8 +110,8 @@ switch($action){
 				$extaddress = $address['extaddress'];
 				$address = array();
 
-				$db->select_table('deliveryaddresscomponent');
-				$components = $db->MFETCH('componentid', 'addressid='.$addressid);
+				$table = $db->select_table('deliveryaddresscomponent');
+				$components = $table->fetch_all('componentid', 'addressid='.$addressid);
 				foreach($components as $c){
 					$address[] = $c['componentid'];
 				}
@@ -137,8 +137,8 @@ switch($action){
 				$address_component[] = intval(array_shift($address));
 			}
 
-			$db->select_table('addresscomponent');
-			$address_component = $db->MFETCH('formatid,id', 'id IN ('.implode(',', $address_component).')');
+			$table = $db->select_table('addresscomponent');
+			$address_component = $table->fetch_all('formatid,id', 'id IN ('.implode(',', $address_component).')');
 
 			//Validate Address Components
 			$format2component = array();
@@ -167,8 +167,8 @@ switch($action){
 
 			if(!empty($_POST['deliverytime'])){
 				$dtid = intval($_POST['deliverytime']);
-				$db->select_table('deliverytime');
-				$delivery = $db->FETCH('*', 'id='.$dtid);
+				$table = $db->select_table('deliverytime');
+				$delivery = $table->fetch_all('*', 'id='.$dtid);
 
 				list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
 				$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
@@ -191,9 +191,9 @@ switch($action){
 					'addressee' => $order->addressee,
 					'mobile' => $order->mobile,
 				);
-				$db->select_table('deliveryaddress');
-				$db->INSERT($delivery_address);
-				$addressid = $db->insert_id();
+				$table = $db->select_table('deliveryaddress');
+				$table->insert($delivery_address);
+				$addressid = $table->insert_id();
 
 				$delivery_address_components = $order->getAddressComponents();
 				foreach($delivery_address_components as &$c){
@@ -201,8 +201,8 @@ switch($action){
 					$c['addressid'] = $addressid;
 				}
 				unset($c);
-				$db->select_table('deliveryaddresscomponent');
-				$db->INSERTS($delivery_address_components);
+				$table = $db->select_table('deliveryaddresscomponent');
+				$table->multi_insert($delivery_address_components);
 			}
 
 			$order->paymentmethod = isset($_POST['paymentmethod']) ? intval($_POST['paymentmethod']) : Order::PaidWithCash;
@@ -235,7 +235,7 @@ switch($action){
 
 			if($order->paymentmethod == Order::PaidWithWallet){
 				$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id=$_USER[id] AND wallet>={$order->totalprice}");
-				if($db->affected_rows() <= 0){
+				if($db->affected_rows <= 0){
 					$order->paymentmethod = Order::PaidWithCash;
 				}else{
 					$order->alipaystate = AlipayNotify::TradeSuccess;
@@ -293,13 +293,13 @@ switch($action){
 		$quantity_limit = array();
 		if($_G['user']->isLoggedIn()){
 			$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid=$_USER[id]");
-			while($l = $db->fetch_array($query)){
+			while($l = $query->fetch_assoc()){
 				$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
 			}
 		}
 
-		$db->select_table('deliveryaddress');
-		$delivery_addresses = $db->MFETCH('*', 'userid='.$_G['user']->id);
+		$table = $db->select_table('deliveryaddress');
+		$delivery_addresses = $table->fetch_all('*', 'userid='.$_G['user']->id);
 
 		foreach($delivery_addresses as &$a){
 			$a['address_text'] = '';
@@ -309,7 +309,7 @@ switch($action){
 					LEFT JOIN {$tpre}addressformat f ON f.id=a.formatid
 				WHERE a.addressid=$a[id]
 				ORDER BY f.displayorder");
-			while($c = $db->fetch_array($query)){
+			while($c = $query->fetch_assoc()){
 				$a['address_text'].= $c['name'].' ';
 			}
 			$a['address_text'].= $a['extaddress'].' '.$a['addressee'].'('.$a['mobile'].')';
@@ -340,10 +340,10 @@ switch($action){
 		$affected_rows = 0;
 		if($address_id > 0){
 			$db->query("DELETE FROM {$tpre}deliveryaddress WHERE id=$address_id AND userid=$_USER[id]");
-			$affected_rows = $db->affected_rows();
+			$affected_rows = $db->affected_rows;
 			if($affected_rows > 0){
 				$db->query("DELETE FROM {$tpre}deliveryaddresscomponent WHERE addressid=$address_id");
-				$affected_rows += $db->affected_rows();
+				$affected_rows += $db->affected_rows;
 			}
 		}
 		echo $affected_rows;

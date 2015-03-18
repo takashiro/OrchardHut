@@ -131,14 +131,14 @@ class User extends DBObject{
 			'regtime' => TIMESTAMP,
 		);
 
-		$db->select_table('user');
+		$table = $db->select_table('user');
 
-		if($db->RESULTF('id', array('account' => $user['account'])) > 0){
+		if($table->result_first('id', array('account' => $user['account'])) > 0){
 			return self::DUPLICATED_ACCOUNT;
 		}
 
-		$db->INSERT($user);
-		return $db->insert_id();
+		$table->insert($user);
+		return $table->insert_id;
 	}
 
 	public function updateInfo($user){
@@ -156,10 +156,10 @@ class User extends DBObject{
 		return true;
 	}
 
-	static public function Delete($id){
+	static public function Delete($id, $extra = ''){
 		if($id = intval($id)){
 			DB::select_table(static::TABLE_NAME);
-			DB::DELETE('id='.$id);
+			DB::DELETE('id='.$id, $extra);
 
 			return DB::affected_rows();
 		}

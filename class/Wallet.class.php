@@ -16,9 +16,9 @@ class Wallet{
 			$log['cost'] = round($log['cost'] * 100) / 100;
 
 			if($log['cost'] > 0){
-				$db->select_table('userwalletlog');
-				$db->INSERT($log);
-				$id = $db->insert_id();
+				$table = $db->select_table('userwalletlog');
+				$table->insert($log);
+				$id = $table->insert_id();
 
 				//商户网站订单系统中唯一订单号，必填
 				$_G['alipaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$id;
@@ -44,13 +44,13 @@ class Wallet{
 				'alipaytradeid' => $trade_no,
 				'alipaystate' => AlipayNotify::$TradeStateEnum[$trade_status],
 			);
-			$db->select_table('userwalletlog');
-			$db->UPDATE($log, array('id' => $id));
+			$table = $db->select_table('userwalletlog');
+			$table->update($log, array('id' => $id));
 
 			if($log['alipaystate'] == AlipayNotify::TradeSuccess || $log['alipaystate'] == AlipayNotify::TradeFinished){
 				global $tpre;
 				$db->query("UPDATE {$tpre}userwalletlog SET recharged=1 WHERE id='$id'");
-				if($db->affected_rows() > 0){
+				if($db->affected_rows > 0){
 					$log = $db->fetch_first("SELECT uid,cost FROM {$tpre}userwalletlog WHERE id='$id'");
 					$fee = $log['cost'];
 					$timestamp = TIMESTAMP;

@@ -8,7 +8,7 @@ if(!in_array($action, $actions)){
 	$action = $actions[0];
 }
 
-$db->select_table('administrator');
+$table = $db->select_table('administrator');
 
 $id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
@@ -114,8 +114,8 @@ switch($action){
 	case 'list':default:
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
-		$admins = $db->MFETCH('*', "1 LIMIT $offset,$limit");
-		$pagenum = $db->RESULTF('COUNT(*)');
+		$admins = $table->fetch_all('*', "1 LIMIT $offset,$limit");
+		$pagenum = $table->result_first('COUNT(*)');
 		include view('admin_list');
 	break;
 }

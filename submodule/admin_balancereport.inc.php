@@ -69,7 +69,7 @@ $query = $db->query("SELECT $fields, l.dateline, l.totalcosts AS delta
 		LEFT JOIN {$tpre}product p ON p.id=s.productid
 	WHERE $condition");
 
-while($l = $db->fetch_array($query)){
+while($l = $query->fetch_assoc()){
 	$stat['out'] += $l['delta'];
 
 	$l['reason'] = lang('common', 'storage_import');
@@ -86,7 +86,7 @@ $query = $db->query("SELECT $fields, o.dateline, d.subtotal AS delta
 		LEFT JOIN {$tpre}bankaccount a ON a.id=al.accountid
 	WHERE $condition AND d.state=0 AND o.status=".Order::Received);
 
-while($l = $db->fetch_array($query)){
+while($l = $query->fetch_assoc()){
 	$stat['in'] += $l['delta'];
 
 	$l['reason'] = lang('common', 'order').lang('common', 'order_received');
@@ -104,9 +104,9 @@ $time_start = rdate($time_start);
 $time_end = rdate($time_end);
 
 $bankaccounts = array(0 => '不限');
-$db->select_table('bankaccount');
-$query = $db->SELECT('id,remark');
-while($a = $db->fetch_array($query)){
+$table = $db->select_table('bankaccount');
+$query = $table->select('id,remark');
+while($a = $query->fetch_assoc()){
 	$bankaccounts[$a['id']] = $a['remark'];
 }
 
@@ -114,9 +114,9 @@ $producttypes = array(0 => '不限');
 $producttypes = array_merge($producttypes, Product::Types());
 
 $productids = array();
-$db->select_table('product');
-$query = $db->SELECT('id,name,type');
-while($p = $db->fetch_array($query)){
+$table = $db->select_table('product');
+$query = $table->select('id,name,type');
+while($p = $query->fetch_assoc()){
 	$productids[$p['type']][$p['id']] = $p['name'];
 }
 

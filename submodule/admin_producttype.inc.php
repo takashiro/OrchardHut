@@ -6,7 +6,7 @@ $actions = array('list', 'edit', 'delete');
 $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET['action'] : $actions[0];
 
 
-$db->select_table('producttype');
+$table = $db->select_table('producttype');
 $action = &$_GET['action'];
 switch($action){
 case 'edit':
@@ -20,11 +20,11 @@ case 'edit':
 	}
 
 	if($id > 0){
-		$db->UPDATE($producttype, 'id='.$id);
+		$table->update($producttype, 'id='.$id);
 		$producttype['id'] = $id;
 	}else{
-		$db->INSERT($producttype);
-		$producttype['id'] = $db->insert_id();
+		$table->insert($producttype);
+		$producttype['id'] = $table->insert_id();
 	}
 
 	Product::RefreshCache();
@@ -35,17 +35,17 @@ case 'edit':
 case 'delete':
 	$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 	if($id > 0){
-		$db->DELETE('id='.$id);
+		$table->delete('id='.$id);
 		Product::RefreshCache();
 
-		echo $db->affected_rows();
+		echo $db->affected_rows;
 	}else{
 		echo 0;
 	}
 	exit;
 	break;
 default:
-	$product_types = $db->MFETCH('*', '1 ORDER BY displayorder');
+	$product_types = $table->fetch_all('*', '1 ORDER BY displayorder');
 }
 
 include view('producttype');

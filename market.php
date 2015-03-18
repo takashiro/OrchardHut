@@ -7,8 +7,8 @@ $all_types = Product::Types();
 isset($all_types[$type]) || $type = current(array_keys($all_types));
 unset($all_types);
 
-$db->select_table('product');
-$products = $db->MFETCH('*', 'type='.$type.' AND hide=0 ORDER BY displayorder');
+$table = $db->select_table('product');
+$products = $table->fetch_all('*', 'type='.$type.' AND hide=0 ORDER BY displayorder');
 
 $product = new Product;
 foreach($products as &$p){
@@ -33,7 +33,7 @@ foreach($products as $product){
 $quantity_limit = array();
 if($_G['user']->isLoggedIn()){
 	$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid=$_USER[id]");
-	while($l = $db->fetch_array($query)){
+	while($l = $query->fetch_assoc()){
 		$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
 	}
 }

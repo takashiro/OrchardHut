@@ -29,6 +29,8 @@ class Order extends DBObject{
 	private $quantity_limit = array();
 
 	public function __construct($id = 0){
+		parent::__construct();
+
 		$id = intval($id);
 		if($id > 0){
 			$this->fetch('*', 'id='.$id);
@@ -76,7 +78,7 @@ class Order extends DBObject{
 		}
 
 		global $db;
-		$db->select_table('orderaddresscomponent');
+		$table = $db->select_table('orderaddresscomponent');
 
 		if(is_array($componentids)){
 			$condition = 'orderid='.$this->id.' AND componentid IN ('.implode(',', $componentids).')';
@@ -84,7 +86,7 @@ class Order extends DBObject{
 			$condition = array('orderid' => $this->id, 'componentid' => intval($componentids));
 		}
 
-		return $this->id == $db->RESULTF('orderid', $condition);
+		return $this->id == $table->result_first('orderid', $condition);
 	}
 
 	public function getDetails(){
@@ -113,7 +115,7 @@ class Order extends DBObject{
 		if($d['storageid']){
 			$number = $d['amount'] * $d['number'];
 			$db->query("UPDATE {$tpre}productstorage SET num=num-$number WHERE id=$d[storageid] AND num>=$number");
-			if($db->affected_rows() <= 0){
+			if($db->affected_rows <= 0){
 				return false;
 			}
 		}
@@ -166,16 +168,16 @@ class Order extends DBObject{
 		}
 		unset($d);
 
-		$db->select_table('orderdetail');
-		$db->INSERTS($this->detail);
+		$table = $db->select_table('orderdetail');
+		$table->multi_insert($this->detail);
 
 		foreach($this->address_components as &$c){
 			$c['orderid'] = $this->id;
 		}
 		unset($c);
 
-		$db->select_table('orderaddresscomponent');
-		$db->INSERTS($this->address_components);
+		$table = $db->select_table('orderaddresscomponent');
+		$table->multi_insert($this->address_components);
 
 		foreach($this->quantity_limit as $ql){
 			$db->query("INSERT INTO {$tpre}productquantitylimit (`priceid`,`userid`,`amount`)
@@ -191,19 +193,19 @@ class Order extends DBObject{
 		if($result){
 			global $db, $tpre;
 
-			$db->select_table('orderdetail');
-			$details = $db->MFETCH('storageid,amount,number', 'orderid='.$orderid.' AND storageid IS NOT NULL');
+			$table = $db->select_table('orderdetail');
+			$details = $table->fetch_all('storageid,amount,number', 'orderid='.$orderid.' AND storageid IS NOT NULL');
 			foreach($details as $d){
 				$num = $d['amount'] * $d['number'];
 				$db->query("UPDATE {$tpre}productstorage SET num=num+$num WHERE id=$d[storageid]");
 			}
-			$db->DELETE('orderid='.$orderid);
+			$table->delete('orderid='.$orderid);
 
-			$db->select_table('orderaddresscomponent');
-			$db->DELETE('orderid='.$orderid);
+			$table = $db->select_table('orderaddresscomponent');
+			$table->delete('orderid='.$orderid);
 
-			$db->select_table('orderlog');
-			$db->DELETE('orderid='.$orderid);
+			$table = $db->select_table('orderlog');
+			$table->delete('orderid='.$orderid);
 		}
 
 		return $result;
@@ -243,9 +245,9 @@ class Order extends DBObject{
 		runhooks('order_log_added', array($this, $log));
 
 		global $db;
-		$db->select_table('orderlog');
-		$db->INSERT($log, false, 'DELAYED');
-		return $db->insert_id();
+		$table = $db->select_table('orderlog');
+		$table->insert($log, false, 'DELAYED');
+		return $table->insert_id();
 	}
 
 	public function getLogs(){

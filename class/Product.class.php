@@ -4,6 +4,8 @@ class Product extends DBObject{
 	CONST TABLE_NAME = 'product';
 
 	public function __construct($id = 0){
+		parent::__construct();
+
 		$id = intval($id);
 		if($id > 0){
 			$this->fetch('*', 'id='.$id);
@@ -79,7 +81,7 @@ class Product extends DBObject{
 				LEFT JOIN {$tpre}productstorage s ON s.id=p.storageid AND s.productid=p.productid
 			WHERE p.productid=$productid AND (p.storageid IS NULL OR s.num>=p.amount) AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
 			ORDER BY p.displayorder");
-		while($p = $db->fetch_array($query)){
+		while($p = $query->fetch_assoc()){
 			$prices[$p['id']] = $p;
 		}
 
@@ -121,7 +123,7 @@ class Product extends DBObject{
 				LEFT JOIN {$tpre}productstorage s ON s.id=p.storageid AND s.productid=p.productid
 			WHERE p.productid IN ($productids) AND (p.storageid IS NULL OR s.num>=p.amount) AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
 			ORDER BY p.displayorder");
-		while($p = $db->fetch_array($query)){
+		while($p = $query->fetch_assoc()){
 			$prices[$p['id']] = $p;
 		}
 
@@ -197,14 +199,14 @@ class Product extends DBObject{
 		}
 
 		global $db;
-		$db->select_table('productprice');
+		$table = $db->select_table('productprice');
 		if($id > 0){
-			$db->UPDATE($update, array('id' => $id, 'productid' => $this->id));
+			$table->update($update, array('id' => $id, 'productid' => $this->id));
 		}else{
 			$update['productid'] = $this->id;
 
-			$db->INSERT($update);
-			$update['id'] = $db->insert_id();
+			$table->insert($update);
+			$update['id'] = $table->insert_id();
 		}
 
 		return $update;
@@ -213,11 +215,11 @@ class Product extends DBObject{
 	public function deletePrice($id){
 		$id = intval($id);
 		global $db;
-		$db->select_table('productprice');
-		$db->DELETE(array('id' => $id, 'productid' => $this->id));
-		$db->select_table('productquantitylimit');
-		$db->DELETE(array('priceid' => $id));
-		return $db->affected_rows();
+		$table = $db->select_table('productprice');
+		$table->delete(array('id' => $id, 'productid' => $this->id));
+		$table = $db->select_table('productquantitylimit');
+		$table->delete(array('priceid' => $id));
+		return $db->affected_rows;
 	}
 
 	public function getCountdowns($to_readable = false){
@@ -248,7 +250,7 @@ class Product extends DBObject{
 		$price = $this->editPrice($countdown);
 
 		global $db;
-		$db->select_table('productcountdown');
+		$table = $db->select_table('productcountdown');
 		if($id > 0){
 			$update = array();
 
@@ -264,7 +266,7 @@ class Product extends DBObject{
 				$update['end_time'] = rstrtotime($countdown['end_time']);
 			}
 
-			$db->UPDATE($update, array('id' => $id));
+			$table->update($update, array('id' => $id));
 
 			if(isset($update['start_time'])){
 				$update['start_time'] = rdate($update['start_time']);
@@ -281,7 +283,7 @@ class Product extends DBObject{
 				'start_time' => rstrtotime($countdown['start_time']),
 				'end_time' => rstrtotime($countdown['end_time']),
 			);
-			$db->INSERT($countdown);
+			$table->insert($countdown);
 
 			$countdown['start_time'] = rdate($countdown['start_time']);
 			$countdown['end_time'] = rdate($countdown['end_time']);
@@ -297,21 +299,21 @@ class Product extends DBObject{
 
 		$id = intval($id);
 		global $db;
-		$db->select_table('productcountdown');
-		$db->DELETE(array('id' => $id));
-		return $db->affected_rows();
+		$table = $db->select_table('productcountdown');
+		$table->delete(array('id' => $id));
+		return $db->affected_rows;
 	}
 
 	static public function AllStorages($simple = true){
 		global $db;
-		$db->select_table('productstorage');
+		$table = $db->select_table('productstorage');
 
 		if(!$simple){
-			return $db->MFETCH('*');
+			return $table->fetch_all('*');
 		}
 
 		$storages = array();
-		foreach($db->MFETCH('id,num') as $s){
+		foreach($table->fetch_all('id,num') as $s){
 			$storages[$s['id']] = intval($s['num']);
 		}
 		return $storages;
@@ -323,8 +325,8 @@ class Product extends DBObject{
 		}
 
 		global $db;
-		$db->select_table('productstorage');
-		return $db->MFETCH('*', 'productid='.$this->id);
+		$table = $db->select_table('productstorage');
+		return $table->fetch_all('*', 'productid='.$this->id);
 	}
 
 	public function editStorage($storage){
@@ -340,16 +342,16 @@ class Product extends DBObject{
 		}
 
 		global $db, $tpre;
-		$db->select_table('productstorage');
+		$table = $db->select_table('productstorage');
 
 		if($id > 0){
 			$productid = $this->id;
-			$db->UPDATE($attr, array('id' => $id, 'productid' => $productid));
+			$table->update($attr, array('id' => $id, 'productid' => $productid));
 		}else{
 			$attr['productid'] = $this->id;
 
-			$db->INSERT($attr);
-			$attr['id'] = $db->insert_id();
+			$table->insert($attr);
+			$attr['id'] = $table->insert_id();
 		}
 
 		return $attr;
@@ -368,7 +370,7 @@ class Product extends DBObject{
 			$db->query("UPDATE {$tpre}productstorage SET num=num+{$addnum} WHERE id=$id AND productid=$productid");
 		}
 
-		if($db->affected_rows()){
+		if($db->affected_rows){
 			return $db->result_first("SELECT num FROM {$tpre}productstorage WHERE id=$id AND productid=$productid");
 		}
 
@@ -378,12 +380,12 @@ class Product extends DBObject{
 	public function deleteStorage($id){
 		$id = intval($id);
 		global $db;
-		$db->select_table('productstorage');
-		$db->DELETE(array('id' => $id));
-		$result = $db->affected_rows();
+		$table = $db->select_table('productstorage');
+		$table->delete(array('id' => $id));
+		$result = $db->affected_rows;
 		if($result > 0){
-			$db->select_table('productprice');
-			$db->UPDATE(array('storageid' => NULL), array('productid' => $this->id, 'storageid' => $id));
+			$table = $db->select_table('productprice');
+			$table->update(array('storageid' => NULL), array('productid' => $this->id, 'storageid' => $id));
 		}
 	}
 
@@ -418,10 +420,10 @@ class Product extends DBObject{
 
 		$db->query("DELETE FROM {$tpre}productcountdown WHERE id IN (SELECT id FROM {$tpre}productprice WHERE productid=$id)");
 
-		$db->select_table('productprice');
-		$db->DELETE($condition);
-		$db->select_table('productstorage');
-		$db->DELETE($condition);
+		$table = $db->select_table('productprice');
+		$table->delete($condition);
+		$table = $db->select_table('productstorage');
+		$table->delete($condition);
 	}
 
 	static private $Types = NULL;
@@ -430,8 +432,8 @@ class Product extends DBObject{
 			self::$Types = readcache('producttypes');
 			if(self::$Types === NULL){
 				global $db;
-				$db->select_table('producttype');
-				$types = $db->MFETCH('*', 'hidden=0 ORDER BY displayorder');
+				$table = $db->select_table('producttype');
+				$types = $table->fetch_all('*', 'hidden=0 ORDER BY displayorder');
 				self::$Types = array();
 				foreach($types as $type){
 					self::$Types[$type['id']] = $type['name'];
@@ -458,9 +460,9 @@ class Product extends DBObject{
 
 		if($units === NULL){
 			global $db;
-			$db->select_table('productunit');
+			$table = $db->select_table('productunit');
 			$units = array();
-			foreach($db->MFETCH('id,name,type', 'hidden=0') as $u){
+			foreach($table->fetch_all('id,name,type', 'hidden=0') as $u){
 				$units[$u['type']][$u['id']] = $u['name'];
 			}
 

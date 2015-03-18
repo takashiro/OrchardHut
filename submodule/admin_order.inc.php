@@ -229,7 +229,7 @@ switch($action){
 				$query = $db->query("SELECT d.id,d.productname,d.subtype,d.amount,d.amountunit,d.number,d.orderid,d.state,d.subtotal
 					FROM {$tpre}orderdetail d
 					WHERE d.orderid IN ($orderids)");
-				while($d = $db->fetch_array($query)){
+				while($d = $query->fetch_assoc()){
 					$order_details[$d['orderid']][] = $d;
 				}
 
@@ -238,7 +238,7 @@ switch($action){
 					FROM {$tpre}orderaddresscomponent o
 						LEFT JOIN {$tpre}addresscomponent c ON c.id=o.componentid
 					WHERE o.orderid IN ($orderids)");
-				while($a = $db->fetch_array($query)){
+				while($a = $query->fetch_assoc()){
 					$order_addresses[$a['orderid']][$a['formatid']] = $a['componentname'];
 				}
 
@@ -496,7 +496,7 @@ switch($action){
 			WHERE d.id=$detailid AND (SELECT o.status FROM {$tpre}order o WHERE o.id=d.orderid)=$order_unsorted");
 
 		$result = array();
-		if($db->affected_rows()){
+		if($db->affected_rows){
 			$orderid = $db->result_first("SELECT orderid FROM {$tpre}orderdetail WHERE id=$detailid");
 			$db->query("UPDATE {$tpre}order o SET o.totalprice=(SELECT SUM(d.subtotal) FROM {$tpre}orderdetail d WHERE d.orderid=o.id AND d.state=0) WHERE o.id=$orderid");
 			$result['totalprice'] = $db->result_first("SELECT totalprice FROM {$tpre}order WHERE id=$orderid");

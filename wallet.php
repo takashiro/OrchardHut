@@ -22,7 +22,7 @@ if(isset($_GET['orderid'])){
 	}
 
 	$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id={$_G['user']->id} AND wallet>={$order->totalprice}");
-	if($db->affected_rows() <= 0){
+	if($db->affected_rows <= 0){
 		showmsg('wallet_is_insufficient', 'back');
 	}
 
@@ -34,9 +34,9 @@ if(isset($_GET['orderid'])){
 
 $limit = 10;
 $offset = ($page - 1) * $limit;
-$db->select_table('userwalletlog');
-$pagenum = $db->RESULTF('COUNT(*)', "uid=$_USER[id]");
-$walletlog = $db->MFETCH('*', "uid=$_USER[id] ORDER BY dateline DESC LIMIT $offset,$limit");
+$table = $db->select_table('userwalletlog');
+$pagenum = $table->result_first('COUNT(*)', "uid=$_USER[id]");
+$walletlog = $table->fetch_all('*', "uid=$_USER[id] ORDER BY dateline DESC LIMIT $offset,$limit");
 
 $prepaidreward = $db->fetch_all("SELECT * FROM {$tpre}prepaidreward WHERE etime_start<=$timestamp AND etime_end>=$timestamp");
 foreach($prepaidreward as &$r){

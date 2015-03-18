@@ -30,12 +30,12 @@ $_G['style'] = $_G['config']['style'];
 empty($_G['style']) && $_G['style'] = 'default';
 
 //数据库配置
-$_G['db'] = new Mysql;
+$_G['db'] = new Database($_CONFIG['db']['host'], $_CONFIG['db']['user'], $_CONFIG['db']['pw'], $_CONFIG['db']['name']);
 
 $db = &$_G['db'];
 $tpre = &$_CONFIG['db']['tpre'];
-$db->set_tablepre($tpre);
-$db->connect($_CONFIG['db']);
+$db->set_table_prefix($tpre);
+$db->set_charset($_CONFIG['db']['charset']);
 
 //时间戳
 @date_default_timezone_set('Etc/GMT +'.intval($_CONFIG['timezone']));
@@ -87,14 +87,14 @@ $_USER = $_G['user']->toReadable();
 
 //Debug模式
 if(!empty($_CONFIG['debugmode'])){
-	error_reporting(E_ALL | E_STRICT ^ E_NOTICE);
+	error_reporting(E_ALL);
 }
 
 //错误日志
 if(!empty($_CONFIG['log_error'])){
 	set_error_handler(function($errorLevel, $errorMessage, $errorFile, $errorLine){
 		return include submodule('core', 'handleerror');
-	}, E_ALL | E_STRICT);
+	}, E_ALL);
 }
 
 if(!defined('IN_ADMINCP')){
@@ -102,7 +102,7 @@ if(!defined('IN_ADMINCP')){
 	if(!empty($_CONFIG['log_request'])){
 		register_shutdown_function(function(){
 			global $_G;
-			writelog('request', $_G['request_log']."\t".(microtime(true) - $_G['starttime'])."\t".$_G['db']->querynum);
+			writelog('request', $_G['request_log']."\t".(microtime(true) - $_G['starttime'])."\t".$_G['db']->query_num());
 		});
 
 		$_G['request_log'] = $_G['user']->id."\t".$PHP_SELF."\t".json_encode($_POST)."\t".json_encode($_GET);

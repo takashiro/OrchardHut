@@ -81,8 +81,8 @@ class Autoreply extends DBObject{
 			self::$autoreplies = readcache('autoreply');
 			if(self::$autoreplies === NULL){
 				global $db;
-				$db->select_table('autoreply');
-				self::$autoreplies = $db->MFETCH('*');
+				$table = $db->select_table('autoreply');
+				self::$autoreplies = $table->fetch_all('*');
 				writecache('autoreply', self::$autoreplies);
 			}
 		}

@@ -2,7 +2,7 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$db->select_table('prepaidreward');
+$table = $db->select_table('prepaidreward');
 
 $action = &$_GET['action'];
 switch($action){
@@ -21,12 +21,12 @@ case 'edit':
 
 	$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 	if($id > 0){
-		$db->UPDATE($prepaidreward, 'id='.$id);
-		echo $db->affected_rows();
+		$table->update($prepaidreward, 'id='.$id);
+		echo $db->affected_rows;
 	}else{
-		$db->INSERT($prepaidreward);
+		$table->insert($prepaidreward);
 
-		$prepaidreward['id'] = $db->insert_id();
+		$prepaidreward['id'] = $table->insert_id();
 		foreach(array('etime_start', 'etime_end') as $var){
 			isset($prepaidreward[$var]) && $prepaidreward[$var] = rdate($prepaidreward[$var]);
 		}
@@ -38,15 +38,15 @@ case 'edit':
 case 'delete':
 	$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 	if($id > 0){
-		$db->DELETE('id='.$id);
-		echo $db->affected_rows();
+		$table->delete('id='.$id);
+		echo $db->affected_rows;
 	}else{
 		echo 0;
 	}
 	exit;
 
 default:
-	$prepaidrewards = $db->MFETCH('*');
+	$prepaidrewards = $table->fetch_all('*');
 	foreach($prepaidrewards as &$prepaidreward){
 		foreach(array('etime_start', 'etime_end') as $var){
 			$prepaidreward[$var] = rdate($prepaidreward[$var]);
