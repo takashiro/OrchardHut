@@ -20,6 +20,8 @@ $(function(){
 		$('#orderid').val('');
 
 		$.get($(this).attr('action'), data, function(){
+			$('#correct_audio')[0].play();
+
 			var new_result = $('<p></p>');
 			new_result.html('订单号' + orderid + '上架成功！');
 			$('#result_list').append(new_result);
@@ -59,5 +61,7 @@ $(function(){
 		<div id="result_list" class="toast_list"></div>
 	</div>
 </div>
+
+<audio id="correct_audio" src="{__TEMPLATE_ROOT__}media/correct.ogg">请使用支持HTML 5的浏览器。</audio>
 
 {template footer}
