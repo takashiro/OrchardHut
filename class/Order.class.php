@@ -101,7 +101,7 @@ class Order extends DBObject{
 			$bought = $db->result_first("SELECT amount FROM {$tpre}productquantitylimit WHERE priceid=$d[priceid] AND userid={$this->userid}");
 			$bought = intval($bought);
 			$d['quantitylimit'] = intval($d['quantitylimit']);
-			$d['number'] = $d['quantitylimit'] - $bought;
+			$d['number'] = min($d['number'], $d['quantitylimit'] - $bought);
 			if($d['number'] <= 0){
 				return false;
 			}
