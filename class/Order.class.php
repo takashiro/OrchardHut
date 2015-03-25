@@ -120,7 +120,8 @@ class Order extends DBObject{
 			}
 		}
 
-		$this->totalprice += $d['number'] * $d['price'];
+		$d['subtotal'] = $d['number'] * $d['price'];
+		$this->totalprice += $d['subtotal'];
 
 		$this->detail[] = array(
 			'productid' => $d['productid'],
