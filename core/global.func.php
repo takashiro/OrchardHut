@@ -65,7 +65,7 @@ function showmsg($message, $url_forward = ''){
 				}else{
 					$confirm_key = '';
 				}
-				rsetcookie('http_referer', $_SERVER['HTTP_REFERER']);
+				isset($_SERVER['HTTP_REFERER']) && rsetcookie('http_referer', $_SERVER['HTTP_REFERER']);
 			break;
 		}
 
