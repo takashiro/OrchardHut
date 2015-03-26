@@ -138,7 +138,7 @@ class User extends DBObject{
 		}
 
 		$table->insert($user);
-		return $table->insert_id;
+		return $table->insert_id();
 	}
 
 	public function updateInfo($user){
