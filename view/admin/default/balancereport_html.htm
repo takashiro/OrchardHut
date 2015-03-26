@@ -25,7 +25,43 @@
 			<button type="submit" name="format" value="html">统计</button>
 		</form>
 
+		<h2>统计报表</h2>
+		<div class="list">
+			<table>
+				<thead>
+					<tr>
+						<td></td>
+						<td>产品名称</td>
+						<td>销量</td>
+						<td>收入({echo Product::$PriceUnit})</td>
+						<td>平均收入({echo Product::$PriceUnit}/个)</td>
+						<td>进货量</td>
+						<td>成本({echo Product::$PriceUnit})</td>
+						<td>平均成本({echo Product::$PriceUnit}/个)</td>
+						<td>利润({echo Product::$PriceUnit})</td>
+						<td>平均利润({echo Product::$PriceUnit}/个)</td>
+					</tr>
+				</thead>
+				<tbody>
+				<!--{loop $product_stat $s}-->
+					<tr>
+						<td></td>
+						<td>{$s[name]}</td>
+						<td>{$s[sale][amount]}</td>
+						<td>{$s[sale][fee]}</td>
+						<td>{echo sprintf('%.2f', $s['sale']['average'])}</td>
+						<td>{$s[import][amount]}</td>
+						<td>{$s[import][fee]}</td>
+						<td>{echo sprintf('%.2f', $s['import']['average'])}</td>
+						<td>{$s[profit][total]}</td>
+						<td>{echo sprintf('%.2f', $s['profit']['average'])}</td>
+					</tr>
+				<!--{/loop}-->
+				</tbody>
+			</table>
+		</div>
 
+		<h2>详细报表</h2>
 		<div class="list">
 			<table>
 				<thead>
@@ -33,8 +69,9 @@
 						<th></th>
 						<td>时间</td>
 						<td>账号</td>
-						<td>金额</td>
+						<td>金额({echo Product::$PriceUnit})</td>
 						<td>商品</td>
+						<td>数量</td>
 						<td>原因</td>
 					</tr>
 				</thead>
@@ -44,8 +81,9 @@
 						<th></th>
 						<td>{echo rdate($l['dateline'])}</td>
 						<td>$l[bankaccount]</td>
-						<td><!--{if $l['delta'] > 0}-->+<!--{/if}-->{$l[delta]}{echo Product::$PriceUnit}</td>
+						<td><!--{if $l['delta'] > 0}-->+<!--{/if}-->{$l[delta]}</td>
 						<td>$l[productname]</td>
+						<td>$l[amount]</td>
 						<td>$l[reason]</td>
 					</tr>
 				<!--{/loop}-->
@@ -53,7 +91,8 @@
 						<th></th>
 						<td></td>
 						<td>总支出</td>
-						<td>-{$stat[out]}{echo Product::$PriceUnit}</td>
+						<td>-{$stat[out]}</td>
+						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
@@ -62,7 +101,8 @@
 						<th></th>
 						<td></td>
 						<td>总收入</td>
-						<td>+{$stat[in]}{echo Product::$PriceUnit}</td>
+						<td>+{$stat[in]}</td>
+						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
@@ -70,7 +110,8 @@
 						<th></th>
 						<td></td>
 						<td>利润</td>
-						<td>{$stat[all]}{echo Product::$PriceUnit}</td>
+						<td>{$stat[all]}</td>
+						<td></td>
 						<td></td>
 						<td></td>
 					</tr>

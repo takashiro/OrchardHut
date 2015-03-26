@@ -59,9 +59,9 @@ $stat = array(
 
 $logs = array();
 
-$fields = 'a.remark AS bankaccount, p.name AS productname';
+$fields = 'a.remark AS bankaccount, p.id AS productid, p.name AS productname';
 
-$query = $db->query("SELECT $fields, l.dateline, l.totalcosts AS delta
+$query = $db->query("SELECT $fields, l.amount, l.dateline, l.totalcosts AS delta
 	FROM {$tpre}productstoragelog l
 		LEFT JOIN {$tpre}bankaccountlog al ON al.id=l.bankaccountlogid
 		LEFT JOIN {$tpre}bankaccount a ON a.id=al.accountid
@@ -78,7 +78,7 @@ while($l = $query->fetch_assoc()){
 }
 
 $operation_order_income = BankAccount::OPERATION_ORDER_INCOME;
-$query = $db->query("SELECT $fields, o.dateline, d.subtotal AS delta
+$query = $db->query("SELECT $fields, d.amount, d.number, o.dateline, d.subtotal AS delta
 	FROM {$tpre}orderdetail d
 		LEFT JOIN {$tpre}product p ON p.id=d.productid
 		LEFT JOIN {$tpre}order o ON o.id=d.orderid
@@ -90,10 +90,53 @@ while($l = $query->fetch_assoc()){
 	$stat['in'] += $l['delta'];
 
 	$l['reason'] = lang('common', 'order').lang('common', 'order_received');
+	$l['amount'] *= $l['number'];
+	unset($l['number']);
 	$logs[] = $l;
 }
 
 $stat['all'] = $stat['in'] - $stat['out'];
+
+$product_stat = array();
+foreach($logs as $l){
+	empty($product_stat[$l['productid']]) && $product_stat[$l['productid']] = array();
+	$s = &$product_stat[$l['productid']];
+
+	$s['name'] = $l['productname'];
+	if($l['delta'] > 0){
+		$sd = &$s['import'];
+	}else{
+		$sd = &$s['sale'];
+	}
+	is_array($sd) || $sd = array('fee' => 0, 'amount' => 0);
+
+	$sd['fee'] += abs($l['delta']);
+	$sd['amount'] += $l['amount'];
+
+	unset($s, $sd);
+}
+
+foreach($product_stat as &$s){
+	foreach(array('import', 'sale') as $var){
+		if(empty($s[$var])){
+			$s[$var] = array(
+				'fee' => 0,
+				'amount' => 0,
+				'average' => '-',
+			);
+		}else{
+			$s[$var]['average'] = $s[$var]['fee'] / $s[$var]['amount'];
+		}
+	}
+}
+unset($s);
+
+foreach($product_stat as &$s){
+	$s['profit'] = array();
+	$s['profit']['average'] = $s['sale']['average'] - $s['import']['average'];
+	$s['profit']['total'] = $s['sale']['amount'] * $s['profit']['average'];
+}
+unset($s);
 
 usort($logs, function($l1, $l2){
 	return $l1['dateline'] > $l2['dateline'];
