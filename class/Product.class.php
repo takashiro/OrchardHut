@@ -414,7 +414,7 @@ class Product extends DBObject{
 	static public function Delete($id, $extra = ''){
 		parent::Delete($id, $extra);
 
-		global $db;
+		global $db, $tpre;
 		$id = intval($id);
 		$condition = 'productid='.$id;
 
