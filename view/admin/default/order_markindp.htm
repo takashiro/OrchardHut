@@ -2,9 +2,15 @@
 
 <script type="text/javascript">
 $(function(){
-	$('#orderid').focus();
+	$('#customlabel').focus();
 
 	$('#mark_form').submit(function(e){
+		var customlabel = $('#customlabel').val();
+		if(customlabel.length == 0){
+			$('#customlabel').focus();
+			return false;
+		}
+
 		var orderid = $('#orderid').val();
 		if(orderid.length == 13){
 			orderid = orderid.substr(3, 9);
@@ -51,6 +57,10 @@ $(function(){
 			<input type="hidden" name="mod" value="order" />
 			<input type="hidden" name="action" value="mark_indp" />
 			<table>
+				<tr>
+					<th>库位号：</th>
+					<td><input type="text" id="customlabel" name="customlabel" /></td>
+				</tr>
 				<tr>
 					<th>订单号：</th>
 					<td><input type="text" id="orderid" name="orderid" /></td>

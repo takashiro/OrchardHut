@@ -401,6 +401,9 @@ switch($action){
 
 			if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
 				$order->status = Order::InDeliveryPoint;
+				if(!empty($_GET['customlabel'])){
+					$order->customlabel = trim($_GET['customlabel']);
+				}
 				$order->addLog($_G['admin'], Order::StatusChanged, Order::InDeliveryPoint);
 			}
 		}
