@@ -114,36 +114,48 @@ switch($action){
 	break;
 
 	case 'editprice':
+		if(empty($_GET['productid']))
+			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->editPrice($_POST));
 	break;
 
 	case 'deleteprice':
+		if(empty($_GET['productid']))
+			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->deletePrice($_POST['id']));
 	break;
 
 	case 'editcountdown':
+		if(empty($_GET['productid']))
+			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->editCountdown($_POST));
 	break;
 
 	case 'deletecountdown':
+		if(empty($_GET['productid']))
+			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->deleteCountdown($_POST['id']));
 	break;
 
 	case 'editstorage':
+		if(empty($_GET['productid']))
+			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->editStorage($_POST));
 	break;
 
 	case 'deletestorage':
+		if(empty($_GET['productid']))
+			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->deleteStorage($_POST['id']));
