@@ -11,14 +11,21 @@ $(function(){
 			return false;
 		}
 
+		var labelnumber = parseInt(customlabel, 10);
+		if(!isNaN(labelnumber)){
+			customlabel = labelnumber;
+		}
+
 		var orderid = $('#orderid').val();
 		if(orderid.length == 13){
 			orderid = orderid.substr(3, 9);
 		}
 
 		orderid = parseInt(orderid, 10);
-		if(isNaN(orderid))
+		if(isNaN(orderid)){
+			$('#orderid').focus();
 			return false;
+		}
 
 		$('#orderid').val(orderid);
 
