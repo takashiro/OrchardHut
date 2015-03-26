@@ -124,8 +124,6 @@ switch($action){
 				$p['number'] = $cart[$p['id']];
 				$p['price'] = floatval($p['price']);
 				$p['subtotal'] = $p['price'] * $p['number'];
-
-				$total_price += $p['subtotal'];
 			}
 			unset($p);
 
