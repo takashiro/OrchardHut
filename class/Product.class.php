@@ -406,6 +406,7 @@ class Product extends DBObject{
 				'introduction' => '',
 				'text_color' => '#000',
 				'background_color' => '#FFF',
+				'icon_background' => '#FFF',
 				'prices' => array(),
 			);
 		}
