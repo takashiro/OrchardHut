@@ -277,11 +277,11 @@ class Product extends DBObject{
 
 			return array_merge($price, $update);
 		}else if(!empty($price['id'])){
-			@$countdown = array(
+			$countdown = array(
 				'id' => $price['id'],
-				'masked_priceid' => intval($countdown['masked_priceid']),
-				'start_time' => rstrtotime($countdown['start_time']),
-				'end_time' => rstrtotime($countdown['end_time']),
+				'masked_priceid' => isset($countdown['masked_priceid']) ? intval($countdown['masked_priceid']) : 0,
+				'start_time' => isset($countdown['start_time']) ? rstrtotime($countdown['start_time']) : 0,
+				'end_time' => isset($countdown['end_time']) ? rstrtotime($countdown['end_time']) : 0,
 			);
 			$table->insert($countdown);
 
