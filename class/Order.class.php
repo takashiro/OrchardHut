@@ -150,7 +150,7 @@ class Order extends DBObject{
 		return $this->address_components;
 	}
 
-	public function insert(){
+	public function insert($extra = ''){
 		if(empty($this->detail)){
 			return false;
 		}
@@ -158,7 +158,7 @@ class Order extends DBObject{
 		global $tpre;
 		$this->dateline = TIMESTAMP;
 
-		parent::insert();
+		parent::insert($extra);
 
 		global $db;
 		foreach($this->detail as &$d){

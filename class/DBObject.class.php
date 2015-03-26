@@ -86,8 +86,8 @@ abstract class DBObject{
 		$this->update[$attr] = $value;
 	}
 
-	public function insert(){
-		$this->table->INSERT($this->attr);
+	public function insert($extra = ''){
+		$this->table->insert($this->attr, false, $extra);
 
 		$this->attr(static::PRIMARY_KEY, $this->table->insert_id());
 		return $this->attr(static::PRIMARY_KEY);

@@ -41,7 +41,11 @@ if($action == 'login'){
 				$user->qqopenid = $open_id;
 				$user->nickname = $user_info['nickname'];
 
-				$user->insert();
+				$user->insert('IGNORE');
+				if($db->affected_rows <= 0){
+					$user = new User;
+					$user->fetch('*', array('qqopenid' => $open_id));
+				}
 			}
 
 			$user->force_login();

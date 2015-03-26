@@ -36,7 +36,11 @@ if($action == 'login'){
 			$user->wxopenid = $open_id;
 			$user->nickname = lang('message', 'wxuser');
 
-			$user->insert();
+			$user->insert('IGNORE');
+			if($db->affected_rows <= 0){
+				$user = new User;
+				$user->fetch('*', array('wxopenid' => $open_id));
+			}
 		}
 
 		$user->force_login();

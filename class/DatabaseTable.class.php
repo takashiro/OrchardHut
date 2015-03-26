@@ -83,7 +83,7 @@ class DatabaseTable{
 	}
 
 	function insert($node, $replace = false, $extra = ''){
-		$action = $replace ? 'REPLACE' : 'insert';
+		$action = $replace ? 'REPLACE' : 'INSERT';
 		$fields = implode('`,`',array_keys($node));
 
 		$values = array_values($node);
@@ -105,7 +105,7 @@ class DatabaseTable{
 			return false;
 		}
 
-		$action = $replace ? 'REPLACE' : 'insert';
+		$action = $replace ? 'REPLACE' : 'INSERT';
 
 		$nodes = array_values($nodes);
 

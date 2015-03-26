@@ -15,12 +15,12 @@ class Announcement extends DBObject{
 		parent::__destruct();
 	}
 
-	function insert(){
+	function insert($extra = ''){
 		$this->dateline = TIMESTAMP;
 		if($this->time_end < $this->time_start){
 			$this->time_end = $this->time_start + 24 * 3600;
 		}
-		parent::insert();
+		return parent::insert($extra);
 	}
 
 	static private $PotentialAnnouncements = NULL;
