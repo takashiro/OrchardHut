@@ -2,6 +2,10 @@
 
 require_once './core/init.inc.php';
 
+if(!$_G['user']->isLoggedIn()){
+	redirect('memcp.php');
+}
+
 $paymentconfig = readdata('payment');
 if(isset($_GET['orderid'])){
 	if(empty($paymentconfig['enabled_method'][Order::PaidWithWallet])){
