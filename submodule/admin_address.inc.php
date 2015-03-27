@@ -47,7 +47,7 @@ if($data == 'format'){
 		if($action == 'edit'){
 			$component = array();
 
-			@$id = intval($_REQUEST['id']);
+			$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 			if($id > 0){
 				if(!empty($_POST['name'])){
 					$component['name'] = $_POST['name'];
