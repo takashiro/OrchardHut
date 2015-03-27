@@ -94,6 +94,7 @@ $(function(){
 				<thead>
 					<tr>
 						<td>编号</td>
+						<td>库位号</td>
 					<!--{loop Address::Format() $f}-->
 						<td>$f[name]</td>
 					<!--{/loop}-->
@@ -115,6 +116,7 @@ $(function(){
 					<!--{loop $orders $o}-->
 					<tr primaryvalue="$o[id]">
 						<td>$o[id]</td>
+						<td>$o[customlabel]</td>
 						<!--{loop Address::Format() $format}-->
 							<td>{echo $o['address'][$format['id']]}</td>
 						<!--{/loop}-->
