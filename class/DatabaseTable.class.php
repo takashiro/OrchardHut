@@ -72,6 +72,7 @@ class DatabaseTable{
 		$sql = array();
 		foreach($node as $k => $v){
 			if($v !== NULL){
+				$v = raddslashes($v);
 				$sql[] = "`$k`='$v'";
 			}else{
 				$sql[] = "`$k`=NULL";
@@ -87,6 +88,7 @@ class DatabaseTable{
 		$fields = implode('`,`',array_keys($node));
 
 		$values = array_values($node);
+		$values = raddslashes($values);
 		foreach($values as &$value){
 			if($value !== NULL){
 				$value = '\''.$value.'\'';
@@ -108,6 +110,7 @@ class DatabaseTable{
 		$action = $replace ? 'REPLACE' : 'INSERT';
 
 		$nodes = array_values($nodes);
+		$nodes = raddslashes($nodes);
 
 		$fields = array_keys($nodes[0]);
 
@@ -144,6 +147,7 @@ class DatabaseTable{
 
 		$sql = array();
 		foreach($conditions as $field => $value){
+			$value = raddslashes($value);
 			$sql[] = "`{$field}`='$value'";
 		}
 		$sql = implode(' AND ', $sql);
