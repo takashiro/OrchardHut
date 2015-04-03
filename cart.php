@@ -99,7 +99,7 @@ switch($action){
 				}
 			}else{
 				$table = $db->select_table('deliveryaddress');
-				$address = $table->fetch_all('*', 'id='.$addressid);
+				$address = $table->fetch_first('*', 'id='.$addressid);
 				if(!$address || $address['userid'] != $_G['user']->id){
 					showmsg('delivery_address_id_not_exist');
 				}
