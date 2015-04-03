@@ -1,10 +1,31 @@
 
+/********************************************************************
+ Copyright (c) 2013-2015 - Kazuichi Takashiro
+
+ This file is part of Orchard Hut.
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ takashiro@qq.com
+*********************************************************************/
+
 function getcookie(Name){
 	Name = cookiepre + Name;
 
 	var search = Name + "=";
 	if(document.cookie.length > 0){
-		offset = document.cookie.indexOf(search);  
+		offset = document.cookie.indexOf(search);
 		if(offset != -1){
 			offset += search.length;
 			end = document.cookie.indexOf(";", offset);
@@ -26,7 +47,7 @@ function setcookie(name, value){
 	var expires = (argc > 2) ? argv[2] : 9999;
 	if(expires != null){
 		var LargeExpDate = new Date ();
-		LargeExpDate.setTime(LargeExpDate.getTime() + (expires*1000*3600*24));        
+		LargeExpDate.setTime(LargeExpDate.getTime() + (expires*1000*3600*24));
 	}
 	document.cookie = name + "=" + escape (value)+((expires == null) ? "" : ("; expires=" +LargeExpDate.toGMTString()));
 }
@@ -44,7 +65,7 @@ function in_array(needle, arr){
 function popup_message(title, message){
 	var popup_message = $('<div></div>');
 	popup_message.addClass('popup_message');
-	
+
 	var header = $('<header></header>');
 	var h4 = $('<h4></h4>');
 	h4.html(title);
@@ -53,7 +74,7 @@ function popup_message(title, message){
 	remove_button.addClass('remove');
 	header.append(h4);
 	header.append(remove_button);
-	
+
 	var content = $('<div></div>');
 	content.addClass('content');
 	content.html(message);

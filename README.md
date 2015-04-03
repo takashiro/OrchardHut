@@ -8,12 +8,15 @@ Orchard Hut Shop Online
 
 Lisense
 -------
-###Code and Resource
-This e-shop system is not free software; you can not redistribute it,
-modify it or use it for commercial purpose without the permission of
-Kazuichi Takashiro.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-See the LICENSE file for more details. (Add license later)
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
 Introduction
 ------------
