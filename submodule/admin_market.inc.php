@@ -31,8 +31,8 @@ switch($action){
 		$condition = array();
 
 		if(isset($_GET['productname'])){
-			$_GET['productname'] = trim($_GET['productname']);
-			$condition[] = 'name LIKE \'%'.$_GET['productname'].'%\'';
+			$productname = addslashes(trim($_GET['productname']));
+			$condition[] = 'name LIKE \'%'.$productname.'%\'';
 		}
 
 		if(!empty($_GET['type'])){
