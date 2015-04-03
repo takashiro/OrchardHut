@@ -119,7 +119,7 @@ class Order extends DBObject{
 		global $db, $tpre;
 
 		if($d['quantitylimit']){
-			$bought = $db->result_first("SELECT amount FROM {$tpre}productquantitylimit WHERE priceid=$d[priceid] AND userid={$this->userid}");
+			$bought = $db->result_first("SELECT amount FROM {$tpre}productquantitylimit WHERE priceid={$d['priceid']} AND userid={$this->userid}");
 			$bought = intval($bought);
 			$d['quantitylimit'] = intval($d['quantitylimit']);
 			$d['number'] = min($d['number'], $d['quantitylimit'] - $bought);
@@ -135,7 +135,7 @@ class Order extends DBObject{
 
 		if($d['storageid']){
 			$number = $d['amount'] * $d['number'];
-			$db->query("UPDATE {$tpre}productstorage SET num=num-$number WHERE id=$d[storageid] AND num>=$number");
+			$db->query("UPDATE {$tpre}productstorage SET num=num-$number WHERE id={$d['storageid']} AND num>=$number");
 			if($db->affected_rows <= 0){
 				return false;
 			}
@@ -219,7 +219,7 @@ class Order extends DBObject{
 			$details = $table->fetch_all('storageid,amount,number', 'orderid='.$orderid.' AND storageid IS NOT NULL');
 			foreach($details as $d){
 				$num = $d['amount'] * $d['number'];
-				$db->query("UPDATE {$tpre}productstorage SET num=num+$num WHERE id=$d[storageid]");
+				$db->query("UPDATE {$tpre}productstorage SET num=num+$num WHERE id={$d['storageid']}");
 			}
 			$table->delete('orderid='.$orderid);
 

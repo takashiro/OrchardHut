@@ -59,7 +59,7 @@ case 'mark_received':
 		$old_status = array(Order::Sorted, Order::Delivering, Order::InDeliveryPoint);
 		$old_status = implode(',', $old_status);
 		$new_status = Order::Received;
-		$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND userid=$_USER[id] AND status IN ($old_status)");
+		$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND userid={$_USER['id']} AND status IN ($old_status)");
 		if($db->affected_rows > 0){
 			$order = new Order($orderid);
 			$order->addLog($_G['user'], Order::StatusChanged, Order::Received);
@@ -89,7 +89,7 @@ case 'view':
 case 'deliveringnum':
 	$status = array(Order::Sorted, Order::Delivering, Order::InDeliveryPoint);
 	$status = implode(',', $status);
-	$num = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid=$_USER[id] AND status IN (".$status.")");
+	$num = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid={$_USER['id']} AND status IN ($status)");
 	echo $num;
 	exit;
 

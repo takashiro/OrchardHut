@@ -36,7 +36,7 @@ class WeixinHook{
 				}
 
 				if($log['operator']){
-					$admin = $db->fetch_first("SELECT a.realname,a.mobile FROM {$tpre}administrator a WHERE a.id=$log[operator]");
+					$admin = $db->fetch_first("SELECT a.realname,a.mobile FROM {$tpre}administrator a WHERE a.id={$log['operator']}");
 					if($admin){
 						$text.= lang('weixin', 'deliverer_is').$admin['realname'];
 						if($admin['mobile']){
@@ -55,7 +55,7 @@ class WeixinHook{
 					}
 					$text.= $d['productname'];
 					if(!empty($d['subtype'])){
-						$text.= "($d[subtype])";
+						$text.= "({$d['subtype']})";
 					}
 					$text.= ($d['amount'] * $d['number']).$d['amountunit'];
 				}

@@ -53,7 +53,7 @@ foreach($products as $product){
 }
 $quantity_limit = array();
 if($_G['user']->isLoggedIn()){
-	$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid=$_USER[id]");
+	$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid={$_USER['id']}");
 	while($l = $query->fetch_assoc()){
 		$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
 	}

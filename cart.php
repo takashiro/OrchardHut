@@ -242,7 +242,7 @@ switch($action){
 				$succeeded || $item_deleted = true;
 
 				$totalamount = $p['amount'] * $p['number'];
-				$db->query("UPDATE LOW_PRIORITY {$tpre}product SET soldout=soldout+$totalamount WHERE id=$p[productid]");
+				$db->query("UPDATE LOW_PRIORITY {$tpre}product SET soldout=soldout+$totalamount WHERE id={$p['productid']}");
 			}
 			unset($p);
 
@@ -253,7 +253,7 @@ switch($action){
 			$order->totalprice += $order->deliveryfee;
 
 			if($order->paymentmethod == Order::PaidWithWallet){
-				$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id=$_USER[id] AND wallet>={$order->totalprice}");
+				$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id={$_USER['id']} AND wallet>={$order->totalprice}");
 				if($db->affected_rows <= 0){
 					$order->paymentmethod = Order::PaidWithCash;
 				}else{
@@ -311,7 +311,7 @@ switch($action){
 		}
 		$quantity_limit = array();
 		if($_G['user']->isLoggedIn()){
-			$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid=$_USER[id]");
+			$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid={$_USER['id']}");
 			while($l = $query->fetch_assoc()){
 				$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
 			}
@@ -358,7 +358,7 @@ switch($action){
 		$address_id = !empty($_POST['address_id']) ? intval($_POST['address_id']) : 0;
 		$affected_rows = 0;
 		if($address_id > 0){
-			$db->query("DELETE FROM {$tpre}deliveryaddress WHERE id=$address_id AND userid=$_USER[id]");
+			$db->query("DELETE FROM {$tpre}deliveryaddress WHERE id=$address_id AND userid={$_USER['id']}");
 			$affected_rows = $db->affected_rows;
 			if($affected_rows > 0){
 				$db->query("DELETE FROM {$tpre}deliveryaddresscomponent WHERE addressid=$address_id");

@@ -85,7 +85,7 @@ class Wallet{
 					$fee += $extrafee;
 
 					$db->query("UPDATE {$tpre}userwalletlog SET delta=$fee WHERE id='$id'");
-					$db->query("UPDATE {$tpre}user SET wallet=wallet+$fee WHERE id=$log[uid]");
+					$db->query("UPDATE {$tpre}user SET wallet=wallet+$fee WHERE id={$log['uid']}");
 				}
 			}
 		}

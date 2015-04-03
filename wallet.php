@@ -60,8 +60,8 @@ if(isset($_GET['orderid'])){
 $limit = 10;
 $offset = ($page - 1) * $limit;
 $table = $db->select_table('userwalletlog');
-$pagenum = $table->result_first('COUNT(*)', "uid=$_USER[id]");
-$walletlog = $table->fetch_all('*', "uid=$_USER[id] ORDER BY dateline DESC LIMIT $offset,$limit");
+$pagenum = $table->result_first('COUNT(*)', "uid={$_USER['id']}");
+$walletlog = $table->fetch_all('*', "uid={$_USER['id']} ORDER BY dateline DESC LIMIT $offset,$limit");
 
 $prepaidreward = $db->fetch_all("SELECT * FROM {$tpre}prepaidreward WHERE etime_start<=$timestamp AND etime_end>=$timestamp");
 foreach($prepaidreward as &$r){
