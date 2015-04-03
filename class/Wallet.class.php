@@ -39,6 +39,7 @@ class Wallet{
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, $prefix_len) == 0){
 			global $db;
 			$id = substr($out_trade_no, $prefix_len);
+			$id = raddslashes($id);
 
 			$log = array(
 				'alipaytradeid' => $trade_no,

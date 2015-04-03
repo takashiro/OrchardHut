@@ -71,12 +71,6 @@ if(!empty($_CONFIG['cookiepre'])){
 	unset($cookie);
 }
 
-//转义处理
-foreach(array('_POST', '_GET', '_COOKIE', '_REQUEST') as $request){
-	get_magic_quotes_gpc() || ${$request} = raddslashes(${$request});
-	${$request} = rhtmlspecialchars(${$request});
-}
-
 //常用变量处理
 $page = isset($_GET['page']) ? max(1, intval($_REQUEST['page'])) : 1;
 $pagenum = 0;
