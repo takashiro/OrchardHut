@@ -166,7 +166,7 @@ switch($action){
 			if(!empty($_POST['deliverytime'])){
 				$dtid = intval($_POST['deliverytime']);
 				$table = $db->select_table('deliverytime');
-				$delivery = $table->fetch_all('*', 'id='.$dtid);
+				$delivery = $table->fetch_first('*', 'id='.$dtid);
 
 				list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
 				$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
