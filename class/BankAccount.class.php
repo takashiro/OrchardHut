@@ -119,7 +119,7 @@ class BankAccount extends DBObject{
 			return;
 
 
-		if($log['extra'] == Order::Received){
+		if($log['extra'] == Order::Received && $order->paymentmethod == Order::PaidWithCash){
 			global $db, $tpre, $_G;
 
 			$components = $order->getAddressComponents();
