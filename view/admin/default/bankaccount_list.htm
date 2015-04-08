@@ -21,10 +21,12 @@
 				<td>$u[id]</td>
 				<td>$u[remark]</td>
 				<td>$u[amount]</td>
-				<td>
+				<td style="text-align: left">
 					<a href="$mod_url&action=edit&id=$u[id]">[编辑]</a>
-					<a href="$mod_url&action=delete&id=$u[id]">[删除]</a>
 					<a href="$mod_url&action=transfer&sourceaccount=$u[id]">[转账]</a>
+					<!--{if $u['amount'] == 0}-->
+					<a href="$mod_url&action=delete&id=$u[id]">[删除]</a>
+					<!--{/if}-->
 				</td>
 			</tr>
 			<!--{/loop}-->
