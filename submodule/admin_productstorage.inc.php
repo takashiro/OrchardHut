@@ -159,21 +159,24 @@ default:
 			LEFT JOIN {$tpre}product p ON p.id=s.productid
 		WHERE p.hide=0");
 
-	$storageHash = array();
-	foreach($storages as &$s){
-		$storageHash[$s['id']] = &$s;
-	}
-	unset($s);
+	if($storages){
+		$storageHash = array();
+		foreach($storages as &$s){
+			$storageHash[$s['id']] = &$s;
+		}
+		unset($s);
 
-	$storageids = array();
-	foreach($storages as $s)
-		$storageids[] = $s['id'];
-	$storageids = implode(',', $storageids);
-	$query = $db->query("SELECT storageid,subtype,amountunit FROM {$tpre}productprice WHERE storageid IS NOT NULL AND storageid IN ($storageids)");
-	while($p = $query->fetch_row()){
-		$s = &$storageHash[$p[0]];
-		$s['subtype'][] = $p[1];
-		$s['amountunit'][] = $p[2];
+		$storageids = array();
+		foreach($storages as $s)
+			$storageids[] = $s['id'];
+
+		$storageids = implode(',', $storageids);
+		$query = $db->query("SELECT storageid,subtype,amountunit FROM {$tpre}productprice WHERE storageid IS NOT NULL AND storageid IN ($storageids)");
+		while($p = $query->fetch_row()){
+			$s = &$storageHash[$p[0]];
+			$s['subtype'][] = $p[1];
+			$s['amountunit'][] = $p[2];
+		}
 	}
 
 	foreach($storages as &$s){
