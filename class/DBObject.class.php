@@ -126,8 +126,10 @@ abstract class DBObject{
 			$extra = ' AND ('.$extra.')';
 		}
 
-		$this->table->delete(static::PRIMARY_KEY.'='.$id.$extra);
-		return $this->table->affected_rows();
+		global $db;
+		$table = $db->select_table(static::TABLE_NAME);
+		$table->delete(static::PRIMARY_KEY.'='.$id.$extra);
+		return $table->affected_rows();
 	}
 
 	static public function Exist($id, $field = ''){
