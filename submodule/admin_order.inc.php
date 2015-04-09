@@ -491,15 +491,22 @@ switch($action){
 		}
 	break;
 
-	case 'delete':
+	case 'cancel':
 		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 		if($orderid > 0){
 			if(empty($_GET['confirm'])){
-				showmsg('confirm_to_delete_order', 'confirm');
+				showmsg('confirm_to_cancel_order', 'confirm');
 			}
 
-			Order::Delete($orderid);
-			redirect($_COOKIE['http_referer']);
+			$new_status = Order::Canceled;
+			$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid");
+			if($db->affected_rows > 0){
+				$order = new Order;
+				$order->id = $orderid;
+				$order->addLog($_G['admin'], Order::StatusChanged, Order::Canceled);
+				//@todo: Automatically return fee here?
+			}
+			empty($_COOKIE['http_referer']) || redirect($_COOKIE['http_referer']);
 		}
 	break;
 

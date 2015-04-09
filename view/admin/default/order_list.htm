@@ -158,7 +158,7 @@ $(function(){
 						<td>
 							<a class="print" href="$mod_url&action=print&orderid=$o[id]" target="_blank">[打印]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
-							<br /><a class="delete" href="$mod_url&action=delete&orderid=$o[id]">[删除]</a>
+							<br /><a class="delete" href="$mod_url&action=cancel&orderid=$o[id]">[取消]</a>
 							<!--{/if}-->
 						</td>
 						<td style="width:10%;"><div style="font-size:9pt;max-height:100px;overflow-y:auto;">$o[message]</div></td>
