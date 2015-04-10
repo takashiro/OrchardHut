@@ -206,6 +206,12 @@ switch($action){
 	break;
 
 	case 'list':default:
+		$wallet = array(
+			'totalamount' => $db->result_first("SELECT SUM(wallet) FROM {$tpre}user"),
+			'totalrealcharged' => $db->result_first("SELECT SUM(cost) FROM {$tpre}userwalletlog WHERE recharged=1"),
+		);
+		$wallet['totalgifted'] = $wallet['totalamount'] - $wallet['totalrealcharged'];
+
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
 		$accounts = $table->fetch_all('*', "1 LIMIT $offset,$limit");
