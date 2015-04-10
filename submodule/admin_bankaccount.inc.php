@@ -126,6 +126,38 @@ switch($action){
 		include view('bankaccount_transfer');
 	break;
 
+	case 'withdraw': case 'deposit':
+		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+		if($_POST){
+			$delta = isset($_POST['delta']) ? abs($_POST['delta']) : 0;
+			if ($delta <= 0){
+				showmsg('the_number_you_must_be_kidding_me');
+			}
+
+			if($action == 'withdraw'){
+				$operation = BankAccount::OPERATION_WITHDRAW;
+				$delta = -$delta;
+			}else{
+				$operation = BankAccount::OPERATION_DEPOSIT;
+			}
+			$a = new BankAccount;
+			$a->id = $id;
+			if($a->updateAmount($delta)){
+				$reason = isset($_POST['reason']) ? $_POST['reason'] : '';
+				$a->addLog($operation, $delta, $reason, $_G['admin']->id);
+				showmsg('successfully_'.$action.'_bankaccount', 'refresh');
+			}else{
+				showmsg('source_account_is_insufficient', 'back');
+			}
+		}
+
+		$account = new BankAccount($id);
+		if ($account->exists()) {
+			$account = $account->toReadable();
+			include view('bankaccount_withdraw');
+		}
+	break;
+
 	case 'list':default:
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
