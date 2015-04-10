@@ -158,6 +158,53 @@ switch($action){
 		}
 	break;
 
+	case 'log':
+		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		if ($id <= 0)
+			exit('access denied');
+
+		$condition = array("l.accountid=$id");
+
+		if(!empty($_REQUEST['time_start'])){
+			$time_start = rstrtotime($_REQUEST['time_start']);
+			$condition[] = "l.dateline>=$time_start";
+		}else{
+			$time_start = '';
+		}
+
+		if(!empty($_REQUEST['time_end'])){
+			$time_end = rstrtotime($_REQUEST['time_end']);
+			$condition[] = "l.dateline<=$time_end";
+		}else{
+			$time_end = '';
+		}
+
+		$condition = implode(' AND ', $condition);
+
+		$limit = 20;
+		$offset = ($page - 1) * $limit;
+		$logs = $db->fetch_all("SELECT l.*, a.realname, a.account
+			FROM {$tpre}bankaccountlog l
+				LEFT JOIN {$tpre}administrator a ON a.id=l.operatorid
+			WHERE $condition
+			ORDER BY l.id DESC
+			LIMIT $offset, $limit");
+
+		foreach($logs as &$l){
+			$l['operator'] = empty($l['realname']) ? $l['account'] : $l['realname'];
+		}
+		unset($l);
+
+		$time_start && $time_start = rdate($time_start);
+		$time_end && $time_end = rdate($time_end);
+
+		$pagenum = $db->result_first("SELECT COUNT(*)
+			FROM {$tpre}bankaccountlog l
+			WHERE $condition");
+
+		include view('bankaccount_log');
+	break;
+
 	case 'list':default:
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
