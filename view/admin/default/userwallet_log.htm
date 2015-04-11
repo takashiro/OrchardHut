@@ -1,0 +1,62 @@
+<!--{template header}-->
+
+<script type="text/javascript" src="./js/datetime.js"></script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=payment">支付</a></li>
+	<li>钱包充值记录</li>
+</ol>
+
+<div class="box list">
+	<h1>钱包充值记录</h1>
+
+	<form class="quick_search" action="$mod_url&action=log" method="post">
+		<dl>
+			<dt>时间：</dt>
+			<dd><input type="text" name="time_start" class="datetime" value="$time_start" /> - <input type="text" name="time_end" class="datetime" value="$time_end" /></dd>
+		</dl>
+		<button type="submit" name="format" value="html">查找</button>
+	</form>
+
+	<div class="notice">
+		<ol>
+			<li>实际充入金额 = 赠费金额 + 原充入金额。</li>
+			<li>此处仅显示充值成功的记录，不显示充值未完成的记录（如支付宝充值未确认扣费即退出）。</li>
+		</ol>
+	</div>
+
+	<div class="content">
+		<table>
+			<thead>
+				<tr><td>用户ID</td><td>用户昵称</td><td>时间</td><td>实际充入金额</td><td>赠费金额</td><td>原充入金额</td><td>支付宝订单号</td></tr>
+			</thead>
+			<tbody>
+			<!--{loop $logs $l}-->
+			<tr>
+				<td>$l[uid]</td>
+				<td>$l[nickname]</td>
+				<td>{echo rdate($l['dateline'])}</td>
+				<td>$l[delta]</td>
+				<td>{echo $l['delta'] - $l['cost']}</td>
+				<td>$l[cost]</td>
+				<td>$l[alipaytradeid]</td>
+			</tr>
+			<!--{/loop}-->
+			<tr>
+				<td></td>
+				<td>总计</td>
+				<td></td>
+				<td>$stat[totaldelta]</td>
+				<td>{echo $stat['totaldelta'] - $stat['totalcost']}</td>
+				<td>$stat[totalcost]</td>
+				<td></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&action=log&time_start='.$time_start.'&time_end='.$time_end)}
+
+<!--{template footer}-->

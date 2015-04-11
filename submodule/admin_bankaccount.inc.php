@@ -208,9 +208,9 @@ switch($action){
 	case 'list':default:
 		$wallet = array(
 			'totalamount' => $db->result_first("SELECT SUM(wallet) FROM {$tpre}user"),
-			'totalrealcharged' => $db->result_first("SELECT SUM(cost) FROM {$tpre}userwalletlog WHERE recharged=1"),
+			'totalgifted' => $db->result_first("SELECT SUM(delta-cost) FROM {$tpre}userwalletlog WHERE recharged=1"),
+			'totalrealcharged' => $db->result_first("SELECT SUM(delta) FROM {$tpre}userwalletlog WHERE recharged=1"),
 		);
-		$wallet['totalgifted'] = $wallet['totalamount'] - $wallet['totalrealcharged'];
 
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
