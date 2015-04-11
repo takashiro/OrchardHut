@@ -39,10 +39,13 @@ case 'delete':
 	$new_status = Order::Canceled;
 	$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND status=0");
 	if($db->affected_rows > 0){
-		$order = new Order;
-		$order->id = $orderid;
+		$order = new Order($orderid);
 		$order->addLog($_G['user'], Order::StatusChanged, Order::Canceled);
-		//@todo: Automatically return fee here
+
+		if($order->paymentmethod == Order::PaidWithWallet){
+			$db->query("UPDATE {$tpre}user SET wallet=wallet+{$order->totalprice} WHERE id={$_G['user']->id}");
+		}
+
 		showmsg('successfully_canceled_order', 'order.php');
 	}
 
