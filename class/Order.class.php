@@ -337,8 +337,8 @@ class Order extends DBObject{
 Order::$Status = array(
 	Order::Unsorted => lang('common', 'order_unsorted'),
 	Order::Sorted => lang('common', 'order_sorted'),
-	Order::Delivering => lang('common', 'order_delivering'),
 	Order::InDeliveryPoint => lang('common', 'order_in_delivery_point'),
+	Order::Delivering => lang('common', 'order_delivering'),
 	Order::Received => lang('common', 'order_received'),
 	Order::Rejected => lang('common', 'order_rejected'),
 	Order::Canceled => lang('common', 'order_canceled'),

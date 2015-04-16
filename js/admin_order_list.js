@@ -30,18 +30,12 @@ $(function(){
 				td.html(lang['order_sorted']);
 
 				if(admin.hasPermission('order_deliver_w')){
-					var delivering_button = $('<a></a>');
-					delivering_button.attr('class', 'mark_delivering');
-					delivering_button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
-					delivering_button.html('[' + lang['order_delivering'] + ']');
-
 					var indp_button = $('<a></a>');
 					indp_button.attr('class', 'mark_in_delivery_point');
 					indp_button.attr('href', href.replace('mark_sorted', 'mark_indp'));
 					indp_button.html('[' + lang['order_in_delivery_point'] + ']');
 
 					var div = $('<div></div>');
-					div.append(delivering_button);
 					div.append(indp_button);
 					td.append(div);
 				}
@@ -54,7 +48,12 @@ $(function(){
 				td.html(a.hasClass('mark_delivering') ? lang['order_delivering'] : lang['order_in_delivery_point']);
 
 				if(admin.hasPermission('order_deliver_w')){
-					var data = {'mark_received':'[' + lang['order_received'] + ']', 'mark_rejected':'[' + lang['order_rejected'] + ']'};
+					var data = {};
+					if(!a.hasClass('mark_delivering'))
+						data['mark_delivering'] = '[' + lang['order_delivering'] + ']';
+					data['mark_received'] = '[' + lang['order_received'] + ']';
+					data['mark_rejected'] = '[' + lang['order_rejected'] + ']';
+
 					for(var action in data){
 						var button = $('<a></a>');
 						button.attr('class', action);
