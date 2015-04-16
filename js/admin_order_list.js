@@ -58,7 +58,11 @@ $(function(){
 					for(var action in data){
 						var button = $('<a></a>');
 						button.attr('class', action);
-						button.attr('href', href.replace('mark_delivering', action));
+						if(a.hasClass('mark_delivering')){
+							button.attr('href', href.replace('mark_delivering', action));
+						}else{
+							button.attr('href', href.replace('mark_indp', action));
+						}
 						button.html(data[action]);
 
 						var div = $('<div></div>');
