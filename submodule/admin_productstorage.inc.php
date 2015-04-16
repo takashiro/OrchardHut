@@ -159,6 +159,8 @@ default:
 			LEFT JOIN {$tpre}product p ON p.id=s.productid
 		WHERE p.hide=0");
 
+	$storage_unit_ratio = array();
+
 	if($storages){
 		$storageHash = array();
 		foreach($storages as &$s){
@@ -171,12 +173,21 @@ default:
 			$storageids[] = $s['id'];
 
 		$storageids = implode(',', $storageids);
-		$query = $db->query("SELECT storageid,subtype,amountunit FROM {$tpre}productprice WHERE storageid IS NOT NULL AND storageid IN ($storageids)");
+		$query = $db->query("SELECT storageid,subtype,amountunit
+			FROM {$tpre}productprice
+			WHERE storageid IS NOT NULL AND storageid IN ($storageids)");
 		while($p = $query->fetch_row()){
 			$s = &$storageHash[$p[0]];
 			$s['subtype'][] = $p[1];
 			$s['amountunit'][] = $p[2];
 		}
+
+		$storage_unit_ratio = $db->fetch_all("SELECT storageid,amount,importamount,importamountunit
+			FROM `hut_productstoragelog`
+			WHERE id IN (SELECT MAX(id)
+				FROM `hut_productstoragelog`
+				WHERE storageid IN ($storageids) GROUP BY storageid,importamountunit)
+			ORDER BY id DESC");
 	}
 
 	foreach($storages as &$s){

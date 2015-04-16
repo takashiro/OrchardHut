@@ -27,6 +27,47 @@ $(function(){
 		updateTotalPrice();
 	});
 
+	if(StorageUnitRatio != undefined && StorageUnitRatio.length > 0){
+		$('.storageid').each(function(){
+			var tr = $(this).parent();
+			var storageid = parseInt($(this).html(), 10);
+
+			for(var i = 0; i < StorageUnitRatio.length; i++){
+				var ratio = StorageUnitRatio[i];
+				if(ratio.storageid == storageid){
+					var importamountunit = tr.find('.importamount').next();
+					importamountunit.children().each(function(){
+						$(this).prop('selected', $(this).html() == ratio.importamountunit);
+					});
+					break;
+				}
+			}
+		});
+
+		$('input.importamount').change(function(){
+			var tr = $(this).parent().parent();
+			var storageid = parseInt(tr.find('.storageid').html(), 10);
+			if(isNaN(storageid) || storageid <= 0)
+				return;
+
+			var amount = tr.find('.amount');
+			var importamount = tr.find('.importamount');
+			var importunitprice = tr.find('.importunitprice');
+			var importamountunit = importamount.next().find(':selected').html();
+			for(var i = 0; i < StorageUnitRatio.length; i++){
+				var ratio = StorageUnitRatio[i];
+				if(ratio.storageid == storageid && ratio.importamountunit == importamountunit){
+					var r = parseInt(ratio.amount, 10) / parseInt(ratio.importamount, 10);
+					if(!isNaN(r)){
+						amount.val(r * parseInt(importamount.val(), 10));
+						amount.change();
+					}
+					ratio.storageid = 0;
+				}
+			}
+		});
+	}
+
 	$('input.importamount, input.importunitprice').change(function(){
 		var tr = $(this).parent().parent();
 		var amount = tr.find('.amount');
@@ -71,4 +112,6 @@ $(function(){
 		$('input[type="radio"][name="' + radio.attr('name') + '"]').prop('checked', false);
 		radio.prop('checked', true);
 	});
+
+
 });

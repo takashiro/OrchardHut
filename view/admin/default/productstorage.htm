@@ -10,7 +10,10 @@ p.subtype{
 }
 </style>
 
-<script type="text/javascript" src="{__TEMPLATEROOT__}js/productstorage.js"></script>
+<script type="text/javascript">
+var StorageUnitRatio = {echo json_encode($storage_unit_ratio)};
+</script>
+<script type="text/javascript" src="{__TEMPLATEROOT__}js/productstorage.js?$_CONFIG[refversion]"></script>
 
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
@@ -28,7 +31,8 @@ p.subtype{
 
 			<div class="notice">
 				<ol>
-					<li>请先填写进货量和采购量，然后填写不需要自动计算的价格（成本单价、成本小计或采购单价），其他价格会自动计算。</li>
+					<li>请先填写采购量，系统会根据上次进货记录预估进货量。首次采购请自行填写进货量。</li>
+					<li>填写不需要自动计算的价格（成本单价、成本小计或采购单价）后，其他价格会自动计算。</li>
 					<li>修改进货量或成本单价时，将自动重新计算成本小计和采购单价。</li>
 					<li>修改采购量或采购单价时，将自动重新计算成本小计和成本单价。</li>
 					<li>修改成本小计时，将自动重新计算成本单价和采购单价。</li>
@@ -52,10 +56,10 @@ p.subtype{
 									<p class="subtype">$subtype</p>
 									<!--{/loop}-->
 								<!--{else}-->
-									<p class="subtype">[已下架]</p>
+									<p class="subtype">[无关联售价]</p>
 								<!--{/if}-->
 							</td>
-							<td>$s[id]</td>
+							<td class="storageid">$s[id]</td>
 							<td>$s[remark]</td>
 							<td>{$s[num]}{$s[amountunit]}</td>
 							<td><input type="text" name="amount[{$s[id]}]" class="amount number narrow" value="0" />$s[amountunit]</td>
