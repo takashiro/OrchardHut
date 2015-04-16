@@ -121,7 +121,7 @@ class BankAccount extends DBObject{
 			return;
 
 
-		if($log['extra'] == Order::Received && $order->paymentmethod == Order::PaidWithCash){
+		if($log['extra'] == Order::Received){
 			global $db, $tpre, $_G;
 
 			$components = $order->getAddressComponents();
@@ -134,7 +134,7 @@ class BankAccount extends DBObject{
 				FROM {$tpre}bankaccount a
 					LEFT JOIN {$tpre}addresscomponent c ON c.id=a.addressrange
 					LEFT JOIN {$tpre}addressformat f ON f.id=c.formatid
-				WHERE addressrange IN ($componentids)
+				WHERE a.handleorder=1 AND a.orderpaymentmethod={$order->paymentmethod} AND a.addressrange IN ($componentids)
 				ORDER BY f.displayorder DESC
 				LIMIT 1");
 

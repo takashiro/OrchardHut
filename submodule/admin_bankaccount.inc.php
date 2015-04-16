@@ -40,6 +40,18 @@ switch($action){
 				$bankaccount->remark = trim($_POST['remark']);
 			}
 
+			if(isset($_POST['handleorder'])){
+				$bankaccount->handleorder = !empty($_POST['handleorder']);
+			}
+
+			if(isset($_POST['orderpaymentmethod'])){
+				$paymentconfig = readdata('payment');
+				$orderpaymentmethod = intval($_POST['orderpaymentmethod']);
+				if(!empty($paymentconfig['enabled_method'][$orderpaymentmethod])){
+					$bankaccount->orderpaymentmethod = $orderpaymentmethod;
+				}
+			}
+
 			if(isset($_POST['addressrange'])){
 				$components = explode(',', $_POST['addressrange']);
 				do{
@@ -69,6 +81,8 @@ switch($action){
 		}
 
 		$a = $a->toReadable();
+
+		$paymentconfig = readdata('payment');
 		include view('bankaccount_edit');
 	break;
 

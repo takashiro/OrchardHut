@@ -15,13 +15,37 @@
 
 	<form class="toast" action="$mod_url&action=edit" method="post">
 	<input type="hidden" id="id" name="id" value="$a[id]" />
+
+	<h2>基本信息</h2>
 	<table>
 		<tr>
 			<th><label>备注名称：</label></th>
 			<td><input type="text" name="remark" value="$a[remark]" /></td>
 		</tr>
 		<tr>
-			<th><label>自提点设置：</label></th>
+			<th><label>账户金额：</label></th>
+			<td>$a[amount] {echo Product::$PriceUnit}</td>
+		</tr>
+	</table>
+
+	<h2>自动收款设置</h2>
+	<table>
+		<tr>
+			<th><label>是否开启：</label></th>
+			<td>{echo Template::radio('handleorder', array('否', '是'), $a['handleorder'])}</td>
+		</tr>
+		<tr>
+			<th><label>订单支付方式：</label></th>
+			<td>
+				<!--{loop Order::$PaymentMethod $methodid $label}-->
+					<!--{if !empty($paymentconfig['enabled_method'][$methodid])}-->
+					<label><input type="radio" name="orderpaymentmethod" value="$methodid" {if $methodid == $a['orderpaymentmethod']}checked="checked"{/if} />$label</label>
+					<!--{/if}-->
+				<!--{/loop}-->
+			</td>
+		</tr>
+		<tr>
+			<th><label>订单配送范围：</label></th>
 			<td>
 				<ul>
 					<li>{echo Template::tselect('addressrange', $address_format, $address_components, false, $a['addressrange'])}</li>
