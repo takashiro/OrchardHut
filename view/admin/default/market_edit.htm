@@ -19,7 +19,7 @@ var product_id = $product[id];
 <div class="box">
 	<h1>商品管理 - $product[name]</h1>
 	<div class="content edit_form">
-		<form class="toast" action="###" method="post" enctype="multipart/form-data">
+		<form action="###" method="post" enctype="multipart/form-data">
 			<table>
 				<tr><th>名称</th><td><input type="text" name="name" value="$product[name]" /></td></tr>
 				<tr><th>简要介绍</th><td><input type="text" name="briefintro" value="$product[briefintro]" /><span class="tips">显示于商品名称下方</span></td></tr>
@@ -27,7 +27,7 @@ var product_id = $product[id];
 					<th>图标</th>
 					<td>
 						<!--{if $product['icon']}-->
-						<img src="$product[icon]" width="110" /><br />
+						<img src="$product[icon]?{TIMESTAMP}" width="110" /><br />
 						<!--{/if}-->
 						<input type="file" name="icon" />
 					</td>
@@ -36,7 +36,7 @@ var product_id = $product[id];
 					<th>实物照片</th>
 					<td>
 						<!--{if $product['photo']}-->
-						<img src="$product[photo]" /><br />
+						<img src="$product[photo]?{TIMESTAMP}" /><br />
 						<!--{/if}-->
 						<input type="file" name="photo" />
 					</td>
