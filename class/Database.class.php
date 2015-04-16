@@ -33,7 +33,7 @@ class Database extends mysqli{
 	function query($sql, $result_mode = MYSQLI_STORE_RESULT){
 		$query = parent::query($sql, $result_mode);
 		if (!$query){
-			echo $this->error, '<br />';
+			trigger_error($this->error, E_USER_ERROR);
 		}
 		$this->query_num++;
 		return $query;
