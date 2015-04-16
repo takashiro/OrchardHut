@@ -180,12 +180,16 @@ default:
 	}
 
 	foreach($storages as &$s){
-		$s['amountunit'] = array_unique($s['amountunit']);
-		foreach($s['amountunit'] as &$u){
-			$u = Product::AmountUnits($u);
+		if(!empty($s['amountunit'])){
+			$s['amountunit'] = array_unique($s['amountunit']);
+			foreach($s['amountunit'] as &$u){
+				$u = Product::AmountUnits($u);
+			}
+			unset($u);
+			$s['amountunit'] = implode('/', $s['amountunit']);
+		}else{
+			$s['amountunit'] = '';
 		}
-		unset($u);
-		$s['amountunit'] = implode('/', $s['amountunit']);
 	}
 	unset($s);
 

@@ -47,9 +47,13 @@ p.subtype{
 						<tr>
 							<td>
 								$s[productname]
-								<!--{loop $s['subtype'] $subtype}-->
-								<p class="subtype">$subtype</p>
-								<!--{/loop}-->
+								<!--{if !empty($s['subtype'])}-->
+									<!--{loop $s['subtype'] $subtype}-->
+									<p class="subtype">$subtype</p>
+									<!--{/loop}-->
+								<!--{else}-->
+									<p class="subtype">[已下架]</p>
+								<!--{/if}-->
 							</td>
 							<td>$s[id]</td>
 							<td>$s[remark]</td>
