@@ -41,6 +41,12 @@ $stat = array(
 	'totalcost' => $db->result_first("SELECT SUM(l.cost) FROM {$tpre}userwalletlog l WHERE $condition"),
 );
 
+$totalwallet = array(
+	'amount' => $db->result_first("SELECT SUM(wallet) FROM {$tpre}user"),
+	'gifted' => $db->result_first("SELECT SUM(delta-cost) FROM {$tpre}userwalletlog WHERE recharged=1"),
+	'realcharged' => $db->result_first("SELECT SUM(delta) FROM {$tpre}userwalletlog WHERE recharged=1"),
+);
+
 include view('userwallet_log');
 
 ?>

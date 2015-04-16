@@ -9,6 +9,12 @@
 </ol>
 
 <div class="box list">
+	<div class="content">
+		<span>用户钱包总额：{$totalwallet[amount]} {echo Product::$PriceUnit}，</span>
+		<span>实际充值总额：{$totalwallet[realcharged]} {echo Product::$PriceUnit}，</span>
+		<span>赠费总额：{$totalwallet[gifted]} {echo Product::$PriceUnit}</span>
+	</div>
+
 	<h1>钱包充值记录</h1>
 
 	<form class="quick_search" action="$mod_url&action=log" method="post">
