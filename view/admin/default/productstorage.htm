@@ -12,6 +12,16 @@ p.subtype{
 
 <script type="text/javascript">
 var StorageUnitRatio = {echo json_encode($storage_unit_ratio)};
+
+$(function(){
+	$('#storagesubmit').click(function(){
+		if($('input[name="bankaccount"]:checked').length == 0){
+			alert('请先选择一个进货使用的资金账户。');
+			return false;
+		}
+		return true;
+	});
+});
 </script>
 <script type="text/javascript" src="{__TEMPLATEROOT__}js/productstorage.js?$_CONFIG[refversion]"></script>
 
@@ -27,7 +37,7 @@ var StorageUnitRatio = {echo json_encode($storage_unit_ratio)};
 		<a href="$mod_url&action=log">[库存管理记录]</a>
 	</div>
 	<div class="content">
-		<form action="$mod_url&action=import" method="post">
+		<form class="toast" action="$mod_url&action=import" method="post">
 
 			<div class="notice">
 				<ol>
@@ -95,7 +105,7 @@ var StorageUnitRatio = {echo json_encode($storage_unit_ratio)};
 
 			<div class="post_buttons">
 				<!--{if !empty($bankaccounts)}-->
-				<button type="submit">提交进货单</button>
+				<button type="submit" id="storagesubmit">提交进货单</button>
 				<!--{/if}-->
 			</div>
 		</form>
