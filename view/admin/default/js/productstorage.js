@@ -12,16 +12,18 @@ $(function(){
 		var amount = tr.find('.amount');
 		var unitprice = tr.find('.unitprice');
 		var subtotal = tr.find('.subtotal');
+
+		//to-do: God knows when you would want them back
 		var importamount = tr.find('.importamount');
 		var importunitprice = tr.find('.importunitprice');
 
 		amount.val(parseInt(amount.val(), 10));
 		unitprice.val(parseFloat(unitprice.val()).toFixed(2));
 
-		var subtotal_value = parseInt(amount.val(), 10) * parseFloat(unitprice.val());
-		subtotal.val(subtotal_value.toFixed(2));
+		var unitprice_value = parseFloat(subtotal.val()) / parseInt(amount.val(), 10);
+		unitprice.val(unitprice_value.toFixed(2));
 
-		var importunitprice_value = subtotal_value / parseFloat(importamount.val());
+		var importunitprice_value = parseFloat(subtotal.val()) / parseFloat(importamount.val());
 		importunitprice.val(importunitprice_value.toFixed(2));
 
 		updateTotalPrice();

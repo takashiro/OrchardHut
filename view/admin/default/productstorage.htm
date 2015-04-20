@@ -31,11 +31,6 @@ var StorageUnitRatio = {echo json_encode($storage_unit_ratio)};
 
 			<div class="notice">
 				<ol>
-					<li>请先填写采购量，系统会根据上次进货记录预估进货量。首次采购请自行填写进货量。</li>
-					<li>填写不需要自动计算的价格（成本单价、成本小计或采购单价）后，其他价格会自动计算。</li>
-					<li>修改进货量或成本单价时，将自动重新计算成本小计和采购单价。</li>
-					<li>修改采购量或采购单价时，将自动重新计算成本小计和成本单价。</li>
-					<li>修改成本小计时，将自动重新计算成本单价和采购单价。</li>
 					<li>本次没有进货的产品保持进货量为0或空即可。</li>
 					<li>若没有添加任何资金账户，进货按钮不显示，进货账户列表为空。请先到左侧边栏“账户”下添加。</li>
 				</ol>
@@ -44,7 +39,7 @@ var StorageUnitRatio = {echo json_encode($storage_unit_ratio)};
 			<div class="list">
 				<table>
 					<thead>
-						<tr><td>商品名称</td><td>库存编号</td><td>库存备注</td><td>余量</td><td>进货量</td><td>成本单价</td><td>成本小计</td><td>采购量</td><td>采购单价</td></tr>
+						<tr><td>商品名称</td><td>库存编号</td><td>库存备注</td><td>库存余量</td><td>采购数量</td><td>采购单价</td><td>采购总价</td></tr>
 					</thead>
 					<tbody>
 					<!--{loop $storages $s}-->
@@ -63,13 +58,8 @@ var StorageUnitRatio = {echo json_encode($storage_unit_ratio)};
 							<td>$s[remark]</td>
 							<td>{$s[num]}{$s[amountunit]}</td>
 							<td><input type="text" name="amount[{$s[id]}]" class="amount number narrow" value="0" />$s[amountunit]</td>
-							<td><input type="text" name="price[{$s[id]}]" class="unitprice number dnarrow" value="0.00" />{echo Product::$PriceUnit}</td>
+							<td><input type="text" name="price[{$s[id]}]" class="unitprice number dnarrow" value="0.00" readonly="readonly" />{echo Product::$PriceUnit}</td>
 							<td><input type="text" class="subtotal number dnarrow" value="0.00" />{echo Product::$PriceUnit}</td>
-							<td>
-								<input type="text" name="importamount[{$s[id]}]" class="importamount number narrow" value="0" />
-								{echo Template::select('importamountunit['.$s['id'].']', Product::AmountUnits())}
-							</td>
-							<td><input type="text" name="importprice[{$s[id]}]" class="importunitprice number dnarrow" value="0.00" />{echo Product::$PriceUnit}</td>
 						</tr>
 					<!--{/loop}-->
 						<tr>
@@ -80,8 +70,6 @@ var StorageUnitRatio = {echo json_encode($storage_unit_ratio)};
 							<td></td>
 							<td></td>
 							<td><span id="totalprice">0</span>{echo Product::$PriceUnit}</td>
-							<td></td>
-							<td></td>
 						</tr>
 					</tbody>
 				</table>

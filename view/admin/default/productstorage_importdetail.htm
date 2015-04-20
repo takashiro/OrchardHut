@@ -16,11 +16,9 @@
 				<td>库存号</td>
 				<td>产品</td>
 				<td>库存备注</td>
-				<td>进货量</td>
-				<td>进货单价</td>
-				<td>金额</td>
 				<td>采购量</td>
 				<td>采购单价</td>
+				<td>采购总价</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -32,8 +30,6 @@
 				<td>$l[amount]</td>
 				<td>{echo $l['totalcosts'] / $l['amount'];}{echo Product::$PriceUnit}</td>
 				<td>{$l[totalcosts]}{echo Product::$PriceUnit}</td>
-				<td>{$l[importamount]}{$l[importamountunit]}</td>
-				<td>{echo $l['totalcosts'] / $l['importamount'];}{echo Product::$PriceUnit}</td>
 			</tr>
 			<!--{/loop}-->
 			<tr>
@@ -42,8 +38,6 @@
 				<td></td>
 				<td></td>
 				<td>{echo abs($log['delta'])}{echo Product::$PriceUnit}</td>
-				<td></td>
-				<td></td>
 				<td></td>
 			</tr>
 		</tbody>

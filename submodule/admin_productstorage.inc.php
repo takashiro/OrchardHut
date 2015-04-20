@@ -47,8 +47,8 @@ case 'import':
 		$unitprice = floatval($_POST['price'][$storageid]);
 		$subtotalcosts = $amount * $unitprice;
 
-		$importamount = floatval($_POST['importamount'][$storageid]);
-		$importamountunit = Product::AmountUnits(intval($_POST['importamountunit'][$storageid]));
+		$importamount = isset($_POST['importamount'][$storageid]) ? floatval($_POST['importamount'][$storageid]) : 0;
+		$importamountunit = isset($_POST['importamountunit'][$storageid]) ? Product::AmountUnits(intval($_POST['importamountunit'][$storageid])) : 0;
 
 		$db->query("UPDATE {$tpre}productstorage SET num=num+$amount WHERE id=$storageid");
 		if($db->affected_rows > 0){
@@ -98,7 +98,7 @@ case 'import':
 			showmsg('storage_is_updated', 'refresh');
 		}else{
 			$db->query('ROLLBACK');
-			showmsg('insufficient_bank_account', 'refresh');
+			showmsg('insufficient_bank_account', 'back');
 		}
 	}
 
