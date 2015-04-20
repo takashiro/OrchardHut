@@ -73,6 +73,8 @@ CREATE TABLE IF NOT EXISTS `hut_bankaccount` (
   `remark` varchar(50) NOT NULL,
   `amount` decimal(9,2) NOT NULL,
   `addressrange` mediumint(8) unsigned NOT NULL,
+  `handleorder` tinyint(1) NOT NULL,
+  `orderpaymentmethod` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `addressrange` (`addressrange`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -141,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `paymentmethod` tinyint(4) NOT NULL,
   `alipaytradeid` varchar(255) NOT NULL,
   `alipaystate` tinyint(4) NOT NULL,
+  `customlabel` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `dateline` (`dateline`)
@@ -251,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `hut_productstorage` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `productid` mediumint(8) unsigned NOT NULL,
   `remark` varchar(15) NOT NULL,
-  `num` int(11) unsigned NOT NULL,
+  `num` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -267,6 +270,8 @@ CREATE TABLE IF NOT EXISTS `hut_productstoragelog` (
   `bankaccountlogid` int(10) unsigned NOT NULL,
   `productname` varchar(50) NOT NULL,
   `storageremark` varchar(15) NOT NULL,
+  `importamount` decimal(9,2) NOT NULL,
+  `importamountunit` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dateline` (`dateline`),
   KEY `adminid` (`adminid`)
