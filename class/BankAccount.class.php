@@ -162,7 +162,10 @@ class BankAccount extends DBObject{
 		if($delta > 0){
 			global $db, $tpre;
 			$method = Order::PaidOnline;
-			$db->query("UPDATE {$tpre}bankaccount SET amount=amount+$delta WHERE handleorder=1 AND orderpaymentmethod=$method AND addressrange=0");
+			$db->query("UPDATE {$tpre}bankaccount
+				SET amount=amount+$delta
+				WHERE handleorder=1 AND orderpaymentmethod=$method AND addressrange=0
+				LIMIT 1");
 		}
 	}
 }
