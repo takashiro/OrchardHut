@@ -58,16 +58,23 @@ class Template{
 	}
 
 	public function getOriginalSourcePath(){
-		return $this->getDirectoryPath().$this->name.'.htm';
+		$htmpath = $this->getDirectoryPath().$this->name.'.htm';
+		if(!file_exists($htmpath))
+			$htmpath = $this->getDirectoryPath().$this->name.'.php';
+		return $htmpath;
 	}
 
 	public function getSourcePath(){
 		$htmpath = $this->getDirectoryPath().$this->name.'.htm';
 		if(!file_exists($htmpath)){
-			$htmpath = self::$SOURCE_DIR.$this->type.'/default/'.$this->name.'.htm';
+			$htmpath = $this->getDirectoryPath().$this->name.'.php';
 
-			if($this->type != 'user' && !file_exists($htmpath)){
-				$htmpath = self::$SOURCE_DIR.'user/default/'.$this->name.'.htm';
+			if(!file_exists($htmpath)){
+				$htmpath = self::$SOURCE_DIR.$this->type.'/default/'.$this->name.'.htm';
+
+				if($this->type != 'user' && !file_exists($htmpath)){
+					$htmpath = self::$SOURCE_DIR.'user/default/'.$this->name.'.htm';
+				}
 			}
 		}
 		return $htmpath;
@@ -82,6 +89,9 @@ class Template{
 		$template = file_get_contents($source_path);
 		if($template === false)
 			exit("Current template file {$source_path} not found or have no access!");
+
+		if(substr_compare($source_path, '.php', -4) == 0)
+			return $template;
 
 		$var_regexp = "((\\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)(\[[a-zA-Z0-9_\-\.\"\'\[\]\$\x7f-\xff]+\])*)";
 		$const_regexp = "([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)";
