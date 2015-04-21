@@ -290,10 +290,6 @@ ul.product_list > li .detail .soldout{
 	right:1em;
 }
 
-ul.product_list > li .detail .briefintro{
-	padding-left:0.5em;
-}
-
 ul.product_list > li .detail ul.rule li{
 	padding-left:0.5em;
 	border-bottom:white 2px solid;
