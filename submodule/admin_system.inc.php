@@ -37,7 +37,8 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 	'log_request' => !empty($config['log_request']),
 	'log_error' => !empty($config['log_error']),
 	'refresh_template' => !empty($config['refresh_template']),
-	'head_element' => htmlspecialchars_decode(stripslashes($config['head_element'])),
+	'head_element' => htmlspecialchars_decode($config['head_element']),
+	'icp' => htmlspecialchars($config['icp']),
 );
 
 if($_POST){
