@@ -138,7 +138,7 @@ $(function(){
 							<!--{elseif $o['status'] == Order::Sorted && $_G['admin']->hasPermission('order_deliver_w')}-->
 							<div><a class="mark_in_delivery_point" href="{$mod_url}&action=mark_indp&orderid=$o[id]" title="将订单标记为到达配送站">[到配送站]</a></div>
 							<!--{elseif ($o['status'] == Order::InDeliveryPoint || $o['status'] == Order::Delivering) && $_G['admin']->hasPermission('order_deliver_w')}-->
-							<!--{if $o['status'] != Order::Delivering}-->
+							<!--{if $o['status'] != Order::Delivering && $o['deliverymethod'] != Order::StationDelivery}-->
 							<div><a class="mark_delivering" href="{$mod_url}&action=mark_delivering&orderid=$o[id]" title="将订单标记为配送中">[配送中]</a></div>
 							<!--{/if}-->
 							<div><a class="mark_received" href="{$mod_url}&action=mark_received&orderid=$o[id]" title="将订单标记为已签收">[已签收]</a></div>
