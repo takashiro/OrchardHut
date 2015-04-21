@@ -49,10 +49,10 @@ function makeToast(data){
 		opacity : 1
 	}, 300);
 
-	if(data.url_forward != undefined){
-		setTimeout(function(){
-			toast.fadeOut(500, function(){
-				toast.remove();
+	setTimeout(function(){
+		toast.fadeOut(500, function(){
+			toast.remove();
+			if(data.url_forward){
 				if(data.url_forward == 'refresh'){
 					location.reload();
 				}else if(data.url_forward == 'back'){
@@ -60,9 +60,9 @@ function makeToast(data){
 				}else{
 					location.href = data.url_forward;
 				}
-			});
-		}, 1500);
-	}
+			}
+		});
+	}, 1500);
 }
 
 $(function(){
