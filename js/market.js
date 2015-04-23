@@ -142,7 +142,14 @@ $(function(){
 		}
 	});
 
-	$('.announcement .title').click(function(e){
+	$('.announcement .title').each(function(){
+		var title = $(this);
+		var detail = title.next();
+		if (detail.html().length > 0)
+			title.addClass('title_link');
+	});
+
+	$('.announcement .title_link').click(function(e){
 		var title = $(e.target);
 		var detail = title.next();
 		popup_message(title.html(), detail.html());

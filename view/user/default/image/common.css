@@ -155,9 +155,10 @@ button.remove{
 
 .announcement .body .content li{
 	margin:10px 0;
+	list-style-type: circle;
 }
 
-.announcement .body .content li .title{
+.announcement .body .content li .title_link{
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -288,6 +289,10 @@ ul.product_list > li .detail .soldout{
 	position:absolute;
 	top:0;
 	right:1em;
+}
+
+ul.product_list > li .detail .briefintro{
+	padding-left:0.5em;
 }
 
 ul.product_list > li .detail ul.rule li{
