@@ -70,15 +70,15 @@ switch($action){
 				$admin->pwmd5 = rmd5($_POST['password']);
 			}
 
-			if(!empty($_POST['nickname'])){
+			if(isset($_POST['nickname'])){
 				$admin->nickname = trim($_POST['nickname']);
 			}
 
-			if(!empty($_POST['realname'])){
+			if(isset($_POST['realname'])){
 				$admin->realname = trim($_POST['realname']);
 			}
 
-			if(!empty($_POST['mobile'])){
+			if(isset($_POST['mobile'])){
 				$admin->mobile = trim($_POST['mobile']);
 			}
 
