@@ -44,7 +44,7 @@ case 'import':
 			continue;
 		$storageid = intval($storageid);
 
-		$unitprice = floatval($_POST['price'][$storageid]);
+		$unitprice = abs(floatval($_POST['price'][$storageid]));
 		$subtotalcosts = $amount * $unitprice;
 
 		$importamount = isset($_POST['importamount'][$storageid]) ? floatval($_POST['importamount'][$storageid]) : 0;
