@@ -45,7 +45,7 @@ switch($action){
 
 		$condition = $condition ? implode(' AND ', $condition) : '1';
 		$table = $db->select_table('product');
-		$products = $table->fetch_all('*', $condition.' ORDER BY type,hide,displayorder LIMIT '.$offset.','.$limit);
+		$products = $table->fetch_all('*', $condition.' ORDER BY hide,type,displayorder LIMIT '.$offset.','.$limit);
 		$pagenum = $table->result_first('COUNT(*)', $condition);
 
 		include view('market');
