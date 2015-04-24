@@ -201,6 +201,10 @@ default:
 		}else{
 			$s['amountunit'] = '';
 		}
+
+		if(isset($s['subtype']) && count($s['subtype']) > 1){
+			$s['subtype'] = array_unique($s['subtype']);
+		}
 	}
 	unset($s);
 
