@@ -110,6 +110,17 @@ if(!empty($_CONFIG['log_error'])){
 	set_error_handler(function($errorLevel, $errorMessage, $errorFile, $errorLine){
 		return include submodule('core', 'handleerror');
 	}, E_ALL);
+
+	register_shutdown_function(function(){
+		$error = error_get_last();
+		if($error && $error['type'] == E_ERROR || $error['type'] == E_USER_ERROR){
+			$errorLevel = $error['type'];
+			$errorMessage = $error['message'];
+			$errorFile = $error['file'];
+			$errorLine = $error['line'];
+			return include submodule('core', 'handleerror');
+		}
+	});
 }
 
 if(!defined('IN_ADMINCP')){
