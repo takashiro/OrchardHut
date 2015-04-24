@@ -98,7 +98,8 @@ $(function(){
 			brief.addClass('brief');
 			brief.html('多个品种可选');
 			if(list.length == 2){
-				if(list.eq(0).find('.subtype').html() == '' && list.eq(1).find('.subtype').html() == ''){
+				if(list.eq(0).find('.subtype').html() == '' && list.eq(1).find('.subtype').html() == ''
+					&& list.eq(0).find('.briefintro').html() == '' && list.eq(1).find('.briefintro').html() == ''){
 					brief.html('');
 					brief.append(list.eq(0).children('span').clone());
 					brief.append($.parseHTML('<span class="split"> / </span>'));
