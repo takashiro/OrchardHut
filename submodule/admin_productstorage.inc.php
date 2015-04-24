@@ -25,12 +25,19 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 $action = &$_GET['action'];
 switch($action){
-case 'import':
-	if(!isset($_POST['amount']) || !isset($_POST['price']) || !is_array($_POST['amount']) || !is_array($_POST['price']) || empty($_POST['bankaccount'])){
+case 'edit':
+	if(!isset($_POST['amount']) || !is_array($_POST['amount'])){
 		showmsg('illegal_operation');
 	}
 
-	$bankaccount = isset($_POST['bankaccount']) ? intval($_POST['bankaccount']) : 0;
+	$type = (isset($_POST['type']) && $_POST['type'] == 'import') ? 'import' : 'loss';
+	if($type == 'import'){
+		if(!isset($_POST['price']) || !is_array($_POST['price']) || empty($_POST['bankaccount'])){
+			showmsg('illegal_operation');
+		}
+
+		$bankaccount = isset($_POST['bankaccount']) ? intval($_POST['bankaccount']) : 0;
+	}
 
 	$db->query('START TRANSACTION');
 
@@ -38,17 +45,30 @@ case 'import':
 	$logs = array();
 	foreach($_POST['amount'] as $storageid => $amount) {
 		$amount = intval($amount);
-		if($amount <= 0)
-			continue;
-		if(!isset($_POST['price'][$storageid]))
-			continue;
+		if($type == 'import'){
+			if($amount <= 0)
+				continue;
+			if(!isset($_POST['price'][$storageid]))
+				continue;
+		}else{
+			if($amount >= 0)
+				continue;
+		}
+
 		$storageid = intval($storageid);
 
-		$unitprice = abs(floatval($_POST['price'][$storageid]));
-		$subtotalcosts = $amount * $unitprice;
+		if($type == 'import'){
+			$unitprice = abs(floatval($_POST['price'][$storageid]));
+			$subtotalcosts = $amount * $unitprice;
 
-		$importamount = isset($_POST['importamount'][$storageid]) ? floatval($_POST['importamount'][$storageid]) : 0;
-		$importamountunit = isset($_POST['importamountunit'][$storageid]) ? Product::AmountUnits(intval($_POST['importamountunit'][$storageid])) : 0;
+			$importamount = isset($_POST['importamount'][$storageid]) ? floatval($_POST['importamount'][$storageid]) : 0;
+			$importamountunit = isset($_POST['importamountunit'][$storageid]) ? Product::AmountUnits(intval($_POST['importamountunit'][$storageid])) : 0;
+		}else{
+			$unitprice = 0;
+			$subtotalcosts = 0;
+			$importamount = 0;
+			$importamountunit = '';
+		}
 
 		$db->query("UPDATE {$tpre}productstorage SET num=num+$amount WHERE id=$storageid");
 		if($db->affected_rows > 0){
@@ -72,42 +92,49 @@ case 'import':
 	}
 
 	if($logs){
-		$db->query("UPDATE {$tpre}bankaccount SET amount=amount-$totalcosts WHERE id=$bankaccount AND amount>=$totalcosts");
-		if($db->affected_rows > 0){
-			$bankaccountlog = array(
-				'accountid' => $bankaccount,
-				'delta' => -$totalcosts,
-				'reason' => lang('common', 'storage_import'),
-				'operatorid' => $_G['admin']->id,
-				'operation' => BankAccount::OPERATION_PRODUCT_IMPORT,
-				'targetid' => 0,
-				'dateline' => TIMESTAMP,
-			);
-			$table = $db->select_table('bankaccountlog');
-			$table->insert($bankaccountlog);
-			$bankaccountlogid = $table->insert_id();
+		if($type == 'import' && $totalcosts > 0){
+			$db->query("UPDATE {$tpre}bankaccount SET amount=amount-$totalcosts WHERE id=$bankaccount AND amount>=$totalcosts");
+			if($db->affected_rows > 0){
+				$bankaccountlog = array(
+					'accountid' => $bankaccount,
+					'delta' => -$totalcosts,
+					'reason' => lang('common', 'storage_import'),
+					'operatorid' => $_G['admin']->id,
+					'operation' => BankAccount::OPERATION_PRODUCT_IMPORT,
+					'targetid' => 0,
+					'dateline' => TIMESTAMP,
+				);
+				$table = $db->select_table('bankaccountlog');
+				$table->insert($bankaccountlog);
+				$db->query('COMMIT');
+
+				foreach($logs as &$l){
+					$l['accountid'] = $accountid;
+				}
+				unset($l);
+				$table = $db->select_table('productstoragelog');
+				$table->multi_insert($logs);
+
+				showmsg('storage_is_updated', 'refresh');
+			}else{
+				$db->query('ROLLBACK');
+				showmsg('insufficient_bank_account', 'back');
+			}
+		}else{
 			$db->query('COMMIT');
 
-			foreach($logs as &$l){
-				$l['bankaccountlogid'] = $bankaccountlogid;
-			}
-			unset($l);
 			$table = $db->select_table('productstoragelog');
 			$table->multi_insert($logs);
 
 			showmsg('storage_is_updated', 'refresh');
-		}else{
-			$db->query('ROLLBACK');
-			showmsg('insufficient_bank_account', 'back');
 		}
 	}
 
-	showmsg('no_storage_need_updating', 'refresh');
+	showmsg('no_storage_need_updating');
 	break;
 
 case 'log':
-	$operation = BankAccount::OPERATION_PRODUCT_IMPORT;
-	$condition = array("l.operation=$operation");
+	$condition = array();
 
 	if(!empty($_REQUEST['time_start'])){
 		$time_start = rstrtotime($_REQUEST['time_start']);
@@ -123,34 +150,22 @@ case 'log':
 		$time_end = '';
 	}
 
-	$condition = implode(' AND ', $condition);
+	$condition = $condition ? implode(' AND ', $condition) : '1';
 
 	$limit = 20;
 	$offset = ($page - 1) * $limit;
-	$logs = $db->fetch_all("SELECT l.*,b.remark,a.realname
-		FROM {$tpre}bankaccountlog l
-			LEFT JOIN {$tpre}bankaccount b ON b.id=l.accountid
-			LEFT JOIN {$tpre}administrator a ON a.id=l.operatorid
+	$logs = $db->fetch_all("SELECT l.*,b.remark AS bankaccountremark,a.realname
+		FROM {$tpre}productstoragelog l
+			LEFT JOIN {$tpre}bankaccount b ON b.id=l.bankaccountid
+			LEFT JOIN {$tpre}administrator a ON a.id=l.adminid
 		wHERE $condition
 		ORDER BY l.dateline DESC");
 
-	$total = $db->result_first("SELECT COUNT(*) FROM {$tpre}bankaccountlog l WHERE $condition");
+	$total = $db->result_first("SELECT COUNT(*) FROM {$tpre}productstoragelog l WHERE $condition");
 
 	$time_start && $time_start = rdate($time_start);
 	$time_end && $time_end = rdate($time_end);
 	include view('productstorage_log');
-	break;
-
-case 'importdetail':
-	$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
-	$table = $db->select_table('productstoragelog');
-	$items = $table->fetch_all('*', 'bankaccountlogid='.$id);
-	$log = $db->fetch_first("SELECT l.*,b.remark,a.realname
-		FROM {$tpre}bankaccountlog l
-			LEFT JOIN {$tpre}bankaccount b ON b.id=l.accountid
-			LEFT JOIN {$tpre}administrator a ON a.id=l.operatorid
-		wHERE l.id=$id");
-	include view('productstorage_importdetail');
 	break;
 
 default:
