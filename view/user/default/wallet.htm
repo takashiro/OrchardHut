@@ -61,7 +61,7 @@
 						</td>
 						<td>{$l[delta]}{echo Product::$PriceUnit}</td>
 						<td>{$l[cost]}{echo Product::$PriceUnit}</td>
-						<td><!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeState[$l['alipaystate']]}<!--{/if}--></td>
+						<td><!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeState[$l['alipaystate']]}<!--{else}-->等待付款<!--{/if}--></td>
 
 					</tr>
 				<!--{/loop}-->

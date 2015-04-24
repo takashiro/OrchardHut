@@ -61,7 +61,7 @@ dl.orderdetail dd{
 	<dt>付款状态：</dt>
 	<dd>
 		{echo Order::$PaymentMethod[$order['paymentmethod']]}
-		<!--{if $order['alipaystate']}-->({echo AlipayNotify::$TradeState[$order['alipaystate']]})<!--{/if}-->
+		<!--{if $order['alipaystate']}-->({echo AlipayNotify::$TradeState[$order['alipaystate']]})<!--{elseif $order['paymentmethod'] != Order::PaidWithCash}-->(等待付款)<!--{/if}-->
 	</dd>
 </dl>
 
