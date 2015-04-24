@@ -60,6 +60,7 @@ class Administrator extends User{
 		'order_sort_w' => true,
 		'order_deliver' => true,
 		'order_deliver_w' => true,
+		'userwallet' => true,
 	);
 
 	public function __construct($id = 0){
