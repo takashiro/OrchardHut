@@ -42,10 +42,6 @@ class WeixinAPI extends CUrl{
 		}
 	}
 
-	public function __destruct(){
-		$this->saveConfig();
-	}
-
 	public function hasError(){
 		return isset($this->error['errcode']) && $this->error['errcode'] != 0;
 	}
@@ -103,6 +99,8 @@ class WeixinAPI extends CUrl{
 				$this->accessToken = '';
 				$this->accessTokenExpireTime = 0;
 			}
+
+			$this->saveConfig();
 		}
 
 		return $this->accessToken;
