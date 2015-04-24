@@ -36,7 +36,7 @@ if(isset($_REQUEST['time_start'])){
 	$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), 1, rdate(TIMESTAMP, 'Y'));
 }
 if($time_start){
-	$condition[] = 'al.dateline>='.$time_start;
+	$condition[] = 'l.dateline>='.$time_start;
 }
 
 //截止时间
@@ -46,13 +46,13 @@ if(isset($_REQUEST['time_end'])){
 	$time_end = rmktime(23, 59, 59, rdate($time_start, 'm') + 1, rdate($time_start, 'd') - 1, rdate($time_start, 'Y'));
 }
 if($time_end){
-	$condition[] = 'al.dateline<='.$time_end;
+	$condition[] = 'l.dateline<='.$time_end;
 }
 
 //账号
 $bankaccountid = isset($_REQUEST['bankaccountid']) ? intval($_REQUEST['bankaccountid']) : 0;
 if($bankaccountid){
-	$condition[] = 'al.accountid='.$bankaccountid;
+	$condition[] = 'a.accountid='.$bankaccountid;
 }
 
 //产品种类
@@ -84,8 +84,7 @@ $fields = 'a.remark AS bankaccount, p.id AS productid, p.name AS productname';
 
 $query = $db->query("SELECT $fields, l.amount, l.dateline, l.totalcosts AS delta
 	FROM {$tpre}productstoragelog l
-		LEFT JOIN {$tpre}bankaccountlog al ON al.id=l.bankaccountlogid
-		LEFT JOIN {$tpre}bankaccount a ON a.id=al.accountid
+		LEFT JOIN {$tpre}bankaccount a ON a.id=l.bankaccountid
 		LEFT JOIN {$tpre}productstorage s ON s.id=l.storageid
 		LEFT JOIN {$tpre}product p ON p.id=s.productid
 	WHERE $condition");
@@ -103,8 +102,8 @@ $query = $db->query("SELECT $fields, d.amount, d.number, o.dateline, d.subtotal 
 	FROM {$tpre}orderdetail d
 		LEFT JOIN {$tpre}product p ON p.id=d.productid
 		LEFT JOIN {$tpre}order o ON o.id=d.orderid
-		LEFT JOIN {$tpre}bankaccountlog al ON al.operation=$operation_order_income AND al.targetid=o.id
-		LEFT JOIN {$tpre}bankaccount a ON a.id=al.accountid
+		LEFT JOIN {$tpre}bankaccountlog l ON l.operation=$operation_order_income AND l.targetid=o.id
+		LEFT JOIN {$tpre}bankaccount a ON a.id=l.accountid
 	WHERE $condition AND d.state=0 AND o.status=".Order::Received);
 
 while($l = $query->fetch_assoc()){
