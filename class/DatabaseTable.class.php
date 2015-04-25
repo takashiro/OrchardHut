@@ -106,7 +106,7 @@ class DatabaseTable{
 
 	function insert($node, $replace = false, $extra = ''){
 		$action = $replace ? 'REPLACE' : 'INSERT';
-		$fields = implode('`,`',array_keys($node));
+		$fields = implode('`,`', array_keys($node));
 
 		$values = array_values($node);
 		$values = raddslashes($values);
