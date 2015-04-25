@@ -26,6 +26,7 @@ class Authkey extends DBObject{
 	const PRIMARY_KEY = 'user';
 
 	public function __construct($user){
+		parent::__construct();
 		$this->fetch('*', array('user' => $user));
 	}
 
