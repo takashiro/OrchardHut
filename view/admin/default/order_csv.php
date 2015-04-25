@@ -48,7 +48,14 @@ foreach($orders as $o){
 	echo '",', $o['totalprice'], ',';
 	echo isset(Order::$Status[$o['status']]) ? Order::$Status[$o['status']] : '未知', ',';
 	echo isset(Order::$PaymentMethod[$o['paymentmethod']]) ? Order::$PaymentMethod[$o['paymentmethod']] : '未知', ',';
-	echo isset(AlipayNotify::$TradeState[$o['alipaystate']]) ? AlipayNotify::$TradeState[$o['alipaystate']] : '', ',';
+	if($o['paymentmethod'] == Order::PaidOnline){
+		if(empty($o['alipaystate'])){
+			echo '等待付款';
+		}else{
+			echo isset(AlipayNotify::$TradeState[$o['alipaystate']]) ? AlipayNotify::$TradeState[$o['alipaystate']] : '未知';
+		}
+	}
+	echo ',';
 	echo rdate($o['dateline']), ',', $o['message'], "\r\n";
 }
 
