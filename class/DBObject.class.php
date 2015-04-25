@@ -57,9 +57,6 @@ abstract class DBObject{
 	}
 
 	function fetch($item, $condition){
-		if(is_array($item)){
-			$item = implode(',', $item);
-		}
 		if(is_array($condition)){
 			$c = array();
 			foreach($condition as $attr => $value){
