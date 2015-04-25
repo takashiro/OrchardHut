@@ -109,7 +109,7 @@ case 'edit':
 				$db->query('COMMIT');
 
 				foreach($logs as &$l){
-					$l['accountid'] = $accountid;
+					$l['bankaccountid'] = $bankaccount;
 				}
 				unset($l);
 				$table = $db->select_table('productstoragelog');
