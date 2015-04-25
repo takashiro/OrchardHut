@@ -172,18 +172,23 @@
 		this.on('click', '.edit', function(e){
 			var button = $(e.target);
 			var tr = button.parent().parent();
-			location.href = options.edit + (options.edit.indexOf('?') == -1 ? '?' : '&') + options.primarykey + '=' + tr.attr('primaryvalue');
+			var primaryvalue = tr.attr('primaryvalue');
+			if(primaryvalue)
+				location.href = options.edit + (options.edit.indexOf('?') == -1 ? '?' : '&') + options.primarykey + '=' + primaryvalue;
 		});
 
 		this.on('click', '.delete', function(e){
 			var button = $(e.target);
 			var tr = button.parent().parent();
-			var data = {};
-			data[options.primarykey] = tr.attr('primaryvalue');
+			var primaryvalue = tr.attr('primaryvalue');
+			if(primaryvalue){
+				var data = {};
+				data[options.primarykey] = primaryvalue;
 
-			$.post(options.ajax_delete, data, function(){
-				tr.remove();
-			});
+				$.post(options.ajax_delete, data, function(){
+					tr.remove();
+				});
+			}
 		});
 	}
 })(jQuery);
