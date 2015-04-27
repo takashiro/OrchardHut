@@ -23,6 +23,7 @@
 
 class Mail{
 
+	const DISABLED = 0;
 	const DEFAULT_FUNCTION = 1;
 	const SOCKET_SMTP = 2;
 	const INISET_SMTP = 3;
@@ -92,6 +93,9 @@ class Mail{
 	}
 
 	public function send($email_to){
+		if(self::$Config['method'] == self::DISABLED)
+			return false;
+
 		set_time_limit(0);
 
 		if(self::$Config['method'] == self::DEFAULT_FUNCTION){

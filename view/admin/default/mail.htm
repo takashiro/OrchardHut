@@ -14,11 +14,7 @@
 		<tr>
 			<th><label>发送方式：</label></th>
 			<td>
-				<select name="method">
-					<option value="{echo Mail::DEFAULT_FUNCTION}"{if $mailconfig['method'] == Mail::DEFAULT_FUNCTION} selected="selected"{/if}>PHP自带邮件函数</option>
-					<option value="{echo Mail::SOCKET_SMTP}"{if $mailconfig['method'] == Mail::SOCKET_SMTP} selected="selected"{/if}>Socket连接SMTP服务器</option>
-					<option value="{echo Mail::INISET_SMTP}"{if $mailconfig['method'] == Mail::INISET_SMTP} selected="selected"{/if}>设置php.ini连接SMTP服务器</option>
-				</select>
+				{echo Template::radio('method', array(Mail::DISABLED => '关闭', Mail::DEFAULT_FUNCTION => '默认PHP函数', 'Socket连接SMTP服务器', '设置php.ini'), $mailconfig['method'])}
 			</td>
 		</tr>
 		<tr>
