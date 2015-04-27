@@ -1,0 +1,61 @@
+<!--{template header}-->
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=system">系统</a></li>
+	<li>邮件设置</li>
+</ol>
+
+<div class="box edit_form">
+	<form class="toast" action="$mod_url" method="post">
+
+	<h2>邮件设置</h2>
+	<table>
+		<tr>
+			<th><label>发送方式：</label></th>
+			<td>
+				<select name="method">
+					<option value="{echo Mail::DEFAULT_FUNCTION}"{if $mailconfig['method'] == Mail::DEFAULT_FUNCTION} selected="selected"{/if}>PHP自带邮件函数</option>
+					<option value="{echo Mail::SOCKET_SMTP}"{if $mailconfig['method'] == Mail::SOCKET_SMTP} selected="selected"{/if}>Socket连接SMTP服务器</option>
+					<option value="{echo Mail::INISET_SMTP}"{if $mailconfig['method'] == Mail::INISET_SMTP} selected="selected"{/if}>设置php.ini连接SMTP服务器</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th><label>发件人名称：</label></th>
+			<td><input type="text" name="systemname" value="$mailconfig[systemname]" /></td>
+		</tr>
+		<tr>
+			<th><label>发件人邮箱：</label></th>
+			<td><input type="text" name="systemmail" value="$mailconfig[systemmail]" /></td>
+		</tr>
+		<tr>
+			<th><label>SMTP服务器：</label></th>
+			<td><input type="text" name="server" value="$mailconfig[server]" /></td>
+		</tr>
+		<tr>
+			<th><label>SMTP端口号：</label></th>
+			<td><input type="text" name="port" value="$mailconfig[port]" /></td>
+		</tr>
+		<tr>
+			<th><label>SMTP是否需要验证：</label></th>
+			<td>{echo Template::radio('auth', array('否', '是'), $mailconfig['auth'])}</td>
+		</tr>
+		<tr>
+			<th><label>SMTP用户名：</label></th>
+			<td><input type="text" name="auth_username" value="$mailconfig[auth_username]" /></td>
+		</tr>
+		<tr>
+			<th><label>SMTP密码：</label></th>
+			<td><input type="text" name="auth_password" value="$mailconfig[auth_password]" /></td>
+		</tr>
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">修改设置</button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->

@@ -38,6 +38,7 @@ class Administrator extends User{
 		'order_sort' => 0x80,
 		'system' => 0x100,
 		'cache' => 0x100,
+		'mail' => 0x100,
 		'productunit' => 0x200,
 		'producttype' => 0x400,
 		'prepaidreward' => 0x800,
@@ -61,6 +62,7 @@ class Administrator extends User{
 		'order_deliver' => true,
 		'order_deliver_w' => true,
 		'userwallet' => true,
+		'mail' => true,
 	);
 
 	public function __construct($id = 0){
