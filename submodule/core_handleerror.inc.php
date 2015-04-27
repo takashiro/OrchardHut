@@ -34,7 +34,7 @@ if(strncmp(S_ROOT, $errorFile, $fileRootLength) == 0){
 if(!file_exists($filePath)){
 	global $PHP_SELF, $_G;
 
-	$report = '<?php exit;?>';
+	$report = '';
 	$report.= "\r\nError Level: $errorLevel\r\n";
 	$report.= "Error Message: $errorMessage\r\n";
 	$report.= "Error File: $errorFile\r\n";
@@ -78,7 +78,14 @@ if(!file_exists($filePath)){
 		$report.= "\r\n";
 	}
 
-	file_put_contents($filePath, $report);
+	file_put_contents($filePath, '<?php exit;?>'.$report);
+
+	if(!class_exists('Mail', false) && !empty($_G['config']['error_report_to'])){
+		if(class_exists('Mail', true)){
+			$mail = new Mail($_G['config']['sitename'].' System Error', $errorID.'<br />'.str_replace("\r\n", '<br />', $report));
+			$mail->send($_G['config']['error_report_to']);
+		}
+	}
 }
 
 return false;

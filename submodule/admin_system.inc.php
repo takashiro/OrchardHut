@@ -40,6 +40,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 	'head_element' => htmlspecialchars_decode($config['head_element']),
 	'icp' => htmlspecialchars($config['icp']),
 	'jquery_cdn' => trim($config['jquery_cdn']),
+	'error_report_to' => trim($config['error_report_to']),
 );
 
 if($_POST){
