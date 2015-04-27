@@ -64,6 +64,10 @@ $(function(){
 			<td><input type="text" id="refversion" name="system[refversion]" value="$_CONFIG[refversion]" /></td>
 		</tr>
 		<tr>
+			<th><label>jQuery CDN：</label></th>
+			<td><input type="text" id="refversion" name="system[jquery_cdn]" value="$_CONFIG[jquery_cdn]" /></td>
+		</tr>
+		<tr>
 			<th><label>其他配置：</label></th>
 			<td>
 				{echo Template::checkbox('system[debugmode]', '开发模式', !empty($_CONFIG[debugmode]))}

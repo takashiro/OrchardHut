@@ -39,6 +39,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 	'refresh_template' => !empty($config['refresh_template']),
 	'head_element' => htmlspecialchars_decode($config['head_element']),
 	'icp' => htmlspecialchars($config['icp']),
+	'jquery_cdn' => trim($config['jquery_cdn']),
 );
 
 if($_POST){
