@@ -15,7 +15,7 @@ $(function(){
 			<!--{loop $products $p}-->
 			<li price-id="$p[priceid]">
 				<div class="icon" style="background:#$p[icon_background]">
-					<img src="$p[icon]" />
+					<img data-original="$p[icon]" />
 				</div>
 				<div class="detail" style="background:#$p[background_color]">
 					<div class="name" style="color:#$p[text_color];">$p[name]</div>

@@ -1,4 +1,5 @@
 <script type="text/javascript" src="./js/market.js?$_CONFIG[refversion]"></script>
+<script type="text/javascript" src="./plugin/jquery.lazyload/jquery.lazyload.min.js"></script>
 <script type="text/javascript">
 var lang = {
 	'storage_inadequate': '{lang message storage_inadequate}',
@@ -8,4 +9,8 @@ var lang = {
 var ProductStorage = {echo json_encode(Product::AllStorages())};
 var ProductQuantityLimit = {echo json_encode($quantity_limit)};
 var User = {'id': {if $_G['user']->isLoggedIn()}$_USER[id]{else}0{/if}};
+
+$(function(){
+	$('.icon img, .photo img').lazyload();
+});
 </script>
