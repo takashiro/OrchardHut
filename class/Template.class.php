@@ -224,7 +224,7 @@ class Template{
 			$option = explode(',', $option);
 		}
 		foreach($option as $key => $val){
-			$html.= '<label><input type="radio" name="'.$name.'" value="'.$key.'"'.($value == $key ? ' checked="checked"' : '').' /><span class="checkbox">'.$val.'</span><label>';
+			$html.= '<label><input type="radio" name="'.$name.'" value="'.$key.'"'.($value == $key ? ' checked="checked"' : '').' /><span class="checkbox">'.$val.'</span></label>';
 		}
 
 		return $html;
