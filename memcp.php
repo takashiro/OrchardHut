@@ -125,7 +125,7 @@ if($action == 'login'){
 			$_G['user']->nickname = mb_substr($_POST['nickname'], 0, 8, 'utf8');
 		}
 
-		if($_G['user']->account == $_G['user']->qqopenid && !empty($_POST['account'])){
+		if(($_G['user']->account == $_G['user']->wxopenid || $_G['user']->account == $_G['user']->qqopenid) && !empty($_POST['account'])){
 			$account = trim($_POST['account']);
 			$duplicated = $db->result_first("SELECT id FROM {$tpre}user WHERE account='$account'");
 			if($duplicated){
@@ -140,7 +140,7 @@ if($action == 'login'){
 				showmsg('please_confim_your_password', 'back');
 			}
 
-			if($_G['user']->account == $_G['user']->qqopenid){
+			if($_G['user']->account == $_G['user']->qqopenid || $_G['user']->account == $_G['user']->wxopenid){
 				showmsg('cannot_set_password_without_an_account', 'back');
 			}
 
