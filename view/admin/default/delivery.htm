@@ -21,12 +21,24 @@ $(function(){
 
 	<form class="toast" action="$mod_url&action=config" method="post">
 		<table>
-			<tr>
+			<thead>
+				<tr>
+					<th></th>
+					<td>配送方式</td>
+					<td>配送费（{echo Product::$PriceUnit}）</td>
+					<td>生效条件</td>
+				</tr>
+			</thead>
+			<tbody>
 			<!--{loop Order::$DeliveryMethod $methodid $methodname}-->
-				<th><label>{$methodname}：</label></th>
-				<td><input type="text" name="fee[{$methodid}]" value="{echo $deliveryconfig['fee'][$methodid]}" />{echo Product::$PriceUnit}</td>
+				<tr>
+					<th></th>
+					<td>$methodname</td>
+					<td><input type="text" name="config[{$methodid}][fee]" value="{echo $deliveryconfig[$methodid]['fee']}" /></td>
+					<td>订单总额&lt;<input type="text" name="config[{$methodid}][maxorderprice]" value="{echo $deliveryconfig[$methodid]['maxorderprice']}" />{echo Product::$PriceUnit}</td>
+				</tr>
 			<!--{/loop}-->
-			</tr>
+			</tbody>
 		</table>
 
 		<div class="post_buttons">

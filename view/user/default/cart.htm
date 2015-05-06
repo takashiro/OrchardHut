@@ -3,10 +3,9 @@
 {template market_js}
 
 <script type="text/javascript">
-$(function(){
-	$('input[type="radio"][name="paymentmethod"]:first').parent().click();
-});
+var DeliveryConfig = {echo json_encode($deliveryconfig)};
 </script>
+<script type="text/javascript" src="./js/cart.js?$_CONFIG[refversion]"></script>
 
 <div class="box cart">
 	<h1>我的购物车</h1>
@@ -97,10 +96,18 @@ $(function(){
 			<div class="lightbox deliverymethod">
 				<h1>配送方式</h1>
 				<div class="content">
+					<p>运费：<span id="deliveryfee"> - </span>{echo Product::$PriceUnit}</p>
 					<ul class="mselect">
-						<li class="checked"><input type="radio" name="deliverymethod" value="{echo Order::StationDelivery}" checked="checked" onclick="$('.deliverytime').hide()" />自提点取货 (运费：{echo $deliveryconfig['fee'][Order::StationDelivery]}{echo Product::$PriceUnit})</li>
-						<li><input type="radio" name="deliverymethod" value="{echo Order::HomeDelivery}" onclick="$('.deliverytime').show()" />送货上门 (运费：{echo $deliveryconfig['fee'][Order::HomeDelivery]}{echo Product::$PriceUnit})</li>
+						<li class="checked"><input type="radio" name="deliverymethod" value="{echo Order::StationDelivery}" checked="checked" onclick="$('.deliverytime').hide()" />自提点取货</li>
+						<li><input type="radio" name="deliverymethod" value="{echo Order::HomeDelivery}" onclick="$('.deliverytime').show()" />送货上门</li>
 					</ul>
+					<!--{loop Order::$DeliveryMethod $methodid $methodname}-->
+					<!--{if $deliveryconfig[$methodid]['fee'] > 0}-->
+					<p>
+						若选择【{$methodname}】，订单总额&lt;{echo $deliveryconfig[$methodid]['maxorderprice']}{echo Product::$PriceUnit}时收取配送费{echo $deliveryconfig[$methodid]['fee']}{echo Product::$PriceUnit}
+					</p>
+					<!--{/if}-->
+					<!--{/loop}-->
 				</div>
 			</div>
 			<div class="lightbox deliverytime" style="display:none">

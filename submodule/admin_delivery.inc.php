@@ -93,8 +93,10 @@ case 'config':
 	$deliveryconfig = array();
 
 	foreach(Order::$DeliveryMethod as $methodid => $name){
-		if(isset($_POST['fee'][$methodid])){
-			$deliveryconfig['fee'][$methodid] = max(0, floatval($_POST['fee'][$methodid]));
+		foreach(array('fee', 'maxorderprice') as $var){
+			if(isset($_POST['config'][$methodid][$var])){
+				$deliveryconfig[$methodid][$var] = max(0, floatval($_POST['config'][$methodid][$var]));
+			}
 		}
 	}
 

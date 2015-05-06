@@ -249,8 +249,13 @@ switch($action){
 			$order->deliverymethod = isset($_POST['deliverymethod']) ? intval($_POST['deliverymethod']) : Order::HomeDelivery;
 			isset(Order::$DeliveryMethod[$order->deliverymethod]) || $order->deliverymethod = Order::HomeDelivery;
 
-			$order->deliveryfee = $deliveryconfig['fee'][$order->deliverymethod];
-			$order->totalprice += $order->deliveryfee;
+			$df = isset($deliveryconfig[$order->deliverymethod]) ? $deliveryconfig[$order->deliverymethod] : null;
+			if($df && isset($df['fee']) && $df['fee'] > 0 && isset($df['maxorderprice']) && $order->totalprice < $df['maxorderprice']){
+				$order->deliveryfee = $df['fee'];
+				$order->totalprice += $order->deliveryfee;
+			}else{
+				$order->deliveryfee = 0;
+			}
 
 			if($order->paymentmethod == Order::PaidWithWallet){
 				$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id={$_USER['id']} AND wallet>={$order->totalprice}");
