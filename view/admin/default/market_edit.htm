@@ -72,7 +72,7 @@ var product_id = $product[id];
 			</thead>
 			<tbody>
 				<!--{loop $prices $p}-->
-				<tr primaryvalue="$p[id]">
+				<tr data-primaryvalue="$p[id]">
 					<td>$p[id]</td>
 					<td>$p[subtype]</td>
 					<td>$p[briefintro]</td>
@@ -133,7 +133,7 @@ var product_id = $product[id];
 			</thead>
 			<tbody>
 				<!--{loop $countdowns $p}-->
-				<tr primaryvalue="$p[id]">
+				<tr data-primaryvalue="$p[id]">
 					<td>$p[masked_priceid]</td>
 					<td>$p[subtype]</td>
 					<td>$p[briefintro]</td>
@@ -183,7 +183,7 @@ var product_id = $product[id];
 			</thead>
 			<tbody>
 				<!--{loop $storages $p}-->
-				<tr primaryvalue="$p[id]">
+				<tr data-primaryvalue="$p[id]">
 					<td>$p[id]</td>
 					<td>$p[remark]</td>
 					<td>$p[num]</td>

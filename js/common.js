@@ -169,25 +169,25 @@ $(function(){
 		}
 
 		var div = $($.parseHTML('<div></div>'));
-		if(child.attr('hidden_children') != undefined){
-			div.html(child.attr('hidden_children'));
+		if(child.data('hidden_children') != undefined){
+			div.html(child.data('hidden_children'));
 		}
 
 		child.children().each(function(){
-			var parentid = $(this).attr('parentid');
+			var parentid = $(this).data('parentid');
 			if(parentid != '0' && parentid != cur.val()){
 				$(this).appendTo(div);
 			}
 		});
 
 		div.children().each(function(){
-			var parentid = $(this).attr('parentid');
+			var parentid = $(this).data('parentid');
 			if(parentid == '0' || parentid == cur.val()){
 				$(this).appendTo(child);
 			}
 		});
 
-		child.attr('hidden_children', div.html());
+		child.data('hidden_children', div.html());
 	});
 
 	$('.tselect .ext').blur(function(e){

@@ -99,7 +99,7 @@ $(function(){
 		}
 
 		var data = {
-			'detailid' : li.attr('primaryvalue'),
+			'detailid' : li.data('primaryvalue'),
 			'state' : li.hasClass('outofstock') ? 0 : 1
 		};
 

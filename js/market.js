@@ -26,16 +26,16 @@ $(function(){
 		var numberbox = input.parent();
 		var li = numberbox.parent();
 
-		var product_id = li.attr('product-id');
-		var price_id = li.attr('price-id');
-		var storage_id = li.attr('storage-id');
+		var product_id = li.data('product-id');
+		var price_id = li.data('price-id');
+		var storage_id = li.data('storage-id');
 		var number = parseInt(input.val(), 10);
 
 		if(typeof ProductStorage[storage_id] != 'undefined'){
 			var total = ProductStorage[storage_id];
 			var cart = cart_read();
 			$('.product_list .rule li').each(function(){
-				if($(this).attr('storage-id') == storage_id){
+				if($(this).data('storage-id') == storage_id){
 					var ordered = parseInt($(this).find('.order_input input').val(), 10);
 					if(!isNaN(ordered)){
 						var amount = parseInt($(this).children('.amount').text(), 10);
@@ -59,7 +59,7 @@ $(function(){
 			}
 		}
 
-		var quantity_limit = parseInt(li.attr('quantity-limit'), 10);
+		var quantity_limit = parseInt(li.data('quantity-limit'), 10);
 		if(quantity_limit > 0){
 			if(User == undefined || User.id == undefined || User.id <= 0){
 				input.val('');

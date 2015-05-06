@@ -114,7 +114,7 @@ $(function(){
 				<tbody>
 				<!--{if empty($stat['statonly'])}-->
 					<!--{loop $orders $o}-->
-					<tr primaryvalue="$o[id]">
+					<tr data-primaryvalue="$o[id]">
 						<td>$o[id]</td>
 						<td>$o[customlabel]</td>
 						<!--{loop Address::Format() $format}-->
@@ -126,7 +126,7 @@ $(function(){
 						<td>
 							<ul class="order_detail{if !$_G['admin']->hasPermission('order_sort_w') || $o['status'] != Order::Unsorted} disabled{/if}">
 							<!--{loop $o['detail'] $d}-->
-							<li primaryvalue="$d[id]"{if $d['state'] == 1} class="outofstock"{/if}>$d[productname]<!--{if $d['subtype']}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number'];}$d[amountunit]</li>
+							<li data-primaryvalue="$d[id]"{if $d['state'] == 1} class="outofstock"{/if}>$d[productname]<!--{if $d['subtype']}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number'];}$d[amountunit]</li>
 							<!--{/loop}-->
 							</ul>
 						</td>

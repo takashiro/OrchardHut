@@ -57,7 +57,7 @@ $(function(){
 			$('#action_text').html('登录');
 
 			$('.for_register').each(function(){
-				$(this).attr('hidden_html', $(this).html());
+				$(this).data('hidden_html', $(this).html());
 				$(this).html('');
 			});
 		}
@@ -72,13 +72,13 @@ $(function(){
 			$('#login_button').hide();
 
 			$('.for_register').each(function(){
-				$(this).html($(this).attr('hidden_html'));
+				$(this).html($(this).data('hidden_html'));
 			});
 		}
 	});
 
 	$('.for_register').each(function(){
-		$(this).attr('hidden_html', $(this).html());
+		$(this).data('hidden_html', $(this).html());
 		$(this).html('');
 	});
 });

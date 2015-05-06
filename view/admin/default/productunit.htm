@@ -24,7 +24,7 @@ $(function(){
 			<thead><tr><td>隐藏</td><td>名称</td><td>类型</td><td>操作</td></tr></thead>
 			<tbody>
 				<!--{loop $product_units $u}-->
-				<tr primaryvalue="$u[id]">
+				<tr data-primaryvalue="$u[id]">
 					<td realvalue="$u[hidden]"><!--{if $u['hidden']}-->是<!--{else}-->否<!--{/if}--></td>
 					<td>$u[name]</td>
 					<td realvalue="$u[type]"><!--{if $u['type'] == 1}-->价格<!--{else}-->数量<!--{/if}--></td>

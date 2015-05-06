@@ -24,7 +24,7 @@ $(function(){
 			<thead><tr><td>名称</td><td>显示顺序</td><td>隐藏</td><td>操作</td></tr></thead>
 			<tbody>
 				<!--{loop $product_types $t}-->
-				<tr primaryvalue="$t[id]">
+				<tr data-primaryvalue="$t[id]">
 					<td>$t[name]</td>
 					<td>$t[displayorder]</td>
 					<td realvalue="$t[hidden]"><!--{if empty($t['hidden'])}-->否<!--{else}-->是<!--{/if}--></td>

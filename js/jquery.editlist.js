@@ -63,8 +63,8 @@
 					return false;
 				}
 
-				if(td.attr('realvalue')){
-					input.val(td.attr('realvalue'));
+				if(td.data('realvalue')){
+					input.val(td.data('realvalue'));
 				}else{
 					input.val(td.html());
 				}
@@ -99,12 +99,12 @@
 				}
 
 				var data = {};
-				data[options.primarykey] = tr.attr('primaryvalue');
+				data[options.primarykey] = tr.data('primaryvalue');
 				data[attr] = value;
 
 				$.post(options.ajax_edit, data, function(data){
 					if(input.is('select')){
-						td.attr('realvalue', value);
+						td.data('realvalue', value);
 						td.html(input.children(':selected').html());
 					}else{
 						td.html(value);
@@ -116,7 +116,7 @@
 						if(typeof data[attr] != 'undefined'){
 							var current_input = tr.parent().children(':last-child').children().eq(i).find('input,select,textarea');
 							if(current_input.is('select')){
-								tds.eq(i).attr('realvalue', data[attr]);
+								tds.eq(i).data('realvalue', data[attr]);
 								var current_input = current_input.clone();
 								current_input.val(data[attr]);
 								tds.eq(i).html(current_input.children(':selected').html());
@@ -147,7 +147,7 @@
 			}
 
 			$.post(options.ajax_edit, data, function(data){
-				new_tr.attr('primaryvalue', data[options.primarykey]);
+				new_tr.data('primaryvalue', data[options.primarykey]);
 
 				for(var i = 0; i < options.attr.length; i++){
 					var attr = options.attr[i];
@@ -156,7 +156,7 @@
 					if(input.is('select')){
 						input.val(data[attr]);
 						td.html(input.find(':selected').html());
-						td.attr('realvalue', data[attr]);
+						td.data('realvalue', data[attr]);
 					}else{
 						td.html(data[attr]);
 					}
@@ -172,7 +172,7 @@
 		this.on('click', '.edit', function(e){
 			var button = $(e.target);
 			var tr = button.parent().parent();
-			var primaryvalue = tr.attr('primaryvalue');
+			var primaryvalue = tr.data('primaryvalue');
 			if(primaryvalue)
 				location.href = options.edit + (options.edit.indexOf('?') == -1 ? '?' : '&') + options.primarykey + '=' + primaryvalue;
 		});
@@ -180,7 +180,7 @@
 		this.on('click', '.delete', function(e){
 			var button = $(e.target);
 			var tr = button.parent().parent();
-			var primaryvalue = tr.attr('primaryvalue');
+			var primaryvalue = tr.data('primaryvalue');
 			if(primaryvalue){
 				var data = {};
 				data[options.primarykey] = primaryvalue;

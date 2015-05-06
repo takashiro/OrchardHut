@@ -12,14 +12,14 @@ var DeliveryConfig = {echo json_encode($deliveryconfig)};
 	<div class="content">
 		<ul class="product_list">
 			<!--{loop $products $p}-->
-			<li price-id="$p[priceid]">
+			<li data-price-id="$p[priceid]">
 				<div class="icon" style="background:#$p[icon_background]">
 					<img data-original="$p[icon]" />
 				</div>
 				<div class="detail" style="background:#$p[background_color]">
 					<div class="name" style="color:#$p[text_color];">$p[name]</div>
 					<ul class="rule">
-						<li product-id="$p[productid]" price-id="$p[priceid]" storage-id="$p[storageid]" quantity-limit="$p[quantitylimit]">
+						<li data-product-id="$p[productid]" data-price-id="$p[priceid]" data-storage-id="$p[storageid]" data-quantity-limit="$p[quantitylimit]">
 							<span class="intro">
 								<span class="subtype" style="color:#$p[text_color];">$p[subtype]</span>
 							</span>

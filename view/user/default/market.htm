@@ -42,7 +42,7 @@
 			<ul class="rule">
 				<!--{if $p['rule']}-->
 					<!--{loop $p['rule'] $r}-->
-						<li product-id="$p[id]" price-id="$r[id]" storage-id="$r[storageid]" quantity-limit="$r[quantitylimit]">
+						<li data-product-id="$p[id]" data-price-id="$r[id]" data-storage-id="$r[storageid]" data-quantity-limit="$r[quantitylimit]">
 							<span class="intro" style="color:#$p[text_color];"><span class="subtype">$r[subtype]</span><!--{if !empty($r['briefintro'])}--><span class="briefintro">$r[briefintro]</span><!--{/if}--></span>
 							<span class="price" style="color:#$p[text_color];">$r[price]</span><span class="priceunit">{echo Product::$PriceUnit}</span><span class="amount" style="color:#$p[text_color];">$r[amount]</span><span class="amountunit" style="color:#$p[text_color];">$r[amountunit]</span><!--{if $r['is_countdown']}--><div class="countdown" style="background:#$p[text_color]">降</div><!--{/if}-->
 							<div class="order_input numberbox"><!--{if $r['amount'] > 1}--><div class="unit">x{$r[amount]}</div><!--{/if}--></div>

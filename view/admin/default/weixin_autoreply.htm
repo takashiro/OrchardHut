@@ -25,7 +25,7 @@ $(function(){
 			<thead><tr><td>关键词</td><td>回复内容</td><td>操作</td></tr></thead>
 			<tbody>
 				<!--{loop $autoreply $r}-->
-				<tr primaryvalue="$r[id]"><td>$r[keyword]</td><td>$r[reply]</td><td></td></tr>
+				<tr data-primaryvalue="$r[id]"><td>$r[keyword]</td><td>$r[reply]</td><td></td></tr>
 				<!--{/loop}-->
 				<tr>
 					<td><textarea></textarea></td>

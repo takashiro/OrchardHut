@@ -54,7 +54,7 @@ $(function(){
 			<thead><tr><td>下单终止时间</td><td>配送开始时间</td><td>配送结束时间</td><td>生效时间</td><td>失效时间</td><td>隐藏</td><td>操作</td></tr></thead>
 			<tbody>
 				<!--{loop $delivery_timespans $s}-->
-				<tr primaryvalue="$s[id]">
+				<tr data-primaryvalue="$s[id]">
 					<td>$s[deadline]</td>
 					<td>$s[time_from]</td>
 					<td>$s[time_to]</td>

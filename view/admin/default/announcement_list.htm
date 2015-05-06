@@ -31,7 +31,7 @@ $(function(){
 				</thead>
 				<tbody>
 					<!--{loop $announcements $a}-->
-					<tr primaryvalue="$a[id]">
+					<tr data-primaryvalue="$a[id]">
 						<td>$a[title]</td>
 						<td>{echo rdate($a['time_start'])}</td>
 						<td>{echo rdate($a['time_end'])}</td>

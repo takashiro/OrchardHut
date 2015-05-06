@@ -41,7 +41,7 @@ $(function(){
 				</thead>
 				<tbody>
 					<!--{loop $products $p}-->
-					<tr primaryvalue="$p[id]">
+					<tr data-primaryvalue="$p[id]">
 						<td>$p[name]</td>
 						<td realvalue="$p[type]">{echo Product::Types($p['type'])}</td>
 						<td>$p[displayorder]</td>

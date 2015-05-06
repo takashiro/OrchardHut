@@ -24,7 +24,7 @@ $(function(){
 			<thead><tr><td>最小充值金额</td><td>最大充值金额</td><td>充值奖励</td><td>生效时间</td><td>失效时间</td><td>操作</td></tr></thead>
 			<tbody>
 				<!--{loop $prepaidrewards $r}-->
-				<tr primaryvalue="$r[id]"><td>$r[minamount]</td><td>$r[maxamount]</td><td>$r[reward]</td><td>$r[etime_start]</td><td>$r[etime_end]</td><td></td></tr>
+				<tr data-primaryvalue="$r[id]"><td>$r[minamount]</td><td>$r[maxamount]</td><td>$r[reward]</td><td>$r[etime_start]</td><td>$r[etime_end]</td><td></td></tr>
 				<!--{/loop}-->
 				<tr>
 					<td><input /></td>
