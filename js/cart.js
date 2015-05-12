@@ -30,7 +30,7 @@ $(function(){
 			var subtotal = parseFloat(li.find('.subtotal .number').html());
 			var total_price = parseFloat($('#total_price').html());
 			total_price -= subtotal;
-			$('#total_price').html(total_price);
+			$('#total_price').text(total_price.toFixed(2));
 			$('#total_price').change();
 
 			cart_set(price_id, 0);
