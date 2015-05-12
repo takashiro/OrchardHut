@@ -44,6 +44,8 @@ if($data == 'format'){
 			$id = $table->insert_id();
 		}
 
+		Address::RefreshCache();
+
 		$format['id'] = $id;
 		echo json_encode($format);
 
@@ -55,7 +57,7 @@ if($data == 'format'){
 		}else{
 			echo 0;
 		}
-
+		Address::RefreshCache();
 	}else{
 		$address_format = Address::Format();
 		include view('address_format');
@@ -106,6 +108,7 @@ if($data == 'format'){
 				$component['id'] = $table->insert_id();
 			}
 
+			Address::RefreshCache();
 			echo json_encode($component);
 
 		}elseif($action == 'delete'){
@@ -128,6 +131,7 @@ if($data == 'format'){
 				}
 			}
 
+			Address::RefreshCache();
 			echo $affected_rows;
 		}
 
