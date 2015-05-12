@@ -65,8 +65,10 @@ $(function(){
 	var cart = cart_read();
 	for(var price_id in cart){
 		var number = cart[price_id];
-		$('li[price-id=' + price_id + '] .order_input input').val(number);
+		$('li[data-price-id=' + price_id + '] .order_input input').val(number);
 	}
+
+	$('#cart-goods-number').numbernotice(cart_number());
 
 	var delivered_num = parseInt(getcookie('delivering-order-number'), 10);
 	var cache_time = parseInt(getcookie('order-number-cache-time'), 10);
