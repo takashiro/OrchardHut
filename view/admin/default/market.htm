@@ -43,9 +43,9 @@ $(function(){
 					<!--{loop $products $p}-->
 					<tr data-primaryvalue="$p[id]">
 						<td>$p[name]</td>
-						<td realvalue="$p[type]">{echo Product::Types($p['type'])}</td>
+						<td data-realvalue="$p[type]">{echo Product::Types($p['type'])}</td>
 						<td>$p[displayorder]</td>
-						<td realvalue="$p[hide]"><!--{if $p['hide']}-->是<!--{else}-->否<!--{/if}--></td>
+						<td data-realvalue="$p[hide]"><!--{if $p['hide']}-->是<!--{else}-->否<!--{/if}--></td>
 						<td></td>
 					</tr>
 					<!--{/loop}-->

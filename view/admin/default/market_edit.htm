@@ -79,7 +79,7 @@ var product_id = $product[id];
 					<td>$p[price]</td>
 					<td>{echo Product::$PriceUnit}</td>
 					<td>$p[amount]</td>
-					<td realvalue="$p[amountunit]">{echo Product::AmountUnits($p['amountunit'])}</td>
+					<td data-realvalue="$p[amountunit]">{echo Product::AmountUnits($p['amountunit'])}</td>
 					<td>$p[storageid]</td>
 					<td>$p[quantitylimit]</td>
 					<td>$p[displayorder]</td>
@@ -140,7 +140,7 @@ var product_id = $product[id];
 					<td>$p[price]</td>
 					<td>{echo Product::$PriceUnit}</td>
 					<td>$p[amount]</td>
-					<td realvalue="$p[amountunit]">{echo Product::AmountUnits($p['amountunit'])}</td>
+					<td data-realvalue="$p[amountunit]">{echo Product::AmountUnits($p['amountunit'])}</td>
 					<td>{echo rdate($p['start_time'])}</td>
 					<td>{echo rdate($p['end_time'])}</td>
 					<td>$p[storageid]</td>

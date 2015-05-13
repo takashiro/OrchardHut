@@ -121,10 +121,6 @@ $(function(){
 		}
 	});
 
-	$('#cart_button').click(function(){
-		$(this).prop('disabled', true);
-	});
-
 	$('#total_price').change();
 
 });

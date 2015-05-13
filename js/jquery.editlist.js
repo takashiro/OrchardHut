@@ -63,7 +63,7 @@
 					return false;
 				}
 
-				if(td.data('realvalue')){
+				if(td.data('realvalue') != undefined){
 					input.val(td.data('realvalue'));
 				}else{
 					input.val(td.html());
@@ -76,12 +76,10 @@
 				if(input.is('select')){
 					var select_options = input.children('option');
 					if(select_options.length == 2){
-						select_options.filter(':selected').remove();
-						select_options = input.children('option');
-						select_options.attr('checked', true);
+						var opposite_value = input.children('option:not(:checked)').attr('value');
+						input.val(opposite_value);
 						input.blur();
 						input.hide();
-						input.after('<div>' + select_options.text() + '</div>');
 					}
 				}
 			});
@@ -116,6 +114,9 @@
 						if(typeof data[attr] != 'undefined'){
 							var current_input = tr.parent().children(':last-child').children().eq(i).find('input,select,textarea');
 							if(current_input.is('select')){
+								if(typeof data[attr] == 'boolean'){
+									data[attr] = data[attr] ? 1 : 0;
+								}
 								tds.eq(i).data('realvalue', data[attr]);
 								var current_input = current_input.clone();
 								current_input.val(data[attr]);
