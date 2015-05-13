@@ -71,7 +71,7 @@ switch($action){
 				if(isset($_REQUEST['time_start'])){
 					$time_start = empty($_REQUEST['time_start']) ? '' : rstrtotime($_REQUEST['time_start']);
 				}else{
-					$time_start = rmktime(16, 00, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+					$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
 				}
 				//下单截止时间
 				if(isset($_REQUEST['time_end'])){
@@ -79,6 +79,20 @@ switch($action){
 				}else{
 					$time_end = $time_start + 1 * 24 * 3600;
 				}
+
+				//根据截单时间调整时分秒
+				$deliverytimes = DeliveryTime::FetchAllEffective();
+				usort($deliverytimes, function($t1, $t2){
+					return $t1['deadline'] > $t2['deadline'];
+				});
+				foreach($deliverytimes as $dt){
+					if($time_end + $dt['deadline'] >= TIMESTAMP){
+						$time_start += $dt['deadline'];
+						$time_end += $dt['deadline'];
+						break;
+					}
+				}
+				unset($deliverytimes, $dt);
 
 				if($time_start !== ''){
 					$condition[] = 'o.dateline>='.$time_start;
