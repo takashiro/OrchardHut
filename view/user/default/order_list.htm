@@ -32,7 +32,7 @@
 						<td>{echo Order::$Status[$o['status']]}</td>
 						<td>
 							<a href="order.php?action=view&orderid=$o[id]" class="view">[详细]</a>
-							<!--{if $o['status'] == Order::Unsorted && $o['alipaystate'] != AlipayNotify::TradeSuccess && $o['alipaystate'] != AlipayNotify::TradeFinished}-->
+							<!--{if $o['status'] == Order::Unsorted}-->
 								<a href="order.php?action=delete&orderid=$o[id]">[取消]</a>
 							<!--{elseif $o['status'] == Order::InDeliveryPoint || $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
 								<a href="order.php?action=mark_received&orderid=$o[id]">[签收]</a>

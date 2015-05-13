@@ -41,11 +41,7 @@ case 'delete':
 	if($db->affected_rows > 0){
 		$order = new Order($orderid);
 		$order->addLog($_G['user'], Order::StatusChanged, Order::Canceled);
-
-		if($order->alipaystate == AlipayNotify::TradeSuccess && $order->paymentmethod != Order::PaidWithCash){
-			$db->query("UPDATE {$tpre}user SET wallet=wallet+{$order->totalprice} WHERE id={$_G['user']->id}");
-		}
-
+		$order->cancel();
 		showmsg('successfully_canceled_order', 'order.php');
 	}
 

@@ -508,10 +508,9 @@ switch($action){
 			$new_status = Order::Canceled;
 			$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid");
 			if($db->affected_rows > 0){
-				$order = new Order;
-				$order->id = $orderid;
+				$order = new Order($orderid);
 				$order->addLog($_G['admin'], Order::StatusChanged, Order::Canceled);
-				//@todo: Automatically return fee here?
+				$order->cancel();
 			}
 			empty($_COOKIE['http_referer']) || redirect($_COOKIE['http_referer']);
 		}
