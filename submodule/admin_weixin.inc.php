@@ -63,7 +63,7 @@ case 'autoreply':
 		}
 
 		if(!empty($_POST['reply'])){
-			$autoreply['reply'] = addslashes(htmlspecialchars_decode(stripslashes(trim($_POST['reply']))));
+			$autoreply['reply'] = trim($_POST['reply']);
 		}
 
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
