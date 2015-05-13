@@ -13,6 +13,8 @@
 	<div class="content">
 		<form class="quick_search" action="$mod_url" method="post">
 			<dl>
+				<dt>报表：</dt>
+				<dd>{echo Template::select('charttype', array('stat' => '统计', 'detail' => '详细'))}</dd>
 				<dt>时间：</dt>
 				<dd><input type="text" name="time_start" class="datetime" value="$time_start" /> - <input type="text" name="time_end" class="datetime" value="$time_end" /></dd>
 				<dt>资金账号：</dt>
@@ -22,9 +24,10 @@
 				<dt>产品：</dt>
 				<dd>{echo Template::select('productid', array(0 => '不限'))}</dd>
 			</dl>
-			<button type="submit" name="format" value="html">统计</button>
+			<div class="post_buttons"><button type="submit" name="format" value="html">统计</button></div>
 		</form>
 
+		<!--{if empty($_REQUEST['charttype']) || $_REQUEST['charttype'] == 'stat'}-->
 		<h2>统计报表</h2>
 		<div class="list">
 			<table>
@@ -53,14 +56,14 @@
 						<td>{$s[import][amount]}</td>
 						<td>{$s[import][fee]}</td>
 						<td>{echo sprintf('%.2f', $s['import']['average'])}</td>
-						<td>{$s[profit][total]}</td>
+						<td>{echo sprintf('%.2f', $s['profit']['total'])}</td>
 						<td>{echo sprintf('%.2f', $s['profit']['average'])}</td>
 					</tr>
 				<!--{/loop}-->
 				</tbody>
 			</table>
 		</div>
-
+		<!--{elseif $_REQUEST['charttype'] == 'detail'}-->
 		<h2>详细报表</h2>
 		<div class="list">
 			<table>
@@ -118,6 +121,8 @@
 				</tbody>
 			</table>
 		</div>
+		<!--{/if}-->
+
 	</div>
 </div>
 
