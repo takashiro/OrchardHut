@@ -211,11 +211,11 @@ $(function(){
 	$('.mselect').on('click', 'li', function(e){
 		var li = $(e.target);
 		var radio = li.children('input');
-		var mselect = li.parent();
-
-		mselect.children('li').removeClass('checked');
-		li.addClass('checked');
-
+		if (!radio.is(':disabled')){
+			var mselect = li.parent();
+			mselect.children('li').removeClass('checked');
+			li.addClass('checked');
+		}
 		radio.click();
 	});
 });

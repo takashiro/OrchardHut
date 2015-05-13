@@ -97,6 +97,30 @@ $(function(){
 		}
 	});
 
+	$('#total_price').change(function(){
+		$('input[name="paymentmethod"]').each(function(){
+			if($(this).val() == Order.PaidWithWallet){
+				var userwallet = parseFloat($('#userwallet').text());
+				var totalprice = parseFloat($('#total_price').text());
+				if(userwallet < totalprice){
+					if($(this).is(':checked')){
+						alert('钱包余额不足，请重新选择支付方式。');
+						$(this).prop('checked', false);
+					}
+					$(this).prop('disabled', true);
+				}else{
+					$(this).prop('disabled', false);
+				}
+			}
+		});
+	});
+
+	$('input[name="paymentmethod"]').click(function(){
+		if($(this).is(':disabled')){
+			alert('余额不足！');
+		}
+	});
+
 	$('#total_price').change();
 
 });

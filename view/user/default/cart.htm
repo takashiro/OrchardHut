@@ -4,6 +4,7 @@
 
 <script type="text/javascript">
 var DeliveryConfig = {echo json_encode($deliveryconfig)};
+var Order = {PaidWithWallet : {echo Order::PaidWithWallet}};
 </script>
 <script type="text/javascript" src="./js/cart.js?$_CONFIG[refversion]"></script>
 
@@ -57,7 +58,7 @@ var DeliveryConfig = {echo json_encode($deliveryconfig)};
 				</div>
 			</div>
 			<div class="lightbox">
-				<h1>付款方式<em>钱包余额：{$_USER[wallet]}{echo Product::$PriceUnit}</em></h1>
+				<h1>付款方式<em>钱包余额：<span id="userwallet">{$_USER[wallet]}</span>{echo Product::$PriceUnit}</em></h1>
 				<div class="content">
 					<ul class="mselect">
 					<!--{loop Order::$PaymentMethod $methodid $label}-->
