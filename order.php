@@ -42,7 +42,7 @@ case 'delete':
 		$order = new Order($orderid);
 		$order->addLog($_G['user'], Order::StatusChanged, Order::Canceled);
 
-		if($order->paymentmethod == Order::PaidWithWallet){
+		if($order->alipaystate == AlipayNotify::TradeSuccess && $order->paymentmethod != Order::PaidWithCash){
 			$db->query("UPDATE {$tpre}user SET wallet=wallet+{$order->totalprice} WHERE id={$_G['user']->id}");
 		}
 
