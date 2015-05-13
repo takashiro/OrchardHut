@@ -94,6 +94,7 @@ while($l = $query->fetch_assoc()){
 
 	$l['reason'] = lang('common', 'storage_import');
 	$l['delta'] = -$l['delta'];
+	$l['type'] = 'import';
 	$logs[] = $l;
 }
 
@@ -112,6 +113,7 @@ while($l = $query->fetch_assoc()){
 	$l['reason'] = lang('common', 'order').lang('common', 'order_received');
 	$l['amount'] *= $l['number'];
 	unset($l['number']);
+	$l['type'] = 'sale';
 	$logs[] = $l;
 }
 
@@ -123,11 +125,7 @@ foreach($logs as $l){
 	$s = &$product_stat[$l['productid']];
 
 	$s['name'] = $l['productname'];
-	if($l['delta'] > 0){
-		$sd = &$s['import'];
-	}else{
-		$sd = &$s['sale'];
-	}
+	$sd = &$s[$l['type']];
 	is_array($sd) || $sd = array('fee' => 0, 'amount' => 0);
 
 	$sd['fee'] += abs($l['delta']);
