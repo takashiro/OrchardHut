@@ -113,6 +113,16 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddresscomponent` (
   KEY `deliveryaddressid` (`addressid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `hut_deliveryfee`;
+CREATE TABLE IF NOT EXISTS `hut_deliveryfee` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `methodid` tinyint(4) NOT NULL,
+  `fee` decimal(9,2) NOT NULL,
+  `minorderprice` decimal(9,2) NOT NULL,
+  `maxorderprice` decimal(9,2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `hut_deliverytime`;
 CREATE TABLE IF NOT EXISTS `hut_deliverytime` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -267,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `hut_productstoragelog` (
   `amount` int(11) NOT NULL,
   `totalcosts` decimal(9,2) NOT NULL,
   `adminid` mediumint(8) unsigned NOT NULL,
-  `bankaccountlogid` int(10) unsigned NOT NULL,
+  `bankaccountid` mediumint(8) unsigned NOT NULL,
   `productname` varchar(50) NOT NULL,
   `storageremark` varchar(15) NOT NULL,
   `importamount` decimal(9,2) NOT NULL,
