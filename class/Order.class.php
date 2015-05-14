@@ -46,7 +46,6 @@ class Order extends DBObject{
 	const StationDelivery = 1;
 
 	private $detail = array();
-	private $address_components = array();
 	private $quantity_limit = array();
 
 	public function __construct($id = 0){
@@ -58,11 +57,6 @@ class Order extends DBObject{
 
 			global $db, $tpre;
 			$this->detail = $db->fetch_all("SELECT * FROM {$tpre}orderdetail d WHERE orderid=$id");
-			$this->address_components = $db->fetch_all("SELECT c.*,g.name
-				FROM {$tpre}orderaddresscomponent c
-					LEFT JOIN {$tpre}addresscomponent g ON g.id=c.componentid
-					LEFT JOIN {$tpre}addressformat f ON f.id=c.formatid
-				WHERE c.orderid=$id ORDER BY f.displayorder");
 		}
 	}
 
@@ -77,11 +71,8 @@ class Order extends DBObject{
 
 		$attr['detail'] = $this->detail;
 
-		$attr['deliveryaddress'] = '';
-		foreach($this->address_components as $c){
-			$attr['deliveryaddress'].= $c['name'].' ';
-		}
-		$attr['deliveryaddress'].= $attr['extaddress'];
+		$attr['deliveryaddress'] = Address::FullPathString($this->addressid);
+		$attr['deliveryaddress'].= ' '.$attr['extaddress'];
 
 		return $attr;
 	}
@@ -98,16 +89,7 @@ class Order extends DBObject{
 			return true;
 		}
 
-		global $db;
-		$table = $db->select_table('orderaddresscomponent');
-
-		if(is_array($componentids)){
-			$condition = 'orderid='.$this->id.' AND componentid IN ('.implode(',', $componentids).')';
-		}else{
-			$condition = array('orderid' => $this->id, 'componentid' => intval($componentids));
-		}
-
-		return $this->id == $table->result_first('orderid', $condition);
+		return in_array($this->addressid, Address::Extension($componentids));
 	}
 
 	public function getDetails(){
@@ -163,14 +145,6 @@ class Order extends DBObject{
 		$this->totalprice = 0;
 	}
 
-	public function addAddressComponent($c){
-		$this->address_components[] = $c;
-	}
-
-	public function getAddressComponents(){
-		return $this->address_components;
-	}
-
 	public function insert($extra = ''){
 		if(empty($this->detail)){
 			return false;
@@ -192,14 +166,6 @@ class Order extends DBObject{
 
 		$table = $db->select_table('orderdetail');
 		$table->multi_insert($this->detail);
-
-		foreach($this->address_components as &$c){
-			$c['orderid'] = $this->id;
-		}
-		unset($c);
-
-		$table = $db->select_table('orderaddresscomponent');
-		$table->multi_insert($this->address_components);
 
 		foreach($this->quantity_limit as $ql){
 			$db->query("INSERT INTO {$tpre}productquantitylimit (`priceid`,`userid`,`amount`)
@@ -228,9 +194,6 @@ class Order extends DBObject{
 				$num = $d['amount'] * $d['number'];
 				$db->query("UPDATE {$tpre}productstorage SET num=num+$num WHERE id={$d['storageid']}");
 			}
-			$table->delete('orderid='.$orderid);
-
-			$table = $db->select_table('orderaddresscomponent');
 			$table->delete('orderid='.$orderid);
 
 			$table = $db->select_table('orderlog');

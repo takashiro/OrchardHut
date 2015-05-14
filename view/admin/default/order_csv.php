@@ -11,8 +11,8 @@ echo chr(0xEF), chr(0xBB), chr(0xBF);
 
 //Header
 echo '编号';
-foreach(Address::Format() as $f){
-	echo ',', $f['name'];
+foreach($address_format as $name){
+	echo ',', $name;
 }
 echo ',地址,收件人,电话,历史订单,物品,价格(', Product::$PriceUnit, '),物流状态,付款方式,付款状态,时间,留言', "\r\n";
 
@@ -30,8 +30,9 @@ function output_order_detail($d){
 //Body
 foreach($orders as $o){
 	echo $o['id'];
-	foreach(Address::Format() as $format){
-		echo ',', $o['address'][$format['id']];
+	$maxi = count($address_format);
+	for($i = 0; $i < $maxi; $i++){
+		echo ',', $o['address'][$i]['name'];
 	}
 	echo ',', $o['extaddress'], ',', $o['addressee'], ',"', $o['mobile'],'",', $o['ordernum'], ',"';
 	if($o['detail']){

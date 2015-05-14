@@ -74,11 +74,7 @@ switch($action){
 
 		$a = new BankAccount($id);
 
-		$address_format = Address::Format();
 		$address_components = Address::Components();
-		foreach($address_format as $format){
-			array_unshift($address_components, array('id' => 0, 'formatid' => $format['id'], 'name' => '不限', 'parentid' => 0));
-		}
 
 		$a = $a->toReadable();
 

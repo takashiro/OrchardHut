@@ -30,7 +30,12 @@ $(function(){
 	});
 });
 </script>
-<script type="text/javascript" src="./js/admin_order_list.js"></script>
+<script type="text/javascript">
+var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
+</script>
+<script type="text/javascript" src="./js/cascadeselect.js?$_CONFIG[refversion]"></script>
+<script type="text/javascript" src="./js/admin_order_list.js?$_CONFIG[refversion]"></script>
+<script type="text/javascript" src="./js/datetime.js?$_CONFIG[refversion]"></script>
 
 <div class="box">
 	<h1>订单管理</h1>
@@ -57,7 +62,7 @@ $(function(){
 					<th>订单送货地址：</th>
 					<td>
 						<ul id="delivery_address_list">
-							<li>{echo Template::tselect('delivery_address[]', $address_format, $address_components, false)} <a href="###" class="add">[增加]</a></li>
+							<li>{echo Template::tselect('delivery_address[]', 'all_addresses', false, 0, false)} <a href="###" class="add">[增加]</a></li>
 						</ul>
 					</td>
 				</tr>

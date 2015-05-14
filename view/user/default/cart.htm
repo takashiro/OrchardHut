@@ -5,8 +5,10 @@
 <script type="text/javascript">
 var DeliveryConfig = {echo json_encode($deliveryconfig)};
 var Order = {PaidWithWallet : {echo Order::PaidWithWallet}};
+var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 </script>
 <script type="text/javascript" src="./js/cart.js?$_CONFIG[refversion]"></script>
+<script type="text/javascript" src="./js/cascadeselect.js?$_CONFIG[refversion]"></script>
 
 <div class="box cart">
 	<h1>我的购物车</h1>
@@ -81,7 +83,7 @@ var Order = {PaidWithWallet : {echo Order::PaidWithWallet}};
 					<table id="new_address_table" style="display:none">
 						<tr>
 							<th><label>地址：</label></th>
-							<td>{echo Template::tselect('deliveryaddress', Address::Format(), Address::Components())}</td>
+							<td>{echo Template::tselect('deliveryaddress', 'all_addresses')}</td>
 						</tr>
 						<tr>
 							<th><label for="addressee">收货人：</label></th>

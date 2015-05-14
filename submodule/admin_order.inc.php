@@ -103,44 +103,25 @@ switch($action){
 			$condition[] = 'o.status IN ('.implode(',', $display_status).')';
 
 			//过滤掉送货地点不在当前管理员的管辖范围内的订单
-			$limitation_condition = array();
-			foreach($_G['admin']->getLimitations() as $componentid){
-				$limitation_condition[] = "o.id IN (SELECT orderid FROM {$tpre}orderaddresscomponent WHERE componentid=$componentid)";
+			$limitation_addressids = $_G['admin']->getLimitations();
+			if($limitation_addressids){
+				$condition[] = 'o.addressid IN ('.implode(',', $limitation_addressids).')';
 			}
-
-			if($limitation_condition){
-				$condition[] = '('.implode(' OR ', $limitation_condition).')';
-			}
-
 
 			//根据送货地址查询订单
-			$order_address = array();
-
 			$delivery_address = array();
 			if(!empty($_REQUEST['delivery_address']) && is_array($_REQUEST['delivery_address'])){
-				$delivery_address = &$_REQUEST['delivery_address'];
-				foreach($delivery_address as $address){
-					$componentid = NULL;
-					$address = explode(',', $address);
-					foreach($address as $format_order => $id){
-						$id = intval($id);
-						if($id <= 0){
-							$format_order--;
-							break;
-						}
-
-						$componentid = $id;
-					}
-
-					if($format_order >= 0 && $componentid !== NULL){
-						$order_address[] = $componentid;
-					}
+				$dacondition = array();
+				foreach($_REQUEST['delivery_address'] as $addressid){
+					$addressid = intval($addressid);
+					$delivery_address[] = $addressid;
+					$address_range = Address::Extension($addressid);
+					$dacondition[] = 'o.addressid IN ('.implode(',', $address_range).')';
 				}
-			}
-
-			if($order_address){
-				$order_address = array_unique($order_address);
-				$condition[] = 'o.id IN (SELECT orderid FROM '.$tpre.'orderaddresscomponent WHERE componentid IN ('.implode(',', $order_address).'))';
+				if($dacondition){
+					$dacondition = implode(' OR ', $dacondition);
+					$condition[] = '('.$dacondition.')';
+				}
 			}
 
 			//根据用户ID查询订单
@@ -171,16 +152,10 @@ switch($action){
 			if(!empty($_REQUEST['administrator'])){
 				$administrator = trim($_REQUEST['administrator']);
 				$limitation = $db->result_first("SELECT limitation FROM {$tpre}administrator WHERE account='$administrator'");
-				$limitation = explode(',', $limitation);
-				foreach($limitation as &$limitation_i){
-					$limitation_i = intval($limitation_i);
-				}
-				unset($limitation_i);
-				$limitation = array_unique($limitation);
-
 				if($limitation){
-					$limitation = implode(',', $limitation);
-					$condition[] = 'o.id IN (SELECT orderid FROM '.$tpre.'orderaddresscomponent WHERE componentid IN ('.$limitation.'))';
+					$limitation = explode(',', $limitation);
+					$limitation = Address::Extension($limitation);
+					$condition[] = 'o.addressid IN ('.implode(',', $limitation).')';
 				}
 			}else{
 				$administrator = '';
@@ -253,6 +228,7 @@ switch($action){
 
 				$orderids = implode(',', $orderids);
 
+				//取得所有订单的物品列表
 				$order_details = array();
 				$query = $db->query("SELECT d.id,d.productname,d.subtype,d.amount,d.amountunit,d.number,d.orderid,d.state,d.subtotal
 					FROM {$tpre}orderdetail d
@@ -261,33 +237,12 @@ switch($action){
 					$order_details[$d['orderid']][] = $d;
 				}
 
-				$order_addresses = array();
-				$query = $db->query("SELECT o.*,c.name componentname
-					FROM {$tpre}orderaddresscomponent o
-						LEFT JOIN {$tpre}addresscomponent c ON c.id=o.componentid
-					WHERE o.orderid IN ($orderids)");
-				while($a = $query->fetch_assoc()){
-					$order_addresses[$a['orderid']][$a['formatid']] = $a['componentname'];
-				}
-
 				foreach($orders as &$o){
-					$o['detail'] = &$order_details[$o['id']];
+					$o['detail'] = !empty($order_details[$o['id']]) ? $order_details[$o['id']] : array();
 					is_array($o['detail']) || $o['detail'] = array();
-					$o['address'] = &$order_addresses[$o['id']];
-
-					if($template_format == 'print' || $template_format == 'barcode'){
-						$o['deliveryaddress'] = '';
-						foreach($o['address'] as $componentname){
-							$o['deliveryaddress'].= $componentname.' ';
-						}
-						$o['deliveryaddress'].= $o['extaddress'];
-
-						$o['dateline'] = rdate($o['dateline']);
-
-						$ticketconfig = readdata('ticket');
-					}
+					$o['address'] = Address::FullPath($o['addressid']);
 				}
-				unset($o);
+				unset($o, $order_details);
 			}
 		}else{
 			$display_status = array_keys(Order::$Status);
@@ -298,40 +253,12 @@ switch($action){
 		$address_format = Address::Format();
 		$address_components = Address::Components();
 
-		$is_restricted = !empty($_G['admin']->limitation);
-		$reserved = array();
-		if($is_restricted){
-			$find_parent = array();
-			foreach($address_components as $c){
-				$find_parent[$c['id']] = $c['parentid'];
-			}
-
-			foreach($_G['admin']->getLimitations() as $cur){
-				while($cur){
-					$reserved[] = $cur;
-					$cur = $find_parent[$cur];
+		$restricted = $_G['admin']->getLimitations();
+		if($restricted){
+			foreach($address_components as $cid => $c){
+				if(!in_array($cid, $restricted)){
+					unset($address_components[$cid]);
 				}
-			}
-		}
-
-		foreach($address_format as $format){
-			if($is_restricted){
-				$count = 0;
-				foreach($address_components as $i => $c){
-					if($c['formatid'] == $format['id']){
-						if(!in_array($c['id'], $reserved)){
-							unset($address_components[$i]);
-						}else{
-							$count++;
-						}
-					}
-				}
-			}else{
-				$count = 2;
-			}
-
-			if($count > 1){
-				array_unshift($address_components, array('id' => 0, 'formatid' => $format['id'], 'name' => '不限', 'parentid' => 0));
 			}
 		}
 
@@ -356,6 +283,9 @@ switch($action){
 			if($template_format == 'html'){
 				include view('order_list');
 			}else{
+				if($template_format == 'print' || $template_format == 'barcode'){
+					$ticketconfig = readdata('ticket');
+				}
 				include view('order_'.$template_format);
 			}
 		}else{

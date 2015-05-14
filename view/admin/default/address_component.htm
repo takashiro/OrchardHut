@@ -14,37 +14,62 @@ $(function(){
 	$('#component_list').editlist({
 		'edit' : '$mod_url&data=component&action=edit&parentid=$parentid',
 		'delete' : '$mod_url&data=component&action=delete',
-		'attr' : ['name', 'displayorder']
+		'attr' : ['id', 'name', 'displayorder', 'parentid', 'parentname']
 	});
 });
 </script>
+<style type="text/css">
+.format_form input.current{font-weight: bold; color: #5BC0DE; border: #5BC0DE 1px solid;}
+</style>
 
 <div class="box">
 	<h1>地址设置</h1>
-	<div class="headactions">
-		<a href="$mod_url&data=format">[设置地址格式]</a>
-	</div>
+
+	<h2>格式设置</h2>
+	<form action="$mod_url&data=format" class="toast format_form" method="post">
+		<!--{eval for($i = 1; $i < Address::MAX_CASCADE_LEVEL; $i++){}-->
+		<input type="text" name="addressformat[$i]" value="{echo !empty($addressformat[$i]) ? $addressformat[$i] : ''}" class="narrow {if $i == count($prev_address) + 1}current{/if}" />&gt;
+		<!--{eval }}-->
+		<input type="text" name="addressformat[{echo Address::MAX_CASCADE_LEVEL}]" {if !empty($addressformat[Address::MAX_CASCADE_LEVEL])}value="{echo $addressformat[Address::MAX_CASCADE_LEVEL]}"{/if} class="narrow" />
+		<div class="post_buttons"><button type="submit">修改格式</button></div>
+	</form>
+
 	<div class="content">
 		<div id="component_list" class="list">
 			<table>
 				<thead>
 					<tr>
+						<td>地点编号</td>
 						<td>地点名称</td>
 						<td>显示顺序</td>
+						<td>上级地点编号</td>
+						<td>上级地点名称</td>
 						<td>操作</td>
 					</tr>
 				</thead>
 				<tbody>
 					<!--{loop $address_components $component}-->
 					<tr data-primaryvalue="$component[id]">
+						<td>$component[id]</td>
 						<td>$component[name]</td>
 						<td>$component[displayorder]</td>
+						<td>$component[parentid]</td>
+						<td>
+							<!--{if empty($component['parentname'])}-->
+							无
+							<!--{else}-->
+							$component[parentname]
+							<!--{/if}-->
+						</td>
 						<td></td>
 					</tr>
 					<!--{/loop}-->
 					<tr>
+						<td></td>
 						<td><input type="text" /></td>
 						<td><input type="text" /></td>
+						<td><input type="text" value="$parentid" /></td>
+						<td></td>
 						<td><button type="button" class="add">添加</button></td>
 					</tr>
 				</tbody>

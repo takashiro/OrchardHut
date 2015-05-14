@@ -177,6 +177,8 @@ $(function(){
 
 	$(window).scroll(function(){
 		var product_type = $('.product_type');
+		if(product_type.length <= 0)
+			return;
 		var offset_top = product_type.offset().top - $(window).scrollTop();
 		if(product_type.hasClass('product_type_fixed')){
 			if(offset_top > 0){

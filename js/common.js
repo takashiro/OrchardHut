@@ -47,12 +47,15 @@ function setcookie(name, value){
 	var expires = (argc > 2) ? argv[2] : 9999;
 	if(expires != null){
 		var LargeExpDate = new Date ();
-		LargeExpDate.setTime(LargeExpDate.getTime() + (expires*1000*3600*24));
+		LargeExpDate.setTime(LargeExpDate.getTime() + (expires * 1000 * 3600 * 24));
 	}
 	document.cookie = name + "=" + escape (value)+((expires == null) ? "" : ("; expires=" +LargeExpDate.toGMTString()));
 }
 
 function in_array(needle, arr){
+	if(typeof arr != 'object' || arr.length == undefined)
+		return false;
+
 	for(var i = 0; i < arr.length; i++){
 		if(needle == arr[i]){
 			return true;
@@ -146,67 +149,6 @@ $(function(){
 		input.val(number);
 		input.change();
 	});
-
-	$('.tselect').on('change', 'select', function(e){
-		var cur = $(e.target);
-		var child = cur.next();
-		var tselect = cur.parent();
-
-		var input = tselect.children('.value');
-
-		var address = [];
-		tselect.children('select').each(function(){
-			address.push($(this).val());
-		});
-		var ext = tselect.children('.ext');
-		if(ext.length > 0){
-			address.push(ext.val());
-		}
-		input.val(address.join(','));
-
-		if(child.length < 1 || !child.is('select')){
-			return false;
-		}
-
-		var div = $($.parseHTML('<div></div>'));
-		if(child.data('hidden_children') != undefined){
-			div.html(child.data('hidden_children'));
-		}
-
-		child.children().each(function(){
-			var parentid = $(this).data('parentid');
-			if(parentid != '0' && parentid != cur.val()){
-				$(this).appendTo(div);
-			}
-		});
-
-		div.children().each(function(){
-			var parentid = $(this).data('parentid');
-			if(parentid == '0' || parentid == cur.val()){
-				$(this).appendTo(child);
-			}
-		});
-
-		child.data('hidden_children', div.html());
-	});
-
-	$('.tselect .ext').blur(function(e){
-		var ext = $(e.target);
-		var tselect = ext.parent();
-
-		var input = tselect.children('.value');
-		var address = [];
-		tselect.children('select').each(function(){
-			address.push($(this).val());
-		});
-		var ext = tselect.children('.ext');
-		if(ext.length > 0){
-			address.push(ext.val());
-		}
-		input.val(address.join(','));
-	});
-
-	$('.tselect select').change();
 
 	$('.mselect').on('click', 'li', function(e){
 		var li = $(e.target);

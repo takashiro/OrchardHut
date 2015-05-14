@@ -11,17 +11,8 @@ DROP TABLE IF EXISTS `hut_addresscomponent`;
 CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
-  `formatid` mediumint(8) unsigned NOT NULL,
   `parentid` mediumint(8) unsigned NOT NULL,
   `displayorder` tinyint(3) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `hut_addressformat`;
-CREATE TABLE IF NOT EXISTS `hut_addressformat` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `displayorder` tinyint(3) NOT NULL,
-  `name` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -98,20 +89,13 @@ DROP TABLE IF EXISTS `hut_deliveryaddress`;
 CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` mediumint(8) unsigned NOT NULL,
+  `addressid` mediumint(8) unsigned NOT NULL,
   `extaddress` varchar(50) NOT NULL,
   `addressee` varchar(50) NOT NULL,
   `mobile` varchar(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `hut_deliveryaddresscomponent`;
-CREATE TABLE IF NOT EXISTS `hut_deliveryaddresscomponent` (
-  `addressid` mediumint(8) unsigned NOT NULL,
-  `formatid` mediumint(8) unsigned NOT NULL,
-  `componentid` mediumint(8) unsigned NOT NULL,
-  KEY `deliveryaddressid` (`addressid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_deliveryfee`;
 CREATE TABLE IF NOT EXISTS `hut_deliveryfee` (
@@ -142,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `dateline` int(11) unsigned NOT NULL,
   `status` tinyint(1) unsigned NOT NULL,
   `totalprice` decimal(9,2) unsigned NOT NULL,
+  `addressid` mediumint(8) unsigned NOT NULL,
   `extaddress` varchar(50) NOT NULL,
   `addressee` varchar(50) NOT NULL,
   `mobile` varchar(11) NOT NULL,
@@ -158,14 +143,6 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   KEY `userid` (`userid`),
   KEY `dateline` (`dateline`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `hut_orderaddresscomponent`;
-CREATE TABLE IF NOT EXISTS `hut_orderaddresscomponent` (
-  `orderid` mediumint(8) unsigned NOT NULL,
-  `formatid` mediumint(8) unsigned NOT NULL,
-  `componentid` mediumint(8) unsigned NOT NULL,
-  KEY `orderid` (`orderid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_orderdetail`;
 CREATE TABLE IF NOT EXISTS `hut_orderdetail` (

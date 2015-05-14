@@ -25,6 +25,10 @@ $(function(){
 	});
 });
 </script>
+<script type="text/javascript">
+var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
+</script>
+<script type="text/javascript" src="./js/cascadeselect.js"></script>
 
 <div class="box edit_form">
 	<!--{if $id}-->
@@ -87,10 +91,10 @@ $(function(){
 			<th><label>限定管理范围：</label></th>
 			<td>
 				<ul id="limitation_ul">
-					<!--{loop $admin->getLimitations() $componentid}-->
-					<li>{echo Template::tselect('limitation[]', $address_format, $address_components, false, $componentid)} <a href="###" class="remove">[移除]</a></li>
+					<!--{loop $admin->getLimitations(false) $componentid}-->
+					<li>{echo Template::tselect('limitation[]', 'all_addresses', false, $componentid, false)} <a href="###" class="remove">[移除]</a></li>
 					<!--{/loop}-->
-					<li>{echo Template::tselect('limitation[]', $address_format, $address_components, false)} <a href="###" class="add">[增加]</a></li>
+					<li>{echo Template::tselect('limitation[]', 'all_addresses', false, 0, false)} <a href="###" class="add">[增加]</a></li>
 				</ul>
 			</td>
 		</tr>

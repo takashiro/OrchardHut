@@ -101,9 +101,13 @@ switch($action){
 		$paymentconfig = readdata('payment');
 
 		if($_POST){
-			$addressid = !empty($_POST['deliveryaddressid']) ? intval($_POST['deliveryaddressid']) : 0;
+			//处理提交的订单开始
 
-			if($addressid <= 0){
+			$order = new Order;
+
+			$deliveryaddressid = !empty($_POST['deliveryaddressid']) ? intval($_POST['deliveryaddressid']) : 0;
+			//若选择了使用新的收货地址
+			if($deliveryaddressid <= 0){
 				if(empty($_POST['addressee'])){
 					showmsg('please_fill_in_addressee', 'back');
 				}
@@ -112,35 +116,57 @@ switch($action){
 					showmsg('incorrect_mobile_number', 'back');
 				}
 
-				$address = array();
+				$order->addressee = htmlspecialchars(trim($_POST['addressee']));
+				$order->mobile = $_POST['mobile'];
+
 				if(!empty($_POST['deliveryaddress'])){
-					$address = explode(',', $_POST['deliveryaddress']);
+					$address = explode(':', $_POST['deliveryaddress']);
+					$order->addressid = intval($address[0]);
+					$order->extaddress = empty($address[1]) ? '' : $address[1];
 				}else{
 					showmsg('invalid_delivery_address_with_inadquate_components', 'back');
 				}
+
+			//若选择了原有的收货地址
 			}else{
 				$table = $db->select_table('deliveryaddress');
-				$address = $table->fetch_first('*', 'id='.$addressid);
-				if(!$address || $address['userid'] != $_G['user']->id){
+				$a = $table->fetch_first('*', 'id='.$deliveryaddressid);
+				if(!$a || $a['userid'] != $_G['user']->id){
 					showmsg('delivery_address_id_not_exist');
 				}
 
-				$_POST['addressee'] = $address['addressee'];
-				$_POST['mobile'] = $address['mobile'];
+				$order->addressee = $a['addressee'];
+				$order->mobile = $a['mobile'];
 
-				$extaddress = $address['extaddress'];
-				$address = array();
-
-				$table = $db->select_table('deliveryaddresscomponent');
-				$components = $table->fetch_all('componentid', 'addressid='.$addressid);
-				foreach($components as $c){
-					$address[] = $c['componentid'];
-				}
-				$address[] = $extaddress;
+				$order->addressid = intval($a['addressid']);
+				$order->extaddress = $a['extaddress'];
+				unset($a);
 			}
 
-			$order = new Order;
+			//判断收货地址是否合法（尽量详细）
+			$address_component = Address::FindComponentById($order->addressid);
+			if(empty($address_component)){
+				showmsg('invalid_delivery_address_with_inadquate_components', 'back');
+			}
+			$children = $db->fetch_first("SELECT id FROM {$tpre}addresscomponent WHERE parentid={$order->addressid} LIMIT 1");
+			if($children){
+				showmsg('invalid_delivery_address_with_inadquate_components', 'back');
+			}
 
+			//若地址为新地址，自动记录之
+			if($deliveryaddressid <= 0){
+				$delivery_address = array(
+					'userid' => $_G['user']->id,
+					'addressid' => $order->addressid,
+					'extaddress' => $order->extaddress,
+					'addressee' => $order->addressee,
+					'mobile' => $order->mobile,
+				);
+				$table = $db->select_table('deliveryaddress');
+				$table->insert($delivery_address);
+			}
+
+			//根据购物车中的信息计算每项小计价格
 			foreach($products as &$p){
 				$p['number'] = $cart[$p['id']];
 				$p['price'] = floatval($p['price']);
@@ -148,42 +174,11 @@ switch($action){
 			}
 			unset($p);
 
-			$order->message = isset($_POST['message']) ? trim($_POST['message']) : '';
-
-			$address_component = array();
-			$length = count($address);
-			for($i = 1; $i < $length; $i++){
-				$address_component[] = intval(array_shift($address));
-			}
-
-			$table = $db->select_table('addresscomponent');
-			$address_component = $table->fetch_all('formatid,id', 'id IN ('.implode(',', $address_component).')');
-
-			//Validate Address Components
-			$format2component = array();
-			foreach($address_component as $c){
-				$format2component[$c['formatid']] = $c['id'];
-			}
-			foreach(Address::Format() as $format){
-				if(!array_key_exists($format['id'], $format2component)){
-					showmsg('invalid_delivery_address_with_inadquate_components', 'back');
-				}
-			}
-
-			foreach($address_component as $component){
-				$order->addAddressComponent(array(
-					'formatid' => $component['formatid'],
-					'componentid' => $component['id'],
-				));
-			}
-
+			//录入用户ID、留言
 			$order->userid = $_G['user']->id;
 			$order->message = !empty($_POST['message']) ? trim($_POST['message']) : '';
 
-			$order->extaddress = array_shift($address);
-			$order->addressee = $_POST['addressee'];
-			$order->mobile = $_POST['mobile'];
-
+			//录入订单的收货时间
 			if(!empty($_POST['deliverytime'])){
 				$dtid = intval($_POST['deliverytime']);
 				$table = $db->select_table('deliverytime');
@@ -203,27 +198,7 @@ switch($action){
 				$order->dtime_to = $delivery['time_to'];
 			}
 
-			if($addressid <= 0){
-				$delivery_address = array(
-					'userid' => $_G['user']->id,
-					'extaddress' => $order->extaddress,
-					'addressee' => $order->addressee,
-					'mobile' => $order->mobile,
-				);
-				$table = $db->select_table('deliveryaddress');
-				$table->insert($delivery_address);
-				$addressid = $table->insert_id();
-
-				$delivery_address_components = $order->getAddressComponents();
-				foreach($delivery_address_components as &$c){
-					unset($c['orderid']);
-					$c['addressid'] = $addressid;
-				}
-				unset($c);
-				$table = $db->select_table('deliveryaddresscomponent');
-				$table->multi_insert($delivery_address_components);
-			}
-
+			//判断订单的支付方式是否合法
 			$order->paymentmethod = isset($_POST['paymentmethod']) ? intval($_POST['paymentmethod']) : Order::PaidWithCash;
 			isset(Order::$PaymentMethod[$order->paymentmethod]) || $order->paymentmethod = Order::PaidWithCash;
 			if(empty($paymentconfig['enabled_method'][$order->paymentmethod])){
@@ -235,8 +210,7 @@ switch($action){
 				}
 			}
 
-			$order_succeeded = false;
-
+			//增加产品对应的销量，该销量仅供参考
 			foreach($products as &$p){
 				$succeeded = $order->addDetail($p);
 				$succeeded || $item_deleted = true;
@@ -246,9 +220,10 @@ switch($action){
 			}
 			unset($p);
 
+			//判断订单的配送方式是否合法
 			$order->deliverymethod = isset($_POST['deliverymethod']) ? intval($_POST['deliverymethod']) : Order::HomeDelivery;
 			isset(Order::$DeliveryMethod[$order->deliverymethod]) || $order->deliverymethod = Order::HomeDelivery;
-
+			//收取配送费用
 			$df = isset($deliveryconfig[$order->deliverymethod]) ? $deliveryconfig[$order->deliverymethod] : null;
 			if($df && isset($df['fee']) && $df['fee'] > 0 && isset($df['maxorderprice']) && $order->totalprice < $df['maxorderprice']){
 				$order->deliveryfee = $df['fee'];
@@ -257,6 +232,7 @@ switch($action){
 				$order->deliveryfee = 0;
 			}
 
+			//若为钱包支付，直接扣款，扣款不足则转为货到付款
 			if($order->paymentmethod == Order::PaidWithWallet){
 				$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id={$_USER['id']} AND wallet>={$order->totalprice}");
 				if($db->affected_rows <= 0){
@@ -266,12 +242,15 @@ switch($action){
 				}
 			}
 
-			$succeeded = $order->insert();
-			$succeeded && $order_succeeded = true;
+			//将订单插入到数据库中
+			$order_succeeded = $order->insert();
 
+			//清空购物车
 			rsetcookie('in_cart', '');
 
+			//显示订单提交结果
 			if($order_succeeded){
+				//若提交成功且使用线上支付，进入支付宝界面
 				if($order->paymentmethod == Order::PaidOnline){
 					redirect('alipay.php?orderid='.$order->id);
 				}
@@ -286,6 +265,8 @@ switch($action){
 			}
 		}
 
+
+		//取得购物车中的产品的信息
 		$product = new Product;
 		foreach($products as &$p){
 			$number = $cart[$p['id']];
@@ -307,6 +288,7 @@ switch($action){
 		}
 		unset($p);
 
+		//补充完整购物车中的产品的价格
 		Product::FetchFilteredPrices($products);
 		$priceids = array();
 		foreach($products as $product){
@@ -314,6 +296,8 @@ switch($action){
 				$priceids[] = $price['id'];
 			}
 		}
+
+		//取得产品限购数据
 		$quantity_limit = array();
 		if($_G['user']->isLoggedIn()){
 			$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid={$_USER['id']}");
@@ -322,24 +306,17 @@ switch($action){
 			}
 		}
 
+		//取得用户的所有收货地址
 		$table = $db->select_table('deliveryaddress');
 		$delivery_addresses = $table->fetch_all('*', 'userid='.$_G['user']->id);
 
 		foreach($delivery_addresses as &$a){
-			$a['address_text'] = '';
-			$query = $db->query("SELECT c.name
-				FROM {$tpre}deliveryaddresscomponent a
-					LEFT JOIN {$tpre}addresscomponent c ON c.id=a.componentid
-					LEFT JOIN {$tpre}addressformat f ON f.id=a.formatid
-				WHERE a.addressid=$a[id]
-				ORDER BY f.displayorder");
-			while($c = $query->fetch_assoc()){
-				$a['address_text'].= $c['name'].' ';
-			}
-			$a['address_text'].= $a['extaddress'].' '.$a['addressee'].'('.$a['mobile'].')';
+			$a['address_text'] = Address::FullPathString($a['addressid']);
+			$a['address_text'].= ' '.$a['extaddress'].' '.$a['addressee'].'('.$a['mobile'].')';
 		}
 		unset($a);
 
+		//显示可选的收货时间
 		list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
 		$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
 		$splitter = $H * 3600 + $i * 60 + $s;
@@ -356,21 +333,20 @@ switch($action){
 
 		DeliveryTime::SortByTimeFrom($delivery_timespans);
 
+		//取得所有可用的收货地址
+		$address_components = Address::Components();
+
 		include view('cart');
 	break;
 
 	case 'deleteaddress':
 		$address_id = !empty($_POST['address_id']) ? intval($_POST['address_id']) : 0;
-		$affected_rows = 0;
 		if($address_id > 0){
 			$db->query("DELETE FROM {$tpre}deliveryaddress WHERE id=$address_id AND userid={$_USER['id']}");
-			$affected_rows = $db->affected_rows;
-			if($affected_rows > 0){
-				$db->query("DELETE FROM {$tpre}deliveryaddresscomponent WHERE addressid=$address_id");
-				$affected_rows += $db->affected_rows;
-			}
+			echo $db->affected_rows;
+		}else{
+			echo 0;
 		}
-		echo $affected_rows;
 	break;
 }
 

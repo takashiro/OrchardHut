@@ -300,47 +300,13 @@ class Template{
 		return $str;
 	}
 
-	static public function tselect($name, $formats, $components, $with_ext = true, $componentid = 0){
-		$value = array($componentid);
-
-		$find_parent = array();
-		foreach($components as $c){
-			$find_parent[$c['id']] = $c['parentid'];
-		}
-
-		$cur = $componentid;
-		while(!empty($find_parent[$cur])){
-			$cur = $find_parent[$cur];
-			array_unshift($value, $cur);
-		}
-
+	static public function tselect($name, $components, $with_ext = true, $componentid = 0, $require_full_path = true){
 		$html = '<span class="tselect">';
-		$html.= '<input type="hidden" class="value" name="'.$name.'" value="'.implode(',', $value).'" />';
-
-		$format_components = array();
-		foreach($components as &$c){
-			$format_components[$c['formatid']][$c['id']] = array('name' => $c['name'], 'parentid' => $c['parentid']);
-		}
-		unset($c);
-
-		$vi = 0;
-		foreach($formats as &$f){
-			$html.= '<select>';
-			if(isset($format_components[$f['id']])){
-				foreach($format_components[$f['id']] as $id => $c){
-					@$html.= '<option value="'.$id.'" data-parentid="'.$c['parentid'].'"'.(isset($value[$vi]) && $id == $value[$vi] ? ' selected="selected"' : '').'>'.$c['name'].'</option>';
-				}
-			}
-			$html.= '</select>';
-			$vi++;
-		}
-		unset($f);
-
+		$html.= '<input type="hidden" class="value" id="'.$name.'" name="'.$name.'" value="'.$componentid.'" data-components="'.$components.'" data-require-fullpath="'.$require_full_path.'" />';
 		if($with_ext){
 			$html.= '<input type="text" class="ext" placeholder="更详细的单元及寝室号" />';
 		}
 		$html.= '</span>';
-
 		return $html;
 	}
 }

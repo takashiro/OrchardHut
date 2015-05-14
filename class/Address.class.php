@@ -22,21 +22,16 @@
 *********************************************************************/
 
 class Address{
+	const MAX_CASCADE_LEVEL = 8;
+
 	static public function RefreshCache(){
-		writecache('addressformat', NULL);
 		writecache('addresscomponent', NULL);
 	}
 
 	static private $Format = null;
 	static public function Format(){
 		if(self::$Format === null){
-			self::$Format = readcache('addressformat');
-			if(self::$Format === null){
-				global $db;
-				$table = $db->select_table('addressformat');
-				self::$Format = $table->fetch_all('*', '1 ORDER BY displayorder');
-				writecache('addressformat', self::$Format);
-			}
+			self::$Format = readdata('addressformat');
 		}
 		return self::$Format;
 	}
@@ -48,11 +43,77 @@ class Address{
 			if(self::$Components === null){
 				global $db;
 				$table = $db->select_table('addresscomponent');
-				self::$Components = $table->fetch_all('*', '1 ORDER BY displayorder,id');
+				self::$Components = array();
+				$components = array();
+				foreach($table->fetch_all('*', '1 ORDER BY displayorder,id') as $c){
+					$components[$c['id']] = $c;
+				}
+				foreach($components as $c){
+					$parents = array();
+					$cur = $c['parentid'];
+					while($cur){
+						array_unshift($parents, $cur);
+						$cur = $components[$cur]['parentid'];
+					}
+					$c['parents'] = $parents;
+					self::$Components[$c['id']] = $c;
+				}
 				writecache('addresscomponent', self::$Components);
 			}
 		}
 		return self::$Components;
+	}
+
+	static public function FindComponentById($id){
+		$components = self::Components();
+		return isset($components[$id]) ? $components[$id] : array();
+	}
+
+	static public function Extension($limitation_addressids){
+		is_array($limitation_addressids) || $limitation_addressids = array($limitation_addressids);
+
+		if($limitation_addressids){
+			global $db;
+			$curids = $limitation_addressids;
+			for($i = 0; $i < self::MAX_CASCADE_LEVEL; $i++){
+				$table = $db->select_table('addresscomponent');
+				$rows = $table->fetch_all('id', 'parentid IN ('.implode(',', $curids).')');
+				if(!$rows){
+					break;
+				}
+				$curids = array();
+				foreach($rows as $r){
+					$limitation_addressids[] = $r['id'];
+					$curids[] = $r['id'];
+				}
+			}
+			return $limitation_addressids;
+		}else{
+			return array();
+		}
+	}
+
+	static public function FullPath($curid){
+		$components = self::Components();
+		$path = array();
+		while($curid){
+			if(empty($components[$curid])){
+				break;
+			}
+			$c = $components[$curid];
+			array_unshift($path, array('id' => $c['id'], 'name' => $c['name']));
+			$curid = $c['parentid'];
+		}
+		return $path;
+	}
+
+	static public function FullPathString($address){
+		is_array($address) || $address = self::FullPath($address);
+		$str = array();
+		foreach($address as $c){
+			$str[] = $c['name'];
+		}
+		return implode(' ', $str);
 	}
 }
 

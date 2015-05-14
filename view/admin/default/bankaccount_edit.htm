@@ -1,5 +1,10 @@
 <!--{template header}-->
 
+<script type="text/javascript">
+var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
+</script>
+<script type="text/javascript" src="./js/cascadeselect.js"></script>
+
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
 	<li><a href="admin.php?mod=bankaccount">资金账户</a></li>
@@ -48,7 +53,7 @@
 			<th><label>订单配送范围：</label></th>
 			<td>
 				<ul>
-					<li>{echo Template::tselect('addressrange', $address_format, $address_components, false, $a['addressrange'])}</li>
+					<li>{echo Template::tselect('addressrange', 'all_addresses', false, $a['addressrange'], false)}</li>
 				</ul>
 			</td>
 		</tr>

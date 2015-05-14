@@ -76,11 +76,13 @@ class Administrator extends User{
 		parent::__destruct();
 	}
 
-	public function getLimitations(){
+	public function getLimitations($extended = true){
 		if(empty($this->limitation)){
 			return array();
 		}
-		return explode(',', $this->limitation);
+		$limitation = explode(',', $this->limitation);
+		$extended && $limitation = Address::Extension($limitation);
+		return $limitation;
 	}
 
 	public function toArray(){

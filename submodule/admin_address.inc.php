@@ -28,39 +28,17 @@ $actions = array('list', 'edit', 'delete');
 $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET['action'] : $actions[0];
 
 if($data == 'format'){
-	$table = $db->select_table('addressformat');
-
-	if($action == 'edit'){
-		$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-		@$format = array(
-			'name' => $_POST['name'],
-			'displayorder' => intval($_POST['displayorder']),
-		);
-
-		if($id > 0){
-			$table->update($format, 'id='.$id);
-		}else{
-			$table->insert($format);
-			$id = $table->insert_id();
+	if($_POST){
+		$addressformat = array();
+		for($i = 1; $i <= Address::MAX_CASCADE_LEVEL; $i++){
+			if(!empty($_POST['addressformat'][$i])){
+				$addressformat[$i] = trim($_POST['addressformat'][$i]);
+			}else{
+				break;
+			}
 		}
-
-		Address::RefreshCache();
-
-		$format['id'] = $id;
-		echo json_encode($format);
-
-	}elseif($action == 'delete'){
-		$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-		if($id > 0){
-			$table->delete('id='.$id);
-			echo $db->affected_rows;
-		}else{
-			echo 0;
-		}
-		Address::RefreshCache();
-	}else{
-		$address_format = Address::Format();
-		include view('address_format');
+		writedata('addressformat', $addressformat);
+		showmsg('edit_succeed', 'refresh');
 	}
 
 }else{
@@ -79,8 +57,20 @@ if($data == 'format'){
 					$component['displayorder'] = intval($_POST['displayorder']);
 				}
 
+				$parentname = '';
+				if(isset($_POST['parentid'])){
+					$component['parentid'] = intval($_POST['parentid']);
+					$parentname = $db->result_first("SELECT name FROM {$tpre}addresscomponent WHERE id={$component['parentid']}");
+					if(!$parentname){
+						unset($component['parentid']);
+					}
+				}
+
 				$table->update($component, 'id='.$id);
 				$component['id'] = $id;
+				if($parentname){
+					$component['parentname'] = $parentname;
+				}
 
 			}else{
 				@$component = array(
@@ -88,20 +78,6 @@ if($data == 'format'){
 					'displayorder' => intval($_POST['displayorder']),
 					'parentid' => intval($_GET['parentid']),
 				);
-
-				if($component['parentid'] > 0){
-					$parent_format = $table->result_first('formatid', 'id='.$component['parentid']);
-					$format = Address::Format();
-					while($format && $format[0]['id'] != $parent_format){
-						array_shift($format);
-					}
-					if(array_key_exists(1, $format)){
-						$component['formatid'] = $format[1]['id'];
-					}
-				}else{
-					$table = $db->select_table('addressformat');
-					$component['formatid'] = $table->result_first('id', '1 ORDER BY displayorder LIMIT 1');
-				}
 
 				$table = $db->select_table('addresscomponent');
 				$table->insert($component);
@@ -149,7 +125,13 @@ if($data == 'format'){
 	}
 	$prev_address = array_reverse($prev_address);
 
-	$address_components = $table->fetch_all('*', 'parentid='.$parentid.' ORDER BY displayorder,id');
+	$address_components = $db->fetch_all("SELECT o.*,p.name AS parentname
+		FROM {$tpre}addresscomponent o
+			LEFT JOIN {$tpre}addresscomponent p ON p.id=o.parentid
+		WHERE o.parentid=$parentid
+		ORDER BY o.displayorder,o.id");
+
+	$addressformat = readdata('addressformat');
 
 	include view('address_component');
 }
