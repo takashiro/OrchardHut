@@ -264,10 +264,10 @@ switch($action){
 
 		$available_status = Order::$Status;
 		if(!$_G['admin']->hasPermission('order_sort')){
-			unset($available_status[0]);
+			unset($available_status[Order::Unsorted]);
 		}
 		if(!$_G['admin']->hasPermission('order_deliver')){
-			unset($available_status[1]);
+			unset($available_status[Order::Sorted], $available_status[Order::Delivering]);
 		}
 
 		foreach($available_status as &$checked){
