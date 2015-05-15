@@ -21,11 +21,11 @@ foreach($stat_list as $product_id => $subtypes){
 	foreach($subtypes as $subtype => $items){
 		echo $product_list[$product_id];
 		if(!empty($subtype)){
-			echo '(', $subtype, '),';
+			echo '(', $subtype, ')';
 		}
 
 		foreach($top_address_list as $address_id => $address_name){
-			echo ',', $items[$address_id]['totalnum'];
+			echo ',', isset($items[$address_id]) ? $items[$address_id]['totalnum'] : 0;
 		}
 		echo "\r\n";
 	}

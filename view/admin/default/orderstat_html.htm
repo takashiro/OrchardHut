@@ -1,6 +1,12 @@
 {template header}
 
 <script type="text/javascript" src="./js/datetime.js"></script>
+<style type="text/css">
+p.subtype{
+	margin: 0;
+	font-size: 9pt;
+}
+</style>
 
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
@@ -59,9 +65,12 @@
 				<!--{loop $subtypes $subtype $items}-->
 				<tr>
 					<td>$product_id</td>
-					<td>$product_list[$product_id]<!--{if !empty($subtype)}-->($subtype)<!--{/if}--></td>
+					<td>
+						$product_list[$product_id]
+						<!--{if !empty($subtype)}--><p class="subtype">($subtype)</p><!--{/if}-->
+					</td>
 					<!--{loop $top_address_list $address_id $address_name}-->
-					<td>$items[$address_id][totalnum]</td>
+					<td><!--{if !empty($items[$address_id])}-->$items[$address_id][totalnum]<!--{else}-->0<!--{/if}--></td>
 					<!--{/loop}-->
 				</tr>
 				<!--{/loop}-->
