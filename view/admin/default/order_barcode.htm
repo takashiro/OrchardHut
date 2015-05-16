@@ -59,12 +59,12 @@ dl.detail dt, dl.detail dd{
 
 dl.detail dt{
 	text-align: right;
-	width: 131px;
+	width: 91px;
 	border-right: 0px solid;
 }
 
 dl.detail dd{
-	width: 233px;
+	width: 273px;
 	margin: 0;
 	float: right;
 	border-left: 0px solid;
@@ -115,7 +115,7 @@ $(function(){
 	<dd>$order[id]</dd>
 	<dt>总金额</dt>
 	<dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
-	<dt>付款状态：</dt>
+	<dt>付款状态</dt>
 	<dd>
 		{echo Order::$PaymentMethod[$order['paymentmethod']]}
 		<!--{if $order['alipaystate']}-->({echo AlipayNotify::$TradeState[$order['alipaystate']]})<!--{elseif $order['paymentmethod'] != Order::PaidWithCash}-->(等待付款)<!--{/if}-->
