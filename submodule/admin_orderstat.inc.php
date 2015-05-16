@@ -112,10 +112,10 @@ foreach($item_list as $item){
 }
 
 if($time_start !== null){
-	$time_start = rdate($time_start);
+	$time_start = rdate($time_start, 'Y-m-d H:i');
 }
 if($time_end !== null){
-	$time_end = rdate($time_end);
+	$time_end = rdate($time_end, 'Y-m-d H:i');
 }
 
 $formats = array('html', 'csv');
