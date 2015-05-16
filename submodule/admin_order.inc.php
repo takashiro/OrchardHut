@@ -285,6 +285,9 @@ switch($action){
 			}else{
 				if($template_format == 'print' || $template_format == 'barcode'){
 					$ticketconfig = readdata('ticket');
+					foreach($orders as &$o){
+						$o['deliveryaddress'] = Address::FullPathString($o['addressid']).' '.$o['extaddress'];
+					}
 				}
 				include view('order_'.$template_format);
 			}
