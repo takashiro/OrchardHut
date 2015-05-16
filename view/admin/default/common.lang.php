@@ -37,6 +37,7 @@ return array(
 	'permission_weixin_comment' => '',
 	'permission_qqconnect' => 'QQ互联设置',
 	'permission_qqconnect_comment' => '',
+	'permission_orderstat' => '分拣报表',
 );
 
 ?>
