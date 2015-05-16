@@ -56,6 +56,7 @@ if($action == 'login'){
 			$user->pwmd5 = '';
 			$user->wxopenid = $open_id;
 			$user->nickname = lang('message', 'wxuser');
+			$user->regtime = TIMESTAMP;
 
 			$user->insert('IGNORE');
 			if($db->affected_rows <= 0){

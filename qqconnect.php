@@ -61,6 +61,7 @@ if($action == 'login'){
 				$user->pwmd5 = '';
 				$user->qqopenid = $open_id;
 				$user->nickname = $user_info['nickname'];
+				$user->regtime = TIMESTAMP;
 
 				$user->insert('IGNORE');
 				if($db->affected_rows <= 0){
