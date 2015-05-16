@@ -124,18 +124,16 @@ class BankAccount extends DBObject{
 		if($log['extra'] == Order::Received){
 			global $db, $tpre, $_G;
 
-			$components = $order->getAddressComponents();
+			$components = Address::FullPath($order->addressid);
 			$componentids = array(0);
 			foreach($components as $c){
-				$componentids[] = $c['componentid'];
+				$componentids[] = $c['id'];
 			}
 			$componentids = implode(',', $componentids);
 			$bankaccountid = $db->result_first("SELECT a.id
 				FROM {$tpre}bankaccount a
 					LEFT JOIN {$tpre}addresscomponent c ON c.id=a.addressrange
-					LEFT JOIN {$tpre}addressformat f ON f.id=c.formatid
 				WHERE a.handleorder=1 AND a.orderpaymentmethod={$order->paymentmethod} AND a.addressrange IN ($componentids)
-				ORDER BY f.displayorder DESC
 				LIMIT 1");
 
 			if($bankaccountid){
