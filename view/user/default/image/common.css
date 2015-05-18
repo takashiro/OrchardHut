@@ -701,10 +701,19 @@ footer ul.button_list .submenu a{
 	background:#F7F7F7;
 }
 
-.order_list .deliveryfee{
-	margin: 0;
-	font-size: 10pt;
-	color: #666;
+.order_list ul.extrainfo{
+	margin-top: 0.5em;
+	color: #777777;
+}
+
+.order_list ul.extrainfo li{
+	display: inline;
+	font-size: 0.8em;
+	margin: 0 0.1em;
+}
+
+.order_list .operation a{
+	line-height: 2em;
 }
 
 .popup_message_wrapper{
@@ -757,12 +766,43 @@ footer ul.button_list .submenu a{
 	text-align:center;
 }
 
+.mpage{
+	position: relative;
+	padding-top: 2.2em;
+	padding-bottom: 2.2em;
+}
+
 .mpage a, .mpage .total{
 	background:white;
-	border-radius:8px;
+	border-radius:6px;
 	margin:3px;
 	padding:3px 9px;
 	box-shadow:rgb(116, 116, 116) 0px 0px 8px 0px;
+	display: inline-block;
+}
+
+.mpage a.first{
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.mpage a.last{
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.mpage a.prev{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+.mpage a.next{
+	position: absolute;
+	bottom: 0;
+	right: 0;
 }
 
 .mpage a.current{

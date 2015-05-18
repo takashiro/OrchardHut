@@ -257,9 +257,9 @@ class Template{
 
 		if($page > 1){
 			if($page > 2){
-				$html.= '<a href="'.$url.$delimeter.'page=1'.'">'."首页".'</a>';
+				$html.= '<a class="first" href="'.$url.$delimeter.'page=1'.'">'."首页".'</a>';
 			}
-			$html.= '<a href="'.$url.$delimeter.'page='.max(1,$page - 1).'">'."上一页".'</a>';
+			$html.= '<a class="prev" href="'.$url.$delimeter.'page='.max(1,$page - 1).'">'."上一页".'</a>';
 		}
 
 		$faraway = min($maxpage, $page + 5 + max(0, 6 - $page));
@@ -272,9 +272,9 @@ class Template{
 		}
 
 		if($page < $maxpage){
-			$html.= '<a href="'.$url.$delimeter.'page='.($page + 1).'">'."下一页".'</a>';
+			$html.= '<a class="next" href="'.$url.$delimeter.'page='.($page + 1).'">'."下一页".'</a>';
 			if($page < $maxpage - 1){
-				$html.= '<a href="'.$url.$delimeter.'page='.$maxpage.'">'."尾页".'</a>';
+				$html.= '<a class="last" href="'.$url.$delimeter.'page='.$maxpage.'">'."尾页".'</a>';
 			}
 		}
 

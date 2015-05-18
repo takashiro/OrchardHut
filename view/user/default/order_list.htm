@@ -17,20 +17,21 @@
 				<thead>
 					<tr>
 						<td>物品</td>
-						<td>价格</td>
-						<td>编号</td>
-						<td>状态</td>
 						<td width="48">操作</td>
 					</tr>
 				</thead>
 				<tbody>
 				<!--{loop $orders $o}-->
 					<tr>
-						<td>$o[items]</td>
-						<td>{$o[totalprice]}{echo Product::$PriceUnit}<!--{if $o['deliveryfee'] > 0}--><p class="deliveryfee">(含运费{$o[deliveryfee]}{echo Product::$PriceUnit})</p><!--{/if}--></td>
-						<td>$o[id]</td>
-						<td>{echo Order::$Status[$o['status']]}</td>
 						<td>
+							$o[items]
+							<ul class="extrainfo">
+								<li>$o[id]号</li>
+								<li>{$o[totalprice]}{echo Product::$PriceUnit}<!--{if $o['deliveryfee'] > 0}--><span class="deliveryfee">(含运费{$o[deliveryfee]}{echo Product::$PriceUnit})</span><!--{/if}--></li>
+								<li>{echo Order::$Status[$o['status']]}</li>
+							</ul>
+						</td>
+						<td class="operation">
 							<a href="order.php?action=view&orderid=$o[id]" class="view">[详细]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
 								<a href="order.php?action=delete&orderid=$o[id]">[取消]</a>
