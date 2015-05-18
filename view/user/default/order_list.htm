@@ -24,7 +24,11 @@
 				<!--{loop $orders $o}-->
 					<tr>
 						<td>
-							$o[items]
+							<ul class="item">
+							<!--{loop $o['items'] $item}-->
+								<li>$item</li>
+							<!--{/loop}-->
+							</ul>
 							<ul class="extrainfo">
 								<li>$o[id]号</li>
 								<li>{$o[totalprice]}{echo Product::$PriceUnit}<!--{if $o['deliveryfee'] > 0}--><span class="deliveryfee">(含运费{$o[deliveryfee]}{echo Product::$PriceUnit})</span><!--{/if}--></li>

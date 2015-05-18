@@ -149,7 +149,7 @@ default:
 		unset($d);
 
 		foreach($orders as &$o){
-			$o['items'] = !empty($order_details[$o['id']]) ? implode('<br />', $order_details[$o['id']]) : '';
+			$o['items'] = !empty($order_details[$o['id']]) ? $order_details[$o['id']] : array();
 			$o['totalprice'] = floatval($o['totalprice']);
 			$o['deliveryfee'] = floatval($o['deliveryfee']);
 		}

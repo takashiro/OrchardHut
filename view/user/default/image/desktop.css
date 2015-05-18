@@ -77,3 +77,16 @@
 .container{
 	padding-bottom:80px;
 }
+
+.order_list ul.item li{
+	display: inline-block;
+	margin: 0 0.5em;
+}
+
+.mpage{
+	padding: 0;
+}
+
+.mpage a.first, .mpage a.prev, .mpage a.next, .mpage a.last{
+	position: static;
+}
