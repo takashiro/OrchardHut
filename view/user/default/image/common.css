@@ -707,7 +707,7 @@ footer ul.button_list .submenu a{
 }
 
 .order_list ul.extrainfo li{
-	display: inline;
+	display: inline-block;
 	font-size: 0.8em;
 	margin: 0 0.1em;
 }

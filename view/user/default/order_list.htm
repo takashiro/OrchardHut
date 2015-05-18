@@ -29,6 +29,16 @@
 								<li>$o[id]号</li>
 								<li>{$o[totalprice]}{echo Product::$PriceUnit}<!--{if $o['deliveryfee'] > 0}--><span class="deliveryfee">(含运费{$o[deliveryfee]}{echo Product::$PriceUnit})</span><!--{/if}--></li>
 								<li>{echo Order::$Status[$o['status']]}</li>
+								<li>
+									{echo Order::$PaymentMethod[$o['paymentmethod']]}
+									<!--{if $o['paymentmethod'] != Order::PaidWithCash}-->
+									<!--{if $o['alipaystate']}-->
+									({echo AlipayNotify::$TradeState[$o['alipaystate']]})
+									<!--{else}-->
+									(等待付款)
+									<!--{/if}-->
+									<!--{/if}-->
+								</li>
 							</ul>
 						</td>
 						<td class="operation">
