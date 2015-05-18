@@ -31,6 +31,11 @@ class WeixinHook{
 			if($touser){
 				if($log['extra'] == Order::InDeliveryPoint){
 					$text = lang('weixin', 'your_order_just_arrived_in_delivery_point');
+					if($order->deliverymethod == Order::HomeDelivery){
+						$text.= lang('weixin', 'please_wait_for_the_deliverer');
+					}else{
+						$text.= lang('weixin', 'please_fetch_your_package');
+					}
 				}else{
 					$text = lang('weixin', 'your_order_is_being_delivered');
 				}
@@ -38,9 +43,10 @@ class WeixinHook{
 				if($log['operator']){
 					$admin = $db->fetch_first("SELECT a.realname,a.mobile FROM {$tpre}administrator a WHERE a.id={$log['operator']}");
 					if($admin){
+						$text.= "\n";
 						$text.= lang('weixin', 'deliverer_is').$admin['realname'];
 						if($admin['mobile']){
-							$text.= '('.lang('common', 'mobile').': '.$admin['mobile'].')。';
+							$text.= '('.lang('common', 'mobile').': '.$admin['mobile'].')';
 						}
 					}
 				}
