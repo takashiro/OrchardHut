@@ -287,7 +287,9 @@ switch($action){
 					$ticketconfig = readdata('ticket');
 					foreach($orders as &$o){
 						$o['deliveryaddress'] = Address::FullPathString($o['addressid']).' '.$o['extaddress'];
+						$o['dateline'] = rdate($o['dateline']);
 					}
+					unset($o);
 				}
 				include view('order_'.$template_format);
 			}
