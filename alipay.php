@@ -23,6 +23,10 @@
 
 require_once './core/init.inc.php';
 
+if(!$_G['user']->isLoggedIn()){
+	redirect('memcp.php');
+}
+
 $paymentconfig = readdata('payment');
 if(empty($paymentconfig['enabled_method'][Order::PaidOnline])){
 	showmsg('alipay_is_disabled');
