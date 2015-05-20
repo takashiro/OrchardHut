@@ -60,9 +60,11 @@ switch($action){
 			}
 
 			$admin->clearPermission();
-			foreach($_POST['p'] as $permission => $value){
-				if($_G['admin']->hasPermission($permission)){
-					$admin->setPermission($permission, true);
+			if(!empty($_POST['p']) && is_array($_POST['p'])){
+				foreach($_POST['p'] as $permission => $value){
+					if($_G['admin']->hasPermission($permission)){
+						$admin->setPermission($permission, true);
+					}
 				}
 			}
 
