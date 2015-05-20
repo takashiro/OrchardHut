@@ -32,7 +32,9 @@ foreach($orders as $o){
 	echo $o['id'];
 	$maxi = count($address_format);
 	for($i = 0; $i < $maxi; $i++){
-		echo ',', $o['address'][$i]['name'];
+		echo ',';
+		if(isset($o['address'][$i]['name']))
+			echo $o['address'][$i]['name'];
 	}
 	echo ',', $o['extaddress'], ',', $o['addressee'], ',"', $o['mobile'],'",', $o['ordernum'], ',"';
 	if($o['detail']){
@@ -49,7 +51,7 @@ foreach($orders as $o){
 	echo '",', $o['totalprice'], ',';
 	echo isset(Order::$Status[$o['status']]) ? Order::$Status[$o['status']] : '未知', ',';
 	echo isset(Order::$PaymentMethod[$o['paymentmethod']]) ? Order::$PaymentMethod[$o['paymentmethod']] : '未知', ',';
-	if($o['paymentmethod'] == Order::PaidOnline){
+	if($o['paymentmethod'] != Order::PaidWithCash){
 		if(empty($o['alipaystate'])){
 			echo '等待付款';
 		}else{
