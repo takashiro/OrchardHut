@@ -43,6 +43,10 @@ class AlipayNotify {
 			$decrypt_post_para = $_POST;
 			if ($this->alipay_config['sign_type'] == '0001') {
 				$decrypt_post_para['notify_data'] = rsaDecrypt($decrypt_post_para['notify_data'], $this->alipay_config['private_key_path']);
+
+				if(empty($decrypt_post_para['notify_data'])){
+					return false;
+				}
 			}
 
 			//notify_id从decrypt_post_para中解析出来（也就是说decrypt_post_para中已经包含notify_id的内容）
