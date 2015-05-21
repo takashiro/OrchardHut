@@ -46,6 +46,7 @@ switch($action){
 				foreach(Order::$Status as $statusid => $value){
 					$display_status[$statusid] = true;
 				}
+				unset($display_status[Order::Canceled]);
 			}
 
 			//判断当前管理员的权限，过滤掉无权限查看的订单
