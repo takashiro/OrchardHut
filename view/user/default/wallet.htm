@@ -39,10 +39,9 @@
 			<table>
 				<thead>
 					<tr>
-						<td width="110">时间</td>
+						<td style="width:6em">时间</td>
 						<td>金额({echo Product::$PriceUnit})</td>
-						<td>类型</td>
-						<td>其他</td>
+						<td>详细</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -56,13 +55,12 @@
 							<!--{/if}-->
 						</td>
 						<td><!--{if $l['delta'] > 0}-->+<!--{/if}-->{$l[delta]}</td>
-						<td>{echo Wallet::$LogType[$l['type']]}</td>
 						<td>
 							<!--{if $l['type'] == Wallet::RechargeLog}-->
 								支付宝转入{$l[cost]}{echo Product::$PriceUnit}<br />
 								(<!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeState[$l['alipaystate']]}<!--{else}-->等待付款<!--{/if}-->)
 							<!--{elseif $l['type'] == Wallet::OrderRefundLog || $l['type'] == Wallet::OrderPaymentLog}-->
-								<a href="order.php?action=view&orderid=$l[orderid]">查看订单</a>
+								<a href="order.php?action=view&orderid=$l[orderid]">订单{echo Wallet::$LogType[$l['type']]}</a>
 							<!--{/if}-->
 						</td>
 					</tr>
