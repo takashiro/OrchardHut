@@ -1,0 +1,64 @@
+{template header}
+
+<script type="text/javascript" src="./js/datetime.js"></script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="$mod_url">用户</a></li>
+	<li>用户列表</li>
+</ol>
+
+<div class="box">
+	<h1>用户列表</h1>
+
+	<form action="$mod_url" method="post" class="quick_search">
+		<dl>
+			<dt>注册时间：</dt>
+			<dd><input type="text" name="regtime_start" class="datetime" value="$regtime_start" /> - <input type="text" name="regtime_end" class="datetime" value="$regtime_end" /></dd>
+		</dl>
+		<dl>
+			<dt>下单时间：</dt>
+			<dd><input type="text" name="ordertime_start" class="datetime" value="$ordertime_start" /> - <input type="text" name="ordertime_end" class="datetime" value="$ordertime_end" /></dd>
+		</dl>
+		<dl>
+			<dt>下单数量：</dt>
+			<dd><input type="text" name="ordernum_min" class="number narrow" value="$ordernum_min" /> - <input type="text" name="ordernum_max" class="number narrow" value="$ordernum_max" /></dd>
+		</dl>
+
+		<div class="post_buttons">
+			<button type="submit">查找</button>
+		</div>
+	</form>
+
+	<p>用户数：$user_num ({echo sprintf('%.2f', $user_num / $total_user_num * 100)}%), 总用户数：$total_user_num</p>
+	<div class="content list">
+		<table>
+			<thead>
+				<tr>
+					<td>UID</td>
+					<td>用户名</td>
+					<td>昵称</td>
+					<td>注册时间</td>
+					<td>订单数量</td>
+					<td>钱包余额</td>
+				</tr>
+			</thead>
+			<tbody>
+				<!--{loop $user_list $u}-->
+				<tr>
+					<td>$u[id]</td>
+					<td><!--{if strlen($u['account']) <= 15}-->$u[account]<!--{/if}--></td>
+					<td>$u[nickname]</td>
+					<td>{echo rdate($u['regtime'])}</td>
+					<td><a href="admin.php?mod=order&userid=$u[id]&time_start=&time_end=">$u[ordernum]</a></td>
+					<td>$u[wallet]</td>
+				</tr>
+				<!--{/loop}-->
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{echo Template::mpage($user_num, $page, $limit, $mod_url.$query_string)}
+
+{template footer}

@@ -53,6 +53,7 @@ class Administrator extends User{
 		'weixin' => 0x40000,
 		'qqconnect' => 0x80000,
 		'orderstat' => 0x100000,
+		'user' => 0x200000,
 	);
 
 	static public $SpecialPermission = array(
