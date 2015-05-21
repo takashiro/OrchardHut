@@ -107,7 +107,11 @@ abstract class DBObject{
 	public function insert($extra = ''){
 		$this->table->insert($this->attr, false, $extra);
 
-		$this->attr(static::PRIMARY_KEY, $this->table->insert_id());
+		$id = $this->table->insert_id();
+		if($id){
+			$this->oattr = $this->attr;
+			$this->attr(static::PRIMARY_KEY, $id);
+		}
 		return $this->attr(static::PRIMARY_KEY);
 	}
 

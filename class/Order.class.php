@@ -177,10 +177,7 @@ class Order extends DBObject{
 	}
 
 	public function cancel(){
-		global $db, $tpre;
-		if($this->alipaystate == AlipayNotify::TradeSuccess && $this->paymentmethod != Order::PaidWithCash){
-			$db->query("UPDATE {$tpre}user SET wallet=wallet+{$this->totalprice} WHERE id={$this->userid}");
-		}
+		runhooks('order_canceled', array($this));
 	}
 
 	static public function Delete($orderid, $extra = ''){

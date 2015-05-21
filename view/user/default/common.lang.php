@@ -24,6 +24,10 @@ return array(
 	'station_delivery' => '自提点取货',
 
 	'mobile' => '手机',
+
+	'recharge' => '充值',
+	'order_refund' => '退款',
+	'order_payment' => '支付',
 );
 
 ?>

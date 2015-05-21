@@ -46,13 +46,10 @@ if(isset($_GET['orderid'])){
 		showmsg('wallet_is_insufficient', 'back');
 	}
 
-	$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id={$_G['user']->id} AND wallet>={$order->totalprice}");
-	if($db->affected_rows <= 0){
+	$wallet = new Wallet($_G['user']);
+	if(!$wallet->pay($order)){
 		showmsg('wallet_is_insufficient', 'back');
 	}
-
-	$order->paymentmethod = Order::PaidWithWallet;
-	$order->alipaystate = AlipayNotify::TradeSuccess;
 
 	showmsg('order_is_successfully_paid', 'back');
 }

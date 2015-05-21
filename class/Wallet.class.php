@@ -22,6 +22,37 @@
 *********************************************************************/
 
 class Wallet{
+	const RechargeLog = 0;
+	const OrderRefundLog = 1;
+	const OrderPaymentLog = 2;
+
+	static public $LogType = array();
+
+	private $user;
+
+	public function __construct($user){
+		$this->user = $user;
+	}
+
+	public function pay($order){
+		global $db, $tpre;
+		$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id={$this->user->id} AND wallet>={$order->totalprice}");
+		if($db->affected_rows > 0){
+			$order->alipaystate = AlipayNotify::TradeSuccess;
+			$order->paymentmethod = Order::PaidWithWallet;
+			$log = array(
+				'uid' => $this->user->id,
+				'type' => self::OrderPaymentLog,
+				'dateline' => TIMESTAMP,
+				'delta' => -$order->totalprice,
+				'orderid' => $order->id,
+			);
+			$table = $db->select_table('userwalletlog');
+			$table->insert($log);
+			return true;
+		}
+		return false;
+	}
 
 	static protected $AlipayTradeNoPrefix = 'W';
 	static public function __on_alipay_started(){
@@ -100,6 +131,30 @@ class Wallet{
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
 			showmsg('wallet_is_successfully_recharged', 'wallet.php');
 	}
+
+	static public function __on_order_canceled($order){
+		if($order->alipaystate == AlipayNotify::TradeSuccess && $order->paymentmethod != Order::PaidWithCash){
+			global $db, $tpre;
+			$db->query("UPDATE {$tpre}user SET wallet=wallet+{$order->totalprice} WHERE id={$order->userid}");
+			if ($db->affected_rows > 0){
+				$log = array(
+					'uid' => $order->userid,
+					'dateline' => TIMESTAMP,
+					'type' => self::OrderRefundLog,
+					'delta' => $order->totalprice,
+					'orderid' => $order->id,
+				);
+				$table = $db->select_table('userwalletlog');
+				$table->insert($log);
+			}
+		}
+	}
 }
+
+Wallet::$LogType = array(
+	Wallet::RechargeLog => lang('common', 'recharge'),
+	Wallet::OrderRefundLog => lang('common', 'order_refund'),
+	Wallet::OrderPaymentLog => lang('common', 'order_payment'),
+);
 
 ?>

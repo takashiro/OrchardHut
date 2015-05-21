@@ -232,17 +232,8 @@ switch($action){
 				$order->deliveryfee = 0;
 			}
 
-			//若为钱包支付，直接扣款，扣款不足则转为货到付款
-			if($order->paymentmethod == Order::PaidWithWallet){
-				$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id={$_USER['id']} AND wallet>={$order->totalprice}");
-				if($db->affected_rows <= 0){
-					$order->paymentmethod = Order::PaidWithCash;
-				}else{
-					$order->alipaystate = AlipayNotify::TradeSuccess;
-				}
-			}
-
 			//将订单插入到数据库中
+			$order->alipaystate = 0;
 			$order_succeeded = $order->insert();
 
 			//清空购物车
@@ -250,8 +241,15 @@ switch($action){
 
 			//显示订单提交结果
 			if($order_succeeded){
-				//若提交成功且使用线上支付，进入支付宝界面
-				if($order->paymentmethod == Order::PaidOnline){
+				//若为钱包支付，直接扣款，扣款不足则转为货到付款
+				if($order->paymentmethod == Order::PaidWithWallet){
+					$wallet = new Wallet($_G['user']);
+					if(!$wallet->pay($order)){
+						$order->paymentmethod = Order::PaidWithCash;
+					}
+
+				//若使用线上支付，进入支付宝界面
+				}elseif($order->paymentmethod == Order::PaidOnline){
 					redirect('alipay.php?orderid='.$order->id);
 				}
 

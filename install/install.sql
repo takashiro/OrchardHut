@@ -121,8 +121,8 @@ CREATE TABLE IF NOT EXISTS `hut_deliverytime` (
 
 DROP TABLE IF EXISTS `hut_order`;
 CREATE TABLE IF NOT EXISTS `hut_order` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` int(8) unsigned NOT NULL,
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` mediumint(8) unsigned NOT NULL,
   `dateline` int(11) unsigned NOT NULL,
   `status` tinyint(1) unsigned NOT NULL,
   `totalprice` decimal(9,2) unsigned NOT NULL,
@@ -308,11 +308,13 @@ CREATE TABLE IF NOT EXISTS `hut_userwalletlog` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` mediumint(8) unsigned NOT NULL,
   `dateline` int(11) unsigned NOT NULL,
+  `type` tinyint(4) unsigned NOT NULL,
   `delta` decimal(9,2) NOT NULL,
   `cost` decimal(9,2) NOT NULL,
   `alipaytradeid` varchar(255) NOT NULL,
   `alipaystate` tinyint(4) NOT NULL,
   `recharged` tinyint(1) NOT NULL,
+  `orderid` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
