@@ -19,15 +19,17 @@ var lang = {
 };
 var mod_url = '$mod_url';
 var admin = {
+	permission : {
+	{loop $_G['admin']->GetAllPermissionNames() $perm}
+	'$perm' : {echo $_G['admin']->hasPermission($perm) ? 'true' : 'false'},
+	{/loop}
+	'none' : false
+	},
+
 	hasPermission : function(perm){
-		{loop $_G['admin']->GetAllPermissionNames() $perm}
-		if(perm == '$perm'){
-			return {echo $_G['admin']->hasPermission($perm) ? 'true' : 'false'};
-		}
-		{/loop}
-		return false;
+		return this.permission[perm];
 	}
-}
+};
 
 var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 
@@ -73,6 +75,8 @@ $(function(){
 			<dl>
 				<dt>送货地址：</dt>
 				<dd>{echo Template::tselect('delivery_address[]', 'all_addresses', false, isset($delivery_address[0]) ? $delivery_address[0] : 0, false)}</dd>
+				<dt>收货方式：</dt>
+				<dd>{echo Template::select('deliverymethod', $delivery_methods, $deliverymethod)}</dd>
 				<dt>订单状态：</dt>
 				<dd>
 					<!--{loop $available_status $id $checked}-->
@@ -199,7 +203,7 @@ $(function(){
 </div>
 
 <!--{if empty($stat['statonly'])}-->
-{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&display_status='.implode(',', $display_status).'&'.http_build_query(array('delivery_address' => $delivery_address)).'&time_start='.$time_start.'&time_end='.$time_end.'&'.http_build_query(array('stat' => $stat)).'&mobile='.$mobile.'&addressee='.$addressee.'&administrator='.$administrator.'&userid='.$userid)}
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&'.$query_string)}
 <!--{/if}-->
 
 {template footer}

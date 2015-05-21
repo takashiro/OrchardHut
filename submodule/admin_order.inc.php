@@ -49,6 +49,8 @@ switch($action){
 				unset($display_status[Order::Canceled]);
 			}
 
+			$deliverymethod = -1;
+
 			//判断当前管理员的权限，过滤掉无权限查看的订单
 			if(!$_G['admin']->hasPermission('order_sort')){
 				unset($display_status[Order::Unsorted]);
@@ -98,6 +100,16 @@ switch($action){
 				if($time_end !== ''){
 					$condition[] = 'o.dateline<='.$time_end;
 					$time_end = rdate($time_end, 'Y-m-d H:i');
+				}
+
+				//送货方式
+				if(isset($_REQUEST['deliverymethod'])){
+					$deliverymethod = intval($_REQUEST['deliverymethod']);
+					if(isset(Order::$DeliveryMethod[$deliverymethod])){
+						$condition[] = 'o.deliverymethod='.$deliverymethod;
+					}else{
+						$deliverymethod = -1;
+					}
 				}
 			}
 			$display_status = array_keys($display_status);
@@ -280,8 +292,35 @@ switch($action){
 			$available_status[$status] = true;
 		}
 
+		$delivery_methods = Order::$DeliveryMethod;
+		$delivery_methods[-1] = '';
+
 		if($action == 'list'){
 			if($template_format == 'html'){
+				$query_string = array();
+				if($display_status){
+					$query_string['display_status'] = implode(',', $display_status);
+				}
+
+				$vars = array(
+					'delivery_address',
+					'time_start', 'time_end',
+					'stat',
+					'mobile', 'addressee',
+					'administrator',
+					'userid',
+				);
+				foreach($vars as $var){
+					if($$var){
+						$query_string[$var] = $$var;
+					}
+				}
+				if($deliverymethod != -1){
+					$query_string['deliverymethod'] = $deliverymethod;
+				}
+
+				$query_string = http_build_query($query_string);
+
 				include view('order_list');
 			}else{
 				if($template_format == 'print' || $template_format == 'barcode'){
