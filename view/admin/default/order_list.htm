@@ -52,7 +52,7 @@ $(function(){
 
 	$('#condition_form').submit(function(){
 		var button = $(this).find('button[type="submit"]:focus');
-		$(this).attr('target', button.val() == 'print' ? '_blank' : '_self');
+		$(this).attr('target', button.hasClass('new_window') ? '_blank' : '_self');
 	});
 });
 </script>
@@ -87,8 +87,8 @@ $(function(){
 			<div class="post_buttons">
 				<button type="submit" name="format" value="html">查找</button>
 				<button type="submit" name="format" value="csv">导出Excel</button>
-				<button type="submit" name="format" value="print">批量打印小票</button>
-				<button type="submit" name="format" value="barcode">批量打印条码</button>
+				<button type="submit" name="format" value="ticket" class="new_window">批量打印提货单</button>
+				<button type="submit" name="format" value="barcode" class="new_window">批量打印条码</button>
 				<button id="multi_mark_sorted" title="批量点击本页所有[已打包]按钮">本页已打包</button>
 				<button id="multi_mark_in_delivery_point" title="批量点击本页所有[到配送站]按钮">本页到配送站</button>
 				<button id="multi_mark_delivering" title="批量点击本页所有[配送中]按钮">本页送货中</button>
@@ -165,7 +165,7 @@ $(function(){
 						<!--{/if}-->
 						</td>
 						<td>
-							<a class="print" href="$mod_url&action=print&orderid=$o[id]" target="_blank">[打印]</a>
+							<a class="print" href="$mod_url&action=ticket&orderid=$o[id]" target="_blank">[打印]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
 							<br /><a class="delete" href="$mod_url&action=cancel&orderid=$o[id]">[取消]</a>
 							<!--{/if}-->

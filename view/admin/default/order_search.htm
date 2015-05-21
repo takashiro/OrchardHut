@@ -38,13 +38,13 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 <script type="text/javascript" src="./js/datetime.js?$_CONFIG[refversion]"></script>
 
 <div class="box">
-	<h1>订单管理</h1>
+	<h1>订单高级查找</h1>
 	<div class="content">
 		<form action="$mod_url" method="post" class="edit_form" target="_blank">
 			<table>
 				<tr>
 					<th>时间：</th>
-					<td><input type="text" name="time_start" class="datetime" value="{echo rdate($time_start)}" /> - <input type="text" name="time_end" class="datetime" value="{echo rdate($time_end)}" /></td>
+					<td><input type="text" name="time_start" class="datetime" value="{echo rdate($time_start, 'Y-m-d H:i')}" /> - <input type="text" name="time_end" class="datetime" value="{echo rdate($time_end, 'Y-m-d H:i')}" /></td>
 				</tr>
 				<tr>
 					<th>统计：</th>
@@ -59,16 +59,16 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 					</td>
 				</tr>
 				<tr>
+					<th>订单号：</th>
+					<td><input type="text" name="orderid" /></td>
+				</tr>
+				<tr>
 					<th>订单送货地址：</th>
 					<td>
 						<ul id="delivery_address_list">
 							<li>{echo Template::tselect('delivery_address[]', 'all_addresses', false, 0, false)} <a href="###" class="add">[增加]</a></li>
 						</ul>
 					</td>
-				</tr>
-				<tr>
-					<th>管理员：</th>
-					<td><input type="text" name="administrator" /></td>
 				</tr>
 				<tr>
 					<th>收件人：</th>
@@ -78,8 +78,13 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 					<th>收件人手机号：</th>
 					<td><input type="text" name="mobile" /></td>
 				</tr>
+				<tr>
+					<th>操作：</th>
+					<td>{echo Template::radio('format', array('html' => '查找并显示', 'ticket' => '打印提货单'))}
+			</td>
+				</tr>
 			</table>
-			<button type="submit">查找</button>
+			<button type="submit">确认</button>
 		</form>
 	</div>
 </div>

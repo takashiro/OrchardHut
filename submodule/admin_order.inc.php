@@ -60,58 +60,58 @@ switch($action){
 				unset($display_status[Order::Sorted], $display_status[Order::Delivering]);
 			}
 
-			//输入了订单号，直接按订单号查询，忽略管理员权限外的其他条件
+			//按订单号查询
 			if(!empty($_REQUEST['orderid'])){
 				$condition[] = 'o.id='.intval($_REQUEST['orderid']);
 				$display_status[Order::Received] = $display_status[Order::Rejected] = true;
 
 				$time_start = '';
 				$time_end = '';
+			}
 
-			//没有订单号，所有条件均要考虑
+			//下单起始时间
+			if(isset($_REQUEST['time_start'])){
+				$time_start = empty($_REQUEST['time_start']) ? '' : rstrtotime($_REQUEST['time_start']);
 			}else{
-				//下单起始时间
-				if(isset($_REQUEST['time_start'])){
-					$time_start = empty($_REQUEST['time_start']) ? '' : rstrtotime($_REQUEST['time_start']);
+				$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+
+				//根据截单时间调整时分秒
+				$deliverytimes = DeliveryTime::FetchAllEffective();
+				usort($deliverytimes, function($t1, $t2){
+					return $t1['deadline'] > $t2['deadline'];
+				});
+				$dt = current($deliverytimes);
+				$time_start += $dt['deadline'];
+				unset($deliverytimes, $dt);
+			}
+
+			//下单截止时间
+			if(isset($_REQUEST['time_end'])){
+				$time_end = empty($_REQUEST['time_end']) ? '' : rstrtotime($_REQUEST['time_end']);
+			}else{
+				$time_end = $time_start + 1 * 24 * 3600;
+			}
+
+			if($time_start !== ''){
+				$condition[] = 'o.dateline>='.$time_start;
+				$time_start = rdate($time_start, 'Y-m-d H:i');
+			}
+
+			if($time_end !== ''){
+				$condition[] = 'o.dateline<='.$time_end;
+				$time_end = rdate($time_end, 'Y-m-d H:i');
+			}
+
+			//送货方式
+			if(isset($_REQUEST['deliverymethod'])){
+				$deliverymethod = intval($_REQUEST['deliverymethod']);
+				if(isset(Order::$DeliveryMethod[$deliverymethod])){
+					$condition[] = 'o.deliverymethod='.$deliverymethod;
 				}else{
-					$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
-
-					//根据截单时间调整时分秒
-					$deliverytimes = DeliveryTime::FetchAllEffective();
-					usort($deliverytimes, function($t1, $t2){
-						return $t1['deadline'] > $t2['deadline'];
-					});
-					$dt = current($deliverytimes);
-					$time_start += $dt['deadline'];
-					unset($deliverytimes, $dt);
-				}
-				//下单截止时间
-				if(isset($_REQUEST['time_end'])){
-					$time_end = empty($_REQUEST['time_end']) ? '' : rstrtotime($_REQUEST['time_end']);
-				}else{
-					$time_end = $time_start + 1 * 24 * 3600;
-				}
-
-				if($time_start !== ''){
-					$condition[] = 'o.dateline>='.$time_start;
-					$time_start = rdate($time_start, 'Y-m-d H:i');
-				}
-
-				if($time_end !== ''){
-					$condition[] = 'o.dateline<='.$time_end;
-					$time_end = rdate($time_end, 'Y-m-d H:i');
-				}
-
-				//送货方式
-				if(isset($_REQUEST['deliverymethod'])){
-					$deliverymethod = intval($_REQUEST['deliverymethod']);
-					if(isset(Order::$DeliveryMethod[$deliverymethod])){
-						$condition[] = 'o.deliverymethod='.$deliverymethod;
-					}else{
-						$deliverymethod = -1;
-					}
+					$deliverymethod = -1;
 				}
 			}
+
 			$display_status = array_keys($display_status);
 			$condition[] = 'o.status IN ('.implode(',', $display_status).')';
 
@@ -161,19 +161,6 @@ switch($action){
 				$mobile = '';
 			}
 
-			//查询某个管理员管辖范围内的订单
-			if(!empty($_REQUEST['administrator'])){
-				$administrator = trim($_REQUEST['administrator']);
-				$limitation = $db->result_first("SELECT limitation FROM {$tpre}administrator WHERE account='$administrator'");
-				if($limitation){
-					$limitation = explode(',', $limitation);
-					$limitation = Address::Extension($limitation);
-					$condition[] = 'o.addressid IN ('.implode(',', $limitation).')';
-				}
-			}else{
-				$administrator = '';
-			}
-
 			//连接成WHERE子句
 			$condition = implode(' AND ', $condition);
 
@@ -185,7 +172,7 @@ switch($action){
 			);
 
 			//判断显示格式，若为csv则导出Excel表格
-			$template_formats = array('html', 'csv', 'print', 'barcode');
+			$template_formats = array('html', 'csv', 'ticket', 'barcode');
 			$template_format = &$_REQUEST['format'];
 			if(empty($template_format) || !in_array($template_format, $template_formats)){
 				$template_format = $template_formats[0];
@@ -259,7 +246,18 @@ switch($action){
 			}
 		}else{
 			$display_status = array_keys(Order::$Status);
-			$time_start = rmktime(17, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+			unset($display_status[Order::Canceled]);
+
+			$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+			//根据截单时间调整时分秒
+			$deliverytimes = DeliveryTime::FetchAllEffective();
+			usort($deliverytimes, function($t1, $t2){
+				return $t1['deadline'] > $t2['deadline'];
+			});
+			$dt = current($deliverytimes);
+			$time_start += $dt['deadline'];
+			unset($deliverytimes, $dt);
+
 			$time_end = $time_start + 24 * 3600;
 		}
 
@@ -307,7 +305,6 @@ switch($action){
 					'time_start', 'time_end',
 					'stat',
 					'mobile', 'addressee',
-					'administrator',
 					'userid',
 				);
 				foreach($vars as $var){
@@ -323,7 +320,7 @@ switch($action){
 
 				include view('order_list');
 			}else{
-				if($template_format == 'print' || $template_format == 'barcode'){
+				if($template_format == 'ticket' || $template_format == 'barcode'){
 					$ticketconfig = readdata('ticket');
 					foreach($orders as &$o){
 						$o['deliveryaddress'] = Address::FullPathString($o['addressid']).' '.$o['extaddress'];
@@ -450,7 +447,7 @@ switch($action){
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
-	case 'print':case 'barcode':
+	case 'ticket':case 'barcode':
 		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 		if($orderid > 0){
 			$order = new Order($orderid);
