@@ -77,7 +77,7 @@ if($_POST){
 	}
 
 	$ticketconfig = readdata('ticket');
-	include view('order_ticket');
+	include view('order_wideticket');
 
 }else{
 	include view('ticket_printer');

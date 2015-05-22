@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>$_CONFIG[sitename]管理面板</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="shortcut icon" href="./view/admin/$_G[style]/image/favicon.ico" />
+<link rel="stylesheet" href="./view/admin/$_G[style]/image/order_ticket.css?$_CONFIG[refversion]" type="text/css" />
+<!--{if !empty($_CONFIG[jquery_cdn])}-->
+<script type="text/javascript" src="$_CONFIG[jquery_cdn]"></script>
+<!--{/if}-->
+<script type="text/javascript">window.jQuery || document.write('<script src="./plugin/jquery/jquery-2.0.3.min.js"><\/script>');</script>
+</head>
+<body>
+
+<!--{if !empty($orders)}-->
+<script type="text/javascript">
+$(function(){
+	$('#print_button').click(function(){
+		$('#print_button').hide();
+		window.print();
+		window.close();
+	});
+});
+</script>
+<button id="print_button">确认打印</button>
+<!--{else}-->
+<script type="text/javascript">
+alert('没有查询到订单！');
+window.close();
+</script>
+<!--{/if}-->
+
+<!--{eval $tips = empty($ticketconfig['tips']) ? array('') : explode("\n", $ticketconfig['tips']);}-->
+<!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
+<!--{loop $orders $order}-->
+<div class="header">
+	<h2>$_CONFIG[sitename]提货单</h2>
+	<div class="tips">$ticketconfig[extrainfo]</div>
+	<div class="tips"><!--{if $tips}-->{echo $tips[array_rand($tips)]}<!--{/if}--></div>
+</div>
+
+<div class="main">
+	<table class="info">
+		<tr><th>收件人：</th><td>$order[addressee](电话：$order[mobile])</td></tr>
+		<tr><th>订单号：</th><td>$order[id]</td></tr>
+		<tr><th>下单时间：</th><td>$order[dateline]</td></tr>
+		<tr><th>配送地址：</th><td>$order[deliveryaddress]</td></tr>
+		<!--{if !empty($order['message'])}-->
+		<tr><th>用户留言：</th><td>$order[message]</td></tr>
+		<!--{/if}-->
+		<tr><th>总金额：</th><td>{$order[totalprice]}{echo Product::$PriceUnit}</td></tr>
+		<tr>
+			<th>付款状态：</th>
+			<td>
+				{echo Order::$PaymentMethod[$order['paymentmethod']]}
+				<!--{if $order['alipaystate']}-->({echo AlipayNotify::$TradeState[$order['alipaystate']]})<!--{elseif $order['paymentmethod'] != Order::PaidWithCash}-->(等待付款)<!--{/if}-->
+			</td>
+		</tr>
+	</table>
+
+	<table class="order_detail">
+		<thead>
+			<tr><td>商品</td><td class="number">数量</td></tr>
+		</thead>
+		<tbody>
+		<!--{loop $order['detail'] $d}-->
+			<tr>
+				<td><!--{if $d['state'] == 1}-->[缺货]<!--{/if}-->$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--></td>
+				<td>{echo $d['amount'] * $d['number']} $d[amountunit]</td>
+			</tr>
+		<!--{/loop}-->
+		</tbody>
+	</table>
+</div>
+
+<div class="footer">
+	打印时间：{echo rdate(TIMESTAMP)}
+</div>
+
+<!--{/loop}-->
+
+</body>
+</html>
