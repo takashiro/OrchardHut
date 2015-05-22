@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>$_CONFIG[sitename]管理面板</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="shortcut icon" href="./view/admin/$_G[style]/image/favicon.ico"/>
+<link rel="stylesheet" href="./view/admin/$_G[style]/image/common.css?$_CONFIG[refversion]" type="text/css" />
+<!--{if !empty($_CONFIG[jquery_cdn])}-->
+<script type="text/javascript" src="$_CONFIG[jquery_cdn]"></script>
+<!--{/if}-->
+<script type="text/javascript">window.jQuery || document.write('<script src="./plugin/jquery/jquery-2.0.3.min.js"><\/script>');</script>
+<style type="text/css">
+.container{
+	min-width: 500px;
+}
+
+.box{
+	max-width: 500px;
+}
+.edit_form table th{
+	width: 8em;
+}
+</style>
+<script type="text/javascript">
+$(function(){
+	$('#print_button').click(function(e){
+		e.preventDefault();
+
+		if($('#orderid').val() == '' && $('#mobile').val() == ''){
+			alert('请输入订单号或手机号。');
+		}else{
+			$('#ticket_form').submit();
+			$('#ticket_form input').val('');
+			$('#mobile').focus();
+		}
+	});
+
+	$('#mobile').focus();
+});
+</script>
+</head>
+
+<body>
+	<section class="container">
+		<header>
+			<h2>$_CONFIG[sitename]</h2>
+		</header>
+
+		<div class="box">
+			<h2>自助打印提货单</h2>
+			<div class="content">
+				<form id="ticket_form" action="$PHP_SELF" method="post" class="edit_form" target="_blank">
+					<table>
+						<tr>
+							<th>下单时间：</th>
+							<td>{echo rdate($time_start, 'Y-m-d H:i')} - {echo rdate($time_end, 'Y-m-d H:i')}</td>
+						</tr>
+						<tr>
+							<th>订单号：</th>
+							<td><input type="text" id="orderid" name="orderid" autocomplete="off" /></td>
+						</tr>
+						<tr>
+							<th></th>
+							<td>或</td>
+						</tr>
+						<tr>
+							<th>收件人手机号：</th>
+							<td><input type="text" id="mobile" name="mobile" autocomplete="off" /></td>
+						</tr>
+					</table>
+					<button type="submit" id="print_button">查询</button>
+				</form>
+			</div>
+		</div>
+		<footer>
+			Authored by Kazuichi Takashiro, Computer Science, Sichuan University & Zhejiang University
+		</footer>
+	</section>
+</body>
+</html>

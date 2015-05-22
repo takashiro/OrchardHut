@@ -7,64 +7,31 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="shortcut icon" href="./view/admin/$_G[style]/image/favicon.ico" />
-<style type="text/css">
-body{
-	font-size: small;
-	width: 80mm;
-	margin: 0;
-	font-family: 宋体;
-	font-weight: bold;
-}
-
-.header, .main, .footer{
-	margin: 0 8px;
-}
-
-.header{
-	margin-top: 10px;
-	text-align: center;
-	border-bottom: black 2px solid;
-}
-
-.header h2{
-	font-size: 12pt;
-	margin: 0;
-}
-
-table{
-	border-collapse: collapse;
-}
-
-table th{
-	text-align: right;
-}
-
-table.info th{
-	width: 6em;
-	vertical-align: top;
-}
-
-table.order_detail{
-	width: 100%;
-	margin: 4px 0;
-	text-align: center;
-}
-
-table.order_detail th, table.order_detail td{
-	border: 1px solid;
-}
-
-table.order_detail td.number{
-	min-width: 2.5em;
-}
-
-.footer {
-	margin-bottom: 20px;
-	text-align: right;
-}
-</style>
+<link rel="stylesheet" href="./view/admin/$_G[style]/image/order_ticket.css?$_CONFIG[refversion]" type="text/css" />
+<!--{if !empty($_CONFIG[jquery_cdn])}-->
+<script type="text/javascript" src="$_CONFIG[jquery_cdn]"></script>
+<!--{/if}-->
+<script type="text/javascript">window.jQuery || document.write('<script src="./plugin/jquery/jquery-2.0.3.min.js"><\/script>');</script>
 </head>
 <body>
+
+<!--{if !empty($orders)}-->
+<script type="text/javascript">
+$(function(){
+	$('#print_button').click(function(){
+		$('#print_button').hide();
+		window.print();
+		window.close();
+	});
+});
+</script>
+<button id="print_button">确认打印</button>
+<!--{else}-->
+<script type="text/javascript">
+alert('没有查询到订单！');
+window.close();
+</script>
+<!--{/if}-->
 
 <!--{eval $tips = empty($ticketconfig['tips']) ? array('') : explode("\n", $ticketconfig['tips']);}-->
 <!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
@@ -114,15 +81,6 @@ table.order_detail td.number{
 </div>
 
 <!--{/loop}-->
-
-<script type="text/javascript">
-{if !empty($orders)}
-window.print();
-{else}
-alert('没有查询到订单！');
-window.close();
-{/if}
-</script>
 
 </body>
 </html>
