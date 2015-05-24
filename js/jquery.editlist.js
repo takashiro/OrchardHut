@@ -28,7 +28,8 @@
 			'primarykey' : 'id',
 			'noedit' : false,
 			'attr' : [],
-			'buttons' : {'edit':'编辑', 'delete':'删除'}
+			'buttons' : {'edit':'编辑', 'delete':'删除'},
+			'confirm_deletion_prompt' : '您确认删除吗？'
 		};
 
 		options = $.extend(defaults, options);
@@ -155,6 +156,9 @@
 					var td = new_tr.children().eq(i);
 					var input = td.find('input,select');
 					if(input.is('select')){
+						if(typeof data[attr] == 'boolean'){
+							data[attr] = data[attr] ? 1 : 0;
+						}
 						input.val(data[attr]);
 						td.html(input.find(':selected').html());
 						td.data('realvalue', data[attr]);
@@ -186,9 +190,11 @@
 				var data = {};
 				data[options.primarykey] = primaryvalue;
 
-				$.post(options.ajax_delete, data, function(){
-					tr.remove();
-				});
+				if(confirm(options.confirm_deletion_prompt)){
+					$.post(options.ajax_delete, data, function(){
+						tr.remove();
+					});
+				}
 			}
 		});
 	}
