@@ -61,50 +61,51 @@ switch($action){
 				}
 
 				$product = new Product;
-				$product->name = $_POST['name'];
-				$product->type = !empty($_POST['type']) ? 1 : 0;
-				$product->insert();
 			}else{
 				$product = new Product($productid);
+			}
 
-				if(isset($_POST['name'])){
-					$product->name = $_POST['name'];
-				}
+			if(isset($_POST['name'])){
+				$product->name = $_POST['name'];
+			}
 
-				if(isset($_POST['type'])){
-					$typeid = intval($_POST['type']);
-					$types = Product::Types();
-					if(array_key_exists($typeid, $types)){
+			if(isset($_POST['type'])){
+				$typeid = intval($_POST['type']);
+				$types = Product::Types();
+				if(array_key_exists($typeid, $types)){
+					$product->type = $typeid;
+				}else{
+					foreach($types as $typeid => $name){
 						$product->type = $typeid;
-					}else{
-						foreach($types as $typeid => $name){
-							$product->type = $typeid;
-							break;
-						}
+						break;
 					}
 				}
+			}
 
-				if(isset($_POST['displayorder'])){
-					$product->displayorder = intval($_POST['displayorder']);
-				}
+			if(isset($_POST['displayorder'])){
+				$product->displayorder = intval($_POST['displayorder']);
+			}
 
-				if(isset($_POST['hide'])){
-					$product->hide = !empty($_POST['hide']);
-				}
+			if(isset($_POST['hide'])){
+				$product->hide = !empty($_POST['hide']);
+			}
 
-				foreach(array('text_color', 'background_color', 'icon_background') as $attr){
-					if(isset($_POST[$attr])){
-						$product->$attr = hexdec($_POST[$attr]);
-					}
+			foreach(array('text_color', 'background_color', 'icon_background') as $attr){
+				if(isset($_POST[$attr])){
+					$product->$attr = hexdec($_POST[$attr]);
 				}
+			}
 
-				if(isset($_POST['briefintro'])){
-					$product->briefintro = $_POST['briefintro'];
-				}
+			if(isset($_POST['briefintro'])){
+				$product->briefintro = $_POST['briefintro'];
+			}
 
-				if(isset($_POST['introduction'])){
-					$product->introduction = $_POST['introduction'];
-				}
+			if(isset($_POST['introduction'])){
+				$product->introduction = $_POST['introduction'];
+			}
+
+			if($productid == 0){
+				$product->insert();
 			}
 
 			$product->uploadImage('icon');
