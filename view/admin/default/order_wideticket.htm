@@ -15,13 +15,35 @@
 </head>
 <body>
 
+<!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
+
 <!--{if !empty($orders)}-->
 <script type="text/javascript">
 $(function(){
 	$('#print_button').click(function(){
 		$('#print_button').hide();
 		window.print();
-		window.close();
+
+		var orders = [
+			0
+			{loop $orders $o}
+			, $o['id']
+			{/loop}
+		];
+
+		orders.shift();
+
+		function mark_order(){
+			$.post('{$mod_url}&mark_received=1&orderid=' + orders[0], [], function(){
+				orders.shift();
+				if(orders.length == 0){
+					window.close();
+				}else{
+					mark_order();
+				}
+			});
+		}
+		mark_order();
 	});
 });
 </script>
@@ -33,13 +55,10 @@ window.close();
 </script>
 <!--{/if}-->
 
-<!--{eval $tips = empty($ticketconfig['tips']) ? array('') : explode("\n", $ticketconfig['tips']);}-->
-<!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
 <!--{loop $orders $order}-->
 <div class="header">
 	<h2>$_CONFIG[sitename]提货单</h2>
 	<div class="tips">$ticketconfig[extrainfo]</div>
-	<div class="tips"><!--{if $tips}-->{echo $tips[array_rand($tips)]}<!--{/if}--></div>
 </div>
 
 <div class="main">
@@ -52,6 +71,7 @@ window.close();
 		<tr><th>用户留言：</th><td>$order[message]</td></tr>
 		<!--{/if}-->
 		<tr><th>总金额：</th><td>{$order[totalprice]}{echo Product::$PriceUnit}</td></tr>
+		<tr><th>物流状态：</th><td>{echo Order::$Status[$o['status']]}</td></tr>
 		<tr>
 			<th>付款状态：</th>
 			<td>

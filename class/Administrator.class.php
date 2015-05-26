@@ -54,6 +54,7 @@ class Administrator extends User{
 		'qqconnect' => 0x80000,
 		'orderstat' => 0x100000,
 		'user' => 0x200000,
+		'ticketprinter' => 0x400000,
 	);
 
 	static public $SpecialPermission = array(
@@ -65,6 +66,7 @@ class Administrator extends User{
 		'order_deliver_w' => true,
 		'userwallet' => true,
 		'mail' => true,
+		'ticketprinter' => true,
 	);
 
 	public function __construct($id = 0){

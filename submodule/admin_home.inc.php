@@ -23,6 +23,15 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-redirect('admin.php?mod=order');
+if($_G['admin']->hasPermission('order')){
+	redirect('admin.php?mod=order');
+}else{
+	$permissions = Administrator::GetAllPermissionNames();
+	foreach($permissions as $perm){
+		if($_G['admin']->hasPermission($perm)){
+			redirect('admin.php?mod='.$perm);
+		}
+	}
+}
 
 ?>

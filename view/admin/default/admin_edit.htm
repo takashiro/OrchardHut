@@ -84,6 +84,7 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 					<!--{if $_G['admin']->hasPermission('order_sort_w')}--><span>{echo Template::checkbox('p[order_sort_w]', '分拣订单', $admin->hasPermission('order_sort_w'))}</span><!--{/if}-->
 					<!--{if $_G['admin']->hasPermission('order_deliver')}--><span>{echo Template::checkbox('p[order_deliver]', '查看待配送订单', $admin->hasPermission('order_deliver'))}</span><!--{/if}-->
 					<!--{if $_G['admin']->hasPermission('order_deliver_w')}--><span>{echo Template::checkbox('p[order_deliver_w]', '配送订单', $admin->hasPermission('order_deliver_w'))}</span><!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('ticketprinter')}--><span>{echo Template::checkbox('p[ticketprinter]', '打印提货单', $admin->hasPermission('ticketprinter'))}</span><!--{/if}-->
 				</div>
 			</td>
 		</tr>

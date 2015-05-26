@@ -1,46 +1,18 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>$_CONFIG[sitename]管理面板</title>
+<title>$_CONFIG[sitename]自助打印提货单</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="shortcut icon" href="./view/admin/$_G[style]/image/favicon.ico"/>
-<link rel="stylesheet" href="./view/admin/$_G[style]/image/common.css?$_CONFIG[refversion]" type="text/css" />
+<link rel="stylesheet" href="{__TEMPLATE_ROOT__}image/ticket_printer.css?$_CONFIG[refversion]" type="text/css" />
 <!--{if !empty($_CONFIG[jquery_cdn])}-->
 <script type="text/javascript" src="$_CONFIG[jquery_cdn]"></script>
 <!--{/if}-->
 <script type="text/javascript">window.jQuery || document.write('<script src="./plugin/jquery/jquery-2.0.3.min.js"><\/script>');</script>
-<style type="text/css">
-.container{
-	min-width: 500px;
-}
-
-.box{
-	max-width: 500px;
-}
-.edit_form table th{
-	width: 8em;
-}
-</style>
-<script type="text/javascript">
-$(function(){
-	$('#print_button').click(function(e){
-		e.preventDefault();
-
-		if($('#orderid').val() == '' && $('#mobile').val() == ''){
-			alert('请输入订单号或手机号。');
-		}else{
-			$('#ticket_form').submit();
-			$('#ticket_form input').val('');
-			$('#mobile').focus();
-		}
-	});
-
-	$('#mobile').focus();
-});
-</script>
+<script type="text/javascript" src="{__TEMPLATE_ROOT__}js/ticket_printer.js?$_CONFIG[refversion]"></script>
 </head>
 
 <body>
@@ -50,28 +22,40 @@ $(function(){
 		</header>
 
 		<div class="box">
-			<h2>自助打印提货单</h2>
+			<h2><img src="{__TEMPLATE_ROOT__}image/logo.png" width="150" height="50" />自助打印提货单</h2>
 			<div class="content">
-				<form id="ticket_form" action="$PHP_SELF" method="post" class="edit_form" target="_blank">
+				<form id="ticket_form" action="admin.php?mod=ticketprinter" method="post" class="edit_form" target="_blank">
 					<table>
 						<tr>
 							<th>下单时间：</th>
 							<td>{echo rdate($time_start, 'Y-m-d H:i')} - {echo rdate($time_end, 'Y-m-d H:i')}</td>
 						</tr>
 						<tr>
-							<th>订单号：</th>
-							<td><input type="text" id="orderid" name="orderid" autocomplete="off" /></td>
-						</tr>
-						<tr>
-							<th></th>
-							<td>或</td>
-						</tr>
-						<tr>
-							<th>收件人手机号：</th>
-							<td><input type="text" id="mobile" name="mobile" autocomplete="off" /></td>
+							<th>订单号或手机号：</th>
+							<td><input type="text" id="orderid_or_mobile" autocomplete="off" /></td>
 						</tr>
 					</table>
-					<button type="submit" id="print_button">查询</button>
+
+					<div class="number_board">
+						<button type="button">7</button>
+						<button type="button">8</button>
+						<button type="button">9</button>
+						<button type="button">4</button>
+						<button type="button">5</button>
+						<button type="button">6</button>
+						<button type="button">1</button>
+						<button type="button">2</button>
+						<button type="button">3</button>
+						<button type="button">*</button>
+						<button type="button">0</button>
+						<button type="button">#</button>
+					</div>
+
+					<div class="post_buttons">
+						<button type="submit" id="print_button">查询</button>
+						<button type="button" id="backspace_button">退格</button>
+						<button type="reset">清空</button>
+					</div>
 				</form>
 			</div>
 		</div>
