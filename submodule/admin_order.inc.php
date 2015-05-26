@@ -376,7 +376,7 @@ switch($action){
 				exit('permission denied');
 			}
 
-			if($order->status == Order::InDeliveryPoint || $_G['admin']->isSuperAdmin()){
+			if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
 				$order->status = Order::Delivering;
 				$order->addLog($_G['admin'], Order::StatusChanged, Order::Delivering);
 			}

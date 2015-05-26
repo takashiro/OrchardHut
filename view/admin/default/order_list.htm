@@ -31,6 +31,11 @@ var admin = {
 	}
 };
 
+var Order = {
+	StationDelivery : {echo Order::StationDelivery},
+	HomeDelivery : {echo Order::HomeDelivery}
+};
+
 var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 
 $(function(){
@@ -90,8 +95,12 @@ $(function(){
 				<button type="submit" name="format" value="ticket" class="new_window">批量打印小票</button>
 				<button type="submit" name="format" value="barcode" class="new_window">批量打印条码</button>
 				<button id="multi_mark_sorted" title="批量点击本页所有[已打包]按钮">本页已打包</button>
+				<!--{if $deliverymethod == -1 || $deliverymethod == Order::StationDelivery}-->
 				<button id="multi_mark_in_delivery_point" title="批量点击本页所有[到配送站]按钮">本页到配送站</button>
+				<!--{/if}-->
+				<!--{if $deliverymethod == -1 || $deliverymethod == Order::HomeDelivery}-->
 				<button id="multi_mark_delivering" title="批量点击本页所有[配送中]按钮">本页送货中</button>
+				<!--{/if}-->
 			</div>
 		</form>
 
@@ -138,18 +147,19 @@ $(function(){
 							</ul>
 						</td>
 						<td><span class="totalprice">$o[totalprice]</span>{echo Product::$PriceUnit}</td>
-						<td>
+						<td data-deliverymethod="$o[deliverymethod]">
 							{echo Order::$Status[$o['status']]}
 							<!--{if $o['status'] == Order::Unsorted && $_G['admin']->hasPermission('order_sort_w')}-->
-							<div><a class="mark_sorted" href="{$mod_url}&action=mark_sorted&orderid=$o[id]" title="将订单标记为已打包">[已打包]</a></div>
+								<div><a class="mark_sorted" href="{$mod_url}&action=mark_sorted&orderid=$o[id]" title="将订单标记为已打包">[已打包]</a></div>
 							<!--{elseif $o['status'] == Order::Sorted && $_G['admin']->hasPermission('order_deliver_w')}-->
-							<div><a class="mark_in_delivery_point" href="{$mod_url}&action=mark_indp&orderid=$o[id]" title="将订单标记为到达配送站">[到配送站]</a></div>
+								<!--{if $o['deliverymethod'] == Order::StationDelivery}-->
+								<div><a class="mark_in_delivery_point" href="{$mod_url}&action=mark_indp&orderid=$o[id]" title="将订单标记为到达配送站">[到配送站]</a></div>
+								<!--{elseif $o['deliverymethod'] == Order::HomeDelivery}-->
+								<div><a class="mark_delivering" href="{$mod_url}&action=mark_delivering&orderid=$o[id]" title="将订单标记为送货中">[送货中]</a></div>
+								<!--{/if}-->
 							<!--{elseif ($o['status'] == Order::InDeliveryPoint || $o['status'] == Order::Delivering) && $_G['admin']->hasPermission('order_deliver_w')}-->
-							<!--{if $o['status'] != Order::Delivering && $o['deliverymethod'] != Order::StationDelivery}-->
-							<div><a class="mark_delivering" href="{$mod_url}&action=mark_delivering&orderid=$o[id]" title="将订单标记为配送中">[配送中]</a></div>
-							<!--{/if}-->
-							<div><a class="mark_received" href="{$mod_url}&action=mark_received&orderid=$o[id]" title="将订单标记为已签收">[已签收]</a></div>
-							<div><a class="mark_rejected" href="{$mod_url}&action=mark_rejected&orderid=$o[id]" title="将订单标记为已拒收">[已拒收]</a></div>
+								<div><a class="mark_received" href="{$mod_url}&action=mark_received&orderid=$o[id]" title="将订单标记为已签收">[已签收]</a></div>
+								<div><a class="mark_rejected" href="{$mod_url}&action=mark_rejected&orderid=$o[id]" title="将订单标记为已拒收">[已拒收]</a></div>
 							<!--{/if}-->
 						</td>
 						<td>

@@ -30,13 +30,20 @@ $(function(){
 				td.html(lang['order_sorted']);
 
 				if(admin.hasPermission('order_deliver_w')){
-					var indp_button = $('<a></a>');
-					indp_button.attr('class', 'mark_in_delivery_point');
-					indp_button.attr('href', href.replace('mark_sorted', 'mark_indp'));
-					indp_button.html('[' + lang['order_in_delivery_point'] + ']');
+					var button = $('<a></a>');
+
+					if(td.data('deliverymethod') == Order.StationDelivery){
+						button.attr('class', 'mark_in_delivery_point');
+						button.attr('href', href.replace('mark_sorted', 'mark_indp'));
+						button.html('[' + lang['order_in_delivery_point'] + ']');
+					}else{
+						button.attr('class', 'mark_delivering');
+						button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
+						button.html('[' + lang['order_delivering'] + ']');
+					}
 
 					var div = $('<div></div>');
-					div.append(indp_button);
+					div.append(button);
 					td.append(div);
 				}
 
@@ -49,8 +56,6 @@ $(function(){
 
 				if(admin.hasPermission('order_deliver_w')){
 					var data = {};
-					if(!a.hasClass('mark_delivering'))
-						data['mark_delivering'] = '[' + lang['order_delivering'] + ']';
 					data['mark_received'] = '[' + lang['order_received'] + ']';
 					data['mark_rejected'] = '[' + lang['order_rejected'] + ']';
 
