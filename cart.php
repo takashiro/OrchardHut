@@ -335,7 +335,7 @@ switch($action){
 		DeliveryTime::SortByTimeFrom($delivery_timespans);
 
 		//取得所有可用的收货地址
-		$address_components = Address::Components();
+		$address_components = Address::AvailableComponents();
 
 		include view('cart');
 	break;

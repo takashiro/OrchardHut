@@ -111,7 +111,7 @@ switch($action){
 
 		$a = $admin->toArray();
 
-		$address_components = Address::Components();
+		$address_components = Address::AvailableComponents();
 
 		include view('admin_edit');
 	break;

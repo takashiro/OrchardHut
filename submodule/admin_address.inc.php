@@ -96,8 +96,10 @@ if($data == 'format'){
 
 				while($delete_id){
 					$delete_id = implode(',', $delete_id);
-					$table->delete("id IN ($delete_id)");
+					$table->update(array('hidden' => 1), "id IN ($delete_id)");
 					$affected_rows += $db->affected_rows;
+
+					$db->query("DELETE FROM {$tpre}deliveryaddress WHERE addressid IN ($delete_id)");
 
 					$nodes = $table->fetch_all('id', "parentid IN ($delete_id)");
 					$delete_id = array();
@@ -128,7 +130,7 @@ if($data == 'format'){
 	$address_components = $db->fetch_all("SELECT o.*,p.name AS parentname
 		FROM {$tpre}addresscomponent o
 			LEFT JOIN {$tpre}addresscomponent p ON p.id=o.parentid
-		WHERE o.parentid=$parentid
+		WHERE o.parentid=$parentid AND o.hidden=0
 		ORDER BY o.displayorder,o.id");
 
 	$addressformat = readdata('addressformat');

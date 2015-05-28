@@ -64,6 +64,20 @@ class Address{
 		return self::$Components;
 	}
 
+	static private $AvailableComponents = null;
+	static public function AvailableComponents(){
+		if(self::$AvailableComponents === null){
+			self::$AvailableComponents = self::Components();
+			foreach(self::$AvailableComponents as $cid => $c){
+				if($c['hidden']){
+					unset(self::$AvailableComponents[$cid]);
+				}
+			}
+		}
+
+		return self::$AvailableComponents;
+	}
+
 	static public function FindComponentById($id){
 		$components = self::Components();
 		return isset($components[$id]) ? $components[$id] : array();

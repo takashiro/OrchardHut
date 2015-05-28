@@ -80,7 +80,7 @@ foreach($items as $item){
 $time_start = rdate($time_start);
 $time_end = rdate($time_end);
 
-$address_components = Address::Components();
+$address_components = Address::AvailableComponents();
 
 include view('salereport_'.$format);
 

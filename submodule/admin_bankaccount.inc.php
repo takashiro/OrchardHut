@@ -74,7 +74,7 @@ switch($action){
 
 		$a = new BankAccount($id);
 
-		$address_components = Address::Components();
+		$address_components = Address::AvailableComponents();
 
 		$a = $a->toReadable();
 

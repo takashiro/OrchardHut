@@ -262,7 +262,7 @@ switch($action){
 		}
 
 		$address_format = Address::Format();
-		$address_components = Address::Components();
+		$address_components = Address::AvailableComponents();
 
 		$restricted = $_G['admin']->getLimitations();
 		if($restricted){
