@@ -51,8 +51,7 @@ switch($action){
 		}
 
 		if($priceids){//Now the shopping cart is not empty. Let's calculate as a cashier.
-			$sec_today = (TIMESTAMP + TIMEZONE * 3600) % (24 * 3600);
-			$booking_mode = ProductStorage::BookingMode;
+			$check_booking_mode = ProductStorage::IsBookingMode() ? ' OR s.mode='.ProductStorage::BookingMode : '';
 
 			$priceids = implode(',', $priceids);
 			$products = $db->fetch_all("SELECT p.*,r.*,r.id AS priceid
@@ -62,7 +61,7 @@ switch($action){
 					LEFT JOIN {$tpre}productstorage s ON s.id=r.storageid
 				WHERE r.id IN ($priceids)
 					AND p.hide=0
-					AND (r.storageid IS NULL OR (s.num>=r.amount OR (s.mode=$booking_mode AND s.bookingtime_start<=$sec_today AND s.bookingtime_end>=$sec_today)))
+					AND (r.storageid IS NULL OR s.num>=r.amount $check_booking_mode)
 					AND (c.id IS NULL OR (c.start_time<=$timestamp AND c.end_time>=$timestamp))
 					AND r.id NOT IN (SELECT masked_priceid
 									FROM {$tpre}productcountdown c

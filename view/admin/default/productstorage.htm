@@ -39,9 +39,12 @@ $(function(){
 <div class="box">
 	<h1>商品库存</h1>
 	<div class="headactions">
+		<a href="$mod_url&action=config">[预售时间设置]</a>
 		<a href="$mod_url&action=log">[库存管理记录]</a>
 	</div>
 	<div class="content">
+
+		<h2>库存调整</h2>
 		<form class="toast" action="$mod_url&action=edit" method="post">
 			<input type="hidden" id="type" name="type" />
 
@@ -91,7 +94,7 @@ $(function(){
 				</table>
 			</div>
 
-			<h1>进货账号</h1>
+			<h2>进货账号</h2>
 			<div class="list">
 				<table>
 					<thead>

@@ -49,14 +49,34 @@ class ProductStorage extends DBObject{
 		$is_minus = $addnum < 0;
 		if($is_minus){
 			$addnum = -$addnum;
-			$booking_mode = self::BookingMode;
-			$sec_today = (TIMESTAMP + TIMEZONE * 3600) % (24 * 3600);
-			$db->query("UPDATE {$tpre}productstorage SET num=num-{$addnum} WHERE id={$this->id} AND (num>=$addnum || (mode=$booking_mode AND bookingtime_start<=$sec_today AND bookingtime_end>=$sec_today)) $ext_condition");
+			$check_booking_mode = ProductStorage::IsBookingMode() ? ' OR mode='.ProductStorage::BookingMode : '';
+			$db->query("UPDATE {$tpre}productstorage SET num=num-{$addnum} WHERE id={$this->id} AND (num>=$addnum $check_booking_mode) $ext_condition");
 		}else{
 			$db->query("UPDATE {$tpre}productstorage SET num=num+{$addnum} WHERE id={$this->id} $ext_condition");
 		}
 
 		return $db->affected_rows > 0;
+	}
+
+	static public function ReadConfig(){
+		return readdata('productstorage');
+	}
+
+	static public function WriteConfig($config){
+		writedata('productstorage', $config);
+	}
+
+	static public function IsBookingMode(){
+		$today = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd'), rdate(TIMESTAMP, 'Y'));
+		$config = self::ReadConfig();
+		$offset = $today + $config['bookingtime_start'];
+		$end = $today + $config['bookingtime_end'];
+
+		if($offset <= $end){
+			return $offset <= TIMESTAMP && TIMESTAMP <= $end;
+		}else{
+			return ($today <= TIMESTAMP && $today <= $end) || ($offset <= TIMESTAMP && TIMESTAMP <= $today + 24 * 3600);
+		}
 	}
 }
 

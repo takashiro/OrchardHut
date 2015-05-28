@@ -38,7 +38,7 @@ $(function(){
 	$('#storage_list').editlist({
 		'edit' : mod_url + '&action=editstorage&productid=' + product_id,
 		'delete' : mod_url + '&action=deletestorage&productid=' + product_id,
-		'attr' : ['id', 'remark', 'num', 'mode', 'bookingtime_start', 'bookingtime_end'],
+		'attr' : ['id', 'remark', 'num', 'mode'],
 		'buttons' : {'delete':'删除'}
 	});
 

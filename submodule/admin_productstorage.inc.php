@@ -168,6 +168,41 @@ case 'log':
 	include view('productstorage_log');
 	break;
 
+case 'config':
+	if($_POST){
+		$config = array();
+		foreach(array('bookingtime_start', 'bookingtime_end') as $var){
+			$config[$var] = 0;
+			if(isset($_POST[$var])){
+				$time = explode(':', $_POST[$var]);
+				$config[$var] = $time[0] * 3600;
+				if(isset($time[1])){
+					$config[$var] += $time[1] * 60;
+					if(isset($time[2])){
+						$config[$var] += $time[2];
+					}
+				}
+			}
+		}
+
+		ProductStorage::WriteConfig($config);
+		showmsg('edit_succeed', 'back');
+	}
+
+	$storageconfig = ProductStorage::ReadConfig();
+
+	foreach(array('bookingtime_start', 'bookingtime_end') as $var){
+		$s = $storageconfig[$var];
+		$i = $s / 60;
+		$H = $i / 60;
+		$i %= 60;
+		$s %= 60;
+		$storageconfig[$var] = sprintf('%02d', $H).':'.sprintf('%02d', $i).':'.sprintf('%02d', $s);
+	}
+
+	include view('productstorage_config');
+	break;
+
 default:
 	$storages = $db->fetch_all("SELECT s.*, p.name as productname
 		FROM {$tpre}productstorage s
