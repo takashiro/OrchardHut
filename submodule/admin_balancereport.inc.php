@@ -143,7 +143,7 @@ foreach($product_stat as &$s){
 				'average' => '-',
 			);
 		}else{
-			$s[$var]['average'] = $s[$var]['fee'] / $s[$var]['amount'];
+			$s[$var]['average'] = $s[$var]['amount'] != 0 ? ($s[$var]['fee'] / $s[$var]['amount']) : '';
 		}
 	}
 }
