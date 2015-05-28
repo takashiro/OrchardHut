@@ -211,7 +211,7 @@ class Order extends DBObject{
 	const PriceChanged = 3;
 	const DetailInStock = 4;
 
-	public function addLog(&$operator, $operation, $extra = NULL){
+	public function addLog($operator, $operation, $extra = NULL){
 		$log = array(
 			'orderid' => $this->id,
 			'operator' => $operator->id,
