@@ -177,22 +177,22 @@ class Order extends DBObject{
 	}
 
 	public function cancel(){
+		global $db, $tpre;
+
+		$table = $db->select_table('orderdetail');
+		$details = $table->fetch_all('storageid,amount,number', 'orderid='.$this->id.' AND storageid IS NOT NULL');
+		foreach($details as $d){
+			$num = $d['amount'] * $d['number'];
+			$db->query("UPDATE {$tpre}productstorage SET num=num+$num WHERE id={$d['storageid']}");
+		}
+
 		runhooks('order_canceled', array($this));
 	}
 
 	static public function Delete($orderid, $extra = ''){
 		$result = parent::Delete($orderid, $extra);
 		if($result){
-			global $db, $tpre;
-
-			$table = $db->select_table('orderdetail');
-			$details = $table->fetch_all('storageid,amount,number', 'orderid='.$orderid.' AND storageid IS NOT NULL');
-			foreach($details as $d){
-				$num = $d['amount'] * $d['number'];
-				$db->query("UPDATE {$tpre}productstorage SET num=num+$num WHERE id={$d['storageid']}");
-			}
-			$table->delete('orderid='.$orderid);
-
+			global $db;
 			$table = $db->select_table('orderlog');
 			$table->delete('orderid='.$orderid);
 		}
