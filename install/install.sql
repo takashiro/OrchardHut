@@ -242,6 +242,9 @@ CREATE TABLE IF NOT EXISTS `hut_productstorage` (
   `productid` mediumint(8) unsigned NOT NULL,
   `remark` varchar(15) NOT NULL,
   `num` int(11) NOT NULL,
+  `mode` tinyint(4) NOT NULL,
+  `bookingtime_start` mediumint(8) unsigned NOT NULL,
+  `bookingtime_end` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -317,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `hut_userwalletlog` (
   `orderid` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
 ALTER TABLE `hut_bankaccountlog`

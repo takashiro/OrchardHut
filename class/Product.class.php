@@ -96,11 +96,15 @@ class Product extends DBObject{
 
 		$prices = array();
 
+		$booking_mode = ProductStorage::BookingMode;
+		$sec_today = ($now + TIMEZONE * 3600) % (24 * 3600);
 		$query = $db->query("SELECT c.*,p.*,c.id AS is_countdown
 			FROM {$tpre}productprice p
 				LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
 				LEFT JOIN {$tpre}productstorage s ON s.id=p.storageid AND s.productid=p.productid
-			WHERE p.productid=$productid AND (p.storageid IS NULL OR s.num>=p.amount) AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
+			WHERE p.productid=$productid
+				AND (p.storageid IS NULL OR (s.num>=p.amount OR (s.mode=$booking_mode AND s.bookingtime_start<=$sec_today AND s.bookingtime_end>=$sec_today)))
+				AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
 			ORDER BY p.displayorder");
 		while($p = $query->fetch_assoc()){
 			$prices[$p['id']] = $p;
@@ -124,6 +128,8 @@ class Product extends DBObject{
 
 		global $db, $tpre;
 		$now = TIMESTAMP;
+		$booking_mode = ProductStorage::BookingMode;
+		$sec_today = ($now + TIMEZONE * 3600) % (24 * 3600);
 
 		$products = array();
 		$productids = array();
@@ -142,7 +148,9 @@ class Product extends DBObject{
 			FROM {$tpre}productprice p
 				LEFT JOIN {$tpre}productcountdown c ON c.id=p.id
 				LEFT JOIN {$tpre}productstorage s ON s.id=p.storageid AND s.productid=p.productid
-			WHERE p.productid IN ($productids) AND (p.storageid IS NULL OR s.num>=p.amount) AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
+			WHERE p.productid IN ($productids)
+				AND (p.storageid IS NULL OR (s.num>=p.amount OR (s.mode=$booking_mode AND s.bookingtime_start<=$sec_today AND s.bookingtime_end>=$sec_today)))
+				AND (c.id IS NULL OR (c.start_time<=$now AND c.end_time>=$now))
 			ORDER BY p.displayorder");
 		while($p = $query->fetch_assoc()){
 			$prices[$p['id']] = $p;
@@ -333,8 +341,11 @@ class Product extends DBObject{
 			return $table->fetch_all('*');
 		}
 
+		$sec_today = (TIMESTAMP + TIMEZONE * 3600) % (24 * 3600);
+		$condition = 'mode!='.ProductStorage::BookingMode.' OR (bookingtime_start>='.$sec_today.' OR bookingtime_end<='.$sec_today.')';
+
 		$storages = array();
-		foreach($table->fetch_all('id,num') as $s){
+		foreach($table->fetch_all('id,num', $condition) as $s){
 			$storages[$s['id']] = intval($s['num']);
 		}
 		return $storages;
@@ -362,6 +373,19 @@ class Product extends DBObject{
 			$attr['remark'] = trim($storage['remark']);
 		}
 
+		if(isset($storage['mode'])){
+			$attr['mode'] = intval($storage['mode']);
+		}
+
+		foreach(array('bookingtime_start', 'bookingtime_end') as $var){
+			if(isset($storage[$var])){
+				$time = explode(':', $storage[$var]);
+				if(isset($time[1])){
+					$attr[$var] = $time[0] * 3600 + $time[1] * 60;
+				}
+			}
+		}
+
 		global $db, $tpre;
 		$table = $db->select_table('productstorage');
 
@@ -375,27 +399,17 @@ class Product extends DBObject{
 			$attr['id'] = $table->insert_id();
 		}
 
+		foreach(array('bookingtime_start', 'bookingtime_end') as $var){
+			if(isset($attr[$var])){
+				$m = floor($attr[$var] / 60);
+				$H = floor($m / 60);
+				$m %= 60;
+
+				$attr[$var] = sprintf('%02d', $H).':'.sprintf('%02d', $m);
+			}
+		}
+
 		return $attr;
-	}
-
-	public function updateStorage($id, $num){
-		global $db, $tpre;
-
-		$productid = $this->id;
-		$addnum = intval($num);
-		$is_minus = $addnum < 0;
-		if($is_minus){
-			$addnum = -$addnum;
-			$db->query("UPDATE {$tpre}productstorage SET num=num-{$addnum} WHERE id=$id AND productid=$productid AND num>=$addnum");
-		}else{
-			$db->query("UPDATE {$tpre}productstorage SET num=num+{$addnum} WHERE id=$id AND productid=$productid");
-		}
-
-		if($db->affected_rows){
-			return $db->result_first("SELECT num FROM {$tpre}productstorage WHERE id=$id AND productid=$productid");
-		}
-
-		return false;
 	}
 
 	public function deleteStorage($id){

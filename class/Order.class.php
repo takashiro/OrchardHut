@@ -117,8 +117,9 @@ class Order extends DBObject{
 
 		if($d['storageid']){
 			$number = $d['amount'] * $d['number'];
-			$db->query("UPDATE {$tpre}productstorage SET num=num-$number WHERE id={$d['storageid']} AND num>=$number");
-			if($db->affected_rows <= 0){
+			$storage = new ProductStorage;
+			$storage->id = $d['storageid'];
+			if(!$storage->updateNum(-$number)){
 				return false;
 			}
 		}
