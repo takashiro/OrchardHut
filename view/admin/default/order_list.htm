@@ -109,7 +109,6 @@ $(function(){
 				<thead>
 					<tr>
 						<td>编号</td>
-						<td>库位号</td>
 					<!--{loop $address_format $name}-->
 						<td>$name</td>
 					<!--{/loop}-->
@@ -130,8 +129,12 @@ $(function(){
 				<!--{if empty($stat['statonly'])}-->
 					<!--{loop $orders $o}-->
 					<tr data-primaryvalue="$o[id]">
-						<td>$o[id]</td>
-						<td>$o[customlabel]</td>
+						<td>
+							$o[id]
+							<!--{if !empty($o['customlabel'])}-->
+							<div>($o[customlabel])</div>
+							<!--{/if}-->
+						</td>
 						<!--{eval $maxi = count($address_format);}-->
 						<!--{eval for($i = 0; $i < $maxi; $i++){}-->
 							<td>{echo isset($o['address'][$i]['name']) ? $o['address'][$i]['name'] : ''}</td>
