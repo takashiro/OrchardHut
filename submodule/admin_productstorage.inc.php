@@ -159,7 +159,8 @@ case 'log':
 			LEFT JOIN {$tpre}bankaccount b ON b.id=l.bankaccountid
 			LEFT JOIN {$tpre}administrator a ON a.id=l.adminid
 		wHERE $condition
-		ORDER BY l.dateline DESC");
+		ORDER BY l.dateline DESC
+		LIMIT $offset,$limit");
 
 	$total = $db->result_first("SELECT COUNT(*) FROM {$tpre}productstoragelog l WHERE $condition");
 
