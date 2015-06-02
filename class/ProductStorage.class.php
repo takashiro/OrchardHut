@@ -67,15 +67,16 @@ class ProductStorage extends DBObject{
 	}
 
 	static public function IsBookingMode(){
-		$today = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd'), rdate(TIMESTAMP, 'Y'));
+		$today_end = 24 * 3600;
+		$today_now = TIMESTAMP % $today_end + TIMEZONE * 3600;
 		$config = self::ReadConfig();
-		$offset = $today + $config['bookingtime_start'];
-		$end = $today + $config['bookingtime_end'];
+		$offset = $config['bookingtime_start'];
+		$end = $config['bookingtime_end'];
 
 		if($offset <= $end){
-			return $offset <= TIMESTAMP && TIMESTAMP <= $end;
+			return $offset <= $today_now && $today_now <= $end;
 		}else{
-			return ($today <= TIMESTAMP && $today <= $end) || ($offset <= TIMESTAMP && TIMESTAMP <= $today + 24 * 3600);
+			return $today_now <= $end || ($offset <= $today_now && $today_now <= $today_end);
 		}
 	}
 }
