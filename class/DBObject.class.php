@@ -56,6 +56,12 @@ abstract class DBObject{
 		}
 	}
 
+	function loadData($data){
+		if(is_array($data)){
+			$this->attr = $this->oattr = $data;
+		}
+	}
+
 	function fetch($item, $condition){
 		if(is_array($condition)){
 			$c = array();

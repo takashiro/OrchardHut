@@ -37,29 +37,6 @@ var Order = {
 };
 
 var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
-
-$(function(){
-	$('#delivery_address_list').on('click', 'li .add', function(e){
-		var button = $(e.target);
-		var li = button.parent();
-		var ul = li.parent();
-		ul.append(li.clone(true));
-
-		button.attr('class', 'remove');
-		button.text('[移除]');
-	});
-
-	$('#delivery_address_list').on('click', 'li .remove', function(e){
-		var button = $(e.target);
-		var li = button.parent();
-		li.remove();
-	});
-
-	$('#condition_form').submit(function(){
-		var button = $(this).find('button[type="submit"]:focus');
-		$(this).attr('target', button.hasClass('new_window') ? '_blank' : '_self');
-	});
-});
 </script>
 <script type="text/javascript" src="./js/cascadeselect.js?$_CONFIG[refversion]"></script>
 <script type="text/javascript" src="./js/datetime.js?$_CONFIG[refversion]"></script>

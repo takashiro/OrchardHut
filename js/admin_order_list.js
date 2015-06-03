@@ -125,4 +125,9 @@ $(function(){
 			}, 'json');
 		}
 	});
+
+	$('#condition_form').submit(function(){
+		var button = $(this).find('button[type="submit"]:focus');
+		$(this).attr('target', button.hasClass('new_window') ? '_blank' : '_self');
+	});
 });
