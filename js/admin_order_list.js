@@ -84,16 +84,74 @@ $(function(){
 		return false;
 	});
 
-	$('#multi_mark_sorted').click(function(){
-		$('a.mark_sorted').click();
-	});
+	function batchProcessOrder(mod_action){
+		var mpage = $('.mpage');
+		if(mpage.length <= 0)
+			return;
 
-	$('#multi_mark_delivering').click(function(){
-		$('a.mark_delivering').click();
-	});
+		var basic_url = $('.mpage a:not(.current)').eq(0).attr('href').replace(/(\&?page\=)[\d]+/i, '');
+		mpage.remove();
 
-	$('#multi_mark_in_delivery_point').click(function(){
-		$('a.mark_in_delivery_point').click();
+		var orderlist = $('#orderlist');
+		orderlist.html('处理中……');
+
+		var progress_bar = $('<div></div>');
+		var progress_value = $('<span>0</span>');
+		var progress_total = $('<span>0</span>');
+		progress_bar.append(progress_value);
+		progress_bar.append(' / ');
+		progress_bar.append(progress_total);
+		orderlist.append(progress_bar);
+
+		var orders = [];
+
+		var progress = 0;
+		function process_order(i){
+			if(i >= orders.length){
+				location.href = basic_url;
+				return;
+			}
+
+			var get_data = {'mod' : 'order', 'action' : mod_action, 'orderid' : orders[i], 'ajaxform' : 1};
+			$.get('admin.php', get_data, function(){
+				progress++;
+				progress_value.html(progress);
+				process_order(i + 1);
+			}, 'text');
+		}
+
+		var page = 1;
+		function fetch_order(){
+			$.post(basic_url, {'format' : 'json', 'page' : page}, function(response){
+				if(response.data.length <= 0){
+					process_order(0);
+				}else{
+					for(var i = 0; i < response.data.length; i++){
+						var order = response.data[i];
+						if(mod_action == 'mark_indp'){
+							if(order.status != Order.Sorted || order.deliverymethod != Order.StationDelivery)
+								continue;
+						}else if(mod_action == 'mark_delivering'){
+							if(order.status != Order.Sorted || order.deliverymethod != Order.HomeDelivery)
+								continue;
+						}else if(mod_action == 'mark_sorted'){
+							if(order.status != Order.Unsorted)
+								continue;
+						}
+
+						orders.push(order.id);
+						progress_total.html(orders.length);
+					}
+					page++;
+					fetch_order();
+				}
+			}, 'json');
+		}
+		fetch_order();
+	}
+
+	$('button.batch_process').click(function(){
+		batchProcessOrder($(this).data('action'));
 	});
 
 	$('ul.order_detail').on('dblclick', 'li', function(e){

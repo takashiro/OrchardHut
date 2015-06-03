@@ -93,7 +93,7 @@ if(!empty($_CONFIG['cookiepre'])){
 }
 
 //常用变量处理
-$page = isset($_GET['page']) ? max(1, intval($_REQUEST['page'])) : 1;
+$page = isset($_REQUEST['page']) ? max(1, intval($_REQUEST['page'])) : 1;
 $pagenum = 0;
 
 $_G['user'] = new User;

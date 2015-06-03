@@ -172,7 +172,7 @@ switch($action){
 			);
 
 			//判断显示格式，若为csv则导出Excel表格
-			$template_formats = array('html', 'csv', 'ticket', 'barcode');
+			$template_formats = array('html', 'csv', 'ticket', 'barcode', 'json');
 			$template_format = &$_REQUEST['format'];
 			if(empty($template_format) || !in_array($template_format, $template_formats)){
 				$template_format = $template_formats[0];
@@ -182,7 +182,7 @@ switch($action){
 			$pagenum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order o WHERE $condition");
 			if(!$stat['statonly']){
 				$limit_subsql = '';
-				if($template_format == 'html'){
+				if($template_format == 'html' || $template_format == 'json'){
 					$limit = 20;
 					$offset = ($page - 1) * $limit;
 					$limit_subsql = "LIMIT $offset,$limit";
@@ -346,6 +346,7 @@ switch($action){
 			}
 		}
 
+		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
@@ -364,6 +365,7 @@ switch($action){
 			}
 		}
 
+		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
@@ -382,6 +384,7 @@ switch($action){
 			}
 		}
 
+		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
@@ -408,6 +411,7 @@ switch($action){
 			}
 		}
 
+		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
@@ -426,6 +430,7 @@ switch($action){
 			}
 		}
 
+		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 
@@ -444,6 +449,7 @@ switch($action){
 			}
 		}
 
+		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
 	break;
 

@@ -33,7 +33,10 @@ var admin = {
 
 var Order = {
 	StationDelivery : {echo Order::StationDelivery},
-	HomeDelivery : {echo Order::HomeDelivery}
+	HomeDelivery : {echo Order::HomeDelivery},
+
+	Unsorted : {echo Order::Unsorted},
+	Sorted : {echo Order::Sorted}
 };
 
 var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
@@ -71,12 +74,13 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 				<button type="submit" name="format" value="csv">导出Excel</button>
 				<button type="submit" name="format" value="ticket" class="new_window">批量打印小票</button>
 				<button type="submit" name="format" value="barcode" class="new_window">批量打印条码</button>
-				<button id="multi_mark_sorted" title="批量点击本页所有[已打包]按钮">本页已打包</button>
+				|
+				<button type="button" class="batch_process" data-action="mark_sorted">全部已打包</button>
 				<!--{if $deliverymethod == -1 || $deliverymethod == Order::StationDelivery}-->
-				<button id="multi_mark_in_delivery_point" title="批量点击本页所有[到配送站]按钮">本页到配送站</button>
+				<button type="button" class="batch_process" data-action="mark_indp">全部到配送站</button>
 				<!--{/if}-->
 				<!--{if $deliverymethod == -1 || $deliverymethod == Order::HomeDelivery}-->
-				<button id="multi_mark_delivering" title="批量点击本页所有[配送中]按钮">本页送货中</button>
+				<button type="button" class="batch_process" data-action="mark_delivering">全部送货中</button>
 				<!--{/if}-->
 			</div>
 		</form>
