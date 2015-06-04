@@ -122,6 +122,17 @@ $(function(){
 		$(this).before(decrease_button);
 		$(this).after(increase_button);
 
+		$(this).change(function(){
+			var maxvalue = $(this).data('maxvalue');
+			if(maxvalue){
+				maxvalue = parseInt(maxvalue, 10);
+				var value = parseInt($(this).val(), 10);
+				if(value > maxvalue){
+					$(this).val(maxvalue);
+				}
+			}
+		});
+
 		increase_button.click(function(e){
 			var button = $(e.target);
 			var box = button.parent();
