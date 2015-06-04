@@ -40,13 +40,15 @@ switch($action){
 		//$cart is an array of items, with the key standing for its price id and the value for the number.
 		//$priceids is array_keys($cart)
 		$cart = $priceids = array();
-		if(!empty($_COOKIE['in_cart'])){
-			$in_cart = explode(',', $_COOKIE['in_cart']);
-			foreach($in_cart as $item){
-				$item = explode('=', $item);
-				$priceid = intval($item[0]);
-				$cart[$priceid] = intval($item[1]);
-				$priceids[] = $priceid;
+		if(!empty($_COOKIE['shopping_cart'])){
+			$shopping_cart = json_decode($_COOKIE['shopping_cart'], true);
+			foreach($shopping_cart as $priceid => $value){
+				$priceid = intval($priceid);
+				$value = intval($value);
+				if($priceid > 0 && $value > 0){
+					$cart[$priceid] = intval($value);
+					$priceids[] = $priceid;
+				}
 			}
 		}
 
@@ -70,23 +72,20 @@ switch($action){
 
 			//Remove deleted product prices from the shopping cart and update cookie
 			$filtered_cart = array();
-			$in_cart = array();
 			foreach($products as $p){
 				$filtered_cart[$p['priceid']] = $cart[$p['priceid']];
-				$in_cart[] = $p['priceid'].'='.$cart[$p['priceid']];
 			}
 
 			//Check if some items are deleted
 			foreach($cart as $priceid => $number){
-				if(!isset($filtered_cart[$priceid]) || $filtered_cart[$priceid] != $number){
+				if(empty($filtered_cart[$priceid])){
 					$item_deleted = true;
 					break;
 				}
 			}
 
-			$cart = &$filtered_cart;
-			$in_cart = implode(',', $in_cart);
-			rsetcookie('in_cart', $in_cart);
+			$cart = $filtered_cart;
+			rsetcookie('shopping_cart', json_encode($cart));
 		}else{//The shopping cart is empty... Some items may be out of date. Just empty the $products.
 			$products = array();
 		}
@@ -239,7 +238,7 @@ switch($action){
 			$order_succeeded = $order->insert();
 
 			//清空购物车
-			rsetcookie('in_cart', '');
+			rsetcookie('shopping_cart', '{}');
 
 			//显示订单提交结果
 			if($order_succeeded){

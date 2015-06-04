@@ -114,40 +114,42 @@ function popup_message(title, message){
 })(jQuery);
 
 $(function(){
-	var button_increase = $.parseHTML('<button class="increase"></button>');
-	var button_decrease = $.parseHTML('<button class="decrease"></button>');
-	var number_input = $.parseHTML('<input type="text" />');
-	$('.numberbox').append(button_decrease);
-	$('.numberbox').append(number_input);
-	$('.numberbox').append(button_increase);
+	$('input.number').each(function(){
+		var number_box = $('<div class="numberbox"></div>');
+		var increase_button = $('<button type="button" class="increase"></button>');
+		var decrease_button = $('<button type="button" class="decrease"></button>');
+		$(this).wrap(number_box);
+		$(this).before(decrease_button);
+		$(this).after(increase_button);
 
-	$('.numberbox').on('click', '.increase', function(e){
-		var button = $(e.target);
-		var box = button.parent();
-		var input = box.children('input');
-		var number = parseInt(input.val(), 10);
-		if(isNaN(number)){
-			number = 1;
-		}else{
-			number = parseInt(number, 10);
-			number++;
-		}
-		input.val(number);
-		input.change();
-	});
+		increase_button.click(function(e){
+			var button = $(e.target);
+			var box = button.parent();
+			var input = box.children('input');
+			var number = parseInt(input.val(), 10);
+			if(isNaN(number)){
+				number = 1;
+			}else{
+				number = parseInt(number, 10);
+				number++;
+			}
+			input.val(number);
+			input.change();
+		});
 
-	$('.numberbox').on('click', '.decrease', function(e){
-		var button = $(e.target);
-		var box = button.parent();
-		var input = box.children('input');
-		var number = parseInt(input.val(), 10);
-		if(!isNaN(number) && number > 1){
-			number--;
-		}else{
-			number = '';
-		}
-		input.val(number);
-		input.change();
+		decrease_button.click(function(e){
+			var button = $(e.target);
+			var box = button.parent();
+			var input = box.children('input');
+			var number = parseInt(input.val(), 10);
+			if(!isNaN(number) && number > 1){
+				number--;
+			}else{
+				number = '';
+			}
+			input.val(number);
+			input.change();
+		});
 	});
 
 	$('.mselect').on('click', 'li', function(e){

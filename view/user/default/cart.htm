@@ -27,7 +27,7 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 								<span class="subtype" style="color:#$p[text_color];">$p[subtype]</span>
 							</span>
 							<span class="price" style="color:#$p[text_color];">$p[price]</span><span class="priceunit">{echo Product::$PriceUnit}</span><span class="amount" style="color:#$p[text_color];">$p[amount]</span><span class="amountunit" style="color:#$p[text_color];">$p[amountunit]</span>
-							<div class="order_input numberbox"></div>
+							<div class="order_input"><input type="text" class="number" /></div>
 						</li>
 					</ul>
 					<div class="subtotal">

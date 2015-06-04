@@ -24,7 +24,7 @@ $(function(){
 	$('.order_input input').change(function(e){
 		var input = $(e.target);
 		var numberbox = input.parent();
-		var li = numberbox.parent();
+		var li = numberbox.parent().parent();
 
 		var product_id = li.data('product-id');
 		var price_id = li.data('price-id');
@@ -33,7 +33,7 @@ $(function(){
 
 		if(typeof ProductStorage[storage_id] != 'undefined'){
 			var total = ProductStorage[storage_id];
-			var cart = cart_read();
+			var cart = ShoppingCart.getItems();
 			$('.product_list .rule li').each(function(){
 				if($(this).data('storage-id') == storage_id){
 					var ordered = parseInt($(this).find('.order_input input').val(), 10);
@@ -83,7 +83,7 @@ $(function(){
 			}
 		}
 
-		cart_set(price_id, number);
+		ShoppingCart.setItem(price_id, number);
 	});
 
 	$('.product_list .rule').each(function(){

@@ -33,7 +33,7 @@ $(function(){
 			$('#total_price').text(total_price.toFixed(2));
 			$('#total_price').change();
 
-			cart_set(price_id, 0);
+			ShoppingCart.setItem(price_id, 0);
 			li.remove();
 		}
 	});
@@ -41,7 +41,7 @@ $(function(){
 	$('.cart .product_list .order_input input').change(function(e){
 		var input = $(e.target);
 		var numberbox = input.parent();
-		var li = numberbox.parent();
+		var li = numberbox.parent().parent();
 		var rule = li.parent();
 		var detail = rule.parent();
 		var subtotal = detail.children('.subtotal');
@@ -57,8 +57,6 @@ $(function(){
 		$('#total_price').text(new_total.toFixed(2));
 		$('#total_price').change();
 	});
-
-	$('#cart-goods-number').numbernotice(cart_number());
 
 	$('.deliveryaddress ul li a.remove').click(function(e){
 		if(confirm('您确认要删除该收货地址吗？')){

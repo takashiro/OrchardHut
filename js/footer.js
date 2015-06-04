@@ -20,55 +20,73 @@
  takashiro@qq.com
 *********************************************************************/
 
-function cart_read(){
-	var in_cart = getcookie('in_cart').split(',');
-	var cart = {};
-	for(var i = 0; i < in_cart.length; i++){
-		var item = in_cart[i].split('=');
-		var price_id = parseInt(item[0], 10);
-		var number = parseInt(item[1], 10);
-		if(!isNaN(price_id) && !isNaN(number)){
-			cart[price_id] = number;
+var ShoppingCart = {
+	getItems : function(){
+		var items = getcookie('shopping_cart');
+		try{
+			items = JSON.parse(items);
+			if(typeof items == 'object'){
+				for(var i in items){
+					if(isNaN(i) || isNaN(items[i]) || i <= 0 || items[i] <= 0){
+						delete items[i];
+					}
+				}
+				return items;
+			}else{
+				return {};
+			}
+		}catch(e){
+			return {};
 		}
-	}
-	return cart;
-}
+	},
 
-function cart_write(cart){
-	var in_cart = [];
-	for(var i in cart){
-		if(!isNaN(i) && !isNaN(cart[i]) && cart[i] > 0){
-			in_cart.push(i + '=' + cart[i]);
+	setItems : function(items){
+		setcookie('shopping_cart', JSON.stringify(items));
+	},
+
+	setItem : function(price_id, value){
+		var items = this.getItems();
+		items[price_id] = value;
+		this.setItems(items);
+
+		this.itemNumChange();
+	},
+
+	getItemNum : function(){
+		var num = 0;
+		var items = this.getItems();
+		for(var i in items){
+			num++;
 		}
-	}
-	setcookie('in_cart', in_cart.join(','));
-}
+		return num;
+	},
 
-function cart_set(price_id, number){
-	var cart = cart_read();
-	cart[price_id] = number;
-	cart_write(cart);
+	itemNumChange : function(func){
+		if(typeof func == 'function'){
+			this.itemNumChanged.push(func);
+		}else if(func == undefined){
+			for(var i = 0; i < this.itemNumChanged.length; i++){
+				var func = this.itemNumChanged[i];
+				if(typeof func == 'function')
+					func();
+			}
+		}
+	},
 
-	$('#cart-goods-number').numbernotice(cart_number());
-}
-
-function cart_number(){
-	var in_cart = getcookie('in_cart');
-	if(in_cart == ''){
-		return 0;
-	}else{
-		return in_cart.split(',').length;
-	}
-}
+	'itemNumChanged' : []
+};
 
 $(function(){
-	var cart = cart_read();
-	for(var price_id in cart){
-		var number = cart[price_id];
+	ShoppingCart.itemNumChange(function(){
+		$('#cart-goods-number').numbernotice(ShoppingCart.getItemNum());
+	});
+	ShoppingCart.itemNumChange();
+
+	var items = ShoppingCart.getItems();
+	for(var price_id in items){
+		var number = items[price_id];
 		$('li[data-price-id=' + price_id + '] .order_input input').val(number);
 	}
-
-	$('#cart-goods-number').numbernotice(cart_number());
 
 	var delivered_num = parseInt(getcookie('delivering-order-number'), 10);
 	var cache_time = parseInt(getcookie('order-number-cache-time'), 10);
