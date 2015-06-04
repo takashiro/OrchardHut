@@ -15,7 +15,8 @@ $(function(){
 			}
 
 			var url = $('#ticket_form').attr('action') + parameters;
-			window.open(url);
+			var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
+			new_window.focus();
 
 			$('#ticket_form input').val('');
 			input.focus();
