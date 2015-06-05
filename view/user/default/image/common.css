@@ -575,7 +575,7 @@ footer ul.button_list .submenu a{
 	background:url(button_decrease.png) no-repeat;
 }
 
-.numberbox input{
+input.number{
 	width:45px;
 	color:#fe6565;
 	font-size:18px;
