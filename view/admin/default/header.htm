@@ -55,6 +55,9 @@
 						</ul>
 					</li>
 					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('returnedorder')}-->
+					<li><a href="admin.php?mod=returnedorder">退单</a></li>
+					<!--{/if}-->
 					<!--{if $_G['admin']->hasPermission('market')}-->
 					<li>
 						<a href="admin.php?mod=market">商品</a>

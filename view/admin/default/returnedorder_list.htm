@@ -1,0 +1,120 @@
+{template header}
+
+<style type="text/css">
+#orderlist{
+	font-size: 10pt;
+}
+.reason{
+	font-size:9pt;
+	max-height:100px;
+	overflow-y:auto;
+}
+.reply{
+	width: 120px;
+	height: 100px;
+}
+table.detail tbody td{
+	border: 0;
+}
+</style>
+
+<script type="text/javascript">
+$(function(){
+	$('.detailresult select').change(function(){
+		var tbody = $(this).parent().parent().parent();
+		var total = 0;
+		tbody.children('tr').each(function(){
+			var result = $(this).find('.detailresult select').val();
+			if(result != {echo ReturnedOrder::UnhandledDetail} && result != {echo ReturnedOrder::InvalidDetail}){
+				var subtotal = parseFloat($(this).find('.returnfee_subtotal').text());
+				total += subtotal;
+			}
+		});
+		var table = tbody.parent();
+		var order_tr = table.parent().parent();
+		order_tr.find('input.returnedfee').val(total.toFixed(2));
+	});
+});
+</script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=order">订单</a></li>
+	<li>退款申请</li>
+</ol>
+
+<div class="box">
+	<h1>退款申请</h1>
+	<div class="content">
+		<form action="$mod_url" method="post">
+			<div id="orderlist" class="list">
+				<table>
+					<thead>
+						<tr>
+							<td>订单号</td>
+							<td>地址和收件人</td>
+							<td width="100">下单时间</td>
+							<td>退回物品</td>
+							<td>退单原因</td>
+							<td>退款({echo Product::$PriceUnit})</td>
+							<td>回复</td>
+						</tr>
+					</thead>
+					<tbody>
+						<!--{loop $returned_orders $o}-->
+						<tr>
+							<td><a href="admin.php?mod=order&action=list&time_start=&time_end=&orderid=$o[id]">$o[id]</a></td>
+							<td>
+								<div>{echo Address::FullPathString($o['addressid'])} $o[extaddress]</div>
+								<div>
+									<a href="admin.php?mod=order&action=list&time_start=&time_end=&addressee=$o[addressee]">$o[addressee]</a> (<a href="admin.php?mod=order&action=list&time_start=&time_end=&mobile=$o[mobile]">$o[mobile]</a>)
+								</div>
+							</td>
+							<td>{echo rdate($o['dateline'])}</td>
+							<td>
+								<table class="detail">
+									<thead>
+										<tr>
+											<td>物品</td>
+											<td>退回</td>
+											<td>已买</td>
+											<td>处理</td>
+										</tr>
+									</thead>
+									<tbody>
+									<!--{loop $o['details'] $d}-->
+										<tr>
+											<td>$d[productname]<!--{if $d['subtype']}-->($d[subtype])<!--{/if}--></td>
+											<td>
+												<div>{$d[number]}{$d[amountunit]}</div>
+												<div class="returnfee_subtotal">{echo sprintf('%.2f', $d['subtotal'] * $d['number'] / $d['boughtnum'])}{echo Product::$PriceUnit}</div>
+											</td>
+											<td>
+												<div>{$d[boughtnum]}{$d[amountunit]}</div>
+												<div>{$d[subtotal]}{echo Product::$PriceUnit}</div>
+											</td>
+											<td class="detailresult">{echo Template::select('detail['.$d['id'].']', ReturnedOrder::$DetailResult, $d['state'])}</td>
+										</tr>
+									<!--{/loop}-->
+									</tbody>
+								</table>
+							</td>
+							<td><div class="reason">$o[reason]</div></td>
+							<td><input type="text" class="returnedfee narrow" name="returnedfee[{$o[id]}]" /></td>
+							<td><textarea class="reply" name="reply[{$o[id]}]"></textarea></td>
+						</tr>
+						<!--{/loop}-->
+					</tbody>
+				</table>
+			</div>
+
+			<!--{if !empty($returned_orders)}-->
+			<div class="post_buttons">
+				<button type="submit">确认</button>
+			</div>
+			<!--{/if}-->
+		</form>
+	</div>
+</div>
+
+{template footer}

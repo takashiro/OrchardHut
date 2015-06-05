@@ -27,6 +27,8 @@ return array(
 	'no_storage_need_updating' => '没有库存需要更新。',
 
 	'cache_files_are_deleted' => '缓存已清空。',
+
+	'successfully_handled_returned_order' => '成功处理退单！',
 );
 
 ?>

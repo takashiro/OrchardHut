@@ -38,6 +38,7 @@ return array(
 	'permission_qqconnect' => 'QQ互联设置',
 	'permission_qqconnect_comment' => '',
 	'permission_orderstat' => '分拣报表',
+	'permission_orderstat' => '处理退单申请',
 
 	'product_storage_normal_mode' => '标准',
 	'product_storage_booking_mode' => '预售',

@@ -879,3 +879,7 @@ dl.form > dd{
 .order_detail .outofstock{
 	text-decoration:line-through;
 }
+
+.numberbox{
+	margin: auto;
+}

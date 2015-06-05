@@ -140,7 +140,7 @@ header .profile .operation li{
 }
 
 .main{
-	padding-left: 130px;
+	padding-left: 110px;
 	position: relative;
 	background: #EBEBEB;
 }
@@ -149,7 +149,7 @@ header .profile .operation li{
 	text-align:center;
 	font-size:13pt;
 	font-family: Arial, 宋体;
-	width: 130px;
+	width: 110px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -197,7 +197,7 @@ header .profile .operation li{
 .main > .content{
 	background: white;
 	padding: 10px;
-	min-height: 530px;
+	min-height: 543px;
 }
 
 ol.nav{

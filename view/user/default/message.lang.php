@@ -77,6 +77,8 @@ return array(
 	'storage_inadequate' => '啊哦，库存不足了，不能再加了~',
 	'out_of_product_quantity_limit' => '您过去购买量%bought，每人限购量%limit，不能再加了哦~',
 	'log_in_to_buy' => '您需要先登录才能选购本限购价格的商品哦~',
+
+	'returned_order_has_been_submitted' => '退货申请已成功提交，我们马上处理~',
 );
 
 ?>

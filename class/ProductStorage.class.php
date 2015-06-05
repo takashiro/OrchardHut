@@ -30,6 +30,7 @@ class ProductStorage extends DBObject{
 	static public $Mode = array();
 
 	public function __construct($id = 0){
+		parent::__construct();
 		$id = intval($id);
 		if($id > 0){
 			$this->fetch('*', 'id='.$id);

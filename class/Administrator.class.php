@@ -55,6 +55,7 @@ class Administrator extends User{
 		'orderstat' => 0x100000,
 		'user' => 0x200000,
 		'ticketprinter' => 0x400000,
+		'returnedorder' => 0x800000,
 	);
 
 	static public $SpecialPermission = array(

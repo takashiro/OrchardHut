@@ -28,6 +28,13 @@ return array(
 	'recharge' => '充值',
 	'order_refund' => '退款',
 	'order_payment' => '支付',
+
+	'returned_order_submitted' => '已提交',
+	'returned_order_handled' => '已处理',
+	'returned_order_unhandled_detail' => '未处理',
+	'returned_order_invalid_detail' => '条件不符',
+	'returned_order_fee_only' => '退款',
+	'returned_order_fee_and_item' => '退货退款',
 );
 
 ?>

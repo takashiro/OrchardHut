@@ -85,6 +85,75 @@ case 'view':
 	include view('order_detail');
 	break;
 
+case 'return':
+	if(empty($_GET['orderid'])) exit('access denied');
+	$orderid = intval($_GET['orderid']);
+	$order = new Order($orderid);
+	if(!$order->exists() || $order->userid != $_G['user']->id){
+		showmsg('order_not_exist', 'refresh');
+	}
+
+	if($_POST){
+		is_array($_POST['detail']) || exit('invalid');
+
+		$valid_details = array();
+		foreach($order->getDetails() as $d){
+			$valid_details[$d['id']] = $d;
+		}
+
+		$returned_order = new ReturnedOrder;
+		$returned_order->id = $order->id;
+		$returned_order->dateline = TIMESTAMP;
+		$returned_order->reason = isset($_POST['reason']) ? htmlspecialchars($_POST['reason']) : '';
+		$returned_order->state = ReturnedOrder::Submitted;
+		$returned_order->returnedfee = 0;
+
+		foreach($_POST['detail'] as $detailid => $number){
+			$detailid = intval($detailid);
+			$number = intval($number);
+			if($detailid > 0 && $number > 0 && isset($valid_details[$detailid])){
+				$d = $valid_details[$detailid];
+				$max_number = $d['amount'] * $d['number'];
+				$max_number < $number && $number = $max_number;
+				$returned_order->addDetail($detailid, $number);
+			}
+		}
+
+		if($returned_order->insert('IGNORE')){
+			showmsg('returned_order_has_been_submitted', 'refresh');
+		}else{
+			showmsg('failed_to_submit_returned_order', 'back');
+		}
+	}
+
+	$returned_order = new ReturnedOrder($order->id);
+
+	$order = $order->toReadable();
+	if($returned_order->exists()){
+		$returned_order = $returned_order->toReadable();
+
+		$details = array();
+		foreach($returned_order['details'] as $d){
+			$details[$d['id']] = $d;
+		}
+
+		foreach($order['detail'] as $d){
+			if(!isset($details[$d['id']]))
+				continue;
+
+			foreach($d as $k => $v){
+				isset($details[$d['id']][$k]) || $details[$d['id']][$k] = $v;
+			}
+		}
+		$returned_order['details'] = $details;
+
+	}else{
+		unset($returned_order);
+	}
+
+	include view('order_return');
+	break;
+
 case 'deliveringnum':
 	$status = array(Order::Sorted, Order::Delivering, Order::InDeliveryPoint);
 	$status = implode(',', $status);

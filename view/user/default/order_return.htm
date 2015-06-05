@@ -1,0 +1,97 @@
+{template header}
+
+<style type="text/css">
+.reason textarea{
+	width: 80%;
+}
+</style>
+
+<div class="box">
+	<h1>我的订单 - 退货申请</h1>
+	<div class="content order_list">
+		<!--{if !empty($returned_order)}-->
+		<div class="lightbox">
+			<h1>处理状态</h1>
+			<div class="content">
+				{echo ReturnedOrder::$Status[$returned_order['state']]}
+				<!--{if $returned_order['state'] == ReturnedOrder::Handled}-->
+				，已退款{$returned_order[returnedfee]}{echo Product::$PriceUnit}
+				<!--{/if}-->
+			</div>
+		</div>
+		<!--{/if}-->
+
+		<dl class="form">
+			<dt>订单编号：</dt><dd>$order[id]</dd>
+			<dt>下单时间：</dt><dd>$order[dateline]</dd>
+			<dt>收件人：</dt><dd>$order[addressee]</dd>
+			<dt>联系电话：</dt><dd>$order[mobile]</dd>
+			<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
+			<dt>总计：</dt><dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
+		</dl>
+
+		<!--{if empty($returned_order)}-->
+		<form action="order.php?action=return&orderid=$orderid" method="post">
+			<table>
+				<thead>
+					<tr><td>商品</td><td>退货数量</td></tr>
+				</thead>
+				<tbody>
+				<!--{loop $order['detail'] $d}-->
+					<!--{if $d['state'] == 0}-->
+					<tr>
+						<td>$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--></td>
+						<td>
+							<input type="text" class="number" name="detail[{$d[id]}]" data-maxvalue="{echo $d['amount'] * $d['number']}" />
+						</td>
+					</tr>
+					<!--{/if}-->
+				<!--{/loop}-->
+				</tbody>
+			</table>
+
+			<div class="lightbox reason">
+				<h1>退货原因</h1>
+				<div class="content">
+					<textarea name="reason" placeholder="给您带来不便，万分抱歉！还请填写详细情况以便我们改正~"></textarea>
+				</div>
+			</div>
+
+			<div class="post_buttons">
+				<button type="submit">确认退货</button>
+			</div>
+		</form>
+		<!--{else}-->
+		<table>
+			<thead>
+				<tr><td>商品</td><td>退货数量</td><td>结果</td></tr>
+			</thead>
+			<tbody>
+			<!--{loop $returned_order['details'] $d}-->
+				<tr>
+					<td>$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--></td>
+					<td>{$d[number]}{$d[amountunit]}</td>
+					<td>{echo ReturnedOrder::$DetailResult[$d['state']]}</td>
+				</tr>
+			<!--{/loop}-->
+			</tbody>
+		</table>
+
+		<div class="lightbox reason">
+			<h1>退货原因</h1>
+			<div class="content">
+				<textarea readonly="readonly">$returned_order[reason]</textarea>
+			</div>
+		</div>
+
+		<!--{if !empty($returned_order['adminreply'])}-->
+			<div class="lightbox reason">
+				<h1>客服回复</h1>
+				<div class="content">$returned_order[adminreply]</div>
+			</div>
+		<!--{/if}-->
+		<!--{/if}-->
+	</div>
+</div>
+
+{template footer}
