@@ -100,18 +100,20 @@ if($_POST){
 
 			if($db->affected_rows > 0){
 				//退款至用户账户
-				$userid = $db->result_first("SELECT userid FROM {$tpre}order WHERE id={$o['id']}");
-				$db->query("UPDATE {$tpre}user SET wallet=wallet+$returned_fee WHERE id=$userid");
-				if($db->affected_rows > 0){
-					$log = array(
-						'uid' => $userid,
-						'dateline' => TIMESTAMP,
-						'type' => Wallet::OrderRefundLog,
-						'delta' => $returned_fee,
-						'orderid' => $o['id'],
-					);
-					$table = $db->select_table('userwalletlog');
-					$table->insert($log);
+				$order = $db->fetch_first("SELECT paymentmethod,userid FROM {$tpre}order WHERE id={$o['id']}");
+				if($order['paymentmethod'] != Order::PaidWithCash){
+					$db->query("UPDATE {$tpre}user SET wallet=wallet+$returned_fee WHERE id={$order['userid']}");
+					if($db->affected_rows > 0){
+						$log = array(
+							'uid' => $order['userid'],
+							'dateline' => TIMESTAMP,
+							'type' => Wallet::OrderRefundLog,
+							'delta' => $returned_fee,
+							'orderid' => $o['id'],
+						);
+						$table = $db->select_table('userwalletlog');
+						$table->insert($log);
+					}
 				}
 
 				//返回库存
