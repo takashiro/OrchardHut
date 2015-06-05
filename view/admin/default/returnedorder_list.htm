@@ -46,6 +46,14 @@ $(function(){
 <div class="box">
 	<h1>退款申请</h1>
 	<div class="content">
+		<div class="notice">
+			<ol>
+				<li>“退货”会相应修改库存。</li>
+				<li>若该订单采用线上支付，“退款”会将相应金额退到用户钱包。</li>
+				<li>每个订单下所有退货均处理后（没有“未处理”状态），该退单申请处理成功。</li>
+			</ol>
+		</div>
+
 		<form action="$mod_url" method="post">
 			<div id="orderlist" class="list">
 				<table>
