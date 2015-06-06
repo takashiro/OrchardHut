@@ -13,6 +13,7 @@
 <!--{/if}-->
 <script type="text/javascript">window.jQuery || document.write('<script src="./plugin/jquery/jquery-2.0.3.min.js"><\/script>');</script>
 <script type="text/javascript" src="{__TEMPLATE_ROOT__}js/ticket_printer.js?$_CONFIG[refversion]"></script>
+<script type="text/javascript" src="./js/datetime.js"></script>
 </head>
 
 <body>
@@ -24,39 +25,37 @@
 		<div class="box">
 			<h2><img src="{__TEMPLATE_ROOT__}image/logo.png" width="150" height="50" />自助打印提货单</h2>
 			<div class="content">
-				<form id="ticket_form" action="admin.php?mod=ticketprinter" method="post" class="edit_form" target="_blank">
-					<table>
-						<tr>
-							<th>下单时间：</th>
-							<td>{echo rdate($time_start, 'Y-m-d H:i')} - {echo rdate($time_end, 'Y-m-d H:i')}</td>
-						</tr>
-						<tr>
-							<th>订单号或手机号：</th>
-							<td><input type="text" id="orderid_or_mobile" autocomplete="off" /></td>
-						</tr>
-					</table>
+				<table>
+					<tr>
+						<th>下单时间：</th>
+						<td><input type="text" class="datetime" id="time_start" value="{echo rdate($time_start, 'Y-m-d H:i')}" /> - <input type="text" class="datetime" id="time_end" value="{echo rdate($time_end, 'Y-m-d H:i')}" /></td>
+					</tr>
+					<tr>
+						<th>订单号或手机号：</th>
+						<td><input type="text" id="orderid_or_mobile" autocomplete="off" /></td>
+					</tr>
+				</table>
 
-					<div class="number_board">
-						<button type="button">7</button>
-						<button type="button">8</button>
-						<button type="button">9</button>
-						<button type="button">4</button>
-						<button type="button">5</button>
-						<button type="button">6</button>
-						<button type="button">1</button>
-						<button type="button">2</button>
-						<button type="button">3</button>
-						<button type="button">*</button>
-						<button type="button">0</button>
-						<button type="button">#</button>
-					</div>
+				<div class="number_board">
+					<button type="button">7</button>
+					<button type="button">8</button>
+					<button type="button">9</button>
+					<button type="button">4</button>
+					<button type="button">5</button>
+					<button type="button">6</button>
+					<button type="button">1</button>
+					<button type="button">2</button>
+					<button type="button">3</button>
+					<button type="button">*</button>
+					<button type="button">0</button>
+					<button type="button">#</button>
+				</div>
 
-					<div class="post_buttons">
-						<button type="submit" id="print_button">查询</button>
-						<button type="button" id="backspace_button">退格</button>
-						<button type="reset">清空</button>
-					</div>
-				</form>
+				<div class="post_buttons">
+					<button type="submit" id="print_button">查询</button>
+					<button type="button" id="backspace_button">退格</button>
+					<button type="reset">清空</button>
+				</div>
 			</div>
 		</div>
 		<footer>

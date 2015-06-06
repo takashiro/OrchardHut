@@ -24,7 +24,11 @@
 if(!defined('IN_ADMINCP')) exit('access denied');
 
 //下单起始时间
-$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+if(!empty($_REQUEST['time_start'])){
+	$time_start = rstrtotime($_REQUEST['time_start']);
+}else{
+	$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+}
 
 //根据截单时间调整时分秒
 $deliverytimes = DeliveryTime::FetchAllEffective();
@@ -36,7 +40,12 @@ $time_start += $dt['deadline'];
 unset($deliverytimes, $dt);
 
 //下单截止时间
-$time_end = $time_start + 1 * 24 * 3600;
+if(!empty($_REQUEST['time_end'])){
+	$time_end = rstrtotime($_REQUEST['time_end']);
+	$time_end < $time_start && $time_end = $time_start;
+}else{
+	$time_end = $time_start + 1 * 24 * 3600;
+}
 
 if(isset($_REQUEST['orderid']) || isset($_REQUEST['mobile'])){
 	$condition = array('dateline>='.$time_start, 'dateline<='.$time_end);

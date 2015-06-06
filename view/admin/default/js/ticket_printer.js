@@ -9,16 +9,19 @@ $(function(){
 
 			var parameters;
 			if (input.val().length == 11){
-				parameters = '&mobile=' + input.val();
+				parameters = '&mobile=' + parseInt(input.val(), 10);
 			}else{
-				parameters = '&orderid=' + input.val();
+				parameters = '&orderid=' + parseInt(input.val(), 10);
 			}
 
-			var url = $('#ticket_form').attr('action') + parameters;
+			parameters += '&time_start=' + escape($('#time_start').val());
+			parameters += '&time_end=' + escape($('#time_end').val());
+
+			var url = 'admin.php?mod=ticketprinter' + parameters;
 			var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
 			new_window.focus();
 
-			$('#ticket_form input').val('');
+			input.val('');
 			input.focus();
 		}
 	});
