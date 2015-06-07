@@ -25,7 +25,11 @@ require_once './core/init.inc.php';
 
 $type = isset($_GET['type']) ? intval($_GET['type']) : -1;
 $all_types = Product::Types();
-isset($all_types[$type]) || $type = current(array_keys($all_types));
+if($all_types){
+	isset($all_types[$type]) || $type = current(array_keys($all_types));
+}else{
+	$type = 0;
+}
 unset($all_types);
 
 $table = $db->select_table('product');

@@ -78,11 +78,6 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 					<th>收件人手机号：</th>
 					<td><input type="text" name="mobile" /></td>
 				</tr>
-				<tr>
-					<th>操作：</th>
-					<td>{echo Template::radio('format', array('html' => '查找并显示', 'ticket' => '打印小票'))}
-			</td>
-				</tr>
 			</table>
 			<button type="submit">确认</button>
 		</form>
