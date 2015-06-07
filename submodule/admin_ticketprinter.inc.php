@@ -103,7 +103,7 @@ if(isset($_REQUEST['orderid']) || isset($_REQUEST['mobile'])){
 	}
 
 	$ticketconfig = readdata('ticket');
-	include view('order_wideticket');
+	include view('order_ticket');
 
 }else{
 	include view('ticket_printer');
