@@ -89,7 +89,7 @@ $i = $cascade_level;
 $address_tables[] = "LEFT JOIN {$tpre}addresscomponent a{$i} ON a{$i}.id=o.addressid";
 for($i = $cascade_level - 1; $i >= 1; $i--){
 	$j = $i + 1;
-	$address_tables[] = "LEFT JOIN {$tpre}addresscomponent a{$i} ON a{$i}.id=a{$j}.parentid";
+	$address_tables[] = "LEFT JOIN {$tpre}addresscomponent a{$i} ON IF(a{$j}.parentid!=0, a{$i}.id=a{$j}.parentid, a{$i}.id=a{$j}.id)";
 }
 $address_tables = implode(' ', $address_tables);
 
