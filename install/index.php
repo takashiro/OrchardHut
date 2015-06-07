@@ -41,7 +41,12 @@ require_once S_ROOT.'./core/global.func.php';
 $_G = array();
 @$_G['config'] = array_merge(@include S_ROOT.'./data/config.inc.php', @include S_ROOT.'./data/stconfig.inc.php');
 @$_G['config']['db'] = include S_ROOT.'./data/dbconfig.inc.php';
+$_CONFIG = &$_G['config'];
+isset($_CONFIG['timezone']) || $_CONFIG['timezone'] = 8;
+define('TIMEZONE', $_CONFIG['timezone']);
 $_G['style'] = 'admin';
+$_G['timestamp'] = time();
+define('TIMESTAMP', $_G['timestamp']);
 
 if(file_exists(S_ROOT.'./data/install.lock')){
 	rheader('Content-Type:text/html; charset=utf-8');
@@ -60,6 +65,7 @@ if($_POST){
 		'charset' => 'utf-8',
 		'sitename' => $_POST['config']['sitename'],
 		'style' => 'default',
+		'refversion' => randomstr(3),
 	);
 	writeconfig('config', $config);
 	writeconfig('config_bak_'.randomstr(3), $config);
@@ -86,9 +92,9 @@ if($_POST){
 	$_G['config'] = array_merge($config, $stconfig);
 	$_G['config']['db'] = $dbconfig;
 
-	$db = new Mysql();
+	$db = new Database;
 	$db->connect($dbconfig['host'], $dbconfig['user'], $dbconfig['pw'], '', $dbconfig['pconnect']);
-	$db->set_tablepre($dbconfig['tpre']);
+	$db->set_table_prefix($dbconfig['tpre']);
 
 	$databases = $db->fetch_all('SHOW DATABASES');
 	$database_exists = false;
