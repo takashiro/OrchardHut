@@ -518,6 +518,7 @@ class Product extends DBObject{
 	}
 }
 
-Product::$PriceUnit = current(Product::PriceUnits());
+$priceunits = Product::PriceUnits();
+Product::$PriceUnit = is_array($priceunits) ? current($priceunits) : '';
 
 ?>
