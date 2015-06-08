@@ -78,7 +78,7 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 						<!--{loop $delivery_addresses $i $a}-->
 						<li{if $i == 0} class="checked"{/if}><input type="radio" name="deliveryaddressid" value="$a[id]"{if $i == 0} checked="checked"{/if} />$a[address_text]<a href="###" class="remove">x</a></li>
 						<!--{/loop}-->
-						<li><input type="radio" name="deliveryaddressid" value="0" />使用新地址</li>
+						<li><input type="radio" name="deliveryaddressid" value="0" autocomplete="off" />使用新地址</li>
 					</ul>
 					<table id="new_address_table" style="display:none">
 						<tr>
