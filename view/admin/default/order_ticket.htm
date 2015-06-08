@@ -14,15 +14,15 @@
 <script type="text/javascript">window.jQuery || document.write('<script src="./plugin/jquery/jquery-2.0.3.min.js"><\/script>');</script>
 </head>
 <body>
-
 <!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
 
 <!--{if !empty($orders)}-->
+<script type="text/javascript" src="./plugin/scriptx/scriptx.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('#print_button').click(function(){
 		$('#print_button').hide();
-		window.print();
+		scriptx.print();
 
 		var orders = [
 			0
