@@ -6,6 +6,7 @@
 	<li>编辑管理员</li>
 </ol>
 
+<script type="text/javascript" src="./js/jquery.cascadeselect.js?$_CONFIG[refversion]"></script>
 <script type="text/javascript">
 $(function(){
 	$('#limitation_ul').on('click', 'li .add', function(e){
@@ -24,11 +25,8 @@ $(function(){
 		li.remove();
 	});
 });
+$.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_components)});
 </script>
-<script type="text/javascript">
-var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
-</script>
-<script type="text/javascript" src="./js/cascadeselect.js"></script>
 
 <div class="box edit_form">
 	<!--{if $id}-->
@@ -93,9 +91,9 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 			<td>
 				<ul id="limitation_ul">
 					<!--{loop $admin->getLimitations(false) $componentid}-->
-					<li>{echo Template::tselect('limitation[]', 'all_addresses', false, $componentid, false)} <a href="###" class="remove">[移除]</a></li>
+					<li><input type="hidden" class="cascadeselect" name="limitation[]" value="$componentid" data-options="all_addresses" /> <a href="###" class="remove">[移除]</a></li>
 					<!--{/loop}-->
-					<li>{echo Template::tselect('limitation[]', 'all_addresses', false, 0, false)} <a href="###" class="add">[增加]</a></li>
+					<li><input type="hidden" class="cascadeselect" name="limitation[]" value="0" data-options="all_addresses" /> <a href="###" class="add">[增加]</a></li>
 				</ul>
 			</td>
 		</tr>

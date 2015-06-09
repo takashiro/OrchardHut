@@ -299,16 +299,6 @@ class Template{
 
 		return $str;
 	}
-
-	static public function tselect($name, $components, $with_ext = true, $componentid = 0, $require_full_path = true){
-		$html = '<span class="tselect">';
-		$html.= '<input type="hidden" class="value" id="'.$name.'" name="'.$name.'" value="'.$componentid.'" data-components="'.$components.'" data-require-fullpath="'.$require_full_path.'" />';
-		if($with_ext){
-			$html.= '<input type="text" class="ext" placeholder="更详细的单元及寝室号" />';
-		}
-		$html.= '</span>';
-		return $html;
-	}
 }
 
 Template::$SOURCE_DIR = S_ROOT.'view/';

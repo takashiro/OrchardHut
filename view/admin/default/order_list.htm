@@ -6,6 +6,7 @@
 	<li>订单列表</li>
 </ol>
 
+<script type="text/javascript" src="./js/jquery.cascadeselect.js?$_CONFIG[refversion]"></script>
 <script type="text/javascript">
 var lang = {
 	order_unsorted : '{lang common order_unsorted}',
@@ -39,9 +40,8 @@ var Order = {
 	Sorted : {echo Order::Sorted}
 };
 
-var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
+$.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_components)});
 </script>
-<script type="text/javascript" src="./js/cascadeselect.js?$_CONFIG[refversion]"></script>
 <script type="text/javascript" src="./js/datetime.js?$_CONFIG[refversion]"></script>
 <script type="text/javascript" src="./js/admin_order_list.js?$_CONFIG[refversion]"></script>
 
@@ -63,7 +63,7 @@ var TSelectData = {'all_addresses' : {echo json_encode($address_components)}};
 			</dl>
 			<dl>
 				<dt>送货地址：</dt>
-				<dd>{echo Template::tselect('delivery_address[]', 'all_addresses', false, isset($delivery_address[0]) ? $delivery_address[0] : 0, false)}</dd>
+				<dd><input type="hidden" class="cascadeselect" name="delivery_address[]" data-options="all_addresses" value="{if isset($delivery_address[0])}$delivery_address[0]{else}0{/if}" /></dd>
 				<dt>收货方式：</dt>
 				<dd>{echo Template::select('deliverymethod', $delivery_methods, $deliverymethod)}</dd>
 				<dt>统计：</dt>
