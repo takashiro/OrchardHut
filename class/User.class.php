@@ -177,6 +177,23 @@ class User extends DBObject{
 		return true;
 	}
 
+	public function refreshFormKey(){
+		global $db, $tpre;
+		if($this->formkey == 0){
+			$this->formkey = rand(1, 255);
+			$db->query("UPDATE {$tpre}user SET formkey={$this->formkey} WHERE id={$this->id} AND formkey=0");
+			return $db->affected_rows > 0;
+		}
+		return false;
+	}
+
+	public function checkFormKey($formkey){
+		global $db, $tpre;
+		$formkey = intval($formkey);
+		$db->query("UPDATE {$tpre}user SET formkey=0 WHERE id={$this->id} AND formkey=$formkey");
+		return $db->affected_rows > 0;
+	}
+
 	static public function Delete($id, $extra = ''){
 		if($id = intval($id)){
 			DB::select_table(static::TABLE_NAME);

@@ -103,6 +103,9 @@ switch($action){
 
 		if($_POST){
 			//处理提交的订单开始
+			if(empty($_POST['formkey']) || !$_G['user']->checkFormKey($_POST['formkey'])){
+				showmsg('you_submitted_a_duplicated_order', 'order.php');
+			}
 
 			$order = new Order;
 
@@ -334,6 +337,9 @@ switch($action){
 
 		//取得所有可用的收货地址
 		$address_components = Address::AvailableComponents();
+
+		//生成随机表单key防止重复提交
+		$_G['user']->refreshFormKey();
 
 		include view('cart');
 	break;

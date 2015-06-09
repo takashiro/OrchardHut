@@ -33,6 +33,7 @@ return array(
 	'successfully_submitted_order' => '成功提交订单！',
 	'successfully_submitted_order_with_item_deleted' => '成功提交订单！但是由于库存量紧缺，您的部分商品被人先下手啦！',
 	'failed_to_submit_order' => '由于库存紧缺，刚刚有人先下手为强，您的订单提交失败了QAQ。',
+	'you_submitted_a_duplicated_order' => '不要这么着急~ 慢慢来，您重复提交订单啦~',
 	'confirm_to_cancel_order' => '您确认取消该订单吗？线上成功支付的订单退款到钱包中。',
 	'successfully_canceled_order' => '成功取消该订单！',
 	'order_not_exist' => '该订单不存在！',

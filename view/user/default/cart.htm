@@ -53,6 +53,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 		</div>
 
 		<form action="cart.php" method="post">
+			<input type="hidden" name="formkey" value="{echo $_G['user']->formkey}" />
 			<div class="lightbox message">
 				<h1>购物留言</h1>
 				<div class="content">
