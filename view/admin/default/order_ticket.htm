@@ -17,13 +17,13 @@
 <!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
 
 <!--{if !empty($orders)}-->
-<script type="text/javascript" src="./plugin/scriptx/scriptx.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('#print_button').click(function(){
 		$('#print_button').hide();
-		scriptx.print();
+		window.print();
 
+		{if !empty($_GET['auto_receive'])}
 		var orderids = [
 			0
 			{loop $orders $o}
@@ -32,7 +32,6 @@ $(function(){
 		];
 		orderids.shift();
 
-		{if !empty($_GET['auto_receive'])}
 		$.post('{$mod_url}&mark_received=1', {'orderids' : orderids}, function(){
 			window.close();
 		});
@@ -66,7 +65,7 @@ window.close();
 		<tr><th>用户留言：</th><td>$order[message]</td></tr>
 		<!--{/if}-->
 		<tr><th>总金额：</th><td>{$order[totalprice]}{echo Product::$PriceUnit}</td></tr>
-		<tr><th>物流状态：</th><td>{echo Order::$Status[$o['status']]}</td></tr>
+		<tr><th>物流状态：</th><td>{echo Order::$Status[$order['status']]}</td></tr>
 		<tr>
 			<th>付款状态：</th>
 			<td>
