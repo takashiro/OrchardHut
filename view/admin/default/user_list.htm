@@ -1,6 +1,10 @@
 {template header}
 
-<script type="text/javascript" src="./js/datetime.js"></script>
+<script type="text/javascript">
+var TSelectData = {'all_addresses' : {echo json_encode(Address::Components())}};
+</script>
+<script type="text/javascript" src="./js/datetime.js?$_CONFIG[refversion]"></script>
+<script type="text/javascript" src="./js/cascadeselect.js?$_CONFIG[refversion]"></script>
 
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
@@ -15,18 +19,21 @@
 		<dl>
 			<dt>注册时间：</dt>
 			<dd><input type="text" name="regtime_start" class="datetime" value="$regtime_start" /> - <input type="text" name="regtime_end" class="datetime" value="$regtime_end" /></dd>
-		</dl>
-		<dl>
+
 			<dt>下单时间：</dt>
 			<dd><input type="text" name="ordertime_start" class="datetime" value="$ordertime_start" /> - <input type="text" name="ordertime_end" class="datetime" value="$ordertime_end" /></dd>
-		</dl>
-		<dl>
 			<dt>下单数量：</dt>
 			<dd><input type="text" name="ordernum_min" class="number narrow" value="$ordernum_min" /> - <input type="text" name="ordernum_max" class="number narrow" value="$ordernum_max" /></dd>
 		</dl>
+		<br />
+		<dl>
+			<dt>收货地址：</dt>
+			<dd>{echo Template::tselect('address', 'all_addresses', false, isset($addressid) ? $addressid : '', false)}</dd>
+		</dl>
 
 		<div class="post_buttons">
-			<button type="submit">查找</button>
+			<button type="submit" name="format" value="html">查找</button>
+			<button type="submit" name="format" value="csv">导出Excel</button>
 		</div>
 	</form>
 
@@ -41,6 +48,8 @@
 					<td>注册时间</td>
 					<td>订单数量</td>
 					<td>钱包余额</td>
+					<td>手机号</td>
+					<td>收货地址</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -52,6 +61,8 @@
 					<td>{echo rdate($u['regtime'])}</td>
 					<td><a href="admin.php?mod=order&userid=$u[id]&time_start=&time_end=">$u[ordernum]</a></td>
 					<td>$u[wallet]</td>
+					<td>$u[mobile]</td>
+					<td>{echo Address::FullPathString($u['addressid'])}</td>
 				</tr>
 				<!--{/loop}-->
 			</tbody>

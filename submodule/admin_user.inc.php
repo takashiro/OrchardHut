@@ -48,16 +48,25 @@ if($order_condition){
 //下单数量范围
 $subquery_ordernum = "(SELECT COUNT(*) FROM {$tpre}order o WHERE o.userid=u.id $order_condition)";
 $ordernum_min = '';
-if(isset($_REQUEST['ordernum_min'])){
+if(isset($_REQUEST['ordernum_min']) && $_REQUEST['ordernum_min'] != ''){
 	$ordernum_min = max(0, intval($_REQUEST['ordernum_min']));
 	$condition[] = $subquery_ordernum.'>='.$ordernum_min;
 	$query_string[] = 'ordernum_min='.$ordernum_min;
 }
 $ordernum_max = '';
-if(isset($_REQUEST['ordernum_max'])){
+if(isset($_REQUEST['ordernum_max']) && $_REQUEST['ordernum_max'] != ''){
 	$ordernum_max = max(0, intval($_REQUEST['ordernum_max']));
 	$condition[] = $subquery_ordernum.'<='.$ordernum_max;
 	$query_string[] = 'ordernum_max='.$ordernum_max;
+}
+
+//根据最后下单的送货范围查询
+$addressid = null;
+if(isset($_REQUEST['address'])){
+	$addressid = intval($_REQUEST['address']);
+	$address_range = Address::Extension($addressid);
+	$condition[] = 'o.addressid IN ('.implode(',', $address_range).')';
+	$query_string[] = 'address='.$addressid;
 }
 
 //生成条件子句
@@ -67,25 +76,39 @@ if($condition){
 	$condition = '1';
 }
 
-$total_user_num = $db->result_first("SELECT COUNT(*) FROM {$tpre}user WHERE 1");
+$output_formats = array('csv', 'html');
+$output_format = isset($_REQUEST['format']) && in_array($_REQUEST['format'], $output_formats) ? $_REQUEST['format'] : 'html';
 
-$user_num = $db->result_first("SELECT COUNT(*)
-	FROM {$tpre}user u
-	WHERE $condition");
+$limit_subsql = '';
+if($output_format == 'html'){
+	$total_user_num = $db->result_first("SELECT COUNT(*) FROM {$tpre}user WHERE 1");
 
-$limit = 20;
-$offset = ($page - 1) * $limit;
-$user_list = $db->fetch_all("SELECT u.*, $subquery_ordernum AS ordernum
-	FROM {$tpre}user u
-	WHERE $condition
-	LIMIT $offset, $limit");
+	$user_num = $db->result_first("SELECT COUNT(*)
+		FROM {$tpre}user u
+			LEFT JOIN {$tpre}order o ON o.userid=u.id AND o.id=(SELECT MAX(id) FROM {$tpre}order WHERE userid=u.id)
+		WHERE $condition");
 
-if($query_string){
-	$query_string = '&'.implode('&', $query_string);
-}else{
-	$query_string = '';
+	$limit = 20;
+	$offset = ($page - 1) * $limit;
+	$limit_subsql = "LIMIT $offset, $limit";
 }
 
-include view('user_list');
+$user_list = $db->fetch_all("SELECT u.*, $subquery_ordernum AS ordernum, o.addressid, o.mobile
+	FROM {$tpre}user u
+		LEFT JOIN {$tpre}order o ON o.userid=u.id AND o.id=(SELECT MAX(id) FROM {$tpre}order WHERE userid=u.id)
+	WHERE $condition
+	$limit_subsql");
+
+if($output_format == 'html'){
+	if($query_string){
+		$query_string = '&'.implode('&', $query_string);
+	}else{
+		$query_string = '';
+	}
+
+	include view('user_list');
+}else{
+	include view('user_csv');
+}
 
 ?>
