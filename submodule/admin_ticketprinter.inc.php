@@ -47,7 +47,7 @@ if(empty($_REQUEST['time_end'])){
 	$time_end < $time_start && $time_end = $time_start;
 }
 
-if(isset($_REQUEST['orderid']) || isset($_REQUEST['mobile'])){
+if(isset($_REQUEST['orderid']) || isset($_REQUEST['mobile']) || isset($_REQUEST['orderids'])){
 	$condition = array('dateline>='.$time_start, 'dateline<='.$time_end);
 
 	//过滤掉送货地点不在当前管理员的管辖范围内的订单
@@ -63,6 +63,19 @@ if(isset($_REQUEST['orderid']) || isset($_REQUEST['mobile'])){
 		$condition[] = 'id='.intval($_REQUEST['orderid']);
 	}elseif(!empty($_REQUEST['mobile'])){
 		$condition[] = 'mobile=\''.raddslashes($_REQUEST['mobile']).'\'';
+	}elseif(!empty($_REQUEST['orderids']) && is_array($_REQUEST['orderids'])){
+		$orderids = array();
+		foreach($_REQUEST['orderids'] as $orderid){
+			$orderid = intval($orderid);
+			if($orderid > 0){
+				$orderids[] = $orderid;
+			}
+		}
+
+		if($orderids){
+			$condition[] = 'id IN ('.implode(',', $orderids).')';
+		}
+
 	}else{
 		showmsg('please_input_order_id_or_mobile', 'back');
 	}

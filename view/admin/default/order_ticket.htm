@@ -24,26 +24,21 @@ $(function(){
 		$('#print_button').hide();
 		scriptx.print();
 
-		var orders = [
+		var orderids = [
 			0
 			{loop $orders $o}
 			, $o['id']
 			{/loop}
 		];
+		orderids.shift();
 
-		orders.shift();
-
-		function mark_order(){
-			$.post('{$mod_url}&mark_received=1&orderid=' + orders[0], [], function(){
-				orders.shift();
-				if(orders.length == 0){
-					window.close();
-				}else{
-					mark_order();
-				}
-			});
-		}
-		mark_order();
+		{if !empty($_GET['auto_receive'])}
+		$.post('{$mod_url}&mark_received=1', {'orderids' : orderids}, function(){
+			window.close();
+		});
+		{else}
+		window.close();
+		{/if}
 	});
 });
 </script>
