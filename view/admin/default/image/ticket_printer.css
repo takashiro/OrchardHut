@@ -33,10 +33,6 @@ body, input, select, textarea, button{
 	font-size: 15pt;
 }
 
-header{
-	display: none;
-}
-
 .box h2{
 	color: white;
 	background: #C9E835;
@@ -78,13 +74,6 @@ header{
 	height: 60px;
 	font-size: 28pt;
 	margin: 10px 0;
-}
-
-footer{
-	color: #525252;
-	text-align: center;
-	margin: 20px 0;
-	font-size: 9pt;
 }
 
 input{
