@@ -9,23 +9,28 @@ rheader('Content-Disposition: attachment; filename="'.$_CONFIG['sitename'].'订�
 //UTF-8 BOM
 echo chr(0xEF), chr(0xBB), chr(0xBF);
 
+function csv_node($str){
+	return str_replace('"', '""', $str);
+}
+
 //表头
-echo '产品';
+echo '"产品"';
 foreach($top_address_list as $address){
-	echo ',', $address;
+	echo ',"', csv_node($address), '"';
 }
 echo "\r\n";
 
 //统计结果
 foreach($stat_list as $product_id => $subtypes){
 	foreach($subtypes as $subtype => $items){
-		echo $product_list[$product_id];
+		echo '"', csv_node($product_list[$product_id]);
 		if(!empty($subtype)){
-			echo '(', $subtype, ')';
+			echo '(', csv_node($subtype), ')';
 		}
+		echo '"';
 
 		foreach($top_address_list as $address_id => $address_name){
-			echo ',', isset($items[$address_id]) ? $items[$address_id]['totalnum'] : 0;
+			echo ',"', isset($items[$address_id]) ? csv_node($items[$address_id]['totalnum']) : 0, '"';
 		}
 		echo "\r\n";
 	}
