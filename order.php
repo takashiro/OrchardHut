@@ -31,15 +31,27 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 switch($action){
 case 'delete':
-	if(empty($_GET['confirm'])){
-		showmsg('confirm_to_cancel_order', 'confirm');
+	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
+	if($orderid <= 0){
+		showmsg('order_not_exist', 'back');
 	}
 
-	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
+	$order = new Order($orderid);
+	if(!$order->exists()){
+		showmsg('order_not_exist', 'back');
+	}
+
+	if(empty($_GET['confirm'])){
+		if($order->paymentmethod == Order::PaidOnline && $order->alipaystate != AlipayNotify::TradeSuccess){
+			showmsg('alipay_not_updated_confirm_to_cancel_order', 'confirm');
+		}else{
+			showmsg('confirm_to_cancel_order', 'confirm');
+		}
+	}
+
 	$new_status = Order::Canceled;
 	$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND status=0");
 	if($db->affected_rows > 0){
-		$order = new Order($orderid);
 		$order->addLog($_G['user'], Order::StatusChanged, Order::Canceled);
 		$order->cancel();
 		showmsg('successfully_canceled_order', 'order.php');
