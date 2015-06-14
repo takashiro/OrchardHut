@@ -24,12 +24,19 @@ if($verify_result){//验证成功
 
 	//解析notify_data
 	//注意：该功能PHP5环境及以上支持，需开通curl、SSL等PHP配置环境。建议本地调试时使用PHP开发软件
-	$doc = new DOMDocument();
+	$notify_data = '';
 	if($alipay_config['sign_type'] == '0001'){
-		$doc->loadXML($alipayNotify->decrypt($_POST['notify_data']));
+		$notify_data = $alipayNotify->decrypt($_POST['notify_data']);
 	}elseif($alipay_config['sign_type'] == 'MD5'){
-		$doc->loadXML($_POST['notify_data']);
-	}else{
+		$notify_data = $_POST['notify_data'];
+	}
+
+	if(!$notify_data){
+		exit('fail');
+	}
+
+	$doc = new DOMDocument;
+	if(!$doc->loadXML($notify_data, LIBXML_NOERROR | LIBXML_NOWARNING)){
 		exit('fail');
 	}
 

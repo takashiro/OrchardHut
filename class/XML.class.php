@@ -39,7 +39,9 @@ class XML{
 		$xml = preg_replace('/>\s+</s', '><', $xml);
 
 		$dom = new DOMDocument($this->version, $this->encoding);
-		$dom->loadXML($xml);
+		if(!$dom->loadXML($xml, LIBXML_NOERROR | LIBXML_NOWARNING)){
+			return false;
+		}
 
 		if($tag){
 			$body = $dom->getElementsByTagName($tag)->item($index);

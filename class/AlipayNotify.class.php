@@ -34,14 +34,13 @@ class AlipayNotify {
      * @return 验证结果
      */
 	function verifyNotify(){
-		if(empty($_POST)) {//判断POST来的数组是否为空
+		if(empty($_POST)){//判断POST来的数组是否为空
 			return false;
-		}
-		else {
+		}else{
 
 			//对notify_data解密
 			$decrypt_post_para = $_POST;
-			if ($this->alipay_config['sign_type'] == '0001') {
+			if($this->alipay_config['sign_type'] == '0001'){
 				$decrypt_post_para['notify_data'] = rsaDecrypt($decrypt_post_para['notify_data'], $this->alipay_config['private_key_path']);
 
 				if(empty($decrypt_post_para['notify_data'])){
@@ -51,15 +50,18 @@ class AlipayNotify {
 
 			//notify_id从decrypt_post_para中解析出来（也就是说decrypt_post_para中已经包含notify_id的内容）
 			$doc = new DOMDocument();
-			$doc->loadXML($decrypt_post_para['notify_data']);
-			$notify_id = $doc->getElementsByTagName( "notify_id" )->item(0)->nodeValue;
+			if(!$doc->loadXML($decrypt_post_para['notify_data'], LIBXML_NOERROR | LIBXML_NOWARNING)){
+				return false;
+			}
+
+			$notify_id = $doc->getElementsByTagName('notify_id')->item(0)->nodeValue;
 
 			//获取支付宝远程服务器ATN结果（验证是否是支付宝发来的消息）
 			$responseTxt = 'true';
 			if (! empty($notify_id)) {$responseTxt = $this->getResponse($notify_id);}
 
 			//生成签名结果
-			$isSign = $this->getSignVeryfy($decrypt_post_para, $_POST["sign"],false);
+			$isSign = $this->getSignVeryfy($decrypt_post_para, $_POST['sign'], false);
 
 			//写日志记录
 			//if ($isSign) {
