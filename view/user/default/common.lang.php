@@ -28,6 +28,7 @@ return array(
 	'recharge' => '充值',
 	'order_refund' => '退款',
 	'order_payment' => '支付',
+	'transfer' => '转账',
 
 	'returned_order_submitted' => '已提交',
 	'returned_order_handled' => '已处理',

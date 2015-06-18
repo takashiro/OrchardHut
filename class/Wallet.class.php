@@ -25,6 +25,7 @@ class Wallet{
 	const RechargeLog = 0;
 	const OrderRefundLog = 1;
 	const OrderPaymentLog = 2;
+	const TransferLog = 3;
 
 	static public $LogType = array();
 
@@ -155,6 +156,7 @@ Wallet::$LogType = array(
 	Wallet::RechargeLog => lang('common', 'recharge'),
 	Wallet::OrderRefundLog => lang('common', 'order_refund'),
 	Wallet::OrderPaymentLog => lang('common', 'order_payment'),
+	Wallet::TransferLog => lang('common', 'transfer'),
 );
 
 ?>
