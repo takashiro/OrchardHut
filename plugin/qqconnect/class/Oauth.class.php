@@ -54,7 +54,7 @@ class Oauth{
         $state = $this->recorder->read("state");
 
         //--------验证state防止CSRF攻击
-        if($_GET['state'] != $state){
+        if(!isset($_GET['state']) || $_GET['state'] != $state){
             $this->error->showError("30001");
         }
 
@@ -64,7 +64,7 @@ class Oauth{
             "client_id" => $this->recorder->readInc("appid"),
             "redirect_uri" => urlencode($this->recorder->readInc("callback")),
             "client_secret" => $this->recorder->readInc("appkey"),
-            "code" => $_GET['code']
+            "code" => isset($_GET['code']) ? $_GET['code'] : '',
         );
 
         //------构造请求access_token的url
