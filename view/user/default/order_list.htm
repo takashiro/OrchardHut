@@ -53,6 +53,7 @@
 								<a href="order.php?action=mark_received&orderid=$o[id]">[签收]</a>
 							<!--{elseif $o['status'] == Order::Received}-->
 								<a href="order.php?action=return&orderid=$o[id]">[退货]</a>
+								<a href="order.php?action=comment&orderid=$o[id]">[评价]</a>
 							<!--{/if}-->
 							<!--{if $o['paymentmethod'] != Order::PaidWithCash && empty($o['alipaystate']) && $o['status'] != Order::Canceled}-->
 								<a href="order.php?action=pay&orderid=$o[id]">[付款]</a>

@@ -106,7 +106,7 @@ case 'return':
 	}
 
 	if($_POST){
-		is_array($_POST['detail']) || exit('invalid');
+		if(!isset($_POST['detail']) || !is_array($_POST['detail'])) exit('invalid');
 
 		$valid_details = array();
 		foreach($order->getDetails() as $d){
@@ -164,6 +164,32 @@ case 'return':
 	}
 
 	include view('order_return');
+	break;
+
+case 'comment':
+	if(empty($_GET['orderid'])) exit('access denied');
+	$orderid = intval($_GET['orderid']);
+	$order = new Order($orderid);
+	if(!$order->exists() || $order->userid != $_G['user']->id){
+		showmsg('order_not_exist', 'refresh');
+	}
+
+	if($_POST){
+		$comment = array();
+		foreach(array('level1', 'level2', 'level3') as $var){
+			$comment[$var] = isset($_POST[$var]) ? intval($_POST[$var]) : 3;
+			$comment[$var] = min(max(1, $comment[$var]), 5);
+		}
+		$comment['content'] = isset($_POST['content']) ? $_POST['content'] : 0;
+
+		$order->makeComment($comment);
+
+		showmsg('successfully_made_comment_for_order', 'refresh');
+	}
+
+	$comment = $order->getComment();
+	$order = $order->toReadable();
+	include view('order_comment');
 	break;
 
 case 'deliveringnum':

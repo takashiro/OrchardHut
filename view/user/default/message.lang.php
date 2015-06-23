@@ -81,6 +81,7 @@ return array(
 	'log_in_to_buy' => '您需要先登录才能选购本限购价格的商品哦~',
 
 	'returned_order_has_been_submitted' => '退货申请已成功提交，我们马上处理~',
+	'successfully_made_comment_for_order' => '感谢您的反馈！',
 );
 
 ?>

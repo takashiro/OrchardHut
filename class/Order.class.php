@@ -254,6 +254,21 @@ class Order extends DBObject{
 			WHERE l.orderid={$this->id}");
 	}
 
+	public function makeComment($comment){
+		global $db;
+		$table = $db->select_table('ordercomment');
+		$comment['orderid'] = $this->id;
+		isset($comment['dateline']) || $comment['dateline'] = TIMESTAMP;
+		$comment['content'] = htmlspecialchars($comment['content']);
+		$table->insert($comment, false, 'IGNORE');
+	}
+
+	public function getComment(){
+		global $db;
+		$table = $db->select_table('ordercomment');
+		return $table->fetch_first('*', 'orderid='.$this->id);
+	}
+
 	static protected $AlipayTradeNoPrefix = 'O';
 	static public function __on_alipay_started(){
 		if(isset($_GET['orderid'])){

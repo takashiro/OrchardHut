@@ -1,0 +1,59 @@
+{template header}
+
+<style type="text/css">@import url(./view/user/$_G[style]/image/jquery.levelinput.css?$_CONFIG[refversion]);</style>
+<script type="text/javascript" src="./js/jquery.levelinput.js?$_CONFIG[refversion]"></script>
+
+<div class="box">
+	<h1>我的订单 - 评价</h1>
+	<div class="content order_list">
+
+		<dl class="form">
+			<dt>订单编号：</dt><dd>$order[id]</dd>
+			<dt>下单时间：</dt><dd>$order[dateline]</dd>
+			<dt>收件人：</dt><dd>$order[addressee]</dd>
+			<dt>联系电话：</dt><dd>$order[mobile]</dd>
+			<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
+			<dt>总计：</dt><dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
+		</dl>
+
+		<form action="order.php?action=comment&orderid=$orderid" method="post">
+			<div class="lightbox">
+				<h1>送货速度</h1>
+				<div class="content">
+					<input type="hidden" class="level" {if isset($comment['level1'])} value="$comment[level1]" readonly="readonly" {else} name="level1" value="3" {/if} />
+				</div>
+			</div>
+
+			<div class="lightbox">
+				<h1>商品质量</h1>
+				<div class="content">
+					<input type="hidden" class="level" {if isset($comment['level2'])} value="$comment[level2]" readonly="readonly" {else} name="level2" value="3" {/if} />
+				</div>
+			</div>
+
+			<div class="lightbox">
+				<h1>服务态度</h1>
+				<div class="content">
+					<input type="hidden" class="level" {if isset($comment['level3'])} value="$comment[level3]" readonly="readonly" {else} name="level3" value="3" {/if} />
+				</div>
+			</div>
+
+			<div class="lightbox">
+				<h1>留言</h1>
+				<div class="content">
+					<textarea style="width:80%" name="content" {if isset($comment['content'])}readonly="readonly"{/if}>
+						<!--{if isset($comment['content'])}-->$comment[content]<!--{/if}-->
+					</textarea>
+				</div>
+			</div>
+
+			<!--{if !$comment}-->
+			<div class="post_buttons">
+				<button type="submit">提交评价</button>
+			</div>
+			<!--{/if}-->
+		</form>
+	</div>
+</div>
+
+{template footer}
