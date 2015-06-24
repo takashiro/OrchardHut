@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `hut_administrator` (
   `account` varchar(15) NOT NULL,
   `pwmd5` varchar(32) NOT NULL,
   `nickname` varchar(50) NOT NULL,
-  `permission` int(11) NOT NULL,
+  `permissions` text NOT NULL,
   `limitation` text NOT NULL,
   `logintime` int(11) unsigned NOT NULL,
   `realname` varchar(50) NOT NULL,
@@ -314,6 +314,15 @@ CREATE TABLE IF NOT EXISTS `hut_returnedorderdetail` (
   `state` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `hut_station`;
+CREATE TABLE IF NOT EXISTS `hut_station` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `range` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_user`;

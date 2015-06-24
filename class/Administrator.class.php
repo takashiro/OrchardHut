@@ -74,10 +74,21 @@ class Administrator extends User{
 		parent::__construct();
 		if($id = intval($id)){
 			$this->fetch('*', 'id='.$id);
+			if(isset($this->permissions) && $this->permissions !== 'all'){
+				$permissions = array();
+				$this->permissions = implode('|', $this->permissions);
+				foreach($this->permissions as $perm){
+					$permissions[$perm] = true;
+				}
+				$this->permissions = $permissions;
+			}
 		}
 	}
 
 	public function __destruct(){
+		if(isset($this->permissions) && is_array($this->permissions)){
+			$this->permissions = implode('|', array_keys($this->permissions));
+		}
 		parent::__destruct();
 	}
 
@@ -145,12 +156,8 @@ class Administrator extends User{
 		}
 	}
 
-	public function isAdministrator(){
-		return true;
-	}
-
 	public function isSuperAdmin(){
-		return $this->permission == -1;
+		return $this->permissions === 'all';
 	}
 
 	static public function Register($admin){
@@ -186,9 +193,13 @@ class Administrator extends User{
 		return true;
 	}
 
-	public function hasPermission($permission){
-		if(strpos($permission, '|') !== false){
-			$permissions = explode('|', $permission);
+	public function hasPermission($perm){
+		if($this->isSuperAdmin()){
+			return true;
+		}
+
+		if(strpos($perm, '|') !== false){
+			$permissions = explode('|', $perm);
 			foreach($permissions as $perm){
 				if($this->hasPermission($perm)){
 					return true;
@@ -197,72 +208,35 @@ class Administrator extends User{
 			return false;
 		}
 
-		if(isset(self::$Permission[$permission])){
-			return ($this->attr('permission') & self::$Permission[$permission]) == self::$Permission[$permission];
-		}else{
-			$strlen = strlen($permission);
-			foreach(self::$Permission as $perm => $pbit){
-				if(strncmp($perm, $permission, $strlen) === 0 && isset($perm{$strlen}) && $perm{$strlen} == '_'){
-					if($this->hasPermission($perm)){
-						return true;
-					}
-				}
-			}
-
-			return false;
-		}
+		return is_array($this->permissions) && isset($this->permissions[$perm]);
 	}
 
-	public function setPermission($permission, $value = true){
+	public function setPermission($perm, $value = true){
 		if($this->isSuperAdmin()){
-			return false;
+			return;
 		}
 
-		if(!is_array($permission)){
-			if(isset(self::$Permission[$permission])){
+		if(!is_array($perm)){
+			if(isset(self::$Permission[$perm])){
 				if($value){
-					$this->attr['permission'] |= self::$Permission[$permission];
+					$this->permissions[$perm] = true;
 				}else{
-					$this->attr['permission'] &= ~self::$Permission[$permission];
+					unset($this->permissions[$perm]);
 				}
-
-				return true;
-			}else{
-				return false;
 			}
 		}else{
-			$this->attr('permission', 0);
-			foreach(self::$Permission as $p => $c){
-				if($permission[$p]){
-					$this->attr['permission'] |= $c;
-				}
+			foreach($perm as $p){
+				$this->setPermission($p, $value);
 			}
-			return true;
 		}
 	}
 
 	public function clearPermission(){
-		$this->permission &= 0x0;
+		$this->permissions = array();
 	}
 
 	static public function GetAllPermissionNames(){
 		return array_keys(self::$Permission);
-	}
-
-	static public function ToPermissionList($permission){
-		$admin = new Admin;
-		$admin->permission = $permission;
-
-		$all_permissions = self::GetAllPermissionNames();
-		$permission = array();
-
-		foreach($all_permissions as $perm){
-			if($admin->hasPermission($perm)){
-				$permission[] = $perm;
-			}
-		}
-
-		return $permission;
 	}
 
 	static public function Delete($id, $extra = ''){
@@ -273,7 +247,7 @@ class Administrator extends User{
 		}
 
 		$table = $db->select_table('administrator');
-		$table->delete('id='.$id.' AND permission!=-1', $extra);
+		$table->delete('id='.$id.' AND permissions!=\'all\'', $extra);
 		return $db->affected_rows;
 	}
 
