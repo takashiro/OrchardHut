@@ -210,7 +210,7 @@ function view($templateName){
 }
 
 function submodule($module, $submodule){
-	return S_ROOT.'submodule/'.$module.'_'.$submodule.'.inc.php';
+	return S_ROOT.'submodule/'.$module.'/'.$submodule.'.inc.php';
 }
 
 function rdate($dateline, $format = 'Y-m-d H:i:s'){
