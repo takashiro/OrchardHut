@@ -23,24 +23,32 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return 'system';
-}
+class MailModule extends AdminControlPanelModule{
 
-$mailconfig = Mail::$Config;
-
-if($_POST){
-	foreach($mailconfig as $var => $oldvalue){
-		if(isset($_POST[$var])){
-			$mailconfig[$var] = trim($_POST[$var]);
-		}
+	public function getPermissions(){
+		return 'system';
 	}
 
-	writedata('mailconfig', $mailconfig);
+	public function defaultAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
-	showmsg('successfully_updated_system_config', 'back');
+		$mailconfig = Mail::$Config;
+
+		if($_POST){
+			foreach($mailconfig as $var => $oldvalue){
+				if(isset($_POST[$var])){
+					$mailconfig[$var] = trim($_POST[$var]);
+				}
+			}
+
+			writedata('mailconfig', $mailconfig);
+
+			showmsg('successfully_updated_system_config', 'back');
+		}
+
+		include view('mail');
+	}
+
 }
-
-include view('mail');
 
 ?>
