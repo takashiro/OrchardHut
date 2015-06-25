@@ -125,7 +125,7 @@ class AddressModule extends AdminControlPanelModule{
 	}
 
 	public function listAction(){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$parentid = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 
