@@ -23,53 +23,58 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return 'public';
-}
+class MemcpModule extends AdminControlPanelModule{
 
-$actions = array('edit', 'logout');
-$action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET['action'] : $actions[0];
-
-if($action == 'edit'){
-	if($_POST){
-		if(isset($_POST['nickname'])){
-			$_G['admin']->nickname = $_POST['nickname'];
-		}
-
-		if(isset($_POST['realname'])){
-			$_G['admin']->realname = $_POST['realname'];
-		}
-
-		if(isset($_POST['mobile'])){
-			$_G['admin']->mobile = $_POST['mobile'];
-		}
-
-		if(!empty($_POST['password'])){
-			if(empty($_POST['password2']) || $_POST['password'] != $_POST['password2']){
-				showmsg('two_different_passwords', 'back');
-			}
-
-			if(!isset($_POST['old_password'])){
-				showmsg('password_modifying_require_old_password', 'back');
-			}
-
-			$result = $_G['admin']->changePassword($_POST['old_password'], $_POST['password']);
-			if($result === -1){
-				showmsg('incorrect_old_password', 'back');
-			}
-		}
-
-		showmsg('successfully_update_profile', 'refresh');
+	public function getPermissions(){
+		return 'public';
 	}
 
-	$_ADMIN = $_G['admin']->toArray();
+	public function editAction(){
+		if($_POST){
+			global $_G;
 
-	include view('memcp_edit');
+			if(isset($_POST['nickname'])){
+				$_G['admin']->nickname = $_POST['nickname'];
+			}
 
-}else{
-	$_G['admin']->logout();
-	redirect('admin.php');
+			if(isset($_POST['realname'])){
+				$_G['admin']->realname = $_POST['realname'];
+			}
+
+			if(isset($_POST['mobile'])){
+				$_G['admin']->mobile = $_POST['mobile'];
+			}
+
+			if(!empty($_POST['password'])){
+				if(empty($_POST['password2']) || $_POST['password'] != $_POST['password2']){
+					showmsg('two_different_passwords', 'back');
+				}
+
+				if(!isset($_POST['old_password'])){
+					showmsg('password_modifying_require_old_password', 'back');
+				}
+
+				$result = $_G['admin']->changePassword($_POST['old_password'], $_POST['password']);
+				if($result === -1){
+					showmsg('incorrect_old_password', 'back');
+				}
+			}
+
+			showmsg('successfully_update_profile', 'refresh');
+		}
+
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+		$_ADMIN = $_G['admin']->toArray();
+		include view('memcp_edit');
+	}
+
+	public function logoutAction(){
+		global $_G;
+
+		$_G['admin']->logout();
+		redirect('admin.php');
+	}
+
 }
-
 
 ?>
