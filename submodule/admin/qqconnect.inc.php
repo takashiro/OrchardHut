@@ -23,21 +23,25 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return array();
-}
+class QQConnectModule extends AdminControlPanelModule{
 
-$qqconnect = readdata('qqconnect');
-foreach(array('appid', 'appkey', 'callback', 'scope', 'errorReport', 'storageType', 'host', 'user', 'password', 'database') as $var){
-	isset($qqconnect[$var]) || $qqconnect[$var] = '';
-	isset($_POST['qqconnect'][$var]) && $qqconnect[$var] = $_POST['qqconnect'][$var];
-}
+	public function defaultAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
-if($_POST){
-	writedata('qqconnect', $qqconnect);
-	showmsg('successfully_updated_qqconnect_config', 'refresh');
-}
+		$qqconnect = readdata('qqconnect');
+		foreach(array('appid', 'appkey', 'callback', 'scope', 'errorReport', 'storageType', 'host', 'user', 'password', 'database') as $var){
+			isset($qqconnect[$var]) || $qqconnect[$var] = '';
+			isset($_POST['qqconnect'][$var]) && $qqconnect[$var] = $_POST['qqconnect'][$var];
+		}
 
-include view('qqconnect');
+		if($_POST){
+			writedata('qqconnect', $qqconnect);
+			showmsg('successfully_updated_qqconnect_config', 'refresh');
+		}
+
+		include view('qqconnect');
+	}
+
+}
 
 ?>
