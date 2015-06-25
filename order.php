@@ -67,7 +67,7 @@ case 'mark_received':
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	if($orderid > 0){
-		$old_status = array(Order::Sorted, Order::Delivering, Order::InDeliveryPoint);
+		$old_status = array(Order::Sorted, Order::Delivering, Order::InDeliveryStation);
 		$old_status = implode(',', $old_status);
 		$new_status = Order::Received;
 		$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND userid={$_USER['id']} AND status IN ($old_status)");
@@ -193,7 +193,7 @@ case 'comment':
 	break;
 
 case 'deliveringnum':
-	$status = array(Order::Sorted, Order::Delivering, Order::InDeliveryPoint);
+	$status = array(Order::Sorted, Order::Delivering, Order::InDeliveryStation);
 	$status = implode(',', $status);
 	$num = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid={$_USER['id']} AND status IN ($status)");
 	echo $num;

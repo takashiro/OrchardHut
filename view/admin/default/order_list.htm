@@ -12,7 +12,7 @@ var lang = {
 	order_unsorted : '{lang common order_unsorted}',
 	order_sorted : '{lang common order_sorted}',
 	order_delivering : '{lang common order_delivering}',
-	order_in_delivery_point : '{lang common order_in_delivery_point}',
+	order_in_delivery_station : '{lang common order_in_delivery_station}',
 	order_received : '{lang common order_received}',
 	order_rejected : '{lang common order_rejected}',
 	confirm_to_mark_detail_in_stock : '您确认要将该项标记为有货吗？',
@@ -136,11 +136,11 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 								<div><a class="mark_sorted" href="{$mod_url}&action=mark_sorted&orderid=$o[id]" title="将订单标记为已打包">[已打包]</a></div>
 							<!--{elseif $o['status'] == Order::Sorted && $_G['admin']->hasPermission('order_deliver_w')}-->
 								<!--{if $o['deliverymethod'] == Order::StationDelivery}-->
-								<div><a class="mark_in_delivery_point" href="{$mod_url}&action=mark_indp&orderid=$o[id]" title="将订单标记为到达配送站">[到配送站]</a></div>
+								<div><a class="mark_in_delivery_station" href="{$mod_url}&action=mark_indp&orderid=$o[id]" title="将订单标记为到达配送站">[到配送站]</a></div>
 								<!--{elseif $o['deliverymethod'] == Order::HomeDelivery}-->
 								<div><a class="mark_delivering" href="{$mod_url}&action=mark_delivering&orderid=$o[id]" title="将订单标记为送货中">[送货中]</a></div>
 								<!--{/if}-->
-							<!--{elseif ($o['status'] == Order::InDeliveryPoint || $o['status'] == Order::Delivering) && $_G['admin']->hasPermission('order_deliver_w')}-->
+							<!--{elseif ($o['status'] == Order::InDeliveryStation || $o['status'] == Order::Delivering) && $_G['admin']->hasPermission('order_deliver_w')}-->
 								<div><a class="mark_received" href="{$mod_url}&action=mark_received&orderid=$o[id]" title="将订单标记为已签收">[已签收]</a></div>
 								<div><a class="mark_rejected" href="{$mod_url}&action=mark_rejected&orderid=$o[id]" title="将订单标记为已拒收">[已拒收]</a></div>
 							<!--{/if}-->

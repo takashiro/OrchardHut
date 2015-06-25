@@ -21,7 +21,7 @@
 *********************************************************************/
 
 $(function(){
-	$('#orderlist').on('click', '.mark_sorted, .mark_delivering, .mark_in_delivery_point, .mark_received, .mark_rejected', function(e){
+	$('#orderlist').on('click', '.mark_sorted, .mark_delivering, .mark_in_delivery_station, .mark_received, .mark_rejected', function(e){
 		var a = $(e.target);
 		var href = a.attr('href');
 		var td = a.parent().parent();
@@ -33,9 +33,9 @@ $(function(){
 					var button = $('<a></a>');
 
 					if(td.data('deliverymethod') == Order.StationDelivery){
-						button.attr('class', 'mark_in_delivery_point');
+						button.attr('class', 'mark_in_delivery_station');
 						button.attr('href', href.replace('mark_sorted', 'mark_indp'));
-						button.html('[' + lang['order_in_delivery_point'] + ']');
+						button.html('[' + lang['order_in_delivery_station'] + ']');
 					}else{
 						button.attr('class', 'mark_delivering');
 						button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
@@ -51,8 +51,8 @@ $(function(){
 				tr.find('a.delete').remove();
 				tr.find('ul.order_detail').addClass('disabled');
 
-			}else if(a.hasClass('mark_delivering') || a.hasClass('mark_in_delivery_point')){
-				td.html(a.hasClass('mark_delivering') ? lang['order_delivering'] : lang['order_in_delivery_point']);
+			}else if(a.hasClass('mark_delivering') || a.hasClass('mark_in_delivery_station')){
+				td.html(a.hasClass('mark_delivering') ? lang['order_delivering'] : lang['order_in_delivery_station']);
 
 				if(admin.hasPermission('order_deliver_w')){
 					var data = {};

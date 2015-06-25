@@ -4,7 +4,7 @@ return array(
 	'order' => '订单',
 	'order_unsorted' => '待出库',
 	'order_sorted' => '已打包',
-	'order_in_delivery_point' => '到配送站',
+	'order_in_delivery_station' => '到配送站',
 	'order_delivering' => '送货中',
 	'order_received' => '已签收',
 	'order_rejected' => '已拒收',

@@ -428,11 +428,11 @@ class OrderModule extends AdminControlPanelModule{
 			}
 
 			if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
-				$order->status = Order::InDeliveryPoint;
+				$order->status = Order::InDeliveryStation;
 				if(!empty($_GET['customlabel'])){
 					$order->customlabel = trim($_GET['customlabel']);
 				}
-				$order->addLog($_G['admin'], Order::StatusChanged, Order::InDeliveryPoint);
+				$order->addLog($_G['admin'], Order::StatusChanged, Order::InDeliveryStation);
 			}
 		}
 
@@ -451,7 +451,7 @@ class OrderModule extends AdminControlPanelModule{
 				exit('permission denied');
 			}
 
-			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryPoint) || $_G['admin']->isSuperAdmin()){
+			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryStation) || $_G['admin']->isSuperAdmin()){
 				$order->status = Order::Received;
 				$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
 			}
@@ -472,7 +472,7 @@ class OrderModule extends AdminControlPanelModule{
 				exit('permission denied');
 			}
 
-			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryPoint) || $_G['admin']->isSuperAdmin()){
+			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryStation) || $_G['admin']->isSuperAdmin()){
 				$order->status = Order::Rejected;
 				$order->addLog($_G['admin'], Order::StatusChanged, Order::Rejected);
 			}

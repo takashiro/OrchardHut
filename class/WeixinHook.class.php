@@ -26,11 +26,11 @@ class WeixinHook{
 	static public function __on_order_log_added($order, $log){
 		global $db, $tpre, $_G;
 
-		if($log['operation'] == Order::StatusChanged && $log['extra'] == Order::InDeliveryPoint || $log['extra'] == Order::Delivering){
+		if($log['operation'] == Order::StatusChanged && $log['extra'] == Order::InDeliveryStation || $log['extra'] == Order::Delivering){
 			$touser = $db->result_first("SELECT wxopenid FROM {$tpre}user WHERE id=".$order->userid);
 			if($touser){
-				if($log['extra'] == Order::InDeliveryPoint){
-					$text = lang('weixin', 'your_order_just_arrived_in_delivery_point');
+				if($log['extra'] == Order::InDeliveryStation){
+					$text = lang('weixin', 'your_order_just_arrived_in_delivery_station');
 					if($order->deliverymethod == Order::HomeDelivery){
 						$text.= lang('weixin', 'please_wait_for_the_deliverer');
 					}else{

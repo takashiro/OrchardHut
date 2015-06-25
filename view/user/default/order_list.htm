@@ -49,7 +49,7 @@
 							<a href="order.php?action=view&orderid=$o[id]" class="view">[详细]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
 								<a href="order.php?action=delete&orderid=$o[id]">[取消]</a>
-							<!--{elseif $o['status'] == Order::InDeliveryPoint || $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
+							<!--{elseif $o['status'] == Order::InDeliveryStation || $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
 								<a href="order.php?action=mark_received&orderid=$o[id]">[签收]</a>
 							<!--{elseif $o['status'] == Order::Received}-->
 								<a href="order.php?action=return&orderid=$o[id]">[退货]</a>

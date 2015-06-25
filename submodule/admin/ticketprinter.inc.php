@@ -62,7 +62,7 @@ class TicketPrinterModule extends AdminControlPanelModule{
 			}
 
 			//到自提点的订单
-			$condition[] = 'status='.Order::InDeliveryPoint;
+			$condition[] = 'status='.Order::InDeliveryStation;
 
 			if(!empty($_REQUEST['orderid'])){
 				$condition[] = 'id='.intval($_REQUEST['orderid']);
