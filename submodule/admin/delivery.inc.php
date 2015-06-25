@@ -23,106 +23,111 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return array();
-}
+class DeliveryModule extends AdminControlPanelModule{
+	public function editAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
-$action = &$_GET['action'];
-switch($action){
-case 'edit':
-	$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
-	$timespan = array();
-	if(isset($_POST['time_from'])){
-		$timespan['time_from'] = $_POST['time_from'];
-	}
-	if(isset($_POST['time_to'])){
-		$timespan['time_to'] = $_POST['time_to'];
-	}
-	if(isset($_POST['deadline'])){
-		$timespan['deadline'] = $_POST['deadline'];
-	}
-
-	foreach($timespan as &$time){
-		@list($H, $i, $s) = explode(':', $time);
-		$H = intval($H);
-		$i = intval($i);
-		$s = intval($s);
-		$time = $H * 3600 + $i * 60 + $s;
-	}
-	unset($time);
-
-	if(isset($_POST['hidden'])){
-		$timespan['hidden'] = !empty($_POST['hidden']) ? 1 : 0;
-	}
-
-	if(isset($_POST['effective_time'])){
-		$timespan['effective_time'] = rstrtotime($_POST['effective_time']);
-	}
-
-	if(isset($_POST['expiry_time'])){
-		$timespan['expiry_time'] = rstrtotime($_POST['expiry_time']);
-	}
-
-	$table = $db->select_table('deliverytime');
-	if($id > 0){
-		$table->update($timespan, 'id='.$id);
-		$timespan['id'] = $id;
-	}else{
-		$table->insert($timespan);
-		$timespan['id'] = $table->insert_id();
-	}
-
-	foreach(array('deadline', 'time_from', 'time_to') as $var){
-		isset($timespan[$var]) && $timespan[$var] = floor($timespan[$var] / 3600).gmdate(':i:s', $timespan[$var]);
-	}
-
-	foreach(array('effective_time', 'expiry_time') as $var){
-		isset($timespan[$var]) && $timespan[$var] = rdate($timespan[$var]);
-	}
-
-	DeliveryTime::UpdateCache();
-	echo json_encode($timespan);
-	exit;
-case 'delete':
-	@$id = intval($_REQUEST['id']);
-	if($id > 0){
-		$table = $db->select_table('deliverytime');
-		$table->delete('id='.$id);
-		DeliveryTime::UpdateCache();
-		echo 1;
-	}
-	break;
-case 'config':
-	$deliveryconfig = array();
-
-	foreach(Order::$DeliveryMethod as $methodid => $name){
-		foreach(array('fee', 'maxorderprice') as $var){
-			if(isset($_POST['config'][$methodid][$var])){
-				$deliveryconfig[$methodid][$var] = max(0, floatval($_POST['config'][$methodid][$var]));
-			}
+		$timespan = array();
+		if(isset($_POST['time_from'])){
+			$timespan['time_from'] = $_POST['time_from'];
 		}
-	}
+		if(isset($_POST['time_to'])){
+			$timespan['time_to'] = $_POST['time_to'];
+		}
+		if(isset($_POST['deadline'])){
+			$timespan['deadline'] = $_POST['deadline'];
+		}
 
-	writedata('deliveryconfig', $deliveryconfig);
-	showmsg('successfully_updated_delivery_config');
+		foreach($timespan as &$time){
+			@list($H, $i, $s) = explode(':', $time);
+			$H = intval($H);
+			$i = intval($i);
+			$s = intval($s);
+			$time = $H * 3600 + $i * 60 + $s;
+		}
+		unset($time);
 
-default:
-	$deliveryconfig = readdata('deliveryconfig');
+		if(isset($_POST['hidden'])){
+			$timespan['hidden'] = !empty($_POST['hidden']) ? 1 : 0;
+		}
 
-	$delivery_timespans = DeliveryTime::FetchAll();
-	foreach($delivery_timespans as &$s){
+		if(isset($_POST['effective_time'])){
+			$timespan['effective_time'] = rstrtotime($_POST['effective_time']);
+		}
+
+		if(isset($_POST['expiry_time'])){
+			$timespan['expiry_time'] = rstrtotime($_POST['expiry_time']);
+		}
+
+		$table = $db->select_table('deliverytime');
+		if($id > 0){
+			$table->update($timespan, 'id='.$id);
+			$timespan['id'] = $id;
+		}else{
+			$table->insert($timespan);
+			$timespan['id'] = $table->insert_id();
+		}
+
 		foreach(array('deadline', 'time_from', 'time_to') as $var){
-			$s[$var] = floor($s[$var] / 3600).gmdate(':i:s', $s[$var]);
+			isset($timespan[$var]) && $timespan[$var] = floor($timespan[$var] / 3600).gmdate(':i:s', $timespan[$var]);
 		}
 
 		foreach(array('effective_time', 'expiry_time') as $var){
-			$s[$var] = rdate($s[$var]);
+			isset($timespan[$var]) && $timespan[$var] = rdate($timespan[$var]);
+		}
+
+		DeliveryTime::UpdateCache();
+		echo json_encode($timespan);
+		exit;
+	}
+
+	public function deleteAction(){
+		@$id = intval($_REQUEST['id']);
+		if($id > 0){
+			global $db;
+			$table = $db->select_table('deliverytime');
+			$table->delete('id='.$id);
+			DeliveryTime::UpdateCache();
+			echo 1;
 		}
 	}
-	unset($s);
-}
 
-include view('delivery');
+	public function configAction(){
+		$deliveryconfig = array();
+
+		foreach(Order::$DeliveryMethod as $methodid => $name){
+			foreach(array('fee', 'maxorderprice') as $var){
+				if(isset($_POST['config'][$methodid][$var])){
+					$deliveryconfig[$methodid][$var] = max(0, floatval($_POST['config'][$methodid][$var]));
+				}
+			}
+		}
+
+		writedata('deliveryconfig', $deliveryconfig);
+		showmsg('successfully_updated_delivery_config');
+	}
+
+	public function defaultAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
+		$deliveryconfig = readdata('deliveryconfig');
+
+		$delivery_timespans = DeliveryTime::FetchAll();
+		foreach($delivery_timespans as &$s){
+			foreach(array('deadline', 'time_from', 'time_to') as $var){
+				$s[$var] = floor($s[$var] / 3600).gmdate(':i:s', $s[$var]);
+			}
+
+			foreach(array('effective_time', 'expiry_time') as $var){
+				$s[$var] = rdate($s[$var]);
+			}
+		}
+		unset($s);
+
+		include view('delivery');
+	}
+}
 
 ?>
