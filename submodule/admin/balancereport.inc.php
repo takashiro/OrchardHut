@@ -26,7 +26,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 class BalanceReportModule extends AdminControlPanelModule{
 
 	public function defaultAction(){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$template_formats = array('html', 'csv');
 		$format = &$_GET['format'];
