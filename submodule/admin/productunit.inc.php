@@ -26,6 +26,10 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class ProductUnitModule extends AdminControlPanelModule{
 
+	public function getRequiredPermissions(){
+		return array('market');
+	}
+
 	public function editAction(){
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 		$unit = array();

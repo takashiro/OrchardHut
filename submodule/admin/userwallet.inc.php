@@ -25,6 +25,10 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class UserWalletModule extends AdminControlPanelModule{
 
+	public function getRequiredPermissions(){
+		return array('payment');
+	}
+
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 

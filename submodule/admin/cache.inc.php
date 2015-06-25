@@ -25,7 +25,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class CacheModule extends AdminControlPanelModule{
 
-	public function getPermissions(){
+	public function getAlias(){
 		return 'system';
 	}
 

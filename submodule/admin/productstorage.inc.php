@@ -25,6 +25,10 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class ProductStorageModule extends AdminControlPanelModule{
 
+	public function getRequiredPermissions(){
+		return array('market');
+	}
+
 	public function editAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 

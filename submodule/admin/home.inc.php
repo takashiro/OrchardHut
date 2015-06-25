@@ -25,7 +25,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 
 class HomeModule extends AdminControlPanelModule{
-	public function getPermissions(){
+	public function getAlias(){
 		return 'public';
 	}
 

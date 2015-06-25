@@ -27,6 +27,11 @@ $(function(){
 });
 $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_components)});
 </script>
+<style type="text/css">
+.permissions h4{
+	margin: 0;
+}
+</style>
 
 <div class="box edit_form">
 	<!--{if $id}-->
@@ -65,16 +70,23 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 		<tr>
 			<th><label>权限：</label></th>
 			<td>
+			<!--{loop Administrator::$Permissions $permission $v}-->
+				<!--{if !empty($v['children']) && $_G['admin']->hasPermission($permission) && empty($v['alias']) && empty($v['parents'])}-->
 				<dl class="spanlist permissions">
+					<h4><span title="{echo lang('common', 'permission_'.$permission.'_comment')}">{echo Template::checkbox("p[$permission]", lang('common', 'permission_'.$permission), $admin->hasPermission($permission))}</span></h4>
+					<!--{loop $v['children'] $subpermission}-->
+					<span title="{echo lang('common', 'permission_'.$subpermission.'_comment')}">{echo Template::checkbox("p[$subpermission]", lang('common', 'permission_'.$subpermission), $admin->hasPermission($subpermission))}</span>
+					<!--{/loop}-->
+				</dl>
+				<!--{/if}-->
+			<!--{/loop}-->
+			<dl class="spanlist permissions">
 				<!--{loop Administrator::$Permissions $permission $v}-->
-					<!--{if $_G['admin']->hasPermission($permission) && is_array($v)}-->
-						<span title="{echo lang('common', 'permission_'.$permission.'_comment')}">{echo Template::checkbox("p[$permission]", lang('common', 'permission_'.$permission), $admin->hasPermission($permission))}</span>
-						<!--{loop $v $subpermission}-->
-						<span title="{echo lang('common', 'permission_'.$subpermission.'_comment')}">{echo Template::checkbox("p[$subpermission]", lang('common', 'permission_'.$subpermission), $admin->hasPermission($subpermission))}</span>
-						<!--{/loop}-->
+					<!--{if empty($v['children']) && $_G['admin']->hasPermission($permission) && empty($v['alias']) && empty($v['parents'])}-->
+					<span title="{echo lang('common', 'permission_'.$permission.'_comment')}">{echo Template::checkbox("p[$permission]", lang('common', 'permission_'.$permission), $admin->hasPermission($permission))}</span>
 					<!--{/if}-->
 				<!--{/loop}-->
-				</dl>
+			</dl>
 			</td>
 		</tr>
 		<tr title="选择此项后该管理员的普通权限（全局权限不受限制）限定在指定营业范围内">

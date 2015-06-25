@@ -25,7 +25,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class MemcpModule extends AdminControlPanelModule{
 
-	public function getPermissions(){
+	public function getAlias(){
 		return 'public';
 	}
 

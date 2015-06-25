@@ -25,6 +25,10 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class OrderStatModule extends AdminControlPanelModule{
 
+	public function getRequiredPermissions(){
+		return array('order');
+	}
+
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 		$condition = array();

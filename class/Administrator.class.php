@@ -167,22 +167,20 @@ class Administrator extends User{
 		}
 
 		$config = self::$Permissions[$perm];
-		if(is_string($config)){
-			return $config === 'public' || $this->hasPermission($config);
+		if(!empty($config['alias'])){
+			return $config['alias'] === 'public' || $this->hasPermission($config['alias']);
 		}
 
-		if(is_array($config)){
-			if(!isset($this->permissions) || !is_array($this->permissions)){
-				print_r($this->permissions);
-				echo '<br />';
-				return false;
-			}
+		if(!isset($this->permissions) || !is_array($this->permissions)){
+			return false;
+		}
 
-			if(isset($this->permissions[$perm])){
-				return true;
-			}
+		if(isset($this->permissions[$perm])){
+			return true;
+		}
 
-			foreach($config as $subperm){
+		if(!empty($config['children']) && is_array($config['children'])){
+			foreach($config['children'] as $subperm){
 				if(isset($this->permissions[$subperm])){
 					return true;
 				}
@@ -220,10 +218,10 @@ class Administrator extends User{
 
 	static public function GetAllPermissions(){
 		$permissions = array();
-		foreach(self::$Permissions as $perm => $subperms){
+		foreach(self::$Permissions as $perm => $permconfig){
 			$permissions[] = $perm;
-			if(is_array($subperms)){
-				foreach($subperms as $subperm){
+			if(is_array($permconfig['children'])){
+				foreach($permconfig['children'] as $subperm){
 					$permissions[] = $subperm;
 				}
 			}
@@ -245,11 +243,34 @@ class Administrator extends User{
 
 						if(class_exists($class_name)){
 							$module = new $class_name;
-							self::$Permissions[$module_name] = $module->getPermissions();
+							self::$Permissions[$module_name] = array(
+								'alias' => $module->getAlias(),
+								'children' => $module->getPermissions(),
+								'parents' => $module->getRequiredPermissions(),
+							);
 						}
 					}
 				}
 				closedir($module_dir);
+
+				foreach(self::$Permissions as $module_name => &$config){
+					foreach($config['parents'] as $p){
+						if(isset(self::$Permissions[$p]) && !in_array($module_name, self::$Permissions[$p]['children'])){
+							self::$Permissions[$p]['children'][] = $module_name;
+						}
+					}
+
+					foreach($config['children'] as $c){
+						if(!isset(self::$Permissions[$c])){
+							self::$Permissions[$c] = array(
+								'alias' => '',
+								'children' => array(),
+								'parents' => array($module_name),
+							);
+						}
+					}
+				}
+				unset($config);
 			}
 			writecache('admin_permissions', self::$Permissions);
 		}

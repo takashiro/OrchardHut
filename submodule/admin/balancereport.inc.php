@@ -25,6 +25,10 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class BalanceReportModule extends AdminControlPanelModule{
 
+	public function getRequiredPermissions(){
+		return array('market');
+	}
+
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 

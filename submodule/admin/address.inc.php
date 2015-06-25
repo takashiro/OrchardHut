@@ -24,6 +24,7 @@
 if(!defined('IN_ADMINCP')) exit('access denied');
 
 class AddressModule extends AdminControlPanelModule{
+
 	public function defaultAction(){
 		$this->listAction();
 	}

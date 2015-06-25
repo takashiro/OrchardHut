@@ -48,7 +48,16 @@ $_ADMIN = $_G['admin']->toReadable();
 
 //Include the requested module
 class AdminControlPanelModule{
+
+	public function getAlias(){
+		return '';
+	}
+
 	public function getPermissions(){
+		return array();
+	}
+
+	public function getRequiredPermissions(){
 		return array();
 	}
 
