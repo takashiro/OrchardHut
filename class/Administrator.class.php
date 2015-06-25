@@ -226,10 +226,14 @@ class Administrator extends User{
 				global $_G;
 				while($file = readdir($module_dir)){
 					if(substr_compare($file, '.inc.php', -8) == 0){
-						$class_name = substr($file, 0, strlen($file) - 8).'Module';
-						include S_ROOT.'submodule/admin/'.$file;
-						$module = new $class_name;
-						self::$Permissions[$module] = $module->getExtraPermissions();
+						$module_name = substr($file, 0, strlen($file) - 8);
+						$class_name = $module_name.'Module';
+						require_once S_ROOT.'submodule/admin/'.$file;
+
+						if(class_exists($class_name)){
+							$module = new $class_name;
+							self::$Permissions[$module_name] = $module->getPermissions();
+						}
 					}
 				}
 				closedir($module_dir);

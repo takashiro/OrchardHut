@@ -48,7 +48,7 @@ $_ADMIN = $_G['admin']->toReadable();
 
 //Include the requested module
 class AdminControlPanelModule{
-	public function getExtraPermissions(){
+	public function getPermissions(){
 		return array();
 	}
 
@@ -69,7 +69,7 @@ if(file_exists($module)){
 	$module = submodule('admin', 'home');
 }
 
-include $module;
+require_once $module;
 
 $classname = $mod.'Module';
 $module = new $classname;
