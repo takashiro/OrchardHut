@@ -30,7 +30,7 @@ class AnnouncementModule extends AdminControlPanelModule{
 	}
 
 	public function listAction(){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$table = $db->select_table('announcement');
 		$announcements = $table->fetch_all('*', '1 ORDER BY displayorder,time_start DESC,time_end');
@@ -38,7 +38,7 @@ class AnnouncementModule extends AdminControlPanelModule{
 	}
 
 	public function editAction(){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
@@ -115,7 +115,7 @@ class AnnouncementModule extends AdminControlPanelModule{
 	}
 
 	public function deleteAction(){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		if(isset($_POST['id'])){
 			$id = intval($_POST['id']);
