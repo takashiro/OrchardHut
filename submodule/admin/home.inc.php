@@ -23,23 +23,30 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return 'public';
-}
 
-if($_G['admin']->hasPermission('order')){
-	redirect('admin.php?mod=order');
-}else{
-	foreach(Administrator::$Permissions as $perm => $v){
-		if($perm == 'home' || $perm == 'memcp')
-			continue;
-
-		if($_G['admin']->hasPermission($perm)){
-			redirect('admin.php?mod='.$perm);
-		}
+class HomeModule extends AdminControlPanelModule{
+	public function getPermissions(){
+		return 'public';
 	}
 
-	redirect('admin.php?mod=memcp');
+	public function defaultAction(){
+		global $_G;
+
+		if($_G['admin']->hasPermission('order')){
+			redirect('admin.php?mod=order');
+		}else{
+			foreach(Administrator::$Permissions as $perm => $v){
+				if($perm == 'home' || $perm == 'memcp')
+					continue;
+
+				if($_G['admin']->hasPermission($perm)){
+					redirect('admin.php?mod='.$perm);
+				}
+			}
+
+			redirect('admin.php?mod=memcp');
+		}
+	}
 }
 
 ?>
