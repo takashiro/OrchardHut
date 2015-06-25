@@ -23,107 +23,111 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return array();
-}
+class TicketPrinterModule extends AdminControlPanelModule{
 
-//下单起始时间
-if(empty($_REQUEST['time_start'])){
-	$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+	public function defaultAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
-	//根据截单时间调整时分秒
-	$deliverytimes = DeliveryTime::FetchAllEffective();
-	usort($deliverytimes, function($t1, $t2){
-		return $t1['deadline'] > $t2['deadline'];
-	});
-	$dt = current($deliverytimes);
-	$time_start += $dt['deadline'];
-	unset($deliverytimes, $dt);
-}else{
-	$time_start = rstrtotime($_REQUEST['time_start']);
-}
+		//下单起始时间
+		if(empty($_REQUEST['time_start'])){
+			$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
 
-//下单截止时间
-if(empty($_REQUEST['time_end'])){
-	$time_end = $time_start + 1 * 24 * 3600;
-}else{
-	$time_end = rstrtotime($_REQUEST['time_end']);
-	$time_end < $time_start && $time_end = $time_start;
-}
+			//根据截单时间调整时分秒
+			$deliverytimes = DeliveryTime::FetchAllEffective();
+			usort($deliverytimes, function($t1, $t2){
+				return $t1['deadline'] > $t2['deadline'];
+			});
+			$dt = current($deliverytimes);
+			$time_start += $dt['deadline'];
+			unset($deliverytimes, $dt);
+		}else{
+			$time_start = rstrtotime($_REQUEST['time_start']);
+		}
 
-if(isset($_REQUEST['orderid']) || isset($_REQUEST['mobile']) || isset($_REQUEST['orderids'])){
-	$condition = array('dateline>='.$time_start, 'dateline<='.$time_end);
+		//下单截止时间
+		if(empty($_REQUEST['time_end'])){
+			$time_end = $time_start + 1 * 24 * 3600;
+		}else{
+			$time_end = rstrtotime($_REQUEST['time_end']);
+			$time_end < $time_start && $time_end = $time_start;
+		}
 
-	//过滤掉送货地点不在当前管理员的管辖范围内的订单
-	$limitation_addressids = $_G['admin']->getLimitations();
-	if($limitation_addressids){
-		$condition[] = 'addressid IN ('.implode(',', $limitation_addressids).')';
-	}
+		if(isset($_REQUEST['orderid']) || isset($_REQUEST['mobile']) || isset($_REQUEST['orderids'])){
+			$condition = array('dateline>='.$time_start, 'dateline<='.$time_end);
 
-	//到自提点的订单
-	$condition[] = 'status='.Order::InDeliveryPoint;
-
-	if(!empty($_REQUEST['orderid'])){
-		$condition[] = 'id='.intval($_REQUEST['orderid']);
-	}elseif(!empty($_REQUEST['mobile'])){
-		$condition[] = 'mobile=\''.raddslashes($_REQUEST['mobile']).'\'';
-	}elseif(!empty($_REQUEST['orderids']) && is_array($_REQUEST['orderids'])){
-		$orderids = array();
-		foreach($_REQUEST['orderids'] as $orderid){
-			$orderid = intval($orderid);
-			if($orderid > 0){
-				$orderids[] = $orderid;
+			//过滤掉送货地点不在当前管理员的管辖范围内的订单
+			$limitation_addressids = $_G['admin']->getLimitations();
+			if($limitation_addressids){
+				$condition[] = 'addressid IN ('.implode(',', $limitation_addressids).')';
 			}
-		}
 
-		if($orderids){
-			$condition[] = 'id IN ('.implode(',', $orderids).')';
-		}
+			//到自提点的订单
+			$condition[] = 'status='.Order::InDeliveryPoint;
 
-	}else{
-		showmsg('please_input_order_id_or_mobile', 'back');
+			if(!empty($_REQUEST['orderid'])){
+				$condition[] = 'id='.intval($_REQUEST['orderid']);
+			}elseif(!empty($_REQUEST['mobile'])){
+				$condition[] = 'mobile=\''.raddslashes($_REQUEST['mobile']).'\'';
+			}elseif(!empty($_REQUEST['orderids']) && is_array($_REQUEST['orderids'])){
+				$orderids = array();
+				foreach($_REQUEST['orderids'] as $orderid){
+					$orderid = intval($orderid);
+					if($orderid > 0){
+						$orderids[] = $orderid;
+					}
+				}
+
+				if($orderids){
+					$condition[] = 'id IN ('.implode(',', $orderids).')';
+				}
+
+			}else{
+				showmsg('please_input_order_id_or_mobile', 'back');
+			}
+
+			$condition = implode(' AND ', $condition);
+
+			if(!empty($_REQUEST['mark_received'])){
+				$orders = $db->fetch_all("SELECT id FROM {$tpre}order WHERE $condition");
+				foreach($orders as $o){
+					$order = new Order($o['id']);
+					$order->status = Order::Received;
+					$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
+				}
+				exit('success');
+			}
+
+			$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition");
+
+			if($orders){
+				$orderids = array();
+				foreach($orders as $o){
+					$orderids[] = $o['id'];
+				}
+				$orderids = implode(',', $orderids);
+
+				$order_details = array();
+				$query = $db->query("SELECT * FROM {$tpre}orderdetail WHERE orderid IN ($orderids)");
+				while($d = $query->fetch_assoc()){
+					$order_details[$d['orderid']][] = $d;
+				}
+
+				foreach($orders as &$o){
+					$o['dateline'] = rdate($o['dateline']);
+					$o['deliveryaddress'] = Address::FullPathString($o['addressid']).' '.$o['extaddress'];
+					$o['detail'] = isset($order_details[$o['id']]) ? $order_details[$o['id']] : array();
+				}
+				unset($o);
+			}
+
+			$ticketconfig = readdata('ticket');
+			include view('order_ticket');
+
+		}else{
+			include view('ticket_printer');
+		}
 	}
 
-	$condition = implode(' AND ', $condition);
-
-	if(!empty($_REQUEST['mark_received'])){
-		$orders = $db->fetch_all("SELECT id FROM {$tpre}order WHERE $condition");
-		foreach($orders as $o){
-			$order = new Order($o['id']);
-			$order->status = Order::Received;
-			$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
-		}
-		exit('success');
-	}
-
-	$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition");
-
-	if($orders){
-		$orderids = array();
-		foreach($orders as $o){
-			$orderids[] = $o['id'];
-		}
-		$orderids = implode(',', $orderids);
-
-		$order_details = array();
-		$query = $db->query("SELECT * FROM {$tpre}orderdetail WHERE orderid IN ($orderids)");
-		while($d = $query->fetch_assoc()){
-			$order_details[$d['orderid']][] = $d;
-		}
-
-		foreach($orders as &$o){
-			$o['dateline'] = rdate($o['dateline']);
-			$o['deliveryaddress'] = Address::FullPathString($o['addressid']).' '.$o['extaddress'];
-			$o['detail'] = isset($order_details[$o['id']]) ? $order_details[$o['id']] : array();
-		}
-		unset($o);
-	}
-
-	$ticketconfig = readdata('ticket');
-	include view('order_ticket');
-
-}else{
-	include view('ticket_printer');
 }
 
 ?>
