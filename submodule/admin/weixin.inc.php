@@ -23,37 +23,52 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return array();
-}
+class WeixinModule extends AdminControlPanelModule{
 
-$type = !empty($_GET['type']) ? $_GET['type'] : '';
+	public function menuAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
-switch($type){
-case 'menu':
-	$wx = new WeixinAPI;
-	if(isset($_POST['button'])){
-		$button = str_replace('&quot;', '"', $_POST['button']);
-		$button = stripslashes($button);
-		$button = json_decode($button);
-		$menu = array(
-			'button' => $button,
-		);
+		$wx = new WeixinAPI;
+		if(isset($_POST['button'])){
+			$button = str_replace('&quot;', '"', $_POST['button']);
+			$button = stripslashes($button);
+			$button = json_decode($button);
+			$menu = array(
+				'button' => $button,
+			);
 
-		$wx->setMenu($menu);
-	}elseif(!empty($_GET['clear'])){
-		$wx->setMenu(NULL);
-	}else{
-		$menu = $wx->getMenu();
+			$wx->setMenu($menu);
+		}elseif(!empty($_GET['clear'])){
+			$wx->setMenu(NULL);
+		}else{
+			$menu = $wx->getMenu();
+		}
+
+		include view('weixin_menu');
 	}
-	break;
 
-case 'autoreply':
-	$table = $db->select_table('autoreply');
+	public function defaultAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
-	$action = &$_GET['action'];
-	switch($action){
-	case 'edit':
+		$wxconnect = readdata('wxconnect');
+		$wxconnect_fields = array('app_id', 'app_secret', 'account', 'token', 'subscribe_text', 'entershop_keyword', 'bind_keyword', 'bind2_keyword');
+
+		if($_POST){
+			foreach($wxconnect_fields as $var){
+				$wxconnect[$var] = isset($_POST['wxconnect'][$var]) ? $_POST['wxconnect'][$var] : '';
+			}
+			writedata('wxconnect', $wxconnect);
+			showmsg('successfully_updated_wxconnect_config', 'refresh');
+		}
+
+		foreach($wxconnect_fields as $var){
+			isset($wxconnect[$var]) || $wxconnect[$var] = '';
+		}
+
+		include view('weixin_config');
+	}
+
+	public function editAction(){
 		$autoreply = array();
 
 		if(!empty($_POST['keyword'])){
@@ -71,6 +86,8 @@ case 'autoreply':
 		}
 
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+		global $db;
+		$table = $db->select_table('autoreply');
 		if($id > 0){
 			$table->update($autoreply, 'id='.$id);
 			$autoreply['id'] = $id;
@@ -83,43 +100,31 @@ case 'autoreply':
 
 		echo json_encode($autoreply);
 		exit;
+	}
 
-	case 'delete':
+	public function deleteAction(){
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 		if($id > 0){
 			Autoreply::RefreshCache();
 
+			global $db;
+			$table = $db->select_table('autoreply');
 			$table->delete('id='.$id);
 			echo $db->affected_rows;
 		}else{
 			echo 0;
 		}
 		exit;
+	}
 
-	default:
+	public function listAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
+		$table = $db->select_table('autoreply');
 		$autoreply = $table->fetch_all('*');
-	}
-	break;
-
-default:
-	$type = 'config';
-
-	$wxconnect = readdata('wxconnect');
-	$wxconnect_fields = array('app_id', 'app_secret', 'account', 'token', 'subscribe_text', 'entershop_keyword', 'bind_keyword', 'bind2_keyword');
-
-	if($_POST){
-		foreach($wxconnect_fields as $var){
-			$wxconnect[$var] = isset($_POST['wxconnect'][$var]) ? $_POST['wxconnect'][$var] : '';
-		}
-		writedata('wxconnect', $wxconnect);
-		showmsg('successfully_updated_wxconnect_config', 'refresh');
+		include view('weixin_autoreply');
 	}
 
-	foreach($wxconnect_fields as $var){
-		isset($wxconnect[$var]) || $wxconnect[$var] = '';
-	}
 }
-
-include view('weixin_'.$type);
 
 ?>
