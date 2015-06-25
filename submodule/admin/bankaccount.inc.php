@@ -25,7 +25,9 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class BankAccountModule extends AdminControlPanelModule{
 
-	public function edit(){
+	public function editAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
 		if($_POST){
@@ -93,6 +95,8 @@ class BankAccountModule extends AdminControlPanelModule{
 	}
 
 	public function transferAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		$sourceaccount = isset($_REQUEST['sourceaccount']) ? intval($_REQUEST['sourceaccount']) : 0;
 		$targetaccount = isset($_REQUEST['targetaccount']) ? intval($_REQUEST['targetaccount']) : 0;
 
@@ -123,6 +127,7 @@ class BankAccountModule extends AdminControlPanelModule{
 
 		$accounts = array();
 		$account_amount = array();
+		$table = $db->select_table('bankaccount');
 		foreach($table->fetch_all('id,remark,amount') as $a){
 			$accounts[$a['id']] = $a['remark'];
 			$account_amount[$a['id']] = $a['amount'];
@@ -141,7 +146,7 @@ class BankAccountModule extends AdminControlPanelModule{
 	}
 
 	public function _changeAccount($action){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 		if($_POST){
@@ -175,7 +180,7 @@ class BankAccountModule extends AdminControlPanelModule{
 	}
 
 	public function logAction(){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		if ($id <= 0)
@@ -224,7 +229,7 @@ class BankAccountModule extends AdminControlPanelModule{
 	}
 
 	public function listAction(){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
