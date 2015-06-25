@@ -218,6 +218,19 @@ class Administrator extends User{
 		$this->permissions = array();
 	}
 
+	static public function GetAllPermissions(){
+		$permissions = array();
+		foreach(self::$Permissions as $perm => $subperms){
+			$permissions[] = $perm;
+			if(is_array($subperms)){
+				foreach($subperms as $subperm){
+					$permissions[] = $subperm;
+				}
+			}
+		}
+		return $permissions;
+	}
+
 	static public function LoadPermissions(){
 		self::$Permissions = readcache('admin_permissions');
 		if(self::$Permissions === null){

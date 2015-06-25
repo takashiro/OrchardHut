@@ -21,7 +21,7 @@ var lang = {
 var mod_url = '$mod_url';
 var admin = {
 	permission : {
-	{loop Administrator::$Permissions $perm $v}
+	{loop Administrator::GetAllPermissions() $perm}
 	'$perm' : {echo $_G['admin']->hasPermission($perm) ? 'true' : 'false'},
 	{/loop}
 	'none' : false

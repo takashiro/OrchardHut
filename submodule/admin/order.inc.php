@@ -23,20 +23,28 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return array(
-		'order_deliver',
-		'order_deliver_w',
-		'order_sort',
-		'order_sort_w',
-	);
-}
+class OrderModule extends AdminControlPanelModule{
 
-$action = &$_REQUEST['action'];
-empty($action) && $action = 'list';
+	public function getPermissions(){
+		return array(
+			'order_deliver',
+			'order_deliver_w',
+			'order_sort',
+			'order_sort_w',
+		);
+	}
 
-switch($action){
-	case 'list':case 'search':
+	public function defaultAction(){
+		$this->listAction();
+	}
+
+	public function searchAction(){
+		$this->listAction('search');
+	}
+
+	public function listAction($action = 'list'){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		//显示（或导出Excel表格）订单列表
 		if($action == 'list'){
 			//保存查询条件，数组中的每个元素用AND连接构成一个WHERE子句
@@ -342,9 +350,11 @@ switch($action){
 		}else{
 			include view('order_search');
 		}
-	break;
+	}
 
-	case 'mark_unsorted':
+	public function mark_unsortedAction(){
+		global $_G;
+
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
@@ -357,9 +367,11 @@ switch($action){
 
 		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
-	break;
+	}
 
-	case 'mark_sorted':
+	public function mark_sortedAction(){
+		global $_G;
+
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_sort_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
@@ -376,9 +388,11 @@ switch($action){
 
 		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
-	break;
+	}
 
-	case 'mark_delivering':
+	public function mark_deliveringAction(){
+		global $_G;
+
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
@@ -395,9 +409,11 @@ switch($action){
 
 		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
-	break;
+	}
 
-	case 'mark_indp':
+	public function mark_indpAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		if(empty($_GET['orderid'])){
 			include view('order_markindp');
 			exit;
@@ -422,9 +438,11 @@ switch($action){
 
 		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
-	break;
+	}
 
-	case 'mark_received':
+	public function mark_receivedAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
@@ -441,9 +459,11 @@ switch($action){
 
 		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
-	break;
+	}
 
-	case 'mark_rejected':
+	public function mark_rejectedAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
@@ -460,9 +480,11 @@ switch($action){
 
 		empty($_GET['ajaxform']) || exit('1');
 		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
-	break;
+	}
 
-	case 'ticket':case 'barcode':
+	public function ticketAction($ticket_type = 'ticket'){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 		if($orderid > 0){
 			$order = new Order($orderid);
@@ -481,11 +503,17 @@ switch($action){
 
 			$ticketconfig = readdata('ticket');
 
-			include view('order_'.$action);
+			include view('order_'.$ticket_type);
 		}
-	break;
+	}
 
-	case 'cancel':
+	public function barcodeAction(){
+		$this->ticketAction('barcode');
+	}
+
+	public function cancelAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		$orderid = isset($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 		if($orderid > 0){
 			if(empty($_GET['confirm'])){
@@ -501,9 +529,11 @@ switch($action){
 			}
 			empty($_COOKIE['http_referer']) || redirect($_COOKIE['http_referer']);
 		}
-	break;
+	}
 
-	case 'detail_outofstock':
+	public function detail_outofstockAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		if(!$_G['admin']->hasPermission('order_sort_w')){
 			exit('access denied');
 		}
@@ -530,14 +560,13 @@ switch($action){
 		}
 
 		echo json_encode($result);
-	break;
+	}
 
-	case 'changestate':
+	public function changestateAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 		include view('order_changestate');
-		break;
+	}
 
-	default:
-		showmsg('illegal_operation');
 }
 
 ?>
