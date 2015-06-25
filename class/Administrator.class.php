@@ -41,6 +41,9 @@ class Administrator extends User{
 		if(isset($this->permissions) && is_array($this->permissions)){
 			$this->permissions = implode('|', array_keys($this->permissions));
 		}
+		if(rdate($this->logintime, 'Ymd') != rdate(TIMESTAMP, 'Ymd')){
+			$this->logintime = TIMESTAMP;
+		}
 		parent::__destruct();
 	}
 
