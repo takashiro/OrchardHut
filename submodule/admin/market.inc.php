@@ -23,15 +23,15 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return array();
-}
+class MarketModule extends AdminControlPanelModule{
 
-$action = &$_GET['action'];
-empty($action) && $action = 'list';
+	public function defaultAction(){
+		$this->listAction();
+	}
 
-switch($action){
-	case 'list':
+	public function listAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		$condition = array();
 
 		if(isset($_GET['productname'])){
@@ -53,9 +53,11 @@ switch($action){
 		$pagenum = $table->result_first('COUNT(*)', $condition);
 
 		include view('market');
-	break;
+	}
 
-	case 'edit':
+	public function editAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
 		$productid = !empty($_REQUEST['id']) ? max(0, intval($_REQUEST['id'])) : 0;
 
 		if($_POST){
@@ -129,63 +131,63 @@ switch($action){
 			$product = $product->toArray();
 			include view('market_edit');
 		}
-	break;
+	}
 
-	case 'delete':
+	public function deleteAction(){
 		$id = !empty($_POST['id']) ? max(0, intval($_POST['id'])) : 0;
 		if($id > 0){
 			Product::Delete($id);
 		}
 		echo 1;
-	break;
+	}
 
-	case 'editprice':
+	public function editpriceAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->editPrice($_POST));
-	break;
+	}
 
-	case 'deleteprice':
+	public function deletepriceAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->deletePrice($_POST['id']));
-	break;
+	}
 
-	case 'editcountdown':
+	public function editcountdownAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->editCountdown($_POST));
-	break;
+	}
 
-	case 'deletecountdown':
+	public function deletecountdownAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->deleteCountdown($_POST['id']));
-	break;
+	}
 
-	case 'editstorage':
+	public function editstorageAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->editStorage($_POST));
-	break;
+	}
 
-	case 'deletestorage':
+	public function deletestorageAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->deleteStorage($_POST['id']));
-	break;
+	}
 }
 
 ?>
