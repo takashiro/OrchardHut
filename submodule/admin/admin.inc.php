@@ -26,7 +26,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 class AdminModule extends AdminControlPanelModule{
 
 	public function editAction(){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
@@ -126,7 +126,7 @@ class AdminModule extends AdminControlPanelModule{
 	}
 
 	public function listAction(){
-		extract($GLOBALS, EXTR_SKIP);
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
