@@ -23,21 +23,25 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-if($_G['admincp']['mode'] == 'permission'){
-	return array();
+class TicketModule extends AdminControlPanelModule{
+
+	public function defaultAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
+		if($_POST){
+			@$config = array(
+				'tips' => $_POST['tips'],
+				'extrainfo' => $_POST['extrainfo'],
+			);
+
+			writedata('ticket', $config);
+			showmsg('successfully_updated_system_config', 'refresh');
+		}
+
+		$config = readdata('ticket');
+		include view('ticket');
+	}
+
 }
-
-if($_POST){
-	@$config = array(
-		'tips' => $_POST['tips'],
-		'extrainfo' => $_POST['extrainfo'],
-	);
-
-	writedata('ticket', $config);
-	showmsg('successfully_updated_system_config', 'refresh');
-}
-
-$config = readdata('ticket');
-include view('ticket');
 
 ?>
