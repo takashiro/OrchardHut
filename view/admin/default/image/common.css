@@ -451,6 +451,10 @@ div.toast_list p{
 	display: none;
 }
 
+.spanlist span{
+	display: inline-block;
+}
+
 /* Date time picker */
 .xdsoft_datetimepicker  .xdsoft_calendar td.xdsoft_today{
 	color:#31B0D5 !important;

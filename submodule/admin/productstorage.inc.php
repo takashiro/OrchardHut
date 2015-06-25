@@ -23,6 +23,10 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return array();
+}
+
 $action = &$_GET['action'];
 switch($action){
 case 'edit':

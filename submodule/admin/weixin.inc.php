@@ -23,6 +23,10 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return array();
+}
+
 $type = !empty($_GET['type']) ? $_GET['type'] : '';
 
 switch($type){

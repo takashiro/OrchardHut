@@ -23,18 +23,13 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'edit', 'delete');
-$action = &$_GET['action'];
-if(!in_array($action, $actions)){
-	$action = $actions[0];
-}
+class AdminModule extends AdminControlPanelModule{
 
-$table = $db->select_table('administrator');
+	public function editAction(){
+		extract($GLOBALS, EXTR_SKIP);
 
-$id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+		$id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
-switch($action){
-	case 'edit':
 		$admin = new Administrator($id);
 		if($admin->isSuperAdmin()){
 			showmsg('illegal_operation', 'back');
@@ -114,9 +109,10 @@ switch($action){
 		$address_components = Address::AvailableComponents();
 
 		include view('admin_edit');
-	break;
+	}
 
-	case 'delete':
+	public function deleteAction(){
+		$id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 		if($id <= 0){
 			showmsg('illegal_operation');
 		}
@@ -127,16 +123,22 @@ switch($action){
 		}else{
 			showmsg('confirm_to_delete_administrator', 'confirm');
 		}
+	}
 
-	break;
+	public function listAction(){
+		extract($GLOBALS, EXTR_SKIP);
 
-	case 'list':default:
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
+		$table = $db->select_table('administrator');
 		$admins = $table->fetch_all('*', "1 LIMIT $offset,$limit");
 		$pagenum = $table->result_first('COUNT(*)');
 		include view('admin_list');
-	break;
+	}
+
+	public function defaultAction(){
+		$this->listAction();
+	}
 }
 
 ?>

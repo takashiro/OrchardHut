@@ -23,15 +23,23 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return 'public';
+}
+
 if($_G['admin']->hasPermission('order')){
 	redirect('admin.php?mod=order');
 }else{
-	$permissions = Administrator::GetAllPermissionNames();
-	foreach($permissions as $perm){
+	foreach(Administrator::$Permissions as $perm => $v){
+		if($perm == 'home' || $perm == 'memcp')
+			continue;
+
 		if($_G['admin']->hasPermission($perm)){
 			redirect('admin.php?mod='.$perm);
 		}
 	}
+
+	redirect('admin.php?mod=memcp');
 }
 
 ?>

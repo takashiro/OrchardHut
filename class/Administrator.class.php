@@ -27,61 +27,13 @@ class Administrator extends User{
 	const AUTH_FIELD = 'account';
 	const COOKIE_VAR = 'rcadmininfo';
 
-	static private $Permission = array(
-		'order_deliver' => 0x1,
-		'order_sort_w' => 0x2,
-		'order_deliver_w' => 0x4,
-		'admin' => 0x8,
-		'market' => 0x10,
-		'announcement' => 0x20,
-		'address' => 0x40,
-		'order_sort' => 0x80,
-		'system' => 0x100,
-		'cache' => 0x100,
-		'mail' => 0x100,
-		'productunit' => 0x200,
-		'producttype' => 0x400,
-		'prepaidreward' => 0x800,
-		'userwallet' => 0x800,
-		'salereport' => 0x1000,
-		'balancereport' => 0x1000,
-		'bankaccount' => 0x2000,
-		'delivery' => 0x4000,
-		'ticket' => 0x8000,
-		'productstorage' => 0x10000,
-		'payment' => 0x20000,
-		'weixin' => 0x40000,
-		'qqconnect' => 0x80000,
-		'orderstat' => 0x100000,
-		'user' => 0x200000,
-		'ticketprinter' => 0x400000,
-		'returnedorder' => 0x800000,
-	);
-
-	static public $SpecialPermission = array(
-		'cache' => true,
-		'salereport' => true,
-		'order_sort' => true,
-		'order_sort_w' => true,
-		'order_deliver' => true,
-		'order_deliver_w' => true,
-		'userwallet' => true,
-		'mail' => true,
-		'ticketprinter' => true,
-	);
+	static public $Permissions = array();
 
 	public function __construct($id = 0){
 		parent::__construct();
 		if($id = intval($id)){
 			$this->fetch('*', 'id='.$id);
-			if(isset($this->permissions) && $this->permissions !== 'all'){
-				$permissions = array();
-				$this->permissions = implode('|', $this->permissions);
-				foreach($this->permissions as $perm){
-					$permissions[$perm] = true;
-				}
-				$this->permissions = $permissions;
-			}
+			$this->initPermissions();
 		}
 	}
 
@@ -133,6 +85,7 @@ class Administrator extends User{
 				);
 
 				$this->fetch('*', $cookie);
+				$this->initPermissions();
 			}
 			return $this->isLoggedIn();
 
@@ -143,6 +96,7 @@ class Administrator extends User{
 			);
 
 			$this->fetch('*', $condition);
+			$this->initPermissions();
 
 			if($this->isLoggedIn()){
 				$this->logged = true;
@@ -193,22 +147,49 @@ class Administrator extends User{
 		return true;
 	}
 
+	public function initPermissions(){
+		if(isset($this->permissions) && $this->permissions !== 'all'){
+			$permissions = array();
+			foreach(explode('|', $this->permissions) as $perm){
+				$permissions[$perm] = true;
+			}
+			$this->permissions = $permissions;
+		}
+	}
+
 	public function hasPermission($perm){
 		if($this->isSuperAdmin()){
 			return true;
 		}
 
-		if(strpos($perm, '|') !== false){
-			$permissions = explode('|', $perm);
-			foreach($permissions as $perm){
-				if($this->hasPermission($perm)){
-					return true;
-				}
-			}
+		if(!isset(self::$Permissions[$perm])){
 			return false;
 		}
 
-		return is_array($this->permissions) && isset($this->permissions[$perm]);
+		$config = self::$Permissions[$perm];
+		if(is_string($config)){
+			return $config === 'public' || $this->hasPermission($config);
+		}
+
+		if(is_array($config)){
+			if(!isset($this->permissions) || !is_array($this->permissions)){
+				print_r($this->permissions);
+				echo '<br />';
+				return false;
+			}
+
+			if(isset($this->permissions[$perm])){
+				return true;
+			}
+
+			foreach($config as $subperm){
+				if(isset($this->permissions[$subperm])){
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public function setPermission($perm, $value = true){
@@ -217,9 +198,11 @@ class Administrator extends User{
 		}
 
 		if(!is_array($perm)){
-			if(isset(self::$Permission[$perm])){
+			if(isset(self::$Permissions[$perm])){
 				if($value){
-					$this->permissions[$perm] = true;
+					$permissions = $this->permissions;
+					$permissions[$perm] = true;
+					$this->permissions = $permissions;
 				}else{
 					unset($this->permissions[$perm]);
 				}
@@ -235,8 +218,24 @@ class Administrator extends User{
 		$this->permissions = array();
 	}
 
-	static public function GetAllPermissionNames(){
-		return array_keys(self::$Permission);
+	static public function LoadPermissions(){
+		self::$Permissions = readcache('admin_permissions');
+		if(self::$Permissions === null){
+			self::$Permissions = array();
+			if($module_dir = opendir(S_ROOT.'submodule/admin')){
+				global $_G;
+				while($file = readdir($module_dir)){
+					if(substr_compare($file, '.inc.php', -8) == 0){
+						$class_name = substr($file, 0, strlen($file) - 8).'Module';
+						include S_ROOT.'submodule/admin/'.$file;
+						$module = new $class_name;
+						self::$Permissions[$module] = $module->getExtraPermissions();
+					}
+				}
+				closedir($module_dir);
+			}
+			writecache('admin_permissions', self::$Permissions);
+		}
 	}
 
 	static public function Delete($id, $extra = ''){
@@ -253,5 +252,7 @@ class Administrator extends User{
 
 	const DUPLICATED_ACCOUNT = -1;
 }
+
+Administrator::LoadPermissions();
 
 ?>

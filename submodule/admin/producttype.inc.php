@@ -23,6 +23,10 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return array();
+}
+
 $actions = array('list', 'edit', 'delete');
 $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET['action'] : $actions[0];
 

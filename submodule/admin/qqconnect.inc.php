@@ -23,6 +23,10 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return array();
+}
+
 $qqconnect = readdata('qqconnect');
 foreach(array('appid', 'appkey', 'callback', 'scope', 'errorReport', 'storageType', 'host', 'user', 'password', 'database') as $var){
 	isset($qqconnect[$var]) || $qqconnect[$var] = '';

@@ -23,6 +23,10 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return array();
+}
+
 @$config = !empty($_POST['system']) ? $_POST['system'] : null;
 
 @$config = array(

@@ -23,6 +23,10 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return 'system';
+}
+
 $mailconfig = Mail::$Config;
 
 if($_POST){

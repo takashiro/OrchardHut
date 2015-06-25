@@ -47,19 +47,38 @@ if(!$_G['admin']->isLoggedIn()){
 $_ADMIN = $_G['admin']->toReadable();
 
 //Include the requested module
-$public_mod = array('home', 'memcp');
+class AdminControlPanelModule{
+	public function getExtraPermissions(){
+		return array();
+	}
+
+	public function defaultAction(){
+		exit('invalid action');
+	}
+}
+
 $mod = isset($_GET['mod']) ? trim($_GET['mod']) : 'home';
 $module = submodule('admin', $mod);
 $mod_url = 'admin.php?mod='.$mod;
 if(file_exists($module)){
-	if(!in_array($mod, $public_mod) && !$_G['admin']->hasPermission($mod)){
+	if(!$_G['admin']->hasPermission($mod)){
 		showmsg('no_permission', 'back');
 	}
-
-	include $module;
 }else{
 	$mod_url = 'admin.php?mod=home';
-	include submodule('admin', 'home');
+	$module = submodule('admin', 'home');
+}
+
+include $module;
+
+$classname = $mod.'Module';
+$module = new $classname;
+
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'].'Action' : 'defaultAction';
+if(method_exists($module, $action)){
+	$module->$action();
+}else{
+	$module->defaultAction();
 }
 
 ?>

@@ -23,6 +23,10 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return array();
+}
+
 $template_formats = array('html', 'csv');
 $format = &$_GET['format'];
 in_array($format, $template_formats) || $format = $template_formats[0];

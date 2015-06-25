@@ -23,17 +23,23 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$actions = array('list', 'edit', 'delete');
-$action = isset($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
+class AnnouncementModule extends AdminControlPanelModule{
 
-switch($action){
-	case 'list':
+	public function defaultAction(){
+		$this->listAction();
+	}
+
+	public function listAction(){
+		extract($GLOBALS, EXTR_SKIP);
+
 		$table = $db->select_table('announcement');
 		$announcements = $table->fetch_all('*', '1 ORDER BY displayorder,time_start DESC,time_end');
 		include view('announcement_list');
-	break;
+	}
 
-	case 'edit':
+	public function editAction(){
+		extract($GLOBALS, EXTR_SKIP);
+
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
 		if($_POST){
@@ -106,16 +112,18 @@ switch($action){
 
 			include view('announcement_edit');
 		}
-	break;
+	}
 
-	case 'delete':
+	public function deleteAction(){
+		extract($GLOBALS, EXTR_SKIP);
+
 		if(isset($_POST['id'])){
 			$id = intval($_POST['id']);
 			$table = $db->select_table('announcement');
 			$table->delete('id='.$id);
 			echo $db->affected_rows;
 		}
-	break;
+	}
 }
 
 ?>

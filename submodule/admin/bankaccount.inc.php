@@ -23,14 +23,9 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-$action = &$_GET['action'];
+class BankAccountModule extends AdminControlPanelModule{
 
-$table = $db->select_table('bankaccount');
-
-$id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
-
-switch($action){
-	case 'edit':
+	public function edit(){
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
 		if($_POST){
@@ -80,9 +75,11 @@ switch($action){
 
 		$paymentconfig = readdata('payment');
 		include view('bankaccount_edit');
-	break;
+	}
 
-	case 'delete':
+	public function deleteAction(){
+		$id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+
 		if($id <= 0){
 			showmsg('illegal_operation');
 		}
@@ -93,10 +90,9 @@ switch($action){
 		}else{
 			showmsg('confirm_to_delete_bank_account', 'confirm');
 		}
+	}
 
-	break;
-
-	case 'transfer':
+	public function transferAction(){
 		$sourceaccount = isset($_REQUEST['sourceaccount']) ? intval($_REQUEST['sourceaccount']) : 0;
 		$targetaccount = isset($_REQUEST['targetaccount']) ? intval($_REQUEST['targetaccount']) : 0;
 
@@ -134,9 +130,19 @@ switch($action){
 		unset($a);
 
 		include view('bankaccount_transfer');
-	break;
+	}
 
-	case 'withdraw': case 'deposit':
+	public function withdrawAction(){
+		$this->_changeAccount('withdraw');
+	}
+
+	public function depositAction(){
+		$this->_changeAccount('deposit');
+	}
+
+	public function _changeAccount($action){
+		extract($GLOBALS, EXTR_SKIP);
+
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 		if($_POST){
 			$delta = isset($_POST['delta']) ? abs($_POST['delta']) : 0;
@@ -166,9 +172,11 @@ switch($action){
 			$account = $account->toReadable();
 			include view('bankaccount_withdraw');
 		}
-	break;
+	}
 
-	case 'log':
+	public function logAction(){
+		extract($GLOBALS, EXTR_SKIP);
+
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		if ($id <= 0)
 			exit('access denied');
@@ -213,15 +221,22 @@ switch($action){
 			WHERE $condition");
 
 		include view('bankaccount_log');
-	break;
+	}
 
-	case 'list':default:
+	public function listAction(){
+		extract($GLOBALS, EXTR_SKIP);
+
 		$limit = 20;
 		$offset = ($page - 1) * $limit;
+		$table = $db->select_table('bankaccount');
 		$accounts = $table->fetch_all('*', "1 LIMIT $offset,$limit");
 		$pagenum = $table->result_first('COUNT(*)');
 		include view('bankaccount_list');
-	break;
+	}
+
+	public function defaultAction(){
+		$this->listAction();
+	}
 }
 
 ?>

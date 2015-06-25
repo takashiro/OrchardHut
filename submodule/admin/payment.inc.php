@@ -23,6 +23,10 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return array();
+}
+
 if($_POST){
 	$payment = array();
 	foreach(Order::$PaymentMethod as $methodid => $name){

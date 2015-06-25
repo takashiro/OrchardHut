@@ -17,14 +17,14 @@
 			<thead><tr><td>ID</td><td>账号</td><td>姓名</td><td>手机</td><td>上次登录时间</td><td width="120">操作</td></tr></thead>
 			<tbody>
 			<!--{loop $admins $u}-->
-			<tr>
-				<td>$u[id]</td>
-				<td>$u[account]</td>
-				<td>$u[realname]</td>
-				<td>$u[mobile]</td>
-				<td>{echo $u['logintime'] ? rdate($u['logintime']) : '从未登录'}</td>
-				<td><!--{if $u['permission'] != -1}--><a href="$mod_url&action=edit&id=$u[id]">[编辑]</a> <a href="$mod_url&action=delete&id=$u[id]">[删除]</a><!--{/if}--></td>
-			</tr>
+				<tr>
+					<td>$u[id]</td>
+					<td>$u[account]</td>
+					<td>$u[realname]</td>
+					<td>$u[mobile]</td>
+					<td>{echo $u['logintime'] ? rdate($u['logintime']) : '从未登录'}</td>
+					<td><!--{if $u['permissions'] !== 'all'}--><a href="$mod_url&action=edit&id=$u[id]">[编辑]</a> <a href="$mod_url&action=delete&id=$u[id]">[删除]</a><!--{/if}--></td>
+				</tr>
 			<!--{/loop}-->
 			</tbody>
 		</table>

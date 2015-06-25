@@ -63,27 +63,18 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 			<td><input type="text" id="nickname" name="nickname" value="$a[nickname]" /></td>
 		</tr>
 		<tr>
-			<th><label>全局权限：</label></th>
+			<th><label>权限：</label></th>
 			<td>
 				<dl class="spanlist permissions">
-				<!--{loop Administrator::GetAllPermissionNames() $permission}-->
-					<!--{if empty(Administrator::$SpecialPermission[$permission]) && $_G['admin']->hasPermission($permission)}-->
-					<span title="{echo lang('common', 'permission_'.$permission.'_comment')}">{echo template::checkbox("p[$permission]", lang('common', 'permission_'.$permission), $admin->hasPermission($permission))}</span>
+				<!--{loop Administrator::$Permissions $permission $v}-->
+					<!--{if $_G['admin']->hasPermission($permission) && is_array($v)}-->
+						<span title="{echo lang('common', 'permission_'.$permission.'_comment')}">{echo Template::checkbox("p[$permission]", lang('common', 'permission_'.$permission), $admin->hasPermission($permission))}</span>
+						<!--{loop $v $subpermission}-->
+						<span title="{echo lang('common', 'permission_'.$subpermission.'_comment')}">{echo Template::checkbox("p[$subpermission]", lang('common', 'permission_'.$subpermission), $admin->hasPermission($subpermission))}</span>
+						<!--{/loop}-->
 					<!--{/if}-->
 				<!--{/loop}-->
 				</dl>
-			</td>
-		</tr>
-		<tr>
-			<th><label>普通权限：</label></th>
-			<td>
-				<div class="spanlist permissions">
-					<!--{if $_G['admin']->hasPermission('order_sort')}--><span>{echo Template::checkbox('p[order_sort]', '查看待分拣订单', $admin->hasPermission('order_sort'))}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('order_sort_w')}--><span>{echo Template::checkbox('p[order_sort_w]', '分拣订单', $admin->hasPermission('order_sort_w'))}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('order_deliver')}--><span>{echo Template::checkbox('p[order_deliver]', '查看待配送订单', $admin->hasPermission('order_deliver'))}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('order_deliver_w')}--><span>{echo Template::checkbox('p[order_deliver_w]', '配送订单', $admin->hasPermission('order_deliver_w'))}</span><!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('ticketprinter')}--><span>{echo Template::checkbox('p[ticketprinter]', '打印提货单', $admin->hasPermission('ticketprinter'))}</span><!--{/if}-->
-				</div>
 			</td>
 		</tr>
 		<tr title="选择此项后该管理员的普通权限（全局权限不受限制）限定在指定营业范围内">

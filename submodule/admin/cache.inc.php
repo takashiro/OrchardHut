@@ -23,6 +23,10 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return 'system';
+}
+
 $action = &$_GET['action'];
 switch($action){
 case 'cleardatacache':

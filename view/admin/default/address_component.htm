@@ -3,17 +3,17 @@
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
 	<li><a href="admin.php?mod=address">地址</a></li>
-	<li><a href="$mod_url&data=component">地址列表</a></li>
+	<li><a href="$mod_url">地址列表</a></li>
 	<!--{loop $prev_address $a}-->
-		<li><a href="$mod_url&data=component&id=$a[id]">$a[name]</a></li>
+		<li><a href="$mod_url&id=$a[id]">$a[name]</a></li>
 	<!--{/loop}-->
 </ol>
 
 <script type="text/javascript">
 $(function(){
 	$('#component_list').editlist({
-		'edit' : '$mod_url&data=component&action=edit&parentid=$parentid',
-		'delete' : '$mod_url&data=component&action=delete',
+		'edit' : '$mod_url&action=edit&parentid=$parentid',
+		'delete' : '$mod_url&action=delete',
 		'attr' : ['id', 'name', 'displayorder', 'parentid', 'parentname']
 	});
 });
@@ -26,7 +26,7 @@ $(function(){
 	<h1>地址设置</h1>
 
 	<h2>格式设置</h2>
-	<form action="$mod_url&data=format" class="toast format_form" method="post">
+	<form action="$mod_url&action=format" class="toast format_form" method="post">
 		<!--{eval for($i = 1; $i < Address::MAX_CASCADE_LEVEL; $i++){}-->
 		<input type="text" name="addressformat[$i]" value="{echo !empty($addressformat[$i]) ? $addressformat[$i] : ''}" class="narrow {if $i == count($prev_address) + 1}current{/if}" />&gt;
 		<!--{eval }}-->

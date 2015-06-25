@@ -23,6 +23,15 @@
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+if($_G['admincp']['mode'] == 'permission'){
+	return array(
+		'order_deliver',
+		'order_deliver_w',
+		'order_sort',
+		'order_sort_w',
+	);
+}
+
 $action = &$_REQUEST['action'];
 empty($action) && $action = 'list';
 
