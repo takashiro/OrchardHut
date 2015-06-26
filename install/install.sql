@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS `hut_authkey`;
 CREATE TABLE IF NOT EXISTS `hut_authkey` (
   `user` varchar(32) NOT NULL,
   `key` varchar(32) NOT NULL,
-  `expiry` int(10) unsigned NOT NULL,
+  `expiry` int(11) unsigned NOT NULL,
   PRIMARY KEY (`user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
