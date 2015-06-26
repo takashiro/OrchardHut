@@ -114,6 +114,30 @@ class DatabaseModule extends AdminControlPanelModule{
 	}
 
 	public function dropTableAction(){
+		$this->checkTargetTable($name, $s, $t);
+
+		if($s !== null && $t === null){
+			global $db;
+			$db->query("DROP TABLE `$name`");
+			showmsg('successfully_dropped_table', 'refresh');
+		}else{
+			showmsg('failed_to_drop_table', 'back');
+		}
+	}
+
+	public function alterTableAction(){
+		$this->checkTargetTable($name, $s, $t);
+
+		if($s !== null && $t !== null){
+			global $db;
+			$db->query("ALTER TABLE `$name` ENGINE={$s->engine} DEFAULT CHARSET={$s->charset}");
+			showmsg('successfully_altered_table', 'refresh');
+		}else{
+			showmsg('failed_to_alter_table', 'back');
+		}
+	}
+
+	private function checkTargetTable(&$name, &$s, &$t){
 		if(!isset($_GET['name']))
 			showmsg('illegal_operation', 'back');
 
@@ -121,12 +145,17 @@ class DatabaseModule extends AdminControlPanelModule{
 
 		$standard_tables = $this->getStandardStructure();
 		$current_tables = $this->getCurrentStructure();
-		if(isset($current_tables[$name]) && !isset($standard_tables[$name])){
-			global $db;
-			$db->query("DROP TABLE `$name`");
-			showmsg('successfully_dropped_table', 'refresh');
+
+		if(isset($standard_tables[$name])){
+			$s = $standard_tables[$name];
 		}else{
-			showmsg('failed_to_drop_table', 'back');
+			$s = null;
+		}
+
+		if(isset($current_tables[$name])){
+			$t = $current_tables[$name];
+		}else{
+			$t = null;
 		}
 	}
 
