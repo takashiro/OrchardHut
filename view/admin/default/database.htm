@@ -1,0 +1,144 @@
+<!--{template header}-->
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=system">系统</a></li>
+	<li>数据库</li>
+</ol>
+
+<style type="text/css">
+.standard{color:green;}
+.current{color:red;}
+</style>
+
+<div class="box list">
+	<p>校验版本：{echo rdate($standard_update_time)}</p>
+
+	<h2>Modified Table</h2>
+	<div class="content">
+		<table>
+			<thead>
+				<tr>
+					<td rowspan="2">Name</td>
+					<td colspan="2">Standard</td>
+					<td colspan="2">Current</td>
+					<td rowspan="2">Operation</td>
+				</tr>
+				<tr><td>Engine</td><td>Charset</td><td>Engine</td><td>Charset</td></tr>
+			</thead>
+			<tbody>
+				<!--{loop $standard_tables $table_name $s}-->
+				<!--{if !isset($current_tables[$table_name])}-->
+				<tr>
+					<td>{echo $s->name}</td>
+					<td class="standard">{echo $s->engine}</td>
+					<td class="standard">{echo $s->charset}</td>
+					<td class="current"></td>
+					<td class="current"></td>
+					<td><a href="$mod_url&action=createtable&name=$table_name">[添加]</a></td>
+				</tr>
+				<!--{/if}-->
+				<!--{/loop}-->
+				<!--{loop $current_tables $table_name $t}-->
+				<!--{if !isset($standard_tables[$table_name])}-->
+				<tr>
+					<td>{echo $t->name}</td>
+					<td class="standard"></td>
+					<td class="standard"></td>
+					<td class="current">{echo $t->engine}</td>
+					<td class="current">{echo $t->charset}</td>
+					<td><a href="$mod_url&action=droptable&name=$table_name">[删除]</a></td>
+				</tr>
+				<!--{else}-->
+				<!--{eval $s = $standard_tables[$table_name];}-->
+				<!--{if $t->engine != $s->engine || $t->charset != $s->charset}-->
+				<tr>
+					<td>{echo $t->name}</td>
+					<td class="standard">{echo $s->engine}</td>
+					<td class="standard">{echo $s->charset}</td>
+					<td class="current">{echo $t->engine}</td>
+					<td class="current">{echo $t->charset}</td>
+					<td><a href="$mod_url&action=altertable&name=$table_name">[修改]</a></td>
+				</tr>
+				<!--{/if}-->
+				<!--{/if}-->
+				<!--{/loop}-->
+			</tbody>
+		</table>
+	</div>
+
+	<h2>Modified Table Column</h2>
+	<div class="content">
+		<table>
+			<thead>
+				<tr>
+					<th rowspan="2"></th>
+					<td rowspan="2">Table</td>
+					<td rowspan="2">Field</td>
+					<td colspan="4">Standard</td>
+					<td colspan="4">Current</td>
+					<td rowspan="2">Operation</td>
+				</tr>
+				<tr>
+					<td>Type</td><td>NULL</td><td>Default</td><td>Extra</td>
+					<td>Type</td><td>NULL</td><td>Default</td><td>Extra</td>
+				</tr>
+			</thead>
+			<tbody>
+			<!--{loop $current_tables $table_name $t}-->
+				<!--{if isset($standard_tables[$table_name]) && $t != $standard_tables[$table_name]}-->
+					<!--{eval $s = $standard_tables[$table_name];}-->
+					<!--{loop $s->columns $column_name $d}-->
+						<!--{if !isset($t->columns[$column_name])}-->
+						<tr>
+							<th></th>
+							<td>$table_name</td>
+							<td>{echo $d->name}</td>
+							<td class="standard">{echo $d->type}</td>
+							<td class="standard">{echo $d->accept_null ? 'Yes' : 'No'}</td>
+							<td class="standard">{echo $d->default_value}</td>
+							<td class="standard">{echo $d->extra}</td>
+							<td class="current" colspan="4"></td>
+							<td><a href="$mod_url&action=addcolumn&table=$table_name&column={echo $d->name}">[添加]</a></td>
+						</tr>
+						<!--{/if}-->
+					<!--{/loop}-->
+					<!--{loop $t->columns $column_name $c}-->
+						<!--{if !isset($s->columns[$column_name])}-->
+						<tr>
+							<th></th>
+							<td>$table_name</td>
+							<td>{echo $c->name}</td>
+							<td class="standard" colspan="4"></td>
+							<td class="current">{echo $c->type}</td>
+							<td class="current">{echo $c->accept_null ? 'Yes' : 'No'}</td>
+							<td class="current">{echo $c->default_value}</td>
+							<td class="current">{echo $c->extra}</td>
+							<td><a href="$mod_url&action=dropcolumn&table=$table_name&column={echo $c->name}">[删除]</a></td>
+						</tr>
+						<!--{elseif $c != $s->columns[$column_name]}-->
+						<!--{eval $d = $s->columns[$column_name];}-->
+						<tr>
+							<th></th>
+							<td>$table_name</td>
+							<td>{echo $d->name}</td>
+							<td class="standard">{echo $d->type}</td>
+							<td class="standard">{echo $d->accept_null ? 'Yes' : 'No'}</td>
+							<td class="standard">{echo $d->default_value}</td>
+							<td class="standard">{echo $d->extra}</td>
+							<td class="current">{echo $c->type}</td>
+							<td class="current">{echo $c->accept_null ? 'Yes' : 'No'}</td>
+							<td class="current">{echo $c->default_value}</td>
+							<td class="current">{echo $c->extra}</td>
+							<td><a href="$mod_url&action=altercolumn&table=$table_name&column={echo $d->name}">[修改]</a></td>
+						</tr>
+						<!--{/if}-->
+					<!--{/loop}-->
+				<!--{/if}-->
+			<!--{/loop}-->
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--{template footer}-->
