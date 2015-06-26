@@ -10,6 +10,18 @@
 .standard{color:green;}
 .current{color:red;}
 </style>
+<script type="text/javascript">
+$(function(){
+	$('a.toast').click(function(e){
+		e.preventDefault();
+		if(confirm('您确定要' + $(this).html() + '吗？')){
+			$.get($(this).attr('href') + '&ajax=1', {}, function(result){
+				makeToast(result);
+			}, 'json');
+		}
+	});
+});
+</script>
 
 <div class="box list">
 	<p>校验版本：{echo rdate($standard_update_time)}</p>
@@ -35,7 +47,7 @@
 					<td class="standard">{echo $s->charset}</td>
 					<td class="current"></td>
 					<td class="current"></td>
-					<td><a href="$mod_url&action=createtable&name=$table_name">[添加]</a></td>
+					<td><a class="toast" href="$mod_url&action=createtable&name=$table_name">[添加]</a></td>
 				</tr>
 				<!--{/if}-->
 				<!--{/loop}-->
@@ -47,7 +59,7 @@
 					<td class="standard"></td>
 					<td class="current">{echo $t->engine}</td>
 					<td class="current">{echo $t->charset}</td>
-					<td><a href="$mod_url&action=droptable&name=$table_name">[删除]</a></td>
+					<td><a class="toast" href="$mod_url&action=droptable&name=$table_name">[删除]</a></td>
 				</tr>
 				<!--{else}-->
 				<!--{eval $s = $standard_tables[$table_name];}-->
@@ -58,7 +70,7 @@
 					<td class="standard">{echo $s->charset}</td>
 					<td class="current">{echo $t->engine}</td>
 					<td class="current">{echo $t->charset}</td>
-					<td><a href="$mod_url&action=altertable&name=$table_name">[修改]</a></td>
+					<td><a class="toast" href="$mod_url&action=altertable&name=$table_name">[修改]</a></td>
 				</tr>
 				<!--{/if}-->
 				<!--{/if}-->
@@ -99,7 +111,7 @@
 							<td class="standard">{echo $d->default_value}</td>
 							<td class="standard">{echo $d->extra}</td>
 							<td class="current" colspan="4"></td>
-							<td><a href="$mod_url&action=addcolumn&table=$table_name&column={echo $d->name}">[添加]</a></td>
+							<td><a class="toast" href="$mod_url&action=addcolumn&table=$table_name&column={echo $d->name}">[添加]</a></td>
 						</tr>
 						<!--{/if}-->
 					<!--{/loop}-->
@@ -114,7 +126,7 @@
 							<td class="current">{echo $c->accept_null ? 'Yes' : 'No'}</td>
 							<td class="current">{echo $c->default_value}</td>
 							<td class="current">{echo $c->extra}</td>
-							<td><a href="$mod_url&action=dropcolumn&table=$table_name&column={echo $c->name}">[删除]</a></td>
+							<td><a class="toast" href="$mod_url&action=dropcolumn&table=$table_name&column={echo $c->name}">[删除]</a></td>
 						</tr>
 						<!--{elseif $c != $s->columns[$column_name]}-->
 						<!--{eval $d = $s->columns[$column_name];}-->
@@ -130,7 +142,7 @@
 							<td class="current">{echo $c->accept_null ? 'Yes' : 'No'}</td>
 							<td class="current">{echo $c->default_value}</td>
 							<td class="current">{echo $c->extra}</td>
-							<td><a href="$mod_url&action=altercolumn&table=$table_name&column={echo $d->name}">[修改]</a></td>
+							<td><a class="toast" href="$mod_url&action=altercolumn&table=$table_name&column={echo $d->name}">[修改]</a></td>
 						</tr>
 						<!--{/if}-->
 					<!--{/loop}-->
