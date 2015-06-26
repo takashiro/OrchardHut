@@ -98,16 +98,6 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
   KEY `userid` (`userid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `hut_deliveryfee`;
-CREATE TABLE IF NOT EXISTS `hut_deliveryfee` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `methodid` tinyint(4) NOT NULL,
-  `fee` decimal(9,2) NOT NULL,
-  `minorderprice` decimal(9,2) NOT NULL,
-  `maxorderprice` decimal(9,2) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `hut_deliverytime`;
 CREATE TABLE IF NOT EXISTS `hut_deliverytime` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
