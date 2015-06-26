@@ -29,6 +29,23 @@ class SqlTableColumn{
 	public $accept_null;
 	public $default_value;
 	public $extra;
+
+	public function toSql(){
+		if($this->accept_null){
+			if($this->default_value == 'NULL'){
+				$ext_sql = 'DEFAULT NULL';
+			}else{
+				$ext_sql = 'NULL DEFAULT \''.$this->default_value.'\'';
+			}
+		}else{
+			$ext_sql = 'NOT NULL';
+			if($this->default_value){
+				$ext_sql.= ' DEFAULT \''.$this->default_value.'\'';
+			}
+		}
+
+		return "`{$this->name}` {$this->type} $ext_sql {$this->extra}";
+	}
 }
 
 class SqlTable{
@@ -114,6 +131,35 @@ class DatabaseModule extends AdminControlPanelModule{
 	}
 
 	public function dropColumnAction(){
+		$this->checkTargetColumn($table, $column, $s, $t);
+
+		if(isset($t->columns[$column]) && !isset($s->columns[$column])){
+			global $db;
+			$db->query("ALTER TABLE `$table` DROP COLUMN `$column`");
+			showmsg('successfully_dropped_column', 'refresh');
+		}else{
+			showmsg('failed_to_drop_column', 'back');
+		}
+	}
+
+	public function alterColumnAction(){
+		$this->checkTargetColumn($table, $column, $s, $t);
+
+		if(isset($t->columns[$column]) && isset($s->columns[$column]) && $t->columns[$column] != $s->columns[$column]){
+			$subsql = $s->columns[$column]->toSql();
+			global $db;
+			$db->query("ALTER TABLE `$table` CHANGE `$column` $subsql");
+			showmsg('successfully_altered_column', 'refresh');
+		}else{
+			showmsg('failed_to_alter_column', 'refresh');
+		}
+	}
+
+	public function addColumnAction(){
+		$this->checkTargetColumn($table, $column, $s, $t);
+	}
+
+	private function checkTargetColumn(&$table, &$column, &$s, &$t){
 		if(empty($_GET['table']) || empty($_GET['column']))
 			showmsg('illegal_operation', 'back');
 
@@ -129,14 +175,6 @@ class DatabaseModule extends AdminControlPanelModule{
 		$s = $standard_tables[$table];
 		$t = $current_tables[$table];
 		unset($standard_tables, $current_tables);
-
-		if(isset($t->columns[$column]) && !isset($s->columns[$column])){
-			global $db;
-			$db->query("ALTER TABLE `$table` DROP COLUMN `$column`");
-			showmsg('successfully_dropped_column', 'refresh');
-		}else{
-			showmsg('failed_to_drop_column', 'back');
-		}
 	}
 
 	public function getStandardStructure(){
