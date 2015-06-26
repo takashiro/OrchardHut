@@ -96,6 +96,23 @@ class DatabaseModule extends AdminControlPanelModule{
 		include view('database');
 	}
 
+	public function dropTableAction(){
+		if(!isset($_GET['name']))
+			exit('illegal operation');
+
+		$name = trim($_GET['name']);
+
+		$standard_tables = $this->getStandardStructure();
+		$current_tables = $this->getCurrentStructure();
+		if(isset($current_tables[$name]) && !isset($standard_tables[$name])){
+			global $db;
+			$db->query("DROP TABLE `$name`");
+			showmsg('successfully_dropped_table', 'refresh');
+		}else{
+			showmsg('failed_to_drop_table', 'back');
+		}
+	}
+
 	public function getStandardStructure(){
 		$sql = file_get_contents(S_ROOT.'./install/install.sql');
 		$sql = explode(';', $sql);
