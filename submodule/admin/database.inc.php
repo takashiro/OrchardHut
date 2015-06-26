@@ -95,6 +95,20 @@ class SqlTable{
 
 		return true;
 	}
+
+	public function toSql(){
+		$sql = 'CREATE TABLE IF NOT EXISTS `'.$this->name.'` (';
+
+		$columns = array();
+		foreach($this->columns as $c){
+			$columns[] = $c->toSql();
+		}
+
+		$sql.= implode(',', $columns);
+		$sql.= ') ENGINE='.$this->engine.' DEFAULT CHARSET='.$this->charset;
+
+		return $sql;
+	}
 }
 
 class DatabaseModule extends AdminControlPanelModule{
@@ -134,6 +148,18 @@ class DatabaseModule extends AdminControlPanelModule{
 			showmsg('successfully_altered_table', 'refresh');
 		}else{
 			showmsg('failed_to_alter_table', 'back');
+		}
+	}
+
+	public function createTableAction(){
+		$this->checkTargetTable($name, $s, $t);
+
+		if($s !== null && $t === null){
+			global $db;
+			$db->query($s->toSql());
+			showmsg('successfully_added_table', 'refresh');
+		}else{
+			showmsg('failed_to_add_table', 'back');
 		}
 	}
 
