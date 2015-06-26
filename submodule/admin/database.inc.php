@@ -98,7 +98,7 @@ class DatabaseModule extends AdminControlPanelModule{
 
 	public function dropTableAction(){
 		if(!isset($_GET['name']))
-			exit('illegal operation');
+			showmsg('illegal_operation', 'back');
 
 		$name = trim($_GET['name']);
 
@@ -110,6 +110,32 @@ class DatabaseModule extends AdminControlPanelModule{
 			showmsg('successfully_dropped_table', 'refresh');
 		}else{
 			showmsg('failed_to_drop_table', 'back');
+		}
+	}
+
+	public function dropColumnAction(){
+		if(empty($_GET['table']) || empty($_GET['column']))
+			showmsg('illegal_operation', 'back');
+
+		$table = trim($_GET['table']);
+		$column = trim($_GET['column']);
+
+		$standard_tables = $this->getStandardStructure();
+		$current_tables = $this->getCurrentStructure();
+		if(!isset($standard_tables[$table]) || !isset($current_tables[$table])){
+			showmsg('illegal_operation', 'back');
+		}
+
+		$s = $standard_tables[$table];
+		$t = $current_tables[$table];
+		unset($standard_tables, $current_tables);
+
+		if(isset($t->columns[$column]) && !isset($s->columns[$column])){
+			global $db;
+			$db->query("ALTER TABLE `$table` DROP COLUMN `$column`");
+			showmsg('successfully_dropped_column', 'refresh');
+		}else{
+			showmsg('failed_to_drop_column', 'back');
 		}
 	}
 
