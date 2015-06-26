@@ -133,7 +133,7 @@ class DatabaseModule extends AdminControlPanelModule{
 	public function dropColumnAction(){
 		$this->checkTargetColumn($table, $column, $s, $t);
 
-		if(isset($t->columns[$column]) && !isset($s->columns[$column])){
+		if($t !== null && $s === null){
 			global $db;
 			$db->query("ALTER TABLE `$table` DROP COLUMN `$column`");
 			showmsg('successfully_dropped_column', 'refresh');
@@ -145,18 +145,27 @@ class DatabaseModule extends AdminControlPanelModule{
 	public function alterColumnAction(){
 		$this->checkTargetColumn($table, $column, $s, $t);
 
-		if(isset($t->columns[$column]) && isset($s->columns[$column]) && $t->columns[$column] != $s->columns[$column]){
-			$subsql = $s->columns[$column]->toSql();
+		if($t !== null && $s !== null && $t != $s){
+			$subsql = $s->toSql();
 			global $db;
 			$db->query("ALTER TABLE `$table` CHANGE `$column` $subsql");
 			showmsg('successfully_altered_column', 'refresh');
 		}else{
-			showmsg('failed_to_alter_column', 'refresh');
+			showmsg('failed_to_alter_column', 'back');
 		}
 	}
 
 	public function addColumnAction(){
 		$this->checkTargetColumn($table, $column, $s, $t);
+
+		if($t === null && $s !== null){
+			$subsql = $s->toSql();
+			global $db;
+			$db->query("ALTER TABLE `$table` ADD $subsql");
+			showmsg('successfully_added_column', 'refresh');
+		}else{
+			showmsg('failed_to_add_column', 'back');
+		}
 	}
 
 	private function checkTargetColumn(&$table, &$column, &$s, &$t){
@@ -175,6 +184,18 @@ class DatabaseModule extends AdminControlPanelModule{
 		$s = $standard_tables[$table];
 		$t = $current_tables[$table];
 		unset($standard_tables, $current_tables);
+
+		if(isset($s->columns[$column])){
+			$s = $s->columns[$column];
+		}else{
+			$s = null;
+		}
+
+		if(isset($t->columns[$column])){
+			$t = $t->columns[$column];
+		}else{
+			$t = null;
+		}
 	}
 
 	public function getStandardStructure(){
