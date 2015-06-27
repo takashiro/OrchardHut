@@ -133,6 +133,18 @@ class SqlTable{
 			$columns[] = $c->toSql();
 		}
 
+		if($this->primary_key){
+			$columns[] = 'PRIMARY KEY (`'.implode('`,`', $this->primary_key).'`)';
+		}
+
+		foreach($this->unique_keys as $name => $keys){
+			$columns[] = 'UNIQUE KEY `'.$name.'` (`'.implode('`,`', $keys).'`)';
+		}
+
+		foreach($this->indexes as $name => $keys){
+			$columns[] = 'KEY `'.$name.'` (`'.implode('`,`', $keys).'`)';
+		}
+
 		$sql.= implode(',', $columns);
 		$sql.= ') ENGINE='.$this->engine.' DEFAULT CHARSET='.$this->charset;
 
