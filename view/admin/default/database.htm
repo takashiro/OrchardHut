@@ -31,6 +31,7 @@ $(function(){
 		<table>
 			<thead>
 				<tr>
+					<th rowspan="2"></th>
 					<td rowspan="2">Name</td>
 					<td colspan="2">Standard</td>
 					<td colspan="2">Current</td>
@@ -42,6 +43,7 @@ $(function(){
 				<!--{loop $standard_tables $table_name $s}-->
 				<!--{if !isset($current_tables[$table_name])}-->
 				<tr>
+					<th></th>
 					<td>{echo $s->name}</td>
 					<td class="standard">{echo $s->engine}</td>
 					<td class="standard">{echo $s->charset}</td>
@@ -54,6 +56,7 @@ $(function(){
 				<!--{loop $current_tables $table_name $t}-->
 				<!--{if !isset($standard_tables[$table_name])}-->
 				<tr>
+					<th></th>
 					<td>{echo $t->name}</td>
 					<td class="standard"></td>
 					<td class="standard"></td>
@@ -65,6 +68,7 @@ $(function(){
 				<!--{eval $s = $standard_tables[$table_name];}-->
 				<!--{if $t->engine != $s->engine || $t->charset != $s->charset}-->
 				<tr>
+					<th></th>
 					<td>{echo $t->name}</td>
 					<td class="standard">{echo $s->engine}</td>
 					<td class="standard">{echo $s->charset}</td>
@@ -143,6 +147,117 @@ $(function(){
 							<td class="current">{echo $c->default_value}</td>
 							<td class="current">{echo $c->extra}</td>
 							<td><a class="toast" href="$mod_url&action=altercolumn&table=$table_name&column={echo $d->name}">[修改]</a></td>
+						</tr>
+						<!--{/if}-->
+					<!--{/loop}-->
+				<!--{/if}-->
+			<!--{/loop}-->
+			</tbody>
+		</table>
+	</div>
+
+	<h2>Modified Table Indexes</h2>
+	<div class="content">
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<td>Table</td>
+					<td>Index</td>
+					<td>Type</td>
+					<td>Standard Fields</td>
+					<td>Current Fields</td>
+					<td>Operation</td>
+				</tr>
+			</thead>
+			<tbody>
+			<!--{loop $current_tables $table_name $t}-->
+				<!--{if isset($standard_tables[$table_name])}-->
+					<!--{eval $s = $standard_tables[$table_name];}-->
+					<!--{if $s->primary_key != $t->primary_key}-->
+					<tr>
+						<th></th>
+						<td>{echo $s->name}</td>
+						<td></td>
+						<td>PRIMARY</td>
+						<td>{echo implode(',', $s->primary_key)}</td>
+						<td>{echo implode(',', $t->primary_key)}</td>
+						<td>[修改]</td>
+					</tr>
+					<!--{/if}-->
+
+					<!--{loop $s->unique_keys $key_name $fields}-->
+						<!--{if !isset($t->unique_keys[$key_name])}-->
+						<tr>
+							<th></th>
+							<td>{echo $s->name}</td>
+							<td>Unique</td>
+							<td>{$key_name}</td>
+							<td>{echo implode(',', $fields)}</td>
+							<td></td>
+							<td>[修改]</td>
+						</tr>
+						<!--{/if}-->
+					<!--{/loop}-->
+
+					<!--{loop $t->unique_keys $key_name $fields}-->
+						<!--{if !isset($s->unique_keys[$key_name])}-->
+						<tr>
+							<th></th>
+							<td>{echo $t->name}</td>
+							<td>Unique</td>
+							<td>{$key_name}</td>
+							<td></td>
+							<td>{echo implode(',', $fields)}</td>
+							<td>[修改]</td>
+						</tr>
+						<!--{elseif $fields != $s->unique_keys[$key_name]}-->
+						<tr>
+							<th></th>
+							<td>{echo $t->name}</td>
+							<td>Unique</td>
+							<td>{$key_name}</td>
+							<td>{echo implode(',', $s->unique_keys[$key_name])}</td>
+							<td>{echo implode(',', $fields)}</td>
+							<td>[修改]</td>
+						</tr>
+						<!--{/if}-->
+					<!--{/loop}-->
+
+					<!--{loop $s->indexes $key_name $fields}-->
+						<!--{if !isset($t->indexes[$key_name])}-->
+						<tr>
+							<th></th>
+							<td>{echo $s->name}</td>
+							<td>Index</td>
+							<td>{$key_name}</td>
+							<td>{echo implode(',', $fields)}</td>
+							<td></td>
+							<td>[修改]</td>
+						</tr>
+						<!--{/if}-->
+					<!--{/loop}-->
+
+					<!--{loop $t->indexes $key_name $fields}-->
+						<!--{if !isset($s->indexes[$key_name])}-->
+						<tr>
+							<th></th>
+							<td>{echo $t->name}</td>
+							<td>Index</td>
+							<td>{$key_name}</td>
+							<td></td>
+							<td>{echo implode(',', $fields)}</td>
+							<td>[修改]</td>
+						</tr>
+						<!--{elseif $fields != $s->indexes[$key_name]}-->
+						<tr>
+							<th></th>
+							<td>{echo $t->name}</td>
+							<td>Index</td>
+							<td>{$key_name}</td>
+							<td>{echo implode(',', $s->indexes[$key_name])}</td>
+							<td>{echo implode(',', $fields)}</td>
+							<td>[修改]</td>
 						</tr>
 						<!--{/if}-->
 					<!--{/loop}-->

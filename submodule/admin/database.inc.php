@@ -53,8 +53,10 @@ class SqlTable{
 	public $columns = array();
 	public $engine;
 	public $charset;
-	public $index = array();
-	public $constraint = array();
+	public $primary_key = array();
+	public $unique_keys = array();
+	public $indexes = array();
+	public $constraints = array();
 
 	private $is_valid = false;
 
@@ -63,7 +65,7 @@ class SqlTable{
 	}
 
 	public function parse($sentence){
-		if(!preg_match('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`(\w+)`\s+\((.*?)\)\s+ENGINE\=(MyISAM|InnoDB)\s+DEFAULT\s+CHARSET\=(\w+)/is', $sentence, $matches))
+		if(!preg_match('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`(\w+)`\s+(\(.*?\))\s+ENGINE\=(MyISAM|InnoDB)\s+DEFAULT\s+CHARSET\=(\w+)/is', $sentence, $matches))
 			return;
 
 		if(!$this->parseColumns($matches[2]))
@@ -91,6 +93,33 @@ class SqlTable{
 			$c->extra = strtolower($matches[5][$i]);
 
 			$this->columns[$c->name] = $c;
+		}
+
+		preg_match_all('/PRIMARY\s+KEY\s*\(\s*(`\w+`(?:\s*,\s*`\w+`)*)\s*\)\s*[,)]/i', $columns, $matches);
+		if(!empty($matches[1])){
+			$this->primary_key = explode(',', $matches[1][0]);
+			foreach($this->primary_key as &$field){
+				$field = trim($field, '` ');
+			}
+			unset($field);
+		}
+
+		preg_match_all('/((?:UNIQUE\s+)?KEY)\s+`(\w+)`\s*\(\s*(`\w+`(?:\s*,\s*`\w+`)*)\s*\)\s*[,)]/i', $columns, $matches);
+		$key_num = count($matches[0]);
+		for($i = 0; $i < $key_num; $i++){
+			$type = $matches[1][$i];
+			$name = $matches[2][$i];
+			$fields = explode(',', $matches[3][$i]);
+			foreach($fields as &$field){
+				$field = trim($field, '` ');
+			}
+			unset($field);
+
+			if(strcasecmp($type,'KEY') == 0){
+				$this->indexes[$name] = $fields;
+			}else{
+				$this->unique_keys[$name] = $fields;
+			}
 		}
 
 		return true;
@@ -130,7 +159,7 @@ class DatabaseModule extends AdminControlPanelModule{
 	public function dropTableAction(){
 		$this->checkTargetTable($name, $s, $t);
 
-		if($s !== null && $t === null){
+		if($s === null && $t !== null){
 			global $db;
 			$db->query("DROP TABLE `$name`");
 			showmsg('successfully_dropped_table', 'refresh');
@@ -303,6 +332,19 @@ class DatabaseModule extends AdminControlPanelModule{
 				}
 
 				$t->columns[$c->name] = $c;
+			}
+
+			$indexes = $db->fetch_all("SHOW INDEX FROM `{$table_name}`");
+			foreach($indexes as $index){
+				if($index['Key_name'] == 'PRIMARY'){
+					$t->primary_key[] = $index['Column_name'];
+				}else{
+					if($index['Non_unique']){
+						$t->indexes[$index['Key_name']][] = $index['Column_name'];
+					}else{
+						$t->unique_keys[$index['Key_name']][] = $index['Column_name'];
+					}
+				}
 			}
 		}
 
