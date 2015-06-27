@@ -348,7 +348,7 @@ class DatabaseModule extends AdminControlPanelModule{
 			}
 		}
 
-		$charsets = $db->fetch_all("SHOW CHARACTER SET");
+		$charsets = $db->fetch_all('SHOW CHARACTER SET');
 		$collation_to_charset = array();
 		foreach($charsets as $c){
 			$collation_to_charset[$c['Default collation']] = $c['Charset'];
