@@ -105,20 +105,18 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 
 					if($db->affected_rows > 0){
 						//退款至用户账户
-						$order = $db->fetch_first("SELECT paymentmethod,userid FROM {$tpre}order WHERE id={$o['id']}");
-						if($order['paymentmethod'] != Order::PaidWithCash){
-							$db->query("UPDATE {$tpre}user SET wallet=wallet+$returned_fee WHERE id={$order['userid']}");
-							if($db->affected_rows > 0){
-								$log = array(
-									'uid' => $order['userid'],
-									'dateline' => TIMESTAMP,
-									'type' => Wallet::OrderRefundLog,
-									'delta' => $returned_fee,
-									'orderid' => $o['id'],
-								);
-								$table = $db->select_table('userwalletlog');
-								$table->insert($log);
-							}
+						$order = $db->fetch_first("SELECT userid FROM {$tpre}order WHERE id={$o['id']}");
+						$db->query("UPDATE {$tpre}user SET wallet=wallet+$returned_fee WHERE id={$order['userid']}");
+						if($db->affected_rows > 0){
+							$log = array(
+								'uid' => $order['userid'],
+								'dateline' => TIMESTAMP,
+								'type' => Wallet::OrderRefundLog,
+								'delta' => $returned_fee,
+								'orderid' => $o['id'],
+							);
+							$table = $db->select_table('userwalletlog');
+							$table->insert($log);
 						}
 
 						//返回库存
@@ -151,7 +149,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 			showmsg('successfully_handled_returned_order', 'refresh');
 		}
 
-		$returned_orders = $db->fetch_all("SELECT r.*,o.addressid,o.extaddress,o.totalprice,o.userid,o.mobile,o.addressee,o.dateline AS orderdateline
+		$returned_orders = $db->fetch_all("SELECT r.*,o.addressid,o.extaddress,o.totalprice,o.userid,o.mobile,o.addressee,o.dateline AS orderdateline,o.paymentmethod,o.alipaystate
 			FROM {$tpre}returnedorder r
 				LEFT JOIN {$tpre}order o ON o.id=r.id
 			WHERE $condition");
