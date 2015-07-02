@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `hut_station` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `range` mediumint(8) unsigned NOT NULL,
+  `orderrange` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
