@@ -1,0 +1,41 @@
+<!--{template header}-->
+
+<script type="text/javascript" src="./js/jquery.cascadeselect.js?$_CONFIG[refversion]"></script>
+<script type="text/javascript">
+$.cascadeselect.addCommonOptions('all_addresses', {echo json_encode(Address::Components())});
+</script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="###">配送</a></li>
+	<li><a href="admin.php?mod=station">配送站</a></li>
+	<li>编辑</li>
+</ol>
+
+<div class="box">
+	<h2>配送站</h2>
+	<div class="content">
+		<form class="toast edit_form" action="$mod_url&action=edit&id=$station[id]" method="post">
+			<table>
+				<tr>
+					<th>名称：</th>
+					<td><input type="text" name="name" value="$station[name]" maxlength="100" /></td>
+				</tr>
+				<tr>
+					<th>地址：</th>
+					<td><input type="text" name="address" value="$station[address]" maxlength="255" /></td>
+				</tr>
+				<tr>
+					<th>管理范围：</th>
+					<td><input type="hidden" class="cascadeselect" name="orderrange" value="$station[orderrange]" data-options="all_addresses" /></td>
+				</tr>
+			</table>
+
+			<div class="post_buttons">
+				<button type="submit">确认</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!--{template footer}-->

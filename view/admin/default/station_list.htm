@@ -1,0 +1,43 @@
+<!--{template header}-->
+
+<script type="text/javascript">
+$(function(){
+	$('#station_list').editlist({
+		'edit': '$mod_url&action=edit',
+		'delete': '$mod_url&action=delete',
+		'attr' : ['name', 'address']
+	});
+});
+</script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="###">配送</a></li>
+	<li>配送站列表</li>
+</ol>
+
+<div class="box list">
+	<h1>配送站列表</h1>
+
+	<div class="content">
+		<table id="station_list">
+			<thead><tr><td>名称</td><td>地址</td><td>操作</td></tr></thead>
+			<tbody>
+			<!--{loop $station_list $s}-->
+				<tr data-primaryvalue="$s[id]">
+					<td>$s[name]</td>
+					<td>$s[address]</td>
+					<td></td>
+				</tr>
+			<!--{/loop}-->
+			<tr>
+				<td><input type="text" /></td>
+				<td><input type="text" /></td>
+				<td><button type="button" class="add">添加</button></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--{template footer}-->
