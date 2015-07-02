@@ -21,18 +21,24 @@ $(function(){
 
 	<div class="content">
 		<table id="station_list">
-			<thead><tr><td>名称</td><td>地址</td><td>操作</td></tr></thead>
+			<thead><tr><td>名称</td><td>地址</td><td>送货速度</td><td>商品质量</td><td>服务态度</td><td>操作</td></tr></thead>
 			<tbody>
 			<!--{loop $station_list $s}-->
 				<tr data-primaryvalue="$s[id]">
 					<td>$s[name]</td>
 					<td>$s[address]</td>
+					<td>{echo sprintf('%.2f', $s['level1'])}</td>
+					<td>{echo sprintf('%.2f', $s['level2'])}</td>
+					<td>{echo sprintf('%.2f', $s['level3'])}</td>
 					<td></td>
 				</tr>
 			<!--{/loop}-->
 			<tr>
 				<td><input type="text" /></td>
 				<td><input type="text" /></td>
+				<td></td>
+				<td></td>
+				<td></td>
 				<td><button type="button" class="add">添加</button></td>
 			</tr>
 			</tbody>
