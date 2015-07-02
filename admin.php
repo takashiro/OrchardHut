@@ -67,20 +67,23 @@ class AdminControlPanelModule{
 }
 
 $mod = isset($_GET['mod']) ? trim($_GET['mod']) : 'home';
-$module = submodule('admin', $mod);
+$module_path = submodule('admin', $mod);
 $mod_url = 'admin.php?mod='.$mod;
-if(file_exists($module)){
-	if(!$_G['admin']->hasPermission($mod)){
-		showmsg('no_permission', 'back');
-	}
-}else{
+if(!file_exists($module_path)){
+	$mod = 'home';
 	$mod_url = 'admin.php?mod=home';
-	$module = submodule('admin', 'home');
+	$module_path = submodule('admin', 'home');
 }
 
-require_once $module;
+if(!$_G['admin']->hasPermission($mod)){
+	showmsg('no_permission', 'back');
+}
+require_once $module_path;
 
 $classname = $mod.'Module';
+if(!class_exists($classname, false)){
+	exit('invalid module');
+}
 $module = new $classname;
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'].'Action' : 'defaultAction';
