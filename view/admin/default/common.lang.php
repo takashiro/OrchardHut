@@ -47,6 +47,7 @@ return array(
 	'permission_order_sort_w' => '分拣订单',
 	'permission_order_deliver' => '查看待配送订单',
 	'permission_order_deliver_w' => '配送订单',
+	'permission_station' => '配送站管理',
 
 	'product_storage_normal_mode' => '标准',
 	'product_storage_booking_mode' => '预售',

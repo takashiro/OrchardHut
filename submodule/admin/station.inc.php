@@ -45,7 +45,7 @@ class StationModule extends AdminControlPanelModule{
 	}
 
 	public function editAction(){
-		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
 		if($_POST){
 			$station = array();
