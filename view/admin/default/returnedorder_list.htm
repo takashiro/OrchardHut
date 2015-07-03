@@ -64,7 +64,7 @@ $(function(){
 						<tr>
 							<td rowspan="2">订单号</td>
 							<td rowspan="2">地址和收件人</td>
-							<td rowspan="2" width="100">下单时间</td>
+							<td rowspan="2" width="100">下单时间<br />退单时间</td>
 							<td rowspan="2">付款状态</td>
 							<td colspan="4">退回物品</td>
 							<td rowspan="2" width="120">退单原因</td>
@@ -89,8 +89,8 @@ $(function(){
 									<a href="admin.php?mod=order&action=list&time_start=&time_end=&addressee=$o[addressee]">$o[addressee]</a> (<a href="admin.php?mod=order&action=list&time_start=&time_end=&mobile=$o[mobile]">$o[mobile]</a>)
 								</div>
 							</td>
-							<td rowspan="$rowspan">{echo rdate($o['dateline'])}</td>
-							<td rowspan="$rowspan">{echo Order::$PaymentMethod[$o['paymentmethod']]}<!--{if $o['alipaystate']}-->({echo AlipayNotify::$TradeState[$o['alipaystate']]})<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}-->(等待付款)<!--{/if}--></td>
+							<td rowspan="$rowspan">{echo rdate($o['orderdateline'])}<br />{echo rdate($o['dateline'])}</td>
+							<td rowspan="$rowspan">{echo Order::$PaymentMethod[$o['paymentmethod']]}<!--{if $o['alipaystate']}--><br />({echo AlipayNotify::$TradeState[$o['alipaystate']]})<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}--><br />(等待付款)<!--{/if}--></td>
 							<td colspan="4"></td>
 							<td rowspan="$rowspan"><div class="reason">$o[reason]</div></td>
 							<td rowspan="$rowspan"><input type="text" class="returnedfee narrow" name="returnedfee[{$o[id]}]" data-orderid="$o[id]" /></td>
