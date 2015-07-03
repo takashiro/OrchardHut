@@ -187,6 +187,23 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 		include view('returnedorder_list');
 	}
 
+	public function configAction(){
+		if($_POST){
+			$config = array();
+
+			if($_POST['reason_options']){
+				$config['reason_options'] = htmlspecialchars($_POST['reason_options']);
+			}
+
+			writedata('returnedorderconfig', $config);
+			showmsg('edit_succeed', 'refresh');
+		}
+
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+		$config = readdata('returnedorderconfig');
+		include view('returnedorder_config');
+	}
+
 }
 
 ?>

@@ -5,6 +5,19 @@
 	width: 80%;
 }
 </style>
+<script type="text/javascript">
+$(function(){
+	$('#reason').change(function(){
+		if($(this).val() == ''){
+			$('#otherreason').show();
+		}else{
+			$('#otherreason').hide();
+		}
+	});
+
+	$('#reason').change();
+});
+</script>
 
 <div class="box">
 	<h1>我的订单 - 退货申请</h1>
@@ -53,7 +66,14 @@
 			<div class="lightbox reason">
 				<h1>退货原因</h1>
 				<div class="content">
-					<textarea name="reason" placeholder="给您带来不便，万分抱歉！还请填写详细情况以便我们改正~"></textarea>
+					<select id="reason" name="reason">
+					<!--{loop $returned_order_config['reason_options'] $reason}-->
+						<option value="$reason">$reason</option>
+					<!--{/loop}-->
+						<option value="">其他</option>
+					</select>
+					<br />
+					<textarea id="otherreason" name="otherreason" placeholder="给您带来不便，万分抱歉！还请填写详细情况以便我们改正~"></textarea>
 				</div>
 			</div>
 

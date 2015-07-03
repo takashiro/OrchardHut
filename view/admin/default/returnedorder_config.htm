@@ -1,0 +1,31 @@
+<!--{template header}-->
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=order">订单</a></li>
+	<li><a href="admin.php?mod=returnedorder">退款申请</a></li>
+	<li>设置</li>
+</ol>
+
+<div class="box edit_form">
+	<h1>退款设置</h1>
+	<form class="toast" action="$mod_url&action=config" method="post">
+
+	<table>
+		<tr>
+			<th><label>退款理由可选项：</label></th>
+			<td>
+				<textarea name="reason_options"><!--{if !empty($config['reason_options'])}-->$config[reason_options]<!--{/if}--></textarea>
+				<span class="tips">每行一条理由，供用户选择</span>
+			</td>
+		</tr>
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">修改设置</button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->

@@ -117,6 +117,9 @@ case 'return':
 		$returned_order->id = $order->id;
 		$returned_order->dateline = TIMESTAMP;
 		$returned_order->reason = isset($_POST['reason']) ? htmlspecialchars($_POST['reason']) : '';
+		if(!$returned_order->reason && !empty($_POST['otherreason'])){
+			$returned_order->reason = htmlspecialchars($_POST['otherreason']);
+		}
 		$returned_order->state = ReturnedOrder::Submitted;
 		$returned_order->returnedfee = 0;
 
@@ -161,6 +164,11 @@ case 'return':
 
 	}else{
 		unset($returned_order);
+	}
+
+	$returned_order_config = readdata('returnedorderconfig');
+	if(!empty($returned_order_config['reason_options'])){
+		$returned_order_config['reason_options'] = explode("\n", $returned_order_config['reason_options']);
 	}
 
 	include view('order_return');
