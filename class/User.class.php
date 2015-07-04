@@ -44,13 +44,12 @@ class User extends DBObject{
 			if(!empty($_COOKIE[static::COOKIE_VAR])){
 				$cookie = $this->decodeCookie($_COOKIE[static::COOKIE_VAR]);
 
-				if(!is_array($cookie) || !isset($cookie['id']) || !isset($cookie[static::AUTH_FIELD])){
+				if(!is_array($cookie) || !isset($cookie['id'])){
 					return false;
 				}
 
 				@$cookie = array(
 					'id' => intval($cookie['id']),
-					static::AUTH_FIELD => $cookie[static::AUTH_FIELD],
 				);
 				$this->fetch('*', $cookie);
 
