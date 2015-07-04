@@ -153,6 +153,137 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 			FROM {$tpre}returnedorder r
 				LEFT JOIN {$tpre}order o ON o.id=r.id
 			WHERE $condition");
+		self::FetchOrderDetails($returned_orders);
+
+		$address_format = Address::Format();
+
+		include view('returnedorder_list');
+	}
+
+	public function configAction(){
+		if($_POST){
+			$config = array();
+
+			if($_POST['reason_options']){
+				$config['reason_options'] = htmlspecialchars($_POST['reason_options']);
+			}
+
+			writedata('returnedorderconfig', $config);
+			showmsg('edit_succeed', 'refresh');
+		}
+
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+		$config = readdata('returnedorderconfig');
+		include view('returnedorder_config');
+	}
+
+	public function logAction(){
+		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
+		$condition = array();
+
+		//过滤退款状态
+		$returned_order_states = array(ReturnedOrder::Handled);
+		$returned_order_states = implode(',', $returned_order_states);
+		$condition[] = "r.state IN ($returned_order_states)";
+
+		//过滤掉送货地点不在当前管理员的管辖范围内的订单
+		$limitation_addressids = $_G['admin']->getLimitations();
+		if($limitation_addressids){
+			$condition[] = 'o.addressid IN ('.implode(',', $limitation_addressids).')';
+		}
+
+		$query_data = array();
+
+		//退单时间
+		if(isset($_REQUEST['time_start'])){
+			$time_start = rstrtotime($_REQUEST['time_start']);
+			$condition[] = 'r.dateline>='.$time_start;
+		}else{
+			$time_start = '';
+		}
+		if(isset($_REQUEST['time_end'])){
+			$time_end = rstrtotime($_REQUEST['time_end']);
+			$time_end < $time_start && $time_end = $time_start;
+			$condition[] = 'r.dateline<='.$time_end;
+		}else{
+			$time_end = '';
+		}
+
+		//限定当前管理员可以使用的地址
+		$all_addresses = Address::Components();
+		$limitation = $_G['admin']->getLimitations();
+		if($limitation){
+			foreach($all_addresses as $cid => $c){
+				if(!in_array($cid, $limitation)){
+					unset($all_addresses[$cid]);
+				}
+			}
+		}
+		if($_REQUEST['address']){
+			$address = intval($_REQUEST['address']);
+			isset($all_addresses[$address]) || $address = 0;
+		}else{
+			$address = 0;
+		}
+		if($address){
+			$address_limitation = Address::Extension($address);
+			$condition[] = 'o.addressid IN ('.implode(',', $address_limitation).')';
+			$query_data['address'] = $address;
+		}
+
+		//处理输出格式
+		$formats = array('html', 'csv');
+		$format = $formats[0];
+		if(isset($_REQUEST['format']) && in_array($_REQUEST['format'], $formats)){
+			$format = $_REQUEST['format'];
+		}
+
+		$limit_sql = '';
+		if($format == 'html'){
+			$limit = 20;
+			$offset = ($page - 1) * $limit;
+			$limit_sql = "LIMIT $offset,$limit";
+		}
+
+		if($condition){
+			$condition = implode(' AND ', $condition);
+		}else{
+			$condition = '1';
+		}
+
+		$returned_orders = $db->fetch_all("SELECT r.*,o.addressid,o.extaddress,o.totalprice,o.userid,o.mobile,o.addressee,o.dateline AS orderdateline,o.paymentmethod,o.alipaystate
+			FROM {$tpre}returnedorder r
+				LEFT JOIN {$tpre}order o ON o.id=r.id
+			WHERE $condition
+			ORDER BY r.dateline DESC
+			$limit_sql");
+		self::FetchOrderDetails($returned_orders);
+
+		$pagenum = $db->result_first("SELECT COUNT(*)
+			FROM {$tpre}returnedorder r
+				LEFT JOIN {$tpre}order o ON o.id=r.id
+			WHERE $condition");
+
+		$address_format = Address::Format();
+
+		if(is_numeric($time_start)){
+			$time_start = rdate($time_start);
+			$query_data['time_start'] =$time_start;
+		}
+		if(is_numeric($time_end)){
+			$time_end = rdate($time_end);
+			$query_data['time_end'] = $time_end;
+		}
+
+		$query_string = http_build_query($query_data);
+
+		include view('returnedorder_log_'.$format);
+	}
+
+
+	static private function FetchOrderDetails(&$returned_orders){
+		global $db, $tpre;
 
 		$order_details = array();
 
@@ -181,27 +312,6 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 			}
 		}
 		unset($o);
-
-		$address_format = Address::Format();
-
-		include view('returnedorder_list');
-	}
-
-	public function configAction(){
-		if($_POST){
-			$config = array();
-
-			if($_POST['reason_options']){
-				$config['reason_options'] = htmlspecialchars($_POST['reason_options']);
-			}
-
-			writedata('returnedorderconfig', $config);
-			showmsg('edit_succeed', 'refresh');
-		}
-
-		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
-		$config = readdata('returnedorderconfig');
-		include view('returnedorder_config');
 	}
 
 }

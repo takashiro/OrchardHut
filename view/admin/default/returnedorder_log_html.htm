@@ -1,0 +1,114 @@
+{template header}
+
+<style type="text/css">
+#orderlist{
+	font-size: 10pt;
+}
+.reason{
+	font-size:9pt;
+	max-height:100px;
+	overflow-y:auto;
+}
+.reply{
+	width: 120px;
+}
+.list table tbody tr.subrow td{
+	border: 0 solid;
+}
+.list table tbody tr:nth-child(2n+1) td{
+	background: none;
+}
+</style>
+
+<script type="text/javascript" src="./js/jquery.cascadeselect.js?$_CONFIG[refversion]"></script>
+<script type="text/javascript">
+$.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($all_addresses)});
+</script>
+<script type="text/javascript" src="./js/datetime.js?$_CONFIG[refversion]"></script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=order">订单</a></li>
+	<li><a href="admin.php?mod=returnedorder">退款申请</a></li>
+	<li>历史记录</li>
+</ol>
+
+<div class="box">
+	<h1>退款申请</h1>
+		<div class="content">
+			<form id="condition_form" class="quick_search" action="$mod_url&action=log" method="post">
+			<dl>
+				<dt>订单号：</dt>
+				<dd><input type="text" name="orderid" style="width:3em" /></dd>
+				<dt>时间：</dt>
+				<dd><input type="text" name="time_start" class="datetime" value="$time_start" /> - <input type="text" name="time_end" class="datetime" value="$time_end" /></dd>
+				<dt>送货地址：</dt>
+				<dd><input type="hidden" class="cascadeselect" name="address" data-options="all_addresses" value="$address" /></dd>
+			</dl>
+			<div class="post_buttons">
+				<button type="submit" name="format" value="html">查找</button>
+			</div>
+		</form>
+
+		<div id="orderlist" class="list">
+			<table>
+				<thead>
+					<tr>
+						<td rowspan="2">订单号</td>
+						<td rowspan="2">地址和收件人</td>
+						<td rowspan="2" width="100">退单时间</td>
+						<td rowspan="2">付款状态</td>
+						<td colspan="4">退回物品</td>
+						<td rowspan="2" width="120">退单原因</td>
+						<td rowspan="2">退款({echo Product::$PriceUnit})</td>
+						<td rowspan="2">回复</td>
+					</tr>
+					<tr>
+						<td>名称</td>
+						<td>退回</td>
+						<td>已买</td>
+						<td>处理</td>
+					</tr>
+				</thead>
+				<tbody>
+					<!--{loop $returned_orders $o}-->
+					<!--{eval $rowspan = count($o['details']) + 1;}-->
+					<tr>
+						<td rowspan="$rowspan"><a href="admin.php?mod=order&action=list&time_start=&time_end=&orderid=$o[id]">$o[id]</a></td>
+						<td rowspan="$rowspan">
+							<div>{echo Address::FullPathString($o['addressid'])} $o[extaddress]</div>
+							<div>
+								<a href="admin.php?mod=order&action=list&time_start=&time_end=&addressee=$o[addressee]">$o[addressee]</a> (<a href="admin.php?mod=order&action=list&time_start=&time_end=&mobile=$o[mobile]">$o[mobile]</a>)
+							</div>
+						</td>
+						<td rowspan="$rowspan">{echo rdate($o['dateline'])}</td>
+						<td rowspan="$rowspan">{echo Order::$PaymentMethod[$o['paymentmethod']]}<!--{if $o['alipaystate']}--><br />({echo AlipayNotify::$TradeState[$o['alipaystate']]})<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}--><br />(等待付款)<!--{/if}--></td>
+						<td colspan="4"></td>
+						<td rowspan="$rowspan"><div class="reason">$o[reason]</div></td>
+						<td rowspan="$rowspan">$o[returnedfee]</td>
+						<td rowspan="$rowspan" class="reply">$o[adminreply]</td>
+					</tr>
+					<!--{loop $o['details'] $d}-->
+						<tr class="subrow" data-orderid="$o[id]">
+							<td>$d[productname]<!--{if $d['subtype']}-->($d[subtype])<!--{/if}--></td>
+							<td>
+								<div>{$d[number]}{$d[amountunit]}</div>
+								<div class="returnfee_subtotal">{echo sprintf('%.2f', $d['subtotal'] * $d['number'] / $d['boughtnum'])}{echo Product::$PriceUnit}</div>
+							</td>
+							<td>
+								<div>{$d[boughtnum]}{$d[amountunit]}</div>
+								<div>{$d[subtotal]}{echo Product::$PriceUnit}</div>
+							</td>
+							<td class="detailresult">{echo ReturnedOrder::$DetailResult[$d['state']]}</td>
+						</tr>
+					<!--{/loop}-->
+					<!--{/loop}-->
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&action=log&'.$query_string)}
+
+{template footer}
