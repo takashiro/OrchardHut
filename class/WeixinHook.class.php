@@ -31,6 +31,16 @@ class WeixinHook{
 			if($touser){
 				if($log['extra'] == Order::InDeliveryStation){
 					$text = lang('weixin', 'your_order_just_arrived_in_delivery_station');
+
+					$fullpath = Address::FullPathIds($order->addressid);
+					if($fullpath){
+						$min_range = Address::MinRange('orderrange', $order->addressid);
+						$station = $db->fetch_first("SELECT id,address FROM {$tpre}station WHERE orderrange IN ($fullpath) ORDER BY $min_range LIMIT 1");
+						if(!empty($station['address'])){
+							$text.= lang('weixin', 'the_station_is_located_in').$station['address'].lang('common', 'period');
+						}
+					}
+
 					if($order->deliverymethod == Order::HomeDelivery){
 						$text.= lang('weixin', 'please_wait_for_the_deliverer');
 					}else{

@@ -129,6 +129,34 @@ class Address{
 		}
 		return implode(' ', $str);
 	}
+
+	static public function FullPathIds($curid){
+		$components = self::Components();
+		$path = array();
+		while($curid){
+			if(empty($components[$curid])){
+				break;
+			}
+			$c = $components[$curid];
+			$path[] = $c['id'];
+			$curid = $c['parentid'];
+		}
+		return implode(',', $path);
+	}
+
+	static public function MinRange($field, $curid){
+		$fullpath = self::FullPath($curid);
+		$sql = "CASE `$field`";
+
+		$weight = count($fullpath) - 1;
+		foreach($fullpath AS $c){
+			$sql.= " WHEN {$c['id']} THEN $weight";
+			$weight--;
+		}
+		$sql.= ' ELSE '.count($fullpath);
+		$sql.= ' END';
+		return $sql;
+	}
 }
 
 ?>

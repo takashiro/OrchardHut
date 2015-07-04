@@ -1,6 +1,9 @@
 <?php
 
 return array(
+	'comma' => '，',
+	'period' => '。',
+
 	'order' => '订单',
 	'order_unsorted' => '待出库',
 	'order_sorted' => '已打包',
