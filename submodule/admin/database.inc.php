@@ -161,11 +161,23 @@ class DatabaseModule extends AdminControlPanelModule{
 	public function defaultAction(){
 		$standard_tables = self::GetStandardStructure();
 		$current_tables = self::GetCurrentStructure();
+		$overhead_tables = self::GetAllTableOverhead();
 
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$standard_update_time = filemtime(S_ROOT.'./install/install.sql');
 		include view('database');
+	}
+
+	public function optimizeTableAction(){
+		if(!empty($_POST['tables']) && is_array($_POST['tables'])){
+			global $db;
+			foreach($_POST['tables'] as $table_name => $on){
+				$table_name = raddslashes($table_name);
+				$db->query("OPTIMIZE TABLE `$table_name`");
+			}
+		}
+		showmsg('successfully_optimized_tables', 'refresh');
 	}
 
 	public function dropTableAction(){
@@ -342,6 +354,11 @@ class DatabaseModule extends AdminControlPanelModule{
 		}else{
 			showmsg('illegal_operation', 'back');
 		}
+	}
+
+	public static function GetAllTableOverhead(){
+		global $db, $_CONFIG;
+		return $db->fetch_all("SELECT table_name,engine,data_free FROM `information_schema`.`tables` WHERE table_schema='{$_CONFIG['db']['name']}' AND data_free>0");
 	}
 
 	public static function GetStandardStructure(){

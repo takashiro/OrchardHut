@@ -44,6 +44,7 @@ return array(
 	'failed_to_add_column' => '添加字段失败。',
 	'successfully_changed_primary_key' => '修改主键成功。',
 	'successfully_changed_key' => '修改索引成功。',
+	'successfully_optimized_tables' => '成功优化表碎片。',
 );
 
 ?>

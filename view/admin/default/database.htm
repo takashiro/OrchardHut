@@ -24,6 +24,41 @@ $(function(){
 </script>
 
 <div class="box list">
+	<h2>Table Overhead</h2>
+	<div class="content">
+		<form class="toast" action="$mod_url&action=optimizetable" method="post">
+			<table>
+				<thead>
+					<tr><td></td><td>Table</td><td>Engine</td><td>Overhead</td></tr>
+				</thead>
+				<tbody>
+				<!--{loop $overhead_tables $t}-->
+					<tr>
+						<td><input type="checkbox" name="tables[{$t[table_name]}]" {if $t['engine'] == 'MyISAM'}checked="checked"{/if} /></td>
+						<td>$t[table_name]</td>
+						<td>$t[engine]</td>
+						<td>
+							<!--{if $t['data_free'] < 0x400}-->
+							{$t[data_free]}B
+							<!--{elseif $t['data_free'] < 0x100000}-->
+							{echo sprintf('%.2f', $t['data_free'] / 0x400)}KB
+							<!--{else}-->
+							{echo sprintf('%.2f', $t['data_free'] / 0x100000)}MB
+							<!--{/if}-->
+						</td>
+					</tr>
+				<!--{/loop}-->
+				</tbody>
+			</table>
+
+			<!--{if $overhead_tables}-->
+			<div class="post_buttons">
+				<button type="submit">Optimize</button>
+			</div>
+			<!--{/if}-->
+		</form>
+	</div>
+
 	<p>校验版本：{echo rdate($standard_update_time)}</p>
 
 	<h2>Modified Table</h2>
