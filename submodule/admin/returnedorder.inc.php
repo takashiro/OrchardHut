@@ -195,6 +195,12 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 
 		$query_data = array();
 
+		//订单号
+		if(isset($_REQUEST['orderid'])){
+			$orderid = intval($_REQUEST['orderid']);
+			$condition[] = 'r.id='.$orderid;
+		}
+
 		//退单时间
 		if(isset($_REQUEST['time_start'])){
 			$time_start = rstrtotime($_REQUEST['time_start']);
