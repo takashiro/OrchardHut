@@ -319,7 +319,7 @@ CREATE TABLE IF NOT EXISTS `hut_station` (
 DROP TABLE IF EXISTS `hut_user`;
 CREATE TABLE IF NOT EXISTS `hut_user` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `account` varchar(50) NOT NULL,
+  `account` varchar(50) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `mobile` varchar(11) DEFAULT NULL,
   `pwmd5` varchar(32) NOT NULL,

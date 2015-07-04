@@ -57,7 +57,7 @@ if($action == 'login'){
 
 			$user->fetch('*', array('qqopenid' => $open_id));
 			if($user->id <= 0){
-				$user->account = $open_id;
+				$user->account = null;
 				$user->pwmd5 = '';
 				$user->qqopenid = $open_id;
 				$user->nickname = $user_info['nickname'];
@@ -86,7 +86,7 @@ if($action == 'login'){
 		showmsg('you_have_not_bind_qq', 'back');
 	}
 
-	if($_G['user']->qqopenid == $_G['user']->account){
+	if(empty($_G['user']->account)){
 		showmsg('qqopenid_cannot_be_unbinded_with_empty_account', 'memcp.php');
 	}
 

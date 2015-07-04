@@ -52,7 +52,7 @@ if($action == 'login'){
 			}
 		}
 		if($user->id <= 0){
-			$user->account = $open_id;
+			$user->account = null;
 			$user->pwmd5 = '';
 			$user->wxopenid = $open_id;
 			$user->nickname = lang('message', 'wxuser');
@@ -97,7 +97,7 @@ if($action == 'login'){
 
 }else{
 	if($_G['user']->isLoggedIn()){
-		if($_G['user']->account == $_G['user']->wxopenid){
+		if(empty($_G['user']->account)){
 			showmsg('cannot_unbind_wxopenid_with_account_empty', 'memcp.php');
 		}
 
