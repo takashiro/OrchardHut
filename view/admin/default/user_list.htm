@@ -46,6 +46,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode(Address::Com
 					<td>用户名</td>
 					<td>昵称</td>
 					<td>注册时间</td>
+					<td>最后登录时间</td>
 					<td>订单数量</td>
 					<td>钱包余额</td>
 					<td>手机号</td>
@@ -59,6 +60,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode(Address::Com
 					<td><!--{if strlen($u['account']) <= 15}-->$u[account]<!--{/if}--></td>
 					<td>$u[nickname]</td>
 					<td>{echo rdate($u['regtime'])}</td>
+					<td><!--{if $u['logintime'] > 0}-->{echo rdate($u['logintime'])}<!--{else}-->2015-7-5以前<!--{/if}--></td>
 					<td><a href="admin.php?mod=order&userid=$u[id]&time_start=&time_end=">$u[ordernum]</a></td>
 					<td>$u[wallet]</td>
 					<td>$u[mobile]</td>

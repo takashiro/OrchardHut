@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `hut_bankaccount` (
   `orderpaymentmethod` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `addressrange` (`addressrange`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_bankaccountlog`;
 CREATE TABLE IF NOT EXISTS `hut_bankaccountlog` (
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `hut_bankaccountlog` (
   PRIMARY KEY (`id`),
   KEY `accountid` (`accountid`),
   KEY `dateline` (`dateline`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_deliveryaddress`;
 CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
@@ -248,7 +248,7 @@ CREATE TABLE IF NOT EXISTS `hut_productstorage` (
   `mode` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productstoragelog`;
 CREATE TABLE IF NOT EXISTS `hut_productstoragelog` (
@@ -330,6 +330,8 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   `wxopenid` varchar(32) DEFAULT NULL,
   `wallet` decimal(9,2) NOT NULL,
   `formkey` tinyint(4) unsigned NOT NULL,
+  `logintime` int(11) unsigned NOT NULL,
+  `loginkey` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`),
   UNIQUE KEY `qqopenid` (`qqopenid`),

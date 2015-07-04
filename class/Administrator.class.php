@@ -24,7 +24,6 @@
 class Administrator extends User{
 	const TABLE_NAME = 'administrator';
 
-	const AUTH_FIELD = 'account';
 	const COOKIE_VAR = 'rcadmininfo';
 
 	static public $Permissions = array();

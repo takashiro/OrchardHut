@@ -24,7 +24,6 @@
 class User extends DBObject{
 	const TABLE_NAME = 'user';
 
-	const AUTH_FIELD = 'account';
 	const COOKIE_VAR = 'rcuserinfo';
 
 	static private $LoginMethod = array('id', 'account', 'email', 'mobile');
@@ -44,12 +43,13 @@ class User extends DBObject{
 			if(!empty($_COOKIE[static::COOKIE_VAR])){
 				$cookie = $this->decodeCookie($_COOKIE[static::COOKIE_VAR]);
 
-				if(!is_array($cookie) || !isset($cookie['id'])){
+				if(!is_array($cookie) || !isset($cookie['id']) || !isset($cookie['loginkey'])){
 					return false;
 				}
 
-				@$cookie = array(
+				$cookie = array(
 					'id' => intval($cookie['id']),
+					'loginkey' => intval($cookie['loginkey']),
 				);
 				$this->fetch('*', $cookie);
 
@@ -68,7 +68,9 @@ class User extends DBObject{
 			$this->fetch('*', $condition);
 
 			if($this->isLoggedIn()){
-				$cookie = array('id' => $this->attr['id'], static::AUTH_FIELD => $this->attr(static::AUTH_FIELD));
+				$this->loginkey = rand(1, 65535);
+				$this->logintime = TIMESTAMP;
+				$cookie = array('id' => $this->id, 'loginkey' => $this->loginkey);
 				rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
 				return true;
 			}else{
@@ -80,7 +82,9 @@ class User extends DBObject{
 	}
 
 	public function force_login(){
-		$cookie = array('id' => $this->attr['id'], static::AUTH_FIELD => $this->attr(static::AUTH_FIELD), 'loginip' => self::ip());
+		$this->loginkey = rand(1, 65535);
+		$this->logintime = TIMESTAMP;
+		$cookie = array('id' => $this->id, 'loginkey' => $this->loginkey);
 		rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
 	}
 
