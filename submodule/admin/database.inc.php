@@ -159,8 +159,8 @@ class DatabaseModule extends AdminControlPanelModule{
 	}
 
 	public function defaultAction(){
-		$standard_tables = $this->getStandardStructure();
-		$current_tables = $this->getCurrentStructure();
+		$standard_tables = self::GetStandardStructure();
+		$current_tables = self::GetCurrentStructure();
 
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
@@ -169,11 +169,11 @@ class DatabaseModule extends AdminControlPanelModule{
 	}
 
 	public function dropTableAction(){
-		$this->checkTargetTable($name, $s, $t);
+		self::CheckTargetTable($s, $t);
 
 		if($s === null && $t !== null){
 			global $db;
-			$db->query("DROP TABLE `$name`");
+			$db->query("DROP TABLE `{$s->name}`");
 			showmsg('successfully_dropped_table', 'refresh');
 		}else{
 			showmsg('failed_to_drop_table', 'back');
@@ -181,11 +181,11 @@ class DatabaseModule extends AdminControlPanelModule{
 	}
 
 	public function alterTableAction(){
-		$this->checkTargetTable($name, $s, $t);
+		self::CheckTargetTable($s, $t);
 
 		if($s !== null && $t !== null){
 			global $db;
-			$db->query("ALTER TABLE `$name` ENGINE={$s->engine} DEFAULT CHARSET={$s->charset}");
+			$db->query("ALTER TABLE `{$s->name}` ENGINE={$s->engine} DEFAULT CHARSET={$s->charset}");
 			showmsg('successfully_altered_table', 'refresh');
 		}else{
 			showmsg('failed_to_alter_table', 'back');
@@ -193,7 +193,7 @@ class DatabaseModule extends AdminControlPanelModule{
 	}
 
 	public function createTableAction(){
-		$this->checkTargetTable($name, $s, $t);
+		self::CheckTargetTable($s, $t);
 
 		if($s !== null && $t === null){
 			global $db;
@@ -204,30 +204,30 @@ class DatabaseModule extends AdminControlPanelModule{
 		}
 	}
 
-	private function checkTargetTable(&$name, &$s, &$t){
-		if(!isset($_GET['name']))
+	private static function CheckTargetTable(&$s, &$t){
+		if(!isset($_GET['table']))
 			showmsg('illegal_operation', 'back');
 
-		$name = trim($_GET['name']);
+		$table = trim($_GET['table']);
 
-		$standard_tables = $this->getStandardStructure();
-		$current_tables = $this->getCurrentStructure();
+		$standard_tables = self::GetStandardStructure();
+		$current_tables = self::GetCurrentStructure();
 
-		if(isset($standard_tables[$name])){
-			$s = $standard_tables[$name];
+		if(isset($standard_tables[$table])){
+			$s = $standard_tables[$table];
 		}else{
 			$s = null;
 		}
 
-		if(isset($current_tables[$name])){
-			$t = $current_tables[$name];
+		if(isset($current_tables[$table])){
+			$t = $current_tables[$table];
 		}else{
 			$t = null;
 		}
 	}
 
 	public function dropColumnAction(){
-		$this->checkTargetColumn($table, $column, $s, $t);
+		self::CheckTargetColumn($table, $column, $s, $t);
 
 		if($t !== null && $s === null){
 			global $db;
@@ -239,7 +239,7 @@ class DatabaseModule extends AdminControlPanelModule{
 	}
 
 	public function alterColumnAction(){
-		$this->checkTargetColumn($table, $column, $s, $t);
+		self::CheckTargetColumn($table, $column, $s, $t);
 
 		if($t !== null && $s !== null && $t != $s){
 			$subsql = $s->toSql();
@@ -252,7 +252,7 @@ class DatabaseModule extends AdminControlPanelModule{
 	}
 
 	public function addColumnAction(){
-		$this->checkTargetColumn($table, $column, $s, $t);
+		self::CheckTargetColumn($table, $column, $s, $t);
 
 		if($t === null && $s !== null){
 			$subsql = $s->toSql();
@@ -264,22 +264,47 @@ class DatabaseModule extends AdminControlPanelModule{
 		}
 	}
 
-	private function checkTargetColumn(&$table, &$column, &$s, &$t){
-		if(empty($_GET['table']) || empty($_GET['column']))
-			showmsg('illegal_operation', 'back');
+	public function changePrimaryKeyAction(){
+		self::CheckTargetTable($s, $t);
 
-		$table = trim($_GET['table']);
-		$column = trim($_GET['column']);
+		global $db, $tpre;
+		if($t->primary_key){
+			$db->query("ALTER TABLE `{$t->name}` DROP PRIMARY KEY");
+		}
 
-		$standard_tables = $this->getStandardStructure();
-		$current_tables = $this->getCurrentStructure();
-		if(!isset($standard_tables[$table]) || !isset($current_tables[$table])){
+		$primary_key = implode('`,`', $s->primary_key);
+		$db->query("ALTER TABLE `{$t->name}` ADD PRIMARY KEY (`$primary_key`)");
+		showmsg('successfully_changed_primary_key', 'refresh');
+	}
+
+	public function changeKeyAction(){
+		self::CheckTargetKey($table, $key, $keytype, $s, $t);
+
+		global $db;
+		if($t){
+			$db->query("ALTER TABLE `$table` DROP INDEX `$key`");
+		}
+
+		if($s){
+			$columns = implode('`,`', $s);
+			$db->query("ALTER TABLE `$table` ADD $keytype `$key` (`$columns`)");
+		}
+
+		showmsg('successfully_changed_key', 'refresh');
+	}
+
+	private static function CheckTargetColumn(&$table, &$column, &$s, &$t){
+		self::CheckTargetTable($s, $t);
+		if($s === null || $t === null){
 			showmsg('illegal_operation', 'back');
 		}
 
-		$s = $standard_tables[$table];
-		$t = $current_tables[$table];
-		unset($standard_tables, $current_tables);
+		if(empty($_GET['column'])){
+			showmsg('illegal_operation', 'back');
+		}
+
+		$column = trim($_GET['column']);
+		$table = $s->name;
 
 		if(isset($s->columns[$column])){
 			$s = $s->columns[$column];
@@ -294,7 +319,32 @@ class DatabaseModule extends AdminControlPanelModule{
 		}
 	}
 
-	public function getStandardStructure(){
+	private static function CheckTargetKey(&$table, &$key, &$keytype, &$s, &$t){
+		self::CheckTargetTable($s, $t);
+		if($s === null || $t === null){
+			showmsg('illegal_operation', 'back');
+		}
+
+		if(empty($_GET['key']) || empty($_GET['keytype']))
+			showmsg('illegal_operation', 'back');
+		$keytype = trim($_GET['keytype']);
+		$key = trim($_GET['key']);
+		$table = $s->name;
+
+		if($keytype == 'index'){
+			$keytype = 'INDEX';
+			$s = isset($s->indexes[$key]) ? $s->indexes[$key] : null;
+			$t = isset($t->indexes[$key]) ? $t->indexes[$key] : null;
+		}elseif($keytype == 'unique'){
+			$keytype = 'UNIQUE';
+			$s = isset($s->unique_keys[$key]) ? $s->unique_keys[$key] : null;
+			$t = isset($t->unique_keys[$key]) ? $t->unique_keys[$key] : null;
+		}else{
+			showmsg('illegal_operation', 'back');
+		}
+	}
+
+	public static function GetStandardStructure(){
 		$sql = file_get_contents(S_ROOT.'./install/install.sql');
 		$sql = explode(';', $sql);
 
@@ -312,7 +362,7 @@ class DatabaseModule extends AdminControlPanelModule{
 		return $standard_tables;
 	}
 
-	public function getCurrentStructure(){
+	public static function GetCurrentStructure(){
 		$current_tables = array();
 
 		global $db, $tpre;

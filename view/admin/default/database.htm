@@ -49,7 +49,7 @@ $(function(){
 					<td class="standard">{echo $s->charset}</td>
 					<td class="current"></td>
 					<td class="current"></td>
-					<td><a class="toast" href="$mod_url&action=createtable&name=$table_name">[添加]</a></td>
+					<td><a class="toast" href="$mod_url&action=createtable&table=$table_name">[添加]</a></td>
 				</tr>
 				<!--{/if}-->
 				<!--{/loop}-->
@@ -62,7 +62,7 @@ $(function(){
 					<td class="standard"></td>
 					<td class="current">{echo $t->engine}</td>
 					<td class="current">{echo $t->charset}</td>
-					<td><a class="toast" href="$mod_url&action=droptable&name=$table_name">[删除]</a></td>
+					<td><a class="toast" href="$mod_url&action=droptable&table=$table_name">[删除]</a></td>
 				</tr>
 				<!--{else}-->
 				<!--{eval $s = $standard_tables[$table_name];}-->
@@ -74,7 +74,7 @@ $(function(){
 					<td class="standard">{echo $s->charset}</td>
 					<td class="current">{echo $t->engine}</td>
 					<td class="current">{echo $t->charset}</td>
-					<td><a class="toast" href="$mod_url&action=altertable&name=$table_name">[修改]</a></td>
+					<td><a class="toast" href="$mod_url&action=altertable&table=$table_name">[修改]</a></td>
 				</tr>
 				<!--{/if}-->
 				<!--{/if}-->
@@ -163,8 +163,8 @@ $(function(){
 				<tr>
 					<th></th>
 					<td>Table</td>
-					<td>Index</td>
 					<td>Type</td>
+					<td>Index</td>
 					<td>Standard Fields</td>
 					<td>Current Fields</td>
 					<td>Operation</td>
@@ -178,11 +178,11 @@ $(function(){
 					<tr>
 						<th></th>
 						<td>{echo $s->name}</td>
-						<td></td>
 						<td>PRIMARY</td>
+						<td></td>
 						<td>{echo implode(',', $s->primary_key)}</td>
 						<td>{echo implode(',', $t->primary_key)}</td>
-						<td>[修改]</td>
+						<td><a class="toast" href="$mod_url&action=changeprimarykey&table={echo $s->name}">[修改]</a></td>
 					</tr>
 					<!--{/if}-->
 
@@ -195,7 +195,7 @@ $(function(){
 							<td>{$key_name}</td>
 							<td>{echo implode(',', $fields)}</td>
 							<td></td>
-							<td>[修改]</td>
+							<td><a class="toast" href="$mod_url&action=changekey&keytype=unique&table={echo $s->name}&key={$key_name}">[添加]</a></td>
 						</tr>
 						<!--{/if}-->
 					<!--{/loop}-->
@@ -209,7 +209,7 @@ $(function(){
 							<td>{$key_name}</td>
 							<td></td>
 							<td>{echo implode(',', $fields)}</td>
-							<td>[修改]</td>
+							<td><a class="toast" href="$mod_url&action=changekey&keytype=unique&table={echo $s->name}&key={$key_name}">[删除]</a></td>
 						</tr>
 						<!--{elseif $fields != $s->unique_keys[$key_name]}-->
 						<tr>
@@ -219,7 +219,7 @@ $(function(){
 							<td>{$key_name}</td>
 							<td>{echo implode(',', $s->unique_keys[$key_name])}</td>
 							<td>{echo implode(',', $fields)}</td>
-							<td>[修改]</td>
+							<td><a class="toast" href="$mod_url&action=changekey&keytype=unique&table={echo $s->name}&key={$key_name}">[修改]</a></td>
 						</tr>
 						<!--{/if}-->
 					<!--{/loop}-->
@@ -233,7 +233,7 @@ $(function(){
 							<td>{$key_name}</td>
 							<td>{echo implode(',', $fields)}</td>
 							<td></td>
-							<td>[修改]</td>
+							<td><a class="toast" href="$mod_url&action=changekey&keytype=index&table={echo $s->name}&key={$key_name}">[添加]</a></td>
 						</tr>
 						<!--{/if}-->
 					<!--{/loop}-->
@@ -247,7 +247,7 @@ $(function(){
 							<td>{$key_name}</td>
 							<td></td>
 							<td>{echo implode(',', $fields)}</td>
-							<td>[修改]</td>
+							<td><a class="toast" href="$mod_url&action=changekey&keytype=index&table={echo $s->name}&key={$key_name}">[删除]</a></td>
 						</tr>
 						<!--{elseif $fields != $s->indexes[$key_name]}-->
 						<tr>
@@ -257,7 +257,7 @@ $(function(){
 							<td>{$key_name}</td>
 							<td>{echo implode(',', $s->indexes[$key_name])}</td>
 							<td>{echo implode(',', $fields)}</td>
-							<td>[修改]</td>
+							<td><a class="toast" href="$mod_url&action=changekey&keytype=index&table={echo $s->name}&key={$key_name}">[修改]</a></td>
 						</tr>
 						<!--{/if}-->
 					<!--{/loop}-->
