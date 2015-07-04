@@ -141,6 +141,10 @@ class User extends DBObject{
 			return self::INVALID_ACCOUNT;
 		}
 
+		if(!preg_match('/^[0-9a-z\x{4e00}-\x{9fa5}]+$/iu', $user['account'])){
+			return self::INVALID_ACCOUNT;
+		}
+
 		$password_length = strlen($user['password']);
 		if($password_length < 6){
 			return self::INVALID_PASSWORD;
