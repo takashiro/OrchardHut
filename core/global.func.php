@@ -170,7 +170,9 @@ function raddslashes($str){
 			$str[$key] = raddslashes($val);
 		}
 	}else{
-		$str = addslashes($str);
+		if($str !== NULL){
+			$str = addslashes($str);
+		}
 	}
 	return $str;
 }
