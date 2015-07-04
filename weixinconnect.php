@@ -46,12 +46,6 @@ if($action == 'login'){
 		$open_id = $_GET['user'];
 		$user->fetch('*', array('wxopenid' => $open_id));
 		if($user->id <= 0){
-			$user->fetch('*', array('account' => $open_id));
-			if($user->id > 0){
-				$user->wxopenid = $open_id;
-			}
-		}
-		if($user->id <= 0){
 			$user->account = null;
 			$user->pwmd5 = '';
 			$user->wxopenid = $open_id;
