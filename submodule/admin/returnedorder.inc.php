@@ -196,19 +196,19 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 		$query_data = array();
 
 		//订单号
-		if(isset($_REQUEST['orderid'])){
+		if(!empty($_REQUEST['orderid'])){
 			$orderid = intval($_REQUEST['orderid']);
 			$condition[] = 'r.id='.$orderid;
 		}
 
 		//退单时间
-		if(isset($_REQUEST['time_start'])){
+		if(!empty($_REQUEST['time_start'])){
 			$time_start = rstrtotime($_REQUEST['time_start']);
 			$condition[] = 'r.dateline>='.$time_start;
 		}else{
 			$time_start = '';
 		}
-		if(isset($_REQUEST['time_end'])){
+		if(!empty($_REQUEST['time_end'])){
 			$time_end = rstrtotime($_REQUEST['time_end']);
 			$time_end < $time_start && $time_end = $time_start;
 			$condition[] = 'r.dateline<='.$time_end;
@@ -241,7 +241,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 		//处理输出格式
 		$formats = array('html', 'csv');
 		$format = $formats[0];
-		if(isset($_REQUEST['format']) && in_array($_REQUEST['format'], $formats)){
+		if(!empty($_REQUEST['format']) && in_array($_REQUEST['format'], $formats)){
 			$format = $_REQUEST['format'];
 		}
 
