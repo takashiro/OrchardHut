@@ -99,7 +99,6 @@ class Template{
 		$template = preg_replace('/^\s+/s', "\n", $template);
 		$template = preg_replace('/[\r\n]+\s+/s', "\n", $template);
 		$template = preg_replace("/\<\!\-\-\{(.+?)\}\-\-\>/s", "{\\1}", $template);
-		$template = str_replace("{LF}", "<?=\"\\n\"?>", $template);
 
 		$template = preg_replace("/\{(\\\$[a-zA-Z0-9_\[\]\'\"\$\.\x7f-\xff]+)\}/s", "<?=\\1?>", $template);
 
@@ -157,8 +156,6 @@ class Template{
 
 		$template = preg_replace_callback("/\"(http)?[\w\.\/:]+\?[^\"]+?&[^\"]+?\"/", 'Template::transamp', $template);
 
-		$template = preg_replace_callback("/[\n\r\t]*\{block\s+([a-zA-Z0-9_]+)\}(.+?)\{\/block\}/is", 'Template::stripblock', $template);
-
 		return $template;
 	}
 
@@ -177,23 +174,6 @@ class Template{
 		$expr = str_replace("\\\"", "\"", preg_replace("/\<\?\=(\\\$.+?)\?\>/s", "\\1", $expr));
 		$statement = str_replace("\\\"", "\"", $statement);
 		return $expr.$statement;
-	}
-
-	static public function stripblock($matches) {
-		$var = &$matches[1];
-		$s = &$matches[2];
-		$s = str_replace('\\"', '"', $s);
-		$s = preg_replace("/<\?=\\\$(.+?)\?>/", "{\$\\1}", $s);
-		preg_match_all("/<\?=(.+?)\?>/e", $s, $constary);
-		$constadd = '';
-		$constary[1] = array_unique($constary[1]);
-		foreach($constary[1] as $const) {
-			$constadd .= '$__'.$const.' = '.$const.';';
-		}
-		$s = preg_replace("/<\?=(.+?)\?>/", "{\$__\\1}", $s);
-		$s = str_replace('?>', "\n\$$var .= <<<EOF\n", $s);
-		$s = str_replace('<?', "\nEOF;\n", $s);
-		return "<?\n$constadd\$$var = <<<EOF\n".$s."\nEOF;\n?>";
 	}
 
 	static public function parse_subtemplate($matches){
