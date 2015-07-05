@@ -154,16 +154,14 @@ class Template{
 		$template = preg_replace("/\{$const_regexp\}/s", "<?=\\1?>", $template);
 		$template = preg_replace("/ \?\>[\n\r]*\<\? /s", " ", $template);
 
-		$template = preg_replace_callback("/\"(http)?[\w\.\/:]+\?[^\"]+?&[^\"]+?\"/", 'Template::transamp', $template);
+		$template = preg_replace_callback('/"(\w+\:\/\/)?[0-9a-z.]+\?[^"]+?"/i', function($matches){
+			$str = str_replace('&', '&amp;', $matches[0]);
+			$str = str_replace('&amp;amp;', '&amp;', $str);
+			$str = str_replace('\"', '"', $str);
+			return $str;
+		}, $template);
 
 		return $template;
-	}
-
-	static public function transamp($matches) {
-		$str = str_replace('&', '&amp;', $matches[0]);
-		$str = str_replace('&amp;amp;', '&amp;', $str);
-		$str = str_replace('\"', '"', $str);
-		return $str;
 	}
 
 	static public function echovar($matches) {
