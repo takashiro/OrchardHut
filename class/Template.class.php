@@ -22,7 +22,7 @@
 *********************************************************************/
 
 class Template{
-	static public $SOURCE_DIR;
+	const SOURCE_DIR = 'view/';
 
 	static protected $StatementNext = 6;
 
@@ -36,7 +36,7 @@ class Template{
 		$this->name = $name;
 	}
 
-	public function lastModifiedTime(){
+	public function getLastModifiedTime(){
 		$sourcePath = $this->getSourcePath();
 		return file_exists($sourcePath) ? filemtime($sourcePath) : -1;
 	}
@@ -54,7 +54,7 @@ class Template{
 	}
 
 	public function getDirectoryPath(){
-		return self::$SOURCE_DIR.$this->type.'/'.$this->style.'/';
+		return S_ROOT.self::SOURCE_DIR.$this->type.'/'.$this->style.'/';
 	}
 
 	public function getOriginalSourcePath(){
@@ -70,10 +70,10 @@ class Template{
 			$htmpath = $this->getDirectoryPath().$this->name.'.php';
 
 			if(!file_exists($htmpath)){
-				$htmpath = self::$SOURCE_DIR.$this->type.'/default/'.$this->name.'.htm';
+				$htmpath = S_ROOT.self::SOURCE_DIR.$this->type.'/default/'.$this->name.'.htm';
 
 				if($this->type != 'user' && !file_exists($htmpath)){
-					$htmpath = self::$SOURCE_DIR.'user/default/'.$this->name.'.htm';
+					$htmpath = S_ROOT.self::SOURCE_DIR.'user/default/'.$this->name.'.htm';
 				}
 			}
 		}
@@ -300,7 +300,5 @@ class Template{
 		return $str;
 	}
 }
-
-Template::$SOURCE_DIR = S_ROOT.'view/';
 
 ?>
