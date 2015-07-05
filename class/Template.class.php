@@ -96,7 +96,8 @@ class Template{
 		$var_regexp = "((\\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)(\[[a-zA-Z0-9_\-\.\"\'\[\]\$\x7f-\xff]+\])*)";
 		$const_regexp = "([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)";
 
-		$template = preg_replace("/([\n\r]+)\t+/s", "\\1", $template);
+		$template = preg_replace('/^\s+/s', "\n", $template);
+		$template = preg_replace('/[\r\n]+\s+/s', "\n", $template);
 		$template = preg_replace("/\<\!\-\-\{(.+?)\}\-\-\>/s", "{\\1}", $template);
 		$template = str_replace("{LF}", "<?=\"\\n\"?>", $template);
 
