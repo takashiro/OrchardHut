@@ -22,7 +22,7 @@
 *********************************************************************/
 
 class Template{
-	static public $SOURCE_DIR;
+	const SOURCE_DIR = 'view/';
 
 	static protected $StatementNext = 6;
 
@@ -36,7 +36,7 @@ class Template{
 		$this->name = $name;
 	}
 
-	public function lastModifiedTime(){
+	public function getLastModifiedTime(){
 		$sourcePath = $this->getSourcePath();
 		return file_exists($sourcePath) ? filemtime($sourcePath) : -1;
 	}
@@ -54,7 +54,7 @@ class Template{
 	}
 
 	public function getDirectoryPath(){
-		return self::$SOURCE_DIR.$this->type.'/'.$this->style.'/';
+		return S_ROOT.self::SOURCE_DIR.$this->type.'/'.$this->style.'/';
 	}
 
 	public function getOriginalSourcePath(){
@@ -70,10 +70,10 @@ class Template{
 			$htmpath = $this->getDirectoryPath().$this->name.'.php';
 
 			if(!file_exists($htmpath)){
-				$htmpath = self::$SOURCE_DIR.$this->type.'/default/'.$this->name.'.htm';
+				$htmpath = S_ROOT.self::SOURCE_DIR.$this->type.'/default/'.$this->name.'.htm';
 
 				if($this->type != 'user' && !file_exists($htmpath)){
-					$htmpath = self::$SOURCE_DIR.'user/default/'.$this->name.'.htm';
+					$htmpath = S_ROOT.self::SOURCE_DIR.'user/default/'.$this->name.'.htm';
 				}
 			}
 		}
@@ -96,9 +96,9 @@ class Template{
 		$var_regexp = "((\\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)(\[[a-zA-Z0-9_\-\.\"\'\[\]\$\x7f-\xff]+\])*)";
 		$const_regexp = "([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)";
 
-		$template = preg_replace("/([\n\r]+)\t+/s", "\\1", $template);
+		$template = preg_replace('/^\s+/s', "\n", $template);
+		$template = preg_replace('/[\r\n]+\s+/s', "\n", $template);
 		$template = preg_replace("/\<\!\-\-\{(.+?)\}\-\-\>/s", "{\\1}", $template);
-		$template = str_replace("{LF}", "<?=\"\\n\"?>", $template);
 
 		$template = preg_replace("/\{(\\\$[a-zA-Z0-9_\[\]\'\"\$\.\x7f-\xff]+)\}/s", "<?=\\1?>", $template);
 
@@ -154,18 +154,14 @@ class Template{
 		$template = preg_replace("/\{$const_regexp\}/s", "<?=\\1?>", $template);
 		$template = preg_replace("/ \?\>[\n\r]*\<\? /s", " ", $template);
 
-		$template = preg_replace_callback("/\"(http)?[\w\.\/:]+\?[^\"]+?&[^\"]+?\"/", 'Template::transamp', $template);
-
-		$template = preg_replace_callback("/[\n\r\t]*\{block\s+([a-zA-Z0-9_]+)\}(.+?)\{\/block\}/is", 'Template::stripblock', $template);
+		$template = preg_replace_callback('/"(\w+\:\/\/)?[0-9a-z.]+\?[^"]+?"/i', function($matches){
+			$str = str_replace('&', '&amp;', $matches[0]);
+			$str = str_replace('&amp;amp;', '&amp;', $str);
+			$str = str_replace('\"', '"', $str);
+			return $str;
+		}, $template);
 
 		return $template;
-	}
-
-	static public function transamp($matches) {
-		$str = str_replace('&', '&amp;', $matches[0]);
-		$str = str_replace('&amp;amp;', '&amp;', $str);
-		$str = str_replace('\"', '"', $str);
-		return $str;
 	}
 
 	static public function echovar($matches) {
@@ -176,23 +172,6 @@ class Template{
 		$expr = str_replace("\\\"", "\"", preg_replace("/\<\?\=(\\\$.+?)\?\>/s", "\\1", $expr));
 		$statement = str_replace("\\\"", "\"", $statement);
 		return $expr.$statement;
-	}
-
-	static public function stripblock($matches) {
-		$var = &$matches[1];
-		$s = &$matches[2];
-		$s = str_replace('\\"', '"', $s);
-		$s = preg_replace("/<\?=\\\$(.+?)\?>/", "{\$\\1}", $s);
-		preg_match_all("/<\?=(.+?)\?>/e", $s, $constary);
-		$constadd = '';
-		$constary[1] = array_unique($constary[1]);
-		foreach($constary[1] as $const) {
-			$constadd .= '$__'.$const.' = '.$const.';';
-		}
-		$s = preg_replace("/<\?=(.+?)\?>/", "{\$__\\1}", $s);
-		$s = str_replace('?>', "\n\$$var .= <<<EOF\n", $s);
-		$s = str_replace('<?', "\nEOF;\n", $s);
-		return "<?\n$constadd\$$var = <<<EOF\n".$s."\nEOF;\n?>";
 	}
 
 	static public function parse_subtemplate($matches){
@@ -300,7 +279,5 @@ class Template{
 		return $str;
 	}
 }
-
-Template::$SOURCE_DIR = S_ROOT.'view/';
 
 ?>

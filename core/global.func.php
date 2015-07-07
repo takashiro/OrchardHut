@@ -203,7 +203,7 @@ function view($templateName){
 	$forced_parse = !file_exists($filePath);
 	if($forced_parse || !empty($_G['config']['refresh_template'])){
 		$template = new Template($target, $_G['style'], $templateName);
-		if($forced_parse || $template->lastModifiedTime() > filemtime($filePath)){
+		if($forced_parse || $template->getLastModifiedTime() > filemtime($filePath)){
 			file_put_contents($filePath, $template->parse());
 		}
 	}
