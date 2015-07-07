@@ -78,12 +78,13 @@ class Administrator extends User{
 			if(!empty($cookie_var)){
 				$cookie = $this->decodeCookie($cookie_var);
 
-				if(!isset($cookie['id']) || !isset($cookie['loginip'])){
+				if(!isset($cookie['id']) || !isset($cookie['logintime'])){
 					return false;
 				}
 
 				$cookie = array(
 					'id' => intval($cookie['id']),
+					'logintime' => intval($cookie['logintime']),
 				);
 
 				$this->fetch('*', $cookie);
@@ -102,9 +103,11 @@ class Administrator extends User{
 
 			if($this->isLoggedIn()){
 				$this->logged = true;
-				$cookie = array('id' => $this->attr['id'], 'loginip' => self::ip());
-				rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
 				$this->logintime = TIMESTAMP;
+				$cookie = array('id' => $this->id, 'logintime' => $this->logintime);
+				rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
+				$masked_pw = substr($pw, 0, 2).'******'.substr($pw, -2);
+				writelog('adminlogin', "{$this->id}\t{$masked_pw}");
 				return true;
 			}else{
 				return false;
