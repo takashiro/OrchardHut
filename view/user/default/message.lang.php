@@ -4,7 +4,7 @@ return array(
 	'or' => '或',
 	'unknown_error_period' => '未知错误。',
 
-	'you_have_logged_in' => '您已登录，不需要再次登录。',
+	'you_have_logged_in' => '您已登录辣，不需要再次登录~',
 	'successfully_logged_in' => '登录成功！',
 
 	'account_too_short_or_too_long' => '用户名过长或过短，不能多于5个汉字（15个字母）或少于4个字母（两个汉字）。',

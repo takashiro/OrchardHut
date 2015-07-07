@@ -60,9 +60,11 @@ if($action == 'login'){
 		}
 
 		$user->force_login();
+	}else{
+		showmsg('you_have_logged_in', 'index.php');
 	}
 
-	redirect('index.php');
+	showmsg('successfully_logged_in', 'index.php');
 
 }elseif($action == 'bind'){
 	if(!$_G['user']->isLoggedIn()){
