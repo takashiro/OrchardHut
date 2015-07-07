@@ -53,7 +53,8 @@ $(function(){
 
 			<!--{if $overhead_tables}-->
 			<div class="post_buttons">
-				<button type="submit">Optimize</button>
+				<button type="submit">优化</button>
+				<a class="toast button" href="$mod_url&action=clearexpiredauthkey">清除{$expired_authkey_num}个过期密钥</a>
 			</div>
 			<!--{/if}-->
 		</form>

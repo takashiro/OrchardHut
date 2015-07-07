@@ -166,7 +166,18 @@ class DatabaseModule extends AdminControlPanelModule{
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$standard_update_time = filemtime(S_ROOT.'./install/install.sql');
+
+		$expiry = TIMESTAMP - Authkey::$ExpiryTime;
+		$expired_authkey_num = $db->result_first("SELECT COUNT(*) FROM {$tpre}authkey WHERE `expiry`<$expiry");
+
 		include view('database');
+	}
+
+	public function clearExpiredAuthkeyAction(){
+		global $db, $tpre;
+		$expiry = TIMESTAMP - Authkey::$ExpiryTime;
+		$db->query("DELETE FROM {$tpre}authkey WHERE `expiry`<$expiry");
+		showmsg('sucessfully_cleared_authkeys', 'refresh');
 	}
 
 	public function optimizeTableAction(){

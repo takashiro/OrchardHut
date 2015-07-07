@@ -45,6 +45,7 @@ return array(
 	'successfully_changed_primary_key' => '修改主键成功。',
 	'successfully_changed_key' => '修改索引成功。',
 	'successfully_optimized_tables' => '成功优化表碎片。',
+	'sucessfully_cleared_authkeys' => '成功清除过期的验证密钥',
 );
 
 ?>

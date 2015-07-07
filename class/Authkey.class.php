@@ -25,6 +25,8 @@ class Authkey extends DBObject{
 	const TABLE_NAME = 'authkey';
 	const PRIMARY_KEY = 'user';
 
+	public static $ExpiryTime;
+
 	public function __construct($user){
 		parent::__construct();
 		$this->fetch('*', array('user' => $user));
@@ -59,7 +61,7 @@ class Authkey extends DBObject{
 		$authkey = array(
 			'user' => $user,
 			'key' => randomstr(32),
-			'expiry' => $expiry == NULL ? TIMESTAMP + 5 * 60 : $expiry,
+			'expiry' => $expiry == NULL ? TIMESTAMP + self::$ExpiryTime : $expiry,
 		);
 
 		$table->insert($authkey, true);
@@ -67,5 +69,7 @@ class Authkey extends DBObject{
 		return $authkey['key'];
 	}
 }
+
+Authkey::$ExpiryTime = 5 * 60;
 
 ?>
