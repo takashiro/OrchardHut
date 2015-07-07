@@ -38,6 +38,12 @@ class WeixinModule extends AdminControlPanelModule{
 			);
 
 			$wx->setMenu($menu);
+
+			if($wx->hasError()){
+				showmsg($wx->getErrorMessage(), 'back');
+			}else{
+				showmsg('edit_succeed', 'refresh');
+			}
 		}elseif(!empty($_GET['clear'])){
 			$wx->setMenu(NULL);
 		}else{

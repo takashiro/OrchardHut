@@ -34,9 +34,9 @@ $(function(){
 			buttons.push(button);
 		});
 
-		$.post('$mod_url&type=menu', 'button=' + JSON.stringify(buttons), function(){
-			makeToast({'message': '成功更新菜单！', 'url_forward' : '###'});
-		});
+		$.post('$mod_url&action=menu&ajax=1', 'button=' + JSON.stringify(buttons), function(result){
+			makeToast(result);
+		}, 'json');
 
 		return false;
 	});
