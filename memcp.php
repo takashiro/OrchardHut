@@ -126,6 +126,7 @@ if($action == 'login'){
 		}
 
 		if(empty($_G['user']->account) && !empty($_POST['account'])){
+			$account = trim($_POST['account']);
 			if(!preg_match('/^[0-9a-z\x{4e00}-\x{9fa5}]+$/iu', $account)){
 				showmsg('duplicated_account', 'back');
 			}
