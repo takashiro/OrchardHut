@@ -29,23 +29,26 @@ class WeixinModule extends AdminControlPanelModule{
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$wx = new WeixinAPI;
-		if(isset($_POST['button'])){
-			$button = str_replace('&quot;', '"', $_POST['button']);
-			$button = stripslashes($button);
-			$button = json_decode($button);
-			$menu = array(
-				'button' => $button,
-			);
 
-			$wx->setMenu($menu);
+		$post_data = file_get_contents('php://input');
+		if(!empty($post_data)){
+			$button = json_decode($post_data);
+			if($button){
+				$menu = array(
+					'button' => $button,
+				);
 
-			if($wx->hasError()){
-				showmsg($wx->getErrorMessage(), 'back');
+				$wx->setMenu($menu);
+
+				if($wx->hasError()){
+					showmsg($wx->getErrorMessage(), 'back');
+				}else{
+					showmsg('edit_succeed', 'refresh');
+				}
 			}else{
+				$wx->setMenu(NULL);
 				showmsg('edit_succeed', 'refresh');
 			}
-		}elseif(!empty($_GET['clear'])){
-			$wx->setMenu(NULL);
 		}else{
 			$menu = $wx->getMenu();
 		}
