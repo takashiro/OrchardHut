@@ -66,6 +66,7 @@ class WeixinModule extends AdminControlPanelModule{
 			foreach($wxconnect_fields as $var){
 				$wxconnect[$var] = isset($_POST['wxconnect'][$var]) ? $_POST['wxconnect'][$var] : '';
 			}
+			$wxconnect['no_prompt_on_login'] = !empty($_POST['wxconnect']['no_prompt_on_login']);
 			writedata('wxconnect', $wxconnect);
 			showmsg('successfully_updated_wxconnect_config', 'refresh');
 		}

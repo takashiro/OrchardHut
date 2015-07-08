@@ -27,44 +27,54 @@ $actions = array('login', 'bind', 'unbind');
 $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET['action'] : $actions[0];
 
 if($action == 'login'){
-	if(!$_G['user']->isLoggedIn()){
-		if(empty($_GET['user']) || empty($_GET['key'])){
-			showmsg('unexpected_link_with_inadequate_parameters', 'index.php');
+	$wxconfig = readdata('wxconnect');
+
+	if($_G['user']->isLoggedIn()){
+		if(empty($wxconfig['no_prompt_on_login'])){
+			showmsg('you_have_logged_in', 'index.php');
+		}else{
+			redirect('index.php');
 		}
-
-		$authkey = new Authkey($_GET['user']);
-		if($authkey->isExpired()){
-			showmsg('expired_wxlogin_link');
-		}
-
-		if(!$authkey->matchOnce($_GET['key'])){
-			showmsg('invalid_wxlogin_link');
-		}
-
-		$user = new User;
-
-		$open_id = $_GET['user'];
-		$user->fetch('*', array('wxopenid' => $open_id));
-		if($user->id <= 0){
-			$user->account = null;
-			$user->pwmd5 = '';
-			$user->wxopenid = $open_id;
-			$user->nickname = lang('message', 'wxuser');
-			$user->regtime = TIMESTAMP;
-
-			$user->insert('IGNORE');
-			if($db->affected_rows <= 0){
-				$user = new User;
-				$user->fetch('*', array('wxopenid' => $open_id));
-			}
-		}
-
-		$user->force_login();
-	}else{
-		showmsg('you_have_logged_in', 'index.php');
 	}
 
-	showmsg('successfully_logged_in', 'index.php');
+	if(empty($_GET['user']) || empty($_GET['key'])){
+		showmsg('unexpected_link_with_inadequate_parameters', 'index.php');
+	}
+
+	$authkey = new Authkey($_GET['user']);
+	if($authkey->isExpired()){
+		showmsg('expired_wxlogin_link');
+	}
+
+	if(!$authkey->matchOnce($_GET['key'])){
+		showmsg('invalid_wxlogin_link');
+	}
+
+	$user = new User;
+
+	$open_id = $_GET['user'];
+	$user->fetch('*', array('wxopenid' => $open_id));
+	if($user->id <= 0){
+		$user->account = null;
+		$user->pwmd5 = '';
+		$user->wxopenid = $open_id;
+		$user->nickname = lang('message', 'wxuser');
+		$user->regtime = TIMESTAMP;
+
+		$user->insert('IGNORE');
+		if($db->affected_rows <= 0){
+			$user = new User;
+			$user->fetch('*', array('wxopenid' => $open_id));
+		}
+	}
+
+	$user->force_login();
+
+	if(empty($wxconfig['no_prompt_on_login'])){
+		showmsg('successfully_logged_in', 'index.php');
+	}else{
+		redirect('index.php');
+	}
 
 }elseif($action == 'bind'){
 	if(!$_G['user']->isLoggedIn()){

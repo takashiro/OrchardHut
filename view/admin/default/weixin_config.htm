@@ -33,6 +33,12 @@
 			<td><input type="text" name="wxconnect[token]" value="$wxconnect[token]" /></td>
 		</tr>
 		<tr>
+			<th><label>登录是否关闭跳转提示：</label></th>
+			<td>
+				{echo Template::radio('wxconnect[no_prompt_on_login]', array('否', '是'), !empty($wxconnect['no_prompt_on_login']))}
+			</td>
+		</tr>
+		<tr>
 			<th><label>关注提示文字：</label></th>
 			<td><textarea name="wxconnect[subscribe_text]" class="wide">$wxconnect[subscribe_text]</textarea></td>
 		</tr>
