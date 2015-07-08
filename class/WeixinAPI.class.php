@@ -56,7 +56,7 @@ class WeixinAPI extends CUrl{
 
 	public function request($url, $data = NULL){
 		$result = json_decode(parent::request($url, $data), true);
-		isset($result['errcode']) && $this->error = $result;
+		$this->error = isset($result['errcode']) ? $result : array();
 		return $result;
 	}
 
