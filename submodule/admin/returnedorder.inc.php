@@ -226,7 +226,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 				}
 			}
 		}
-		if($_REQUEST['address']){
+		if(!empty($_REQUEST['address'])){
 			$address = intval($_REQUEST['address']);
 			isset($all_addresses[$address]) || $address = 0;
 		}else{
