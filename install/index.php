@@ -145,7 +145,7 @@ if($_POST){
 	Administrator::Register($_POST['admin']);
 	$admin = new Administrator;
 	$admin->login($_POST['admin']['account'], $_POST['admin']['password']);
-	$admin->attr('permission', -1);
+	$admin->permissions = 'all';
 	unset($admin);
 
 	//安装标记
