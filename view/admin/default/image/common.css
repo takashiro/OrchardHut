@@ -68,7 +68,7 @@ input[type="text"], input[type="password"], select, textarea{
 
 textarea{
 	width:300px;
-	height:200px;
+	height:120px;
 }
 
 input:focus, select:focus, textarea:focus{
