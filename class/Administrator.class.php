@@ -102,7 +102,6 @@ class Administrator extends User{
 			$this->initPermissions();
 
 			if($this->isLoggedIn()){
-				$this->logged = true;
 				$this->logintime = TIMESTAMP;
 				$cookie = array('id' => $this->id, 'logintime' => $this->logintime);
 				rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
