@@ -45,32 +45,37 @@ class AddressModule extends AdminControlPanelModule{
 	}
 
 	public function editAction(){
-		if(empty($_POST))
+		if(empty($_POST)){
+			$this->defaultAction();
 			return;
+		}
 
 		global $db, $tpre;
 
 		$component = array();
+		if(!empty($_POST['name'])){
+			$component['name'] = $_POST['name'];
+		}
+		if(isset($_POST['displayorder'])){
+			$component['displayorder'] = intval($_POST['displayorder']);
+		}
+
+		if(isset($_POST['hidden'])){
+			$component['hidden'] = !empty($_POST['hidden']);
+		}
+
+		$parentname = '';
+		if(isset($_POST['parentid'])){
+			$component['parentid'] = intval($_POST['parentid']);
+			$parentname = $db->result_first("SELECT name FROM {$tpre}addresscomponent WHERE id={$component['parentid']}");
+			if(!$parentname){
+				unset($component['parentid']);
+			}
+		}
 
 		$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+		$table = $db->select_table('addresscomponent');
 		if($id > 0){
-			if(!empty($_POST['name'])){
-				$component['name'] = $_POST['name'];
-			}
-			if(isset($_POST['displayorder'])){
-				$component['displayorder'] = intval($_POST['displayorder']);
-			}
-
-			$parentname = '';
-			if(isset($_POST['parentid'])){
-				$component['parentid'] = intval($_POST['parentid']);
-				$parentname = $db->result_first("SELECT name FROM {$tpre}addresscomponent WHERE id={$component['parentid']}");
-				if(!$parentname){
-					unset($component['parentid']);
-				}
-			}
-
-			$table = $db->select_table('addresscomponent');
 			$table->update($component, 'id='.$id);
 			$component['id'] = $id;
 			if($parentname){
@@ -78,13 +83,6 @@ class AddressModule extends AdminControlPanelModule{
 			}
 
 		}else{
-			@$component = array(
-				'name' => $_POST['name'],
-				'displayorder' => intval($_POST['displayorder']),
-				'parentid' => intval($_GET['parentid']),
-			);
-
-			$table = $db->select_table('addresscomponent');
 			$table->insert($component);
 			$component['id'] = $table->insert_id();
 		}
@@ -108,7 +106,7 @@ class AddressModule extends AdminControlPanelModule{
 
 				global $db;
 				$table = $db->select_table('addresscomponent');
-				$table->update(array('hidden' => 1), "id IN ($delete_id)");
+				$table->delete("id IN ($delete_id)");
 				$affected_rows += $db->affected_rows;
 
 				$db->query("DELETE FROM {$tpre}deliveryaddress WHERE addressid IN ($delete_id)");
@@ -143,8 +141,8 @@ class AddressModule extends AdminControlPanelModule{
 		$address_components = $db->fetch_all("SELECT o.*,p.name AS parentname
 			FROM {$tpre}addresscomponent o
 				LEFT JOIN {$tpre}addresscomponent p ON p.id=o.parentid
-			WHERE o.parentid=$parentid AND o.hidden=0
-			ORDER BY o.displayorder,o.id");
+			WHERE o.parentid=$parentid
+			ORDER BY o.hidden,o.displayorder,o.id");
 
 		$addressformat = readdata('addressformat');
 

@@ -217,7 +217,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 		}
 
 		//限定当前管理员可以使用的地址
-		$all_addresses = Address::Components();
+		$all_addresses = Address::AvailableComponents();
 		$limitation = $_G['admin']->getLimitations();
 		if($limitation){
 			foreach($all_addresses as $cid => $c){

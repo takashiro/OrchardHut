@@ -12,9 +12,9 @@
 <script type="text/javascript">
 $(function(){
 	$('#component_list').editlist({
-		'edit' : '$mod_url&parentid=$parentid',
+		'edit' : '$mod_url&action=edit&parentid=$parentid',
 		'delete' : '$mod_url&action=delete',
-		'attr' : ['id', 'name', 'displayorder', 'parentid', 'parentname']
+		'attr' : ['id', 'name', 'displayorder', 'parentid', 'parentname', 'hidden']
 	});
 });
 </script>
@@ -44,6 +44,7 @@ $(function(){
 						<td>显示顺序</td>
 						<td>上级地点编号</td>
 						<td>上级地点名称</td>
+						<td>隐藏</td>
 						<td>操作</td>
 					</tr>
 				</thead>
@@ -61,6 +62,7 @@ $(function(){
 							$component[parentname]
 							<!--{/if}-->
 						</td>
+						<td data-realvalue="$component[hidden]"><!--{if $component['hidden']}-->是<!--{else}-->否<!--{/if}--></td>
 						<td></td>
 					</tr>
 					<!--{/loop}-->
@@ -70,6 +72,7 @@ $(function(){
 						<td><input type="text" /></td>
 						<td><input type="text" value="$parentid" /></td>
 						<td></td>
+						<td>{echo Template::select('', array('否', '是'))}</td>
 						<td><button type="button" class="add">添加</button></td>
 					</tr>
 				</tbody>
