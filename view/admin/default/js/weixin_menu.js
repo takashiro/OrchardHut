@@ -65,7 +65,7 @@ $(function(){
 			}
 		});
 
-		$.post('$mod_url&action=menu&ajax=1', JSON.stringify(buttons), function(result){
+		$.post(mod_url + '&action=menu&ajax=1', JSON.stringify(buttons), function(result){
 			makeToast(result);
 		}, 'json');
 
