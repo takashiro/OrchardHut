@@ -68,7 +68,7 @@ class User extends DBObject{
 			$this->fetch('*', $condition);
 
 			if($this->isLoggedIn()){
-				$this->loginkey = rand(1, 65535);
+				$this->loginkey = rand(1, 0xFFFF);
 				$this->logintime = TIMESTAMP;
 				$cookie = array('id' => $this->id, 'loginkey' => $this->loginkey);
 				rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));

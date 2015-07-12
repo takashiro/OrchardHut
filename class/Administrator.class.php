@@ -102,11 +102,8 @@ class Administrator extends User{
 			$this->initPermissions();
 
 			if($this->isLoggedIn()){
-				do{
-					$loginkey = rand(1, 255);
-				}while($loginkey == $this->loginkey);
-				$this->loginkey = $loginkey;
-				$cookie = array('id' => $this->id, 'loginkey' => $loginkey);
+				$this->loginkey = rand(1, 0xFFFF);
+				$cookie = array('id' => $this->id, 'loginkey' => $this->loginkey);
 				rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
 				$masked_pw = substr($pw, 0, 2).'******'.substr($pw, -2);
 				writelog('adminlogin', "{$this->id}\t{$masked_pw}");

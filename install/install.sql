@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `hut_administrator` (
   `logintime` int(11) unsigned NOT NULL,
   `realname` varchar(50) NOT NULL,
   `mobile` varchar(11) NOT NULL,
+  `loginkey` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
