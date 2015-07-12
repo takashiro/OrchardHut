@@ -33,6 +33,16 @@
 			<td><input type="text" name="wxconnect[token]" value="$wxconnect[token]" /></td>
 		</tr>
 		<tr>
+			<th><label>消息编码模式：</label></th>
+			<td>
+				{echo Template::radio('wxconnect[encoding_mode]', array(WeixinServer::RAW_MESSAGE => '明文', WeixinServer::AES_MESSAGE => 'AES加解密'), $wxconnect['encoding_mode'])}
+			</td>
+		</tr>
+		<tr>
+			<th><label>AES Key: </label></th>
+			<td><input type="text" name="wxconnect[aes_key]" value="$wxconnect[aes_key]" /></td>
+		</tr>
+		<tr>
 			<th><label>登录是否关闭跳转提示：</label></th>
 			<td>
 				{echo Template::radio('wxconnect[no_prompt_on_login]', array('否', '是'), !empty($wxconnect['no_prompt_on_login']))}

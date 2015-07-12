@@ -60,13 +60,18 @@ class WeixinModule extends AdminControlPanelModule{
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$wxconnect = readdata('wxconnect');
-		$wxconnect_fields = array('app_id', 'app_secret', 'account', 'token', 'subscribe_text', 'entershop_keyword', 'bind_keyword', 'bind2_keyword');
+		$wxconnect_fields = array(
+			'app_id', 'app_secret', 'account', 'token', 'aes_key',
+			'subscribe_text', 'entershop_keyword', 'bind_keyword', 'bind2_keyword',
+		);
 
 		if($_POST){
+			$p = &$_POST['wxconnect'];
 			foreach($wxconnect_fields as $var){
-				$wxconnect[$var] = isset($_POST['wxconnect'][$var]) ? $_POST['wxconnect'][$var] : '';
+				$wxconnect[$var] = isset($p[$var]) ? $p[$var] : '';
 			}
-			$wxconnect['no_prompt_on_login'] = !empty($_POST['wxconnect']['no_prompt_on_login']);
+			$wxconnect['no_prompt_on_login'] = !empty($p['no_prompt_on_login']);
+			$wxconnect['encoding_mode'] = isset($p['encoding_mode']) ? intval($p['encoding_mode']) : WeixinServer::RAW_MESSAGE;
 			writedata('wxconnect', $wxconnect);
 			showmsg('successfully_updated_wxconnect_config', 'refresh');
 		}

@@ -24,11 +24,13 @@
 require_once '../core/init.inc.php';
 
 $wx = readdata('wxconnect');
-$weixin = new WeixinServer($wx['token'], $wx['account']);
+$weixin = new WeixinServer($wx['app_id'], $wx['token'], $wx['account']);
+$weixin->setEncodingMode($wx['encoding_mode']);
+$weixin->setAesKey($wx['aes_key']);
 
 $request = $weixin->getRequest();
 if(!$request){
-	if($weixin->isValidRequest()){
+	if($weixin->isValidRequest() && isset($_GET['echostr'])){
 		exit($_GET['echostr']);
 	}
 	exit('access denied');
