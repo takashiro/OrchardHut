@@ -59,6 +59,23 @@ class FileModule extends AdminControlPanelModule{
 
 		$standard_update_time = filemtime('data/sha1.inc.php');
 
+		$writable_directories = array(
+			'./data/',
+			'./data/attachment/',
+			'./data/cache/',
+			'./data/error/',
+			'./data/log/',
+			'./data/template/',
+		);
+
+		$directory_results = array();
+		foreach($writable_directories as $dir){
+			$directory_results[] = array(
+				'path' => $dir,
+				'is_writable' => is_writable(S_ROOT.$dir),
+			);
+		}
+
 		include view('file');
 	}
 

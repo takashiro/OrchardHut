@@ -35,6 +35,25 @@
 			</tbody>
 		</table>
 	</div>
+
+	<h2>权限校验</h2>
+	<div class="content">
+		<table>
+			<thead>
+				<tr><th></th><td>路径</td><td>正确状态</td><td>当前状态</td></tr>
+			</thead>
+			<tbody>
+				<!--{loop $directory_results $d}-->
+				<tr>
+					<th></th>
+					<td>$d[path]</td>
+					<td>可读写</td>
+					<td><!--{if $d['is_writable']}-->可读写<!--{else}-->不可读写<!--{/if}--></td>
+				</tr>
+				<!--{/loop}-->
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <!--{template footer}-->
