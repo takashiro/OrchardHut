@@ -82,10 +82,14 @@ class User extends DBObject{
 	}
 
 	public function force_login(){
+		if(empty($this->id))
+			return false;
+
 		$this->loginkey = rand(1, 65535);
 		$this->logintime = TIMESTAMP;
 		$cookie = array('id' => $this->id, 'loginkey' => $this->loginkey);
 		rsetcookie(static::COOKIE_VAR, $this->encodeCookie($cookie));
+		return true;
 	}
 
 	public function logout(){
