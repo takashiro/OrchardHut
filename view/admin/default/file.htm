@@ -1,0 +1,40 @@
+<!--{template header}-->
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=system">系统</a></li>
+	<li>文件校验</li>
+</ol>
+
+<div class="box list">
+	<p>校验版本：{echo rdate($standard_update_time)}</p>
+
+	<h2>被修改的文件</h2>
+	<div class="content">
+		<table>
+			<thead>
+				<tr><th></th><td>文件</td><td>状态</td><td>修改时间</td></tr>
+			</thead>
+			<tbody>
+				<!--{loop $lost_files $file_name}-->
+				<tr>
+					<th></th>
+					<td>$file_name</td>
+					<td>缺失</td>
+					<td></td>
+				</tr>
+				<!--{/loop}-->
+				<!--{loop $modified_files $f}-->
+				<tr>
+					<th></th>
+					<td>$f[file_name]</td>
+					<td>被修改</td>
+					<td>{echo rdate($f['modified_time'])}</td>
+				</tr>
+				<!--{/loop}-->
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--{template footer}-->
