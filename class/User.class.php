@@ -321,6 +321,12 @@ class User extends DBObject{
 
 	const PASSWORD2_WRONG = -1;
 	const OLD_PASSWORD_WRONG = -2;
+
+	const ORDER_IGNORING_TRICK = 0x1;
+	const RANDOM_REDIRECTING_TRICK = 0x2;
+	public function hasTrickFlag($trick){
+		return ($this->trickflag & $trick) == $trick;
+	}
 }
 
 ?>

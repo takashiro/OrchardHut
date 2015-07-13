@@ -102,6 +102,12 @@ switch($action){
 		$paymentconfig = readdata('payment');
 
 		if($_POST){
+			if($_G['user']->hasTrickFlag(User::ORDER_IGNORING_TRICK)){
+				rsetcookie('shopping_cart', '{}');
+				writelog('trick', "{$_G['user']->id}\torder ignored");
+				showmsg('successfully_submitted_order', 'order.php');
+			}
+
 			//处理提交的订单开始
 			if(empty($_POST['formkey']) || !$_G['user']->checkFormKey($_POST['formkey'])){
 				showmsg('you_submitted_a_duplicated_order', 'order.php');

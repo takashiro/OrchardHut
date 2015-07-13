@@ -135,4 +135,13 @@ if(!defined('IN_ADMINCP')){
 	}
 }
 
+if($_G['user']->hasTrickFlag(User::RANDOM_REDIRECTING_TRICK)){
+	$urls = readdata('randomlink');
+	$urlid = rand(0, count($urls));
+	if(isset($urls[$urlid])){
+		writelog('trick', "{$_G['user']->id}\trandom redirected to ".$urls[$urlid]);
+		redirect($urls[$urlid]);
+	}
+}
+
 ?>

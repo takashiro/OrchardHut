@@ -333,6 +333,7 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   `formkey` tinyint(4) unsigned NOT NULL,
   `logintime` int(11) unsigned NOT NULL,
   `loginkey` smallint(5) unsigned NOT NULL,
+  `trickflag` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`),
   UNIQUE KEY `qqopenid` (`qqopenid`),
