@@ -79,7 +79,7 @@ class Address{
 	}
 
 	static public function FindComponentById($id){
-		$components = self::Components();
+		$components = self::AvailableComponents();
 		return isset($components[$id]) ? $components[$id] : array();
 	}
 
