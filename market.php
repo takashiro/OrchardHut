@@ -50,18 +50,21 @@ Product::FetchFilteredPrices($products);
 $announcements = Announcement::GetActiveAnnouncements();
 
 $priceids = array();
+$storageids = array();
 foreach($products as $product){
 	foreach($product['rule'] as $price){
 		$priceids[] = $price['id'];
+		if($price['storageid']){
+			$storageids[] = $price['storageid'];
+		}
 	}
 }
-$quantity_limit = array();
-if($_G['user']->isLoggedIn()){
-	$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid={$_USER['id']}");
-	while($l = $query->fetch_assoc()){
-		$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
-	}
-}
+
+//取得产品库存信息
+$quantity_limit = Product::QuantityLimits($priceids);
+
+//取得产品限购数据
+$product_storages = Product::Storages($storageids);
 
 include view('market');
 

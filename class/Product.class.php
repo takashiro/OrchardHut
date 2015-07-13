@@ -331,22 +331,47 @@ class Product extends DBObject{
 		return $db->affected_rows;
 	}
 
-	static public function AllStorages($simple = true){
+	static public function Storages($storageids, $simple = true){
 		global $db;
 		$table = $db->select_table('productstorage');
 
-		if(!$simple){
-			return $table->fetch_all('*');
+		$condition = array();
+
+		if(ProductStorage::IsBookingMode()){
+			$condition[] = 'mode!='.ProductStorage::BookingMode;
 		}
 
-		$sec_today = (TIMESTAMP + TIMEZONE * 3600) % (24 * 3600);
-		$condition = ProductStorage::IsBookingMode() ? 'mode!='.ProductStorage::BookingMode : '1';
+		if($storageids){
+			$condition[] = 'id IN ('.implode(',', $storageids).')';
+		}
+
+		if($condition){
+			$condition = implode(' AND ', $condition);
+		}else{
+			$condition = '1';
+		}
+
+		if(!$simple){
+			return $table->fetch_all('*', $condition);
+		}
 
 		$storages = array();
 		foreach($table->fetch_all('id,num', $condition) as $s){
 			$storages[$s['id']] = intval($s['num']);
 		}
 		return $storages;
+	}
+
+	static public function QuantityLimits($priceids){
+		global $_G, $db, $tpre;
+		$limit = array();
+		if($_G['user']->isLoggedIn()){
+			$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid={$_G['user']->id}");
+			while($l = $query->fetch_assoc()){
+				$limit[intval($l['priceid'])] = intval($l['amount']);
+			}
+		}
+		return $limit;
 	}
 
 	public function getStorages(){

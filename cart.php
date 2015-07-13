@@ -293,20 +293,21 @@ switch($action){
 		//补充完整购物车中的产品的价格
 		Product::FetchFilteredPrices($products);
 		$priceids = array();
+		$storageids = array();
 		foreach($products as $product){
 			foreach($product['rule'] as $price){
 				$priceids[] = $price['id'];
+				if($price['storageid']){
+					$storageids[] = $price['storageid'];
+				}
 			}
 		}
 
 		//取得产品限购数据
-		$quantity_limit = array();
-		if($_G['user']->isLoggedIn()){
-			$query = $db->query("SELECT priceid,amount FROM {$tpre}productquantitylimit WHERE userid={$_USER['id']}");
-			while($l = $query->fetch_assoc()){
-				$quantity_limit[intval($l['priceid'])] = intval($l['amount']);
-			}
-		}
+		$quantity_limit = Product::QuantityLimits($priceids);
+
+		//取得产品库存信息
+		$product_storages = Product::Storages($storageids);
 
 		//取得用户的所有收货地址
 		$table = $db->select_table('deliveryaddress');

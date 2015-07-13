@@ -6,7 +6,7 @@ var lang = {
 	'out_of_product_quantity_limit': '{lang message out_of_product_quantity_limit}',
 	'log_in_to_buy': '{lang message log_in_to_buy}'
 };
-var ProductStorage = {echo json_encode(Product::AllStorages())};
+var ProductStorage = {echo json_encode($product_storages)};
 var ProductQuantityLimit = {echo json_encode($quantity_limit)};
 var User = {'id': {if $_G['user']->isLoggedIn()}$_USER[id]{else}0{/if}};
 
