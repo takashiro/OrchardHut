@@ -28,10 +28,6 @@ class User extends DBObject{
 
 	static private $LoginMethod = array('id', 'account', 'email', 'mobile');
 
-	public function __destruct(){
-		parent::__destruct();
-	}
-
 	public function login($account = '', $password = '', $method = 'id'){
 		global $db, $tpre;
 
