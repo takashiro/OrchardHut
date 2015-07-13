@@ -26,12 +26,15 @@ var ShoppingCart = {
 		try{
 			items = JSON.parse(items);
 			if(typeof items == 'object'){
+				var cart = {};
 				for(var i in items){
-					if(isNaN(i) || isNaN(items[i]) || i <= 0 || items[i] <= 0){
-						delete items[i];
+					var price_id = parseInt(i, 10);
+					var num = parseInt(items[i], 10);
+					if(!isNaN(price_id) && price_id > 0 && !isNaN(num) && num > 0){
+						cart[price_id] = num;
 					}
 				}
-				return items;
+				return cart;
 			}else{
 				return {};
 			}
