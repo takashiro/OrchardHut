@@ -141,7 +141,7 @@ switch($action){
 			}else{
 				$table = $db->select_table('deliveryaddress');
 				$a = $table->fetch_first('*', 'id='.$deliveryaddressid);
-				if(!$a || $a['userid'] != $_G['user']->id){
+				if(!$a || $a['userid'] != $_G['user']->id || empty(Address::FindComponentById($a['addressid']))){
 					showmsg('delivery_address_id_not_exist');
 				}
 
@@ -319,9 +319,13 @@ switch($action){
 		$table = $db->select_table('deliveryaddress');
 		$delivery_addresses = $table->fetch_all('*', 'userid='.$_G['user']->id);
 
-		foreach($delivery_addresses as &$a){
-			$a['address_text'] = Address::FullPathString($a['addressid']);
-			$a['address_text'].= ' '.$a['extaddress'].' '.$a['addressee'].'('.$a['mobile'].')';
+		foreach($delivery_addresses as $aid => &$a){
+			if(empty(Address::FindComponentById($a['addressid']))){
+				unset($delivery_addresses[$aid]);
+			}else{
+				$a['address_text'] = Address::FullPathString($a['addressid']);
+				$a['address_text'].= ' '.$a['extaddress'].' '.$a['addressee'].'('.$a['mobile'].')';
+			}
 		}
 		unset($a);
 
