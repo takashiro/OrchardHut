@@ -21,7 +21,7 @@
  takashiro@qq.com
 *********************************************************************/
 
-define('IN_ADMINCP', true);//CPanel modules admin_* can't be executed without the contant
+define('IN_ADMINCP', true);
 require_once './core/init.inc.php';
 
 //Administrator automatically logs in via cookie records
