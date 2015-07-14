@@ -77,10 +77,27 @@ $(function(){
 
 	$('.menu > li').mouseenter(function(){
 		var submenu = $(this).children('.submenu');
-		if(submenu.is(':visible') && submenu.css('opacity') >= 1.0)
+		if(submenu.length <= 0 || (submenu.is(':visible') && submenu.css('opacity') >= 1.0))
 			return;
+
 		var offset_left = $(this).outerWidth();
-		submenu.css({'left' : offset_left - 10, 'opacity' : 0.0});
+		submenu.css({top: 0, left: offset_left - 10, opacity: 0});
+		submenu.show();
+
+		var submenu_rect = submenu.offset();
+		submenu_rect.bottom = submenu_rect.top + submenu.outerHeight();
+		submenu_rect.right = submenu_rect.left + submenu.outerWidth();
+
+		var viewport = {
+			top: $(window).scrollTop(),
+			left: $(window).scrollLeft()
+		};
+		viewport.bottom = viewport.top + $(window).height();
+		viewport.right = viewport.left + $(window).width();
+		if(viewport.bottom < submenu_rect.bottom){
+			submenu.css({top: $(this).outerHeight() - submenu.outerHeight()});
+		}
+
 		submenu.show();
 		submenu.data('isShowing', true);
 		submenu.animate({'left' : offset_left, 'opacity' : 1.0}, 300, 'swing', function(){
@@ -90,11 +107,16 @@ $(function(){
 
 	$('.menu > li').mouseleave(function(){
 		var submenu = $(this).find('.submenu');
+		if(submenu.length <= 0)
+			return;
+
 		setTimeout(function(){
 			var li = submenu.parent();
 			if(li.is(':hover') || submenu.data('isShowing'))
 				return;
-			submenu.fadeOut(300);
+			submenu.fadeOut(300, function(){
+				$(this).hide();
+			});
 		}, 300);
 	});
 
