@@ -167,7 +167,7 @@
 					}
 				}
 
-				empty_tr.find('input,select').val('');
+				empty_tr.find('input:not([readonly]), select:not([readonly])').val('');
 				new_tr.parent().append(empty_tr);
 
 				display_operations(new_tr.children('td:last-child'));
