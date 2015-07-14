@@ -57,8 +57,15 @@ if($action == 'login'){
 		$user->account = null;
 		$user->pwmd5 = '';
 		$user->wxopenid = $open_id;
-		$user->nickname = lang('message', 'wxuser');
 		$user->regtime = TIMESTAMP;
+
+		$wx = new WeixinAPI;
+		$wxuser = $wx->getUserInfo($open_id);
+		if($wxuser && isset($wxuser['nickname'])){
+			$user->nickname = $wxuser['nickname'];
+		}else{
+			$user->nickname = lang('message', 'wxuser');
+		}
 
 		$user->insert('IGNORE');
 		if($db->affected_rows <= 0){

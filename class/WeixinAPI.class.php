@@ -54,6 +54,9 @@ class WeixinAPI extends CUrl{
 	}
 
 	public function request($url, $data = NULL){
+		if($data !== NULL && !is_string($data)){
+			$data = json_encode($data, JSON_UNESCAPED_UNICODE);
+		}
 		$result = json_decode(parent::request($url, $data), true);
 		$this->error = isset($result['errcode']) ? $result : array();
 		return $result;
@@ -124,7 +127,6 @@ class WeixinAPI extends CUrl{
 		if(empty($menu)){
 			$this->request('menu/delete?access_token='.$access_token);
 		}else{
-			is_string($menu) || $menu = json_encode($menu, JSON_UNESCAPED_UNICODE);
 			$this->request('menu/create?access_token='.$access_token, $menu);
 		}
 
@@ -142,10 +144,17 @@ class WeixinAPI extends CUrl{
 			'msgtype' => 'text',
 			'text' => array('content' => $text),
 		);
-		$message = json_encode($message, JSON_UNESCAPED_UNICODE);
 
 		$result = $this->request('message/custom/send?access_token='.$access_token, $message);
 		return !$this->hasError();
+	}
+
+	public function getUserInfo($wxopenid){
+		$access_token = $this->getAccessToken();
+		if(!$access_token)
+			return false;
+
+		return $this->request('user/info?access_token='.$access_token.'&openid='.$wxopenid.'&lang=zh_CN');
 	}
 }
 
