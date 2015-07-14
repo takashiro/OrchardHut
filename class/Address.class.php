@@ -25,7 +25,31 @@ class Address{
 	const MAX_CASCADE_LEVEL = 8;
 
 	static public function RefreshCache(){
-		writecache('addresscomponent', NULL);
+		self::$AvailableComponents = self::Components();
+		foreach(self::$AvailableComponents as $cid => $c){
+			if($c['hidden']){
+				unset(self::$AvailableComponents[$cid]);
+			}else{
+				$cur = $c['parentid'];
+				while($cur){
+					if(!isset(self::$AvailableComponents[$cur])){
+						unset(self::$AvailableComponents[$cid]);
+						break;
+					}
+
+					$p = self::$AvailableComponents[$cur];
+					if($p['hidden']){
+						unset(self::$AvailableComponents[$cid]);
+						break;
+					}
+
+					$cur = $p['parentid'];
+				}
+			}
+		}
+
+		writecache('addresscomponent', self::$AvailableComponents);
+		file_put_contents(S_ROOT.'data/js/addresscomponent.js', 'var addresscomponent = '.json_encode(self::$AvailableComponents).';');
 	}
 
 	static private $Format = null;
@@ -65,32 +89,9 @@ class Address{
 		if(self::$AvailableComponents === null){
 			self::$AvailableComponents = readcache('addresscomponent');
 			if(self::$AvailableComponents === null){
-				self::$AvailableComponents = self::Components();
-				foreach(self::$AvailableComponents as $cid => $c){
-					if($c['hidden']){
-						unset(self::$AvailableComponents[$cid]);
-					}else{
-						$cur = $c['parentid'];
-						while($cur){
-							if(!isset(self::$AvailableComponents[$cur])){
-								unset(self::$AvailableComponents[$cid]);
-								break;
-							}
-
-							$p = self::$AvailableComponents[$cur];
-							if($p['hidden']){
-								unset(self::$AvailableComponents[$cid]);
-								break;
-							}
-
-							$cur = $p['parentid'];
-						}
-					}
-				}
-				writecache('addresscomponent', self::$AvailableComponents);
+				self::RefreshCache();
 			}
 		}
-
 		return self::$AvailableComponents;
 	}
 

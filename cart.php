@@ -346,9 +346,6 @@ switch($action){
 
 		DeliveryTime::SortByTimeFrom($delivery_timespans);
 
-		//取得所有可用的收货地址
-		$address_components = Address::AvailableComponents();
-
 		//生成随机表单key防止重复提交
 		$_G['user']->refreshFormKey();
 

@@ -64,6 +64,7 @@ class FileModule extends AdminControlPanelModule{
 			'./data/attachment/',
 			'./data/cache/',
 			'./data/error/',
+			'./data/js/',
 			'./data/log/',
 			'./data/template/',
 		);
