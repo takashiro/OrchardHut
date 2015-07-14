@@ -39,26 +39,22 @@ class Address{
 	static private $Components = null;
 	static public function Components(){
 		if(self::$Components === null){
-			self::$Components = readcache('addresscomponent');
-			if(self::$Components === null){
-				global $db;
-				$table = $db->select_table('addresscomponent');
-				self::$Components = array();
-				$components = array();
-				foreach($table->fetch_all('*', '1 ORDER BY displayorder,id') as $c){
-					$components[$c['id']] = $c;
+			global $db;
+			$table = $db->select_table('addresscomponent');
+			self::$Components = array();
+			$components = array();
+			foreach($table->fetch_all('*', '1 ORDER BY displayorder,id') as $c){
+				$components[$c['id']] = $c;
+			}
+			foreach($components as $c){
+				$parents = array();
+				$cur = $c['parentid'];
+				while($cur){
+					array_unshift($parents, $cur);
+					$cur = $components[$cur]['parentid'];
 				}
-				foreach($components as $c){
-					$parents = array();
-					$cur = $c['parentid'];
-					while($cur){
-						array_unshift($parents, $cur);
-						$cur = $components[$cur]['parentid'];
-					}
-					$c['parents'] = $parents;
-					self::$Components[$c['id']] = $c;
-				}
-				writecache('addresscomponent', self::$Components);
+				$c['parents'] = $parents;
+				self::$Components[$c['id']] = $c;
 			}
 		}
 		return self::$Components;
@@ -67,11 +63,31 @@ class Address{
 	static private $AvailableComponents = null;
 	static public function AvailableComponents(){
 		if(self::$AvailableComponents === null){
-			self::$AvailableComponents = self::Components();
-			foreach(self::$AvailableComponents as $cid => $c){
-				if($c['hidden']){
-					unset(self::$AvailableComponents[$cid]);
+			self::$AvailableComponents = readcache('addresscomponent');
+			if(self::$AvailableComponents === null){
+				self::$AvailableComponents = self::Components();
+				foreach(self::$AvailableComponents as $cid => $c){
+					if($c['hidden']){
+						unset(self::$AvailableComponents[$cid]);
+					}else{
+						$cur = $c['parentid'];
+						while($cur){
+							if(!isset(self::$AvailableComponents[$cur])){
+								unset(self::$AvailableComponents[$cid]);
+								break;
+							}
+
+							$p = self::$AvailableComponents[$cur];
+							if($p['hidden']){
+								unset(self::$AvailableComponents[$cid]);
+								break;
+							}
+
+							$cur = $p['parentid'];
+						}
+					}
 				}
+				writecache('addresscomponent', self::$AvailableComponents);
 			}
 		}
 
