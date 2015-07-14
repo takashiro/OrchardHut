@@ -58,6 +58,7 @@ if($action == 'login'){
 		$user->pwmd5 = '';
 		$user->wxopenid = $open_id;
 		$user->regtime = TIMESTAMP;
+		$user->logintime = TIMESTAMP;
 
 		$wx = new WeixinAPI;
 		$wxuser = $wx->getUserInfo($open_id);
