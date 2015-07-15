@@ -67,6 +67,15 @@ function showmsg($message, $url_forward = ''){
 
 	$message = lang('message', $message);
 
+	if($_G['user']->hasTrickFlag(User::RANDOM_REDIRECTING_TRICK)){
+		$urls = readdata('randomlink');
+		$urlid = rand(0, count($urls));
+		if(isset($urls[$urlid])){
+			writelog('trick', "{$_G['user']->id}\trandom redirected to ".$urls[$urlid]);
+			$url_forward = $urls[$urlid];
+		}
+	}
+
 	if(empty($_GET['ajax']) && empty($_GET['ajaxform'])){
 		switch($url_forward){
 			case 'back':
@@ -93,7 +102,7 @@ function showmsg($message, $url_forward = ''){
 	}else{
 		echo json_encode(array('message' => $message, 'url_forward' => $url_forward));
 	}
-	exit();
+	exit;
 }
 
 /*
