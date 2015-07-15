@@ -60,7 +60,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode(Address::Ava
 					<td><!--{if strlen($u['account']) <= 15}-->$u[account]<!--{/if}--></td>
 					<td>$u[nickname]</td>
 					<td>{echo rdate($u['regtime'])}</td>
-					<td><!--{if $u['logintime'] > 0}-->{echo rdate($u['logintime'])}<!--{else}-->2015-7-5以前<!--{/if}--></td>
+					<td><!--{if $u['logintime'] > 0}-->{echo rdate($u['logintime'])}<!--{/if}--></td>
 					<td><a href="admin.php?mod=order&userid=$u[id]&time_start=&time_end=">$u[ordernum]</a></td>
 					<td>$u[wallet]</td>
 					<td>$u[mobile]</td>
