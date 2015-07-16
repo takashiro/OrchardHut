@@ -99,7 +99,7 @@ class WeixinServer{
 		exit($xml);
 	}
 
-	function decryptRequest($encrypted){
+	private function decryptRequest($encrypted){
 		//验证安全签名
 		$signature = self::ParseSignature(array($this->token, $_GET['timestamp'], $_GET['nonce'], $encrypted));
 		if(!isset($_GET['msg_signature']) || $signature != $_GET['msg_signature']){
@@ -116,7 +116,7 @@ class WeixinServer{
 		return $xml->toArray();
 	}
 
-	public function encryptReply($reply_xml){
+	private function encryptReply($reply_xml){
 		//加密
 		$encrypt = $this->encryptText($reply_xml);
 		if(!$encrypt){
@@ -190,7 +190,7 @@ class WeixinServer{
 		}
 	}
 
-	public function decryptText($encrypted){
+	private function decryptText($encrypted){
 		try{
 			//使用BASE64对需要解密的字符串进行解码
 			$ciphertext_dec = base64_decode($encrypted);
