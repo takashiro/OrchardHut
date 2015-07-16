@@ -14,15 +14,15 @@
 	<table>
 		<tr>
 			<th><label>App ID：</label></th>
-			<td><input type="text" name="wxconnect[app_id]" value="$wxconnect[app_id]" /></td>
+			<td><input type="text" name="wxconnect[app_id]" value="$wxconnect[app_id]" class="wide" /></td>
 		</tr>
 		<tr>
 			<th><label>App Secret：</label></th>
-			<td><input type="text" name="wxconnect[app_secret]" value="$wxconnect[app_secret]" /></td>
+			<td><input type="text" name="wxconnect[app_secret]" value="$wxconnect[app_secret]" class="wide" /></td>
 		</tr>
 		<tr>
 			<th><label>公众账号：</label></th>
-			<td><input type="text" name="wxconnect[account]" value="$wxconnect[account]" /></td>
+			<td><input type="text" name="wxconnect[account]" value="$wxconnect[account]" class="wide" /></td>
 		</tr>
 		<tr>
 			<th><label>回调URL：</label></th>
@@ -30,7 +30,7 @@
 		</tr>
 		<tr>
 			<th><label>Token：</label></th>
-			<td><input type="text" name="wxconnect[token]" value="$wxconnect[token]" /></td>
+			<td><input type="text" name="wxconnect[token]" value="$wxconnect[token]" class="wide" /></td>
 		</tr>
 		<tr>
 			<th><label>消息编码模式：</label></th>
@@ -40,7 +40,7 @@
 		</tr>
 		<tr>
 			<th><label>AES Key: </label></th>
-			<td><input type="text" name="wxconnect[aes_key]" value="$wxconnect[aes_key]" /></td>
+			<td><input type="text" name="wxconnect[aes_key]" value="$wxconnect[aes_key]" class="wide" /></td>
 		</tr>
 		<tr>
 			<th><label>登录是否关闭跳转提示：</label></th>
@@ -63,6 +63,10 @@
 		<tr>
 			<th><label>确认绑定账号关键词：</label></th>
 			<td><textarea name="wxconnect[bind2_keyword]">$wxconnect[bind2_keyword]</textarea></td>
+		</tr>
+		<tr>
+			<th><label>关注公众号提示链接：</label></th>
+			<td><input type="text" name="wxconnect[follow_guide_page]" value="$wxconnect[follow_guide_page]" class="wide" /></td>
 		</tr>
 	</table>
 

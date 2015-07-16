@@ -29,10 +29,18 @@
 	line-height:30px;
 }
 
-.qqconnect_login{
+.qq_login{
 	display:inline-block;
 	width:120px;
 	height:24px;
-	background:url(qqconnect.png) no-repeat;
+	background:url(qqlogin.png) no-repeat;
+	vertical-align:middle;
+}
+
+.wechat_login{
+	display:inline-block;
+	width:120px;
+	height:24px;
+	background:url(wechatlogin.png) no-repeat;
 	vertical-align:middle;
 }

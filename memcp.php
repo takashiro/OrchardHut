@@ -57,6 +57,7 @@ if($action == 'login'){
 		}
 	}
 
+	$wx = readdata('wxconnect');
 	include view('login');
 
 }elseif($action == 'logout'){

@@ -58,13 +58,14 @@ class WeixinModule extends AdminControlPanelModule{
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
-		$wxconnect = readdata('wxconnect');
 		$wxconnect_fields = array(
 			'app_id', 'app_secret', 'account', 'token', 'aes_key',
 			'subscribe_text', 'entershop_keyword', 'bind_keyword', 'bind2_keyword',
+			'follow_guide_page',
 		);
 
 		if($_POST){
+			$wxconnect = array();
 			$p = &$_POST['wxconnect'];
 			foreach($wxconnect_fields as $var){
 				$wxconnect[$var] = isset($p[$var]) ? $p[$var] : '';
@@ -75,6 +76,7 @@ class WeixinModule extends AdminControlPanelModule{
 			showmsg('successfully_updated_wxconnect_config', 'refresh');
 		}
 
+		$wxconnect = readdata('wxconnect');
 		foreach($wxconnect_fields as $var){
 			isset($wxconnect[$var]) || $wxconnect[$var] = '';
 		}
