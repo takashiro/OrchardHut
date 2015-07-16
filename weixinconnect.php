@@ -68,6 +68,14 @@ if($action == 'login'){
 			$user->nickname = lang('message', 'wxuser');
 		}
 
+		if(!empty($_COOKIE['referrerid'])){
+			$referrerid = intval($_COOKIE['referrerid']);
+			if(User::Exist($referrerid)){
+				$user->referrerid = intval($_COOKIE['referrerid']);
+			}
+			rsetcookie('referrerid');
+		}
+
 		$user->insert('IGNORE');
 		if($db->affected_rows <= 0){
 			$user = new User;

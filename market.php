@@ -22,6 +22,11 @@ takashiro@qq.com
 
 require_once './core/init.inc.php';
 
+if(!$_G['user']->isLoggedIn() && isset($_GET['referrerid'])){
+	$referrerid = intval($_GET['referrerid']);
+	rsetcookie('referrerid', $referrerid);
+}
+
 $type = isset($_GET['type']) ? intval($_GET['type']) : -1;
 $all_types = Product::Types();
 if($all_types){

@@ -61,6 +61,13 @@ if($action == 'login'){
 				$user->qqopenid = $open_id;
 				$user->nickname = $user_info['nickname'];
 				$user->regtime = TIMESTAMP;
+				if(!empty($_COOKIE['referrerid'])){
+					$referrerid = intval($_COOKIE['referrerid']);
+					if(User::Exist($referrerid)){
+						$user->referrerid = intval($_COOKIE['referrerid']);
+					}
+					rsetcookie('referrerid');
+				}
 
 				$user->insert('IGNORE');
 				if($db->affected_rows <= 0){
@@ -70,6 +77,7 @@ if($action == 'login'){
 			}
 
 			$user->force_login();
+
 			showmsg('successfully_logged_in_via_qq', 'market.php');
 		}
 	}else{

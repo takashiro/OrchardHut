@@ -70,6 +70,13 @@ if($action == 'login'){
 		$uid = User::Register($_POST);
 		if($uid > 0){
 			$_G['user']->login($_POST['account'], $_POST['password'], 'account');
+			if(!empty($_COOKIE['referrerid'])){
+				$referrerid = intval($_COOKIE['referrerid']);
+				if(User::Exist($referrerid)){
+					$_G['user']->referrerid = $referrerid;
+				}
+				rsetcookie('referrerid');
+			}
 			redirect('market.php');
 		}elseif($uid == User::INVALID_ACCOUNT){
 			showmsg('account_too_short_or_too_long', 'back');
