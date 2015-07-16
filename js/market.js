@@ -204,4 +204,23 @@ $(function(){
 		message = message.html();
 		popup_message(title, message);
 	});
+
+	if(location.href.indexOf('#') != -1){
+		var link_name = location.href.split('#').pop();
+		if(link_name.charAt(0) == 'p'){
+			var product_id = parseInt(link_name.substr(1), 10);
+			if(isNaN(product_id))
+				return;
+
+			$('.product_list li').each(function(){
+				if($(this).data('product-id') != product_id)
+					return true;
+
+				var offset = $(this).offset();
+				$('html').animate({scrollTop: offset.top - $(window).height() / 2 + $(this).outerHeight() / 2});
+
+				return false;
+			});
+		}
+	}
 });
