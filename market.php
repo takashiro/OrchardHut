@@ -70,6 +70,15 @@ $quantity_limit = Product::QuantityLimits($priceids);
 //取得产品限购数据
 $product_storages = Product::Storages($storageids);
 
+//读取微信配置
+$wxconfig = readdata('wxconnect');
+
+//生成JS脚本签名
+$wxconfig['nonce'] = randomstr(16);
+$current_url = $_G['root_url'].'market.php'.($_SERVER['QUERY_STRING'] ? '?'.$_SERVER['QUERY_STRING'] : '');
+$wx = new WeixinAPI;
+$wxconfig['signature'] = $wx->generateSignature($wxconfig['nonce'], $current_url);
+
 include view('market');
 
 ?>

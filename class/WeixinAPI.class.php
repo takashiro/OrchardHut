@@ -27,6 +27,8 @@ class WeixinAPI extends CUrl{
 
 	protected $accessToken;
 	protected $accessTokenExpireTime;
+	protected $jsTicket;
+	protected $jsTicketExpireTime;
 
 	protected $error;
 
@@ -72,6 +74,14 @@ class WeixinAPI extends CUrl{
 			if(isset($result['accessTokenExpireTime'])){
 				$this->accessTokenExpireTime = $result['accessTokenExpireTime'];
 			}
+
+			if(isset($result['jsTicket'])){
+				$this->jsTicket = $result['jsTicket'];
+			}
+
+			if(isset($result['jsTicketExpireTime'])){
+				$this->jsTicketExpireTime = $result['jsTicketExpireTime'];
+			}
 		}
 
 		$result = readdata('wxconnect');
@@ -88,6 +98,8 @@ class WeixinAPI extends CUrl{
 		$result = array();
 		$result['accessToken'] = $this->accessToken;
 		$result['accessTokenExpireTime'] = $this->accessTokenExpireTime;
+		$result['jsTicket'] = $this->jsTicket;
+		$result['jsTicketExpireTime'] = $this->jsTicketExpireTime;
 		writecache('wxconnect', $result);
 	}
 
@@ -106,6 +118,33 @@ class WeixinAPI extends CUrl{
 		}
 
 		return $this->accessToken;
+	}
+
+	public function getJsTicket($force_refresh = false){
+		if($force_refresh || $this->jsTicketExpireTime < TIMESTAMP){
+			$access_token = $this->getAccessToken();
+			if(!$access_token){
+				return '';
+			}
+
+			$result = $this->request('ticket/getticket?access_token='.$access_token.'&type=jsapi');
+			if(isset($result['ticket']) && isset($result['expires_in'])){
+				$this->jsTicket = $result['ticket'];
+				$this->jsTicketExpireTime = $result['expires_in'] + TIMESTAMP;
+			}else{
+				$this->jsTicket = '';
+				$this->jsTicketExpireTime = 0;
+			}
+
+			$this->saveConfig();
+		}
+
+		return $this->jsTicket;
+	}
+
+	public function generateSignature($nonce, $current_url){
+		$js_ticket = $this->getJsTicket();
+		return sha1('jsapi_ticket='.$js_ticket.'&noncestr='.$nonce.'&timestamp='.TIMESTAMP.'&url='.$current_url);
 	}
 
 	public function getMenu(){

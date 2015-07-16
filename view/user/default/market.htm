@@ -2,6 +2,24 @@
 
 {template market_js}
 
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+wx.config({
+	appId: '$wxconfig[app_id]',
+	timestamp: {TIMESTAMP},
+	nonceStr: '$wxconfig[nonce]',
+	signature: '$wxconfig[signature]',
+	jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone']
+});
+var CONFIG = {
+	sitename: '$_CONFIG[sitename]'
+};
+var User = {
+	id: '$_USER[id]',
+	nickname: '$_USER[nickname]'
+};
+</script>
+
 <div class="announcement">
 	<div class="sticker_left"></div>
 	<div class="sticker_right"></div>
