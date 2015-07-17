@@ -167,8 +167,12 @@ class DatabaseTable{
 
 		$sql = array();
 		foreach($conditions as $field => $value){
-			$value = raddslashes($value);
-			$sql[] = "`{$field}`='$value'";
+			if($value !== null){
+				$value = raddslashes($value);
+				$sql[] = "`{$field}`='$value'";
+			}else{
+				$sql[] = "`{$field}` IS NULL";
+			}
 		}
 		$sql = implode(' AND ', $sql);
 

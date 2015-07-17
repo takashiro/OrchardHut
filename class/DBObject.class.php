@@ -65,7 +65,12 @@ abstract class DBObject{
 		if(is_array($condition)){
 			$c = array();
 			foreach($condition as $attr => $value){
-				$c[] = '`'.$attr.'`=\''.$value.'\'';
+				if($value !== null){
+					$value = raddslashes($value);
+					$c[] = "`{$attr}`='{$value}'";
+				}else{
+					$c[] = "`{$attr}` IS NULL";
+				}
 			}
 			$condition = implode(' AND ', $c);
 		}
