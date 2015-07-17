@@ -22,9 +22,13 @@ takashiro@qq.com
 
 require_once './core/init.inc.php';
 
-if(!$_G['user']->isLoggedIn() && isset($_GET['referrerid'])){
+if(isset($_GET['referrerid'])){
 	$referrerid = intval($_GET['referrerid']);
-	rsetcookie('referrerid', $referrerid);
+	if($_G['user']->isLoggedIn()){
+		$_G['user']->referrerid > 0 || $_G['user']->referrerid = $referrerid;
+	}else{
+		rsetcookie('referrerid', $referrerid);
+	}
 }
 
 $type = isset($_GET['type']) ? intval($_GET['type']) : -1;

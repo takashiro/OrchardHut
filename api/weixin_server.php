@@ -41,6 +41,50 @@ if($request['MsgType'] == 'event'){
 		$weixin->replyTextMessage($wx['subscribe_text']);
 	}elseif($request['Event'] == 'CLICK'){
 		$targetKeyword = $request['EventKey'];
+	}elseif(strncmp($request['Event'], 'scancode_', 9) == 0){
+		$result = $request['ScanCodeInfo']['ScanResult'];
+		if(strncmp($result, $_G['root_url'], strlen($_G['root_url'])) == 0){
+			if(strpos($result, 'referrerid=') !== false){
+				$referrerid = explode('referrerid=', $result);
+				$referrerid = $referrerid[1];
+				$referrerid = explode('&', $referrerid);
+				$referrerid = intval($referrerid[0]);
+
+				$referrer = new User;
+				$referrer->fetch('id,nickname,regtime', array('id' => $referrerid));
+				if($referrer->exists()){
+					$user = new User;
+					$user->fetch('id,referrerid,regtime', array('wxopenid' => $request['FromUserName']));
+
+					if($user->exists()){
+						if($user->id == $referrerid){
+							$user = $request['FromUserName'];
+							$key = Authkey::Generate($user);
+							$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=login&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
+						}elseif($user->referrerid > 0){
+							$referrer = new User;
+							$referrer->fetch('id,nickname', array('id' => $user->referrerid));
+							$weixin->replyTextMessage(lang('message', 'your_referrer_is').$referrer->nickname);
+						}else{
+							if($referrer->regtime < $user->regtime){
+								$user->referrerid = $referrerid;
+								$weixin->replyTextMessage(lang('message', 'your_referrer_is').$referrer->nickname);
+							}else{
+								$weixin->replyTextMessage(lang('message', 'you_registered_earlier_than_the_referrer'));
+							}
+						}
+					}else{
+						$user = $request['FromUserName'];
+						$key = Authkey::Generate($user);
+						$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=login&referrerid=$referrerid&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
+					}
+				}else{
+					$weixin->replyTextMessage(lang('message', 'invalid_qrcode'));
+				}
+			}
+		}else{
+			$weixin->replyTextMessage($result);
+		}
 	}
 }elseif($request['MsgType'] == 'text'){
 	$targetKeyword = $request['Content'];
