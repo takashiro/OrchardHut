@@ -70,10 +70,15 @@ if($action == 'login'){
 
 		if(!empty($_COOKIE['referrerid'])){
 			$referrerid = intval($_COOKIE['referrerid']);
-			if(User::Exist($referrerid)){
-				$user->referrerid = intval($_COOKIE['referrerid']);
-			}
 			rsetcookie('referrerid');
+		}elseif(!empty($_GET['referrerid'])){
+			$referrerid = intval($_GET['referrerid']);
+		}else{
+			$referrerid = 0;
+		}
+
+		if($referrerid > 0 && User::Exist($referrerid)){
+			$user->referrerid = $referrerid;
 		}
 
 		$user->insert('IGNORE');
