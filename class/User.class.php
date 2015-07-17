@@ -127,7 +127,10 @@ class User extends DBObject{
 		$attr = parent::toReadable();
 		if(!empty($attr['nickname'])){
 			$attr['account'] = &$attr['nickname'];
+		}else{
+			$attr['nickname'] = '';
 		}
+		isset($attr['id']) || $attr['id'] = 0;
 		return $attr;
 	}
 
