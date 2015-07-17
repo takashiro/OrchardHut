@@ -52,6 +52,21 @@ class WeixinModule extends AdminControlPanelModule{
 			$menu = $wx->getMenu();
 		}
 
+		$item_types = array();
+		$types = array(
+			'view',
+			'click',
+			'scancode_push',
+			'scancode_waitmsg',
+			'pic_sysphoto',
+			'pic_photo_or_album',
+			'pic_weixin',
+			'location_select',
+		);
+		foreach($types as $type){
+			$item_types[$type] = lang('weixin', 'weixin_menu_type_'.$type);
+		}
+
 		include view('weixin_menu');
 	}
 

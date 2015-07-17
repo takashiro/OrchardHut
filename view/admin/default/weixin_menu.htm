@@ -22,14 +22,14 @@ var mod_url = '$mod_url';
 				<!--{loop $menu['button'] $b}-->
 				<tr>
 					<td><input type="text" value="$b[name]" /></td>
-					<td>{echo Template::select('', array('view' => '链接', 'click' => '点击事件'), $b['type'])}</td>
+					<td>{echo Template::select('', $item_types, $b['type'])}</td>
 					<td><input type="text" value="{if isset($b['key'])}$b[key]{elseif isset($b['url'])}$b[url]{/if}" /></td>
 					<td><button type="button" class="delete">删除</button></td>
 				</tr>
 				<!--{/loop}-->
 				<tr>
 					<td><input type="text" /></td>
-					<td>{echo Template::select('', array('view' => '链接', 'click' => '点击事件'))}</td>
+					<td>{echo Template::select('', $item_types)}</td>
 					<td><input type="text" /></td>
 					<td><button type="button" class="add">添加</button></td>
 				</tr>
@@ -47,7 +47,7 @@ var mod_url = '$mod_url';
 						<!--{loop $parent['sub_button'] $b}-->
 						<tr>
 							<td><input type="text" value="$b[name]" /></td>
-							<td>{echo Template::select('', array('view' => '链接', 'click' => '点击事件'), $b['type'])}</td>
+							<td>{echo Template::select('', $item_types, $b['type'])}</td>
 							<td><input type="text" value="{if isset($b['key'])}$b[key]{elseif isset($b['url'])}$b[url]{/if}" /></td>
 							<td><select class="parent_buttons" data-value="$parentid"></select></td>
 							<td><button type="button" class="delete">删除</button></td>
@@ -57,7 +57,7 @@ var mod_url = '$mod_url';
 				<!--{/loop}-->
 				<tr>
 					<td><input type="text" /></td>
-					<td>{echo Template::select('', array('view' => '链接', 'click' => '点击事件'))}</td>
+					<td>{echo Template::select('', $item_types)}</td>
 					<td><input type="text" /></td>
 					<td><select class="parent_buttons"></select></td>
 					<td><button type="button" class="add">添加</button></td>
