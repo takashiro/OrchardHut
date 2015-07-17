@@ -185,6 +185,12 @@ if($action == 'login'){
 		showmsg('successfully_update_profile', 'memcp.php');
 	}
 
+	$referrer = new User;
+	if($_G['user']->referrerid > 0){
+		$referrer->fetch('id,nickname,account', array('id' => $_G['user']->referrerid));
+	}
+	$referrer = $referrer->toReadable();
+
 	include view('memcp_edit');
 }
 
