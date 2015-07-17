@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>$_CONFIG[sitename]</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="shortcut icon" href="./view/user/$_G[style]/image/favicon.ico?$_CONFIG[refversion]"/>
+<link rel="stylesheet" href="./view/user/$_G[style]/image/common.css?$_CONFIG[refversion]" type="text/css" />
+<link rel="stylesheet" type="text/css" media="screen and (min-width:800px)" href="./view/user/$_G[style]/image/desktop.css?$_CONFIG[refversion]" type="text/css">
+<!--{if !empty($_CONFIG[jquery_cdn])}-->
+<script type="text/javascript" src="$_CONFIG[jquery_cdn]"></script>
+<!--{/if}-->
+<script>window.jQuery || document.write('<script src="./plugin/jquery/jquery-2.0.3.min.js"><\/script>');</script>
+<script type="text/javascript" src="./plugin/jquery.qrcode.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#qrcode').qrcode('{$_G[root_url]}share.php?referrerid=$uid');
+});
+</script>
+</head>
+<body>
+	<div class="box">
+		<h1>{$user[account]}的推广二维码</h1>
+		<div class="content">
+			<div id="qrcode"></div>
+		</div>
+	</div>
+</body>
+</html>
