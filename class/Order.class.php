@@ -59,10 +59,6 @@ class Order extends DBObject{
 		}
 	}
 
-	public function __destruct(){
-		parent::__destruct();
-	}
-
 	public function toReadable(){
 		$attr = parent::toReadable();
 
