@@ -101,6 +101,9 @@
 						</ul>
 					</li>
 					<!--{/if}-->
+					<!--{if $_G['admin']->hasPermission('promotion')}-->
+					<li><a href="admin.php?mod=promotion">推广</a></li>
+					<!--{/if}-->
 					<!--{if $_G['admin']->hasPermission('user')}-->
 					<li><a href="admin.php?mod=user">用户</a></li>
 					<!--{/if}-->

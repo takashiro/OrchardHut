@@ -1,0 +1,35 @@
+<!--{template header}-->
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=promotion">推广</a></li>
+	<li>设置</li>
+</ol>
+
+<div class="box edit_form">
+	<h1>推广设置</h1>
+	<form class="toast" action="$mod_url" method="post">
+
+	<table>
+		<tr>
+			<th><label>产生回扣的支付方式：</th></label>
+			<td>
+			<!--{loop Order::$PaymentMethod $methodid $methodname}-->
+				{echo Template::checkbox("enabled_method[$methodid]", $methodname, !empty($config['enabled_method'][$methodid]))}
+			<!--{/loop}-->
+			</td>
+		</tr>
+		<tr>
+			<th><label>订单（不含运费）回扣比例：</label></th>
+			<td><input type="text" name="orderrewardratio" {if isset($config['orderrewardratio'])}value="$config[orderrewardratio]"{/if} />%</td>
+		</tr>
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">修改设置</button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->
