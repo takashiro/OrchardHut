@@ -41,6 +41,14 @@ class PromotionHook{
 			if(!$referrer)
 				return;
 
+			$referrer_order = $db->result_first("SELECT id FROM {$tpre}order WHERE userid={$referrer['id']} LIMIT 1");
+			if(empty($referrer_order))
+				return;
+
+			$duplicated_order = $db->result_first("SELECT id FROM {$tpre}order WHERE userid={$referrer['id']} AND mobile='{$order->mobile}' LIMIT 1");
+			if(!empty($duplicated_order))
+				return;
+
 			$reward = ($order->totalprice - $order->deliveryfee) * intval($config['orderrewardratio']) / 100;
 			if($reward <= 0)
 				return;
