@@ -191,7 +191,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 		$condition = array();
 
 		//过滤退款状态
-		$returned_order_states = array(ReturnedOrder::Handled);
+		$returned_order_states = array(ReturnedOrder::Confirmed);
 		$returned_order_states = implode(',', $returned_order_states);
 		$condition[] = "r.state IN ($returned_order_states)";
 
