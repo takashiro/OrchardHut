@@ -54,6 +54,14 @@ $(function(){
 				<li>“退货”会相应修改库存。</li>
 				<li>“退款”会将相应金额退到用户钱包，若订单为线下付款，请确认已经付款成功。</li>
 				<li>每个订单下所有退货均处理后（没有“未处理”状态），该退单申请处理成功。</li>
+				<!--{if $_G['admin']->hasPermission('confirm_returnedorder')}-->
+				<!--{if !$_G['admin']->hasPermission('handle_returnedorder')}-->
+				<li>您没有权限直接处理来自客户的订单，需经过有权限的管理员审核后您才能浏览。</li>
+				<!--{/if}-->
+				<li>您处理的订单直接为最终结果。</li>
+				<!--{else}-->
+				<li>您处理的订单需经过有权限的管理员确认。</li>
+				<!--{/if}-->
 			</ol>
 		</div>
 
@@ -93,7 +101,7 @@ $(function(){
 							<td rowspan="$rowspan">{echo Order::$PaymentMethod[$o['paymentmethod']]}<!--{if $o['alipaystate']}--><br />({echo AlipayNotify::$TradeState[$o['alipaystate']]})<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}--><br />(等待付款)<!--{/if}--></td>
 							<td colspan="4"></td>
 							<td rowspan="$rowspan"><div class="reason">$o[reason]</div></td>
-							<td rowspan="$rowspan"><input type="text" class="returnedfee narrow" name="returnedfee[{$o[id]}]" data-orderid="$o[id]" /></td>
+							<td rowspan="$rowspan"><input type="text" class="returnedfee narrow" name="returnedfee[{$o[id]}]" data-orderid="$o[id]" value="$o[returnedfee]" /></td>
 							<td rowspan="$rowspan"><textarea class="reply" name="reply[{$o[id]}]"></textarea></td>
 						</tr>
 						<!--{loop $o['details'] $d}-->
@@ -115,7 +123,7 @@ $(function(){
 				</table>
 			</div>
 
-			<!--{if !empty($returned_orders)}-->
+			<!--{if !empty($returned_orders) && ($_G['admin']->hasPermission('handle_returnedorder') || $_G['admin']->hasPermission('confirm_returnedorder'))}-->
 			<div class="post_buttons">
 				<button type="submit">确认</button>
 			</div>

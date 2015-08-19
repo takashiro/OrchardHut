@@ -27,6 +27,7 @@ class ReturnedOrder extends DBObject{
 	static public $Status = array();
 	const Submitted = 0;
 	const Handled = 1;
+	const Confirmed = 2;
 
 	static public $DetailResult = array();
 	const UnhandledDetail = 0;
@@ -93,8 +94,8 @@ class ReturnedOrder extends DBObject{
 ReturnedOrder::$Status = array(
 	ReturnedOrder::Submitted => lang('common', 'returned_order_submitted'),
 	ReturnedOrder::Handled => lang('common', 'returned_order_handled'),
+	ReturnedOrder::Confirmed => lang('common', 'returned_order_confirmed'),
 );
-
 
 ReturnedOrder::$DetailResult = array(
 	ReturnedOrder::UnhandledDetail => lang('common', 'returned_order_unhandled_detail'),

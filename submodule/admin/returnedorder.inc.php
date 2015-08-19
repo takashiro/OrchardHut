@@ -24,13 +24,22 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class ReturnedOrderModule extends AdminControlPanelModule{
 
+	public function getPermissions(){
+		return array(
+			'handle_returnedorder',
+			'confirm_returnedorder',
+		);
+	}
+
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$condition = array();
 
 		//过滤退款状态
-		$returned_order_states = array(ReturnedOrder::Submitted);
+		$returned_order_states = array();
+		$_G['admin']->hasPermission('handle_returnedorder') && $returned_order_states[] = ReturnedOrder::Submitted;
+		$_G['admin']->hasPermission('confirm_returnedorder') && $returned_order_states[] = ReturnedOrder::Handled;
 		$returned_order_states = implode(',', $returned_order_states);
 		$condition[] = "r.state IN ($returned_order_states)";
 
@@ -46,7 +55,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 			$condition = '1';
 		}
 
-		if($_POST){
+		if($_POST && ($_G['admin']->hasPermission('handle_returnedorder') || $_G['admin']->hasPermission('confirm_returnedorder'))){
 			if(is_array($_POST['reply'])){
 				foreach($_POST['reply'] as $orderid => $reply){
 					$orderid = intval($orderid);
@@ -89,20 +98,20 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 
 				//查询出已经处理完毕的订单
 				$unhandled_order = ReturnedOrder::Submitted;
-				$handled_order = ReturnedOrder::Handled;
+				$handled_order = $_G['admin']->hasPermission('confirm_returnedorder') ? ReturnedOrder::Confirmed : ReturnedOrder::Handled;
 				$unhandled_detail = ReturnedOrder::UnhandledDetail;
 				$returned_orders = $db->fetch_all("SELECT o.id
 					FROM {$tpre}returnedorder o
-					WHERE o.state=$unhandled_order
+					WHERE o.state IN ($returned_order_states)
 						AND NOT EXISTS (SELECT * FROM {$tpre}returnedorderdetail WHERE orderid=o.id AND state=$unhandled_detail)");
 
 				foreach($returned_orders as $o){
 					$returned_fee = isset($_POST['returnedfee'][$o['id']]) ? floatval($_POST['returnedfee'][$o['id']]) : 0;
 					$db->query("UPDATE {$tpre}returnedorder
 						SET state=$handled_order,returnedfee=$returned_fee
-						WHERE id={$o['id']} AND state=$unhandled_order");
+						WHERE id={$o['id']} AND state IN ($returned_order_states)");
 
-					if($db->affected_rows > 0){
+					if($handled_order == ReturnedOrder::Confirmed && $db->affected_rows > 0){
 						//退款至用户账户
 						$order = $db->fetch_first("SELECT userid FROM {$tpre}order WHERE id={$o['id']}");
 						$db->query("UPDATE {$tpre}user SET wallet=wallet+$returned_fee WHERE id={$order['userid']}");

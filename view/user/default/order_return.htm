@@ -28,6 +28,8 @@ $(function(){
 			<div class="content">
 				{echo ReturnedOrder::$Status[$returned_order['state']]}
 				<!--{if $returned_order['state'] == ReturnedOrder::Handled}-->
+				，预计退款{$returned_order[returnedfee]}{echo Product::$PriceUnit}
+				<!--{elseif $returned_order['state'] == ReturnedOrder::Confirmed}-->
 				，已退款{$returned_order[returnedfee]}{echo Product::$PriceUnit}
 				<!--{/if}-->
 			</div>
