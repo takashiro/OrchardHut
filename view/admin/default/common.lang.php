@@ -49,6 +49,7 @@ return array(
 	'permission_order_deliver_w' => '配送订单',
 	'permission_station' => '配送站管理',
 	'permission_order_to_station' => '标记订单为发车在途',
+	'permission_promotion' => '推广设置',
 
 	'product_storage_normal_mode' => '标准',
 	'product_storage_booking_mode' => '预售',
