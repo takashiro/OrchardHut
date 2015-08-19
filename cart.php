@@ -193,18 +193,20 @@ switch($action){
 				$table = $db->select_table('deliverytime');
 				$delivery = $table->fetch_first('*', 'id='.$dtid);
 
-				list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
-				$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
-				$splitter = $H * 3600 + $i * 60 + $s;
-				if($delivery['deadline'] <= $splitter){
-					$delivery['time_from'] += 24 * 3600;
-					$delivery['time_to'] += 24 * 3600;
-				}
-				$delivery['time_from'] += $today;
-				$delivery['time_to'] += $today;
+				if($delivery){
+					list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
+					$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
+					$splitter = $H * 3600 + $i * 60 + $s;
+					if($delivery['deadline'] <= $splitter){
+						$delivery['time_from'] += 24 * 3600;
+						$delivery['time_to'] += 24 * 3600;
+					}
+					$delivery['time_from'] += $today;
+					$delivery['time_to'] += $today;
 
-				$order->dtime_from = $delivery['time_from'];
-				$order->dtime_to = $delivery['time_to'];
+					$order->dtime_from = $delivery['time_from'];
+					$order->dtime_to = $delivery['time_to'];
+				}
 			}
 
 			//判断订单的支付方式是否合法
