@@ -20,7 +20,7 @@ takashiro@qq.com
 ************************************************************************/
 
 $(function(){
-	$('#orderlist').on('click', '.mark_sorted, .mark_delivering, .mark_in_delivery_station, .mark_received, .mark_rejected', function(e){
+	$('#orderlist').on('click', '.mark_sorted, .mark_to_delivery_station, .mark_delivering, .mark_in_delivery_station, .mark_received, .mark_rejected', function(e){
 		var a = $(e.target);
 		var href = a.attr('href');
 		var td = a.parent().parent();
@@ -28,18 +28,12 @@ $(function(){
 			if(a.hasClass('mark_sorted')){
 				td.html(lang['order_sorted']);
 
-				if(admin.hasPermission('order_deliver_w')){
+				if(admin.hasPermission('order_to_station')){
 					var button = $('<a></a>');
 
-					if(td.data('deliverymethod') == Order.StationDelivery){
-						button.attr('class', 'mark_in_delivery_station');
-						button.attr('href', href.replace('mark_sorted', 'mark_indp'));
-						button.html('[' + lang['order_in_delivery_station'] + ']');
-					}else{
-						button.attr('class', 'mark_delivering');
-						button.attr('href', href.replace('mark_sorted', 'mark_delivering'));
-						button.html('[' + lang['order_delivering'] + ']');
-					}
+					button.attr('class', 'mark_to_delivery_station');
+					button.attr('href', href.replace('mark_sorted', 'mark_todp'));
+					button.html('[' + lang['order_to_delivery_station'] + ']');
 
 					var div = $('<div></div>');
 					div.append(button);
@@ -49,6 +43,27 @@ $(function(){
 				var tr = td.parent();
 				tr.find('a.delete').remove();
 				tr.find('ul.order_detail').addClass('disabled');
+
+			}else if(a.hasClass('mark_to_delivery_station')){
+				td.html(lang['order_to_delivery_station']);
+
+				if(admin.hasPermission('order_deliver_w')){
+					var button = $('<a></a>');
+
+					if(td.data('deliverymethod') == Order.StationDelivery){
+						button.attr('class', 'mark_in_delivery_station');
+						button.attr('href', href.replace('mark_todp', 'mark_indp'));
+						button.html('[' + lang['order_in_delivery_station'] + ']');
+					}else{
+						button.attr('class', 'mark_delivering');
+						button.attr('href', href.replace('mark_todp', 'mark_delivering'));
+						button.html('[' + lang['order_delivering'] + ']');
+					}
+
+					var div = $('<div></div>');
+					div.append(button);
+					td.append(div);
+				}
 
 			}else if(a.hasClass('mark_delivering') || a.hasClass('mark_in_delivery_station')){
 				td.html(a.hasClass('mark_delivering') ? lang['order_delivering'] : lang['order_in_delivery_station']);

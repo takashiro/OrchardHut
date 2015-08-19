@@ -12,6 +12,7 @@ var lang = {
 	order_unsorted : '{lang common order_unsorted}',
 	order_sorted : '{lang common order_sorted}',
 	order_delivering : '{lang common order_delivering}',
+	order_to_delivery_station : '{lang common order_to_delivery_station}',
 	order_in_delivery_station : '{lang common order_in_delivery_station}',
 	order_received : '{lang common order_received}',
 	order_rejected : '{lang common order_rejected}',
@@ -75,6 +76,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 				<button type="submit" name="format" value="ticket" class="new_window">批量打印小票</button>
 				|
 				<button type="button" class="batch_process" data-action="mark_sorted">全部已打包</button>
+				<button type="button" class="batch_process" data-action="mark_todp">全部发车在途</button>
 				<!--{if $deliverymethod == -1 || $deliverymethod == Order::StationDelivery}-->
 				<button type="button" class="batch_process" data-action="mark_indp">全部到配送站</button>
 				<!--{/if}-->
@@ -135,6 +137,8 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 							<!--{if $o['status'] == Order::Unsorted && $_G['admin']->hasPermission('order_sort_w')}-->
 								<div><a class="mark_sorted" href="{$mod_url}&action=mark_sorted&orderid=$o[id]" title="将订单标记为已打包">[已打包]</a></div>
 							<!--{elseif $o['status'] == Order::Sorted && $_G['admin']->hasPermission('order_deliver_w')}-->
+								<div><a class="mark_to_delivery_station" href="{$mod_url}&action=mark_todp&orderid=$o[id]" title="将订单标记为发车在途">[发车在途]</a></div>
+							<!--{elseif $o['status'] == Order::ToDeliveryStation}-->
 								<!--{if $o['deliverymethod'] == Order::StationDelivery}-->
 								<div><a class="mark_in_delivery_station" href="{$mod_url}&action=mark_indp&orderid=$o[id]" title="将订单标记为到达配送站">[到配送站]</a></div>
 								<!--{elseif $o['deliverymethod'] == Order::HomeDelivery}-->

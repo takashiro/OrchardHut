@@ -32,6 +32,7 @@ class Order extends DBObject{
 	const Rejected = 4;
 	const InDeliveryStation = 5;
 	const Canceled = 6;
+	const ToDeliveryStation = 7;
 
 	//Payment Method
 	public static $PaymentMethod;
@@ -315,6 +316,7 @@ class Order extends DBObject{
 Order::$Status = array(
 	Order::Unsorted => lang('common', 'order_unsorted'),
 	Order::Sorted => lang('common', 'order_sorted'),
+	Order::ToDeliveryStation => lang('common', 'order_to_delivery_station'),
 	Order::InDeliveryStation => lang('common', 'order_in_delivery_station'),
 	Order::Delivering => lang('common', 'order_delivering'),
 	Order::Received => lang('common', 'order_received'),

@@ -30,6 +30,7 @@ class OrderModule extends AdminControlPanelModule{
 			'order_deliver_w',
 			'order_sort',
 			'order_sort_w',
+			'order_to_station',
 		);
 	}
 
@@ -400,9 +401,29 @@ class OrderModule extends AdminControlPanelModule{
 				exit('permission denied');
 			}
 
-			if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
+			if($order->status == Order::ToDeliveryStation || $_G['admin']->isSuperAdmin()){
 				$order->status = Order::Delivering;
 				$order->addLog($_G['admin'], Order::StatusChanged, Order::Delivering);
+			}
+		}
+
+		empty($_GET['ajaxform']) || exit('1');
+		empty($_SERVER['HTTP_REFERER']) || redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function mark_todpAction(){
+		global $_G;
+		if(empty($_GET['orderid']) || !$_G['admin']->hasPermission('order_to_station')) exit('permission denied');
+
+		$order = new Order($_GET['orderid']);
+		if($order->exists()){
+			if(!$order->belongToAddress($_G['admin']->getLimitations())){
+				exit('permission denied');
+			}
+
+			if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
+				$order->status = Order::ToDeliveryStation;
+				$order->addLog($_G['admin'], Order::StatusChanged, Order::ToDeliveryStation);
 			}
 		}
 
@@ -426,7 +447,7 @@ class OrderModule extends AdminControlPanelModule{
 				exit('permission denied');
 			}
 
-			if($order->status == Order::Sorted || $_G['admin']->isSuperAdmin()){
+			if($order->status == Order::ToDeliveryStation || $_G['admin']->isSuperAdmin()){
 				$order->status = Order::InDeliveryStation;
 				if(!empty($_GET['customlabel'])){
 					$order->customlabel = trim($_GET['customlabel']);
