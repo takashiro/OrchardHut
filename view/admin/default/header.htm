@@ -36,17 +36,12 @@
 					<li>
 						<a href="{if $_G['admin']->hasPermission('order')}admin.php?mod=order{else}###{/if}">订单</a>
 						<ul class="submenu">
+							<li><a href="admin.php?mod=order&action=scancode">扫码处理</a></li>
 							<!--{if $_G['admin']->hasPermission('orderstat')}-->
 							<li><a href="admin.php?mod=orderstat">分拣报表</a></li>
 							<!--{/if}-->
 							<!--{if $_G['admin']->hasPermission('order')}-->
 							<li><a href="admin.php?mod=order&action=search">高级查找</a></li>
-							<!--{/if}-->
-							<!--{if $_G['admin']->hasPermission('order_deliver_w')}-->
-							<li><a href="admin.php?mod=order&action=mark_indp">配送站上架</a></li>
-							<!--{/if}-->
-							<!--{if $_G['admin']->isSuperAdmin()}-->
-							<li><a href="admin.php?mod=order&action=changestate">修改订单</a></li>
 							<!--{/if}-->
 							<!--{if $_G['admin']->hasPermission('ticket')}-->
 							<li><a href="admin.php?mod=ticket">小票设置</a></li>

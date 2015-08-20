@@ -434,11 +434,6 @@ class OrderModule extends AdminControlPanelModule{
 	public function mark_indpAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
-		if(empty($_GET['orderid'])){
-			include view('order_markindp');
-			exit;
-		}
-
 		if(!$_G['admin']->hasPermission('order_deliver_w')) exit('permission denied');
 		$order = new Order($_GET['orderid']);
 
@@ -582,9 +577,9 @@ class OrderModule extends AdminControlPanelModule{
 		echo json_encode($result);
 	}
 
-	public function changestateAction(){
+	public function scancodeAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
-		include view('order_changestate');
+		include view('order_scancode');
 	}
 
 }

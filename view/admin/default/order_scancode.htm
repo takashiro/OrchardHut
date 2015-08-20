@@ -2,7 +2,11 @@
 
 <script type="text/javascript">
 $(function(){
-	$('#customlabel').focus();
+	function focusOnId(){
+		$('#orderid').focus();
+	}
+	focusOnId();
+	$('#action').change(focusOnId);
 
 	$('#mark_form').submit(function(e){
 		var customlabel = $('#customlabel').val();
@@ -36,7 +40,7 @@ $(function(){
 			$('#correct_audio')[0].play();
 
 			var new_result = $('<p></p>');
-			new_result.html('订单号' + orderid + '上架成功！');
+			new_result.html('订单号' + orderid + '成功标记为【' + $('#action option:selected').html() + '】！');
 			$('#result_list').append(new_result);
 
 			setTimeout(function(){
@@ -54,26 +58,49 @@ $(function(){
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
 	<li><a href="admin.php?mod=order">订单</a></li>
-	<li>配送站上架</li>
+	<li>扫码处理</li>
 </ol>
 
 <div class="box">
-	<h1>配送站上架</h1>
+	<h1>扫码处理订单</h1>
 	<div class="content">
+		<div class="notice">
+			<ol>
+				<li>请先选择好订单状态。</li>
+				<li>扫描枪扫码后，订单号会被清空，可再次直接扫码。</li>
+			</ol>
+		</div>
+
 		<form id="mark_form" action="admin.php" method="get" class="edit_form">
 			<input type="hidden" name="mod" value="order" />
-			<input type="hidden" name="action" value="mark_indp" />
 			<table>
 				<tr>
-					<th>库位号：</th>
-					<td><input type="text" id="customlabel" name="customlabel" /></td>
+					<th>订单状态</th>
+					<td>
+						<select id="action" name="action">
+						<!--{if $_G['admin']->hasPermission('order_sort_w')}-->
+							<option value="mark_unsorted">{lang common order_unsorted}</option>
+							<option value="mark_sorted">{lang common order_sorted}</option>
+						<!--{/if}-->
+						<!--{if $_G['admin']->hasPermission('order_to_station')}-->
+							<option value="mark_todp">{lang common order_to_delivery_station}</option>
+						<!--{/if}-->
+						<!--{if $_G['admin']->hasPermission('order_deliver_w')}-->
+							<option value="mark_indp">{lang common order_in_delivery_station}</option>
+							<option value="mark_delivering">{lang common order_delivering}</option>
+							<option value="mark_received">{lang common order_received}</option>
+							<option value="mark_rejected">{lang common order_rejected}</option>
+						<!--{/if}-->
+							<option value="cancel">{lang common order_canceled}</option>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>订单号：</th>
 					<td><input type="text" id="orderid" name="orderid" /></td>
 				</tr>
 			</table>
-			<button type="submit">上架</button>
+			<button type="submit">处理订单</button>
 		</form>
 		<div id="result_list" class="toast_list"></div>
 	</div>
