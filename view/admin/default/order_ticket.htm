@@ -12,6 +12,30 @@
 <script type="text/javascript" src="$_CONFIG[jquery_cdn]"></script>
 <!--{/if}-->
 <script type="text/javascript">window.jQuery || document.write('<script src="./plugin/jquery/jquery-2.0.3.min.js"><\/script>');</script>
+<script type="text/javascript" src="./plugin/jquery.ean13/jquery-ean13.min.js"></script>
+<script type="text/javascript">
+function id2barcode(id){
+	var barcode = '690';	//stands for China
+
+	var leading_zero_num = 9 - id.length;
+	for(var i = 0; i < leading_zero_num; i++){
+		barcode += '0';
+	}
+	barcode += id;
+
+	return barcode;
+}
+</script>
+<style type="text/css">
+.barcode{
+	text-align: center;
+}
+
+.barcode canvas{
+	width: 6cm;
+	height: 2.5cm;
+}
+</style>
 <style type="text/css" media="print">
 .footer{
 	page-break-after: always;
@@ -94,6 +118,13 @@ window.close();
 		</tbody>
 	</table>
 </div>
+
+<div class="barcode"><canvas id="barcode_$order[id]"></canvas></div>
+<script type="text/javascript">
+$(function(){
+	$('#barcode_$order[id]').EAN13(id2barcode('$order[id]'));
+});
+</script>
 
 <div class="footer">
 	打印时间：{echo rdate(TIMESTAMP)}
