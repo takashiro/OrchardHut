@@ -34,6 +34,8 @@ return array(
 	'order_payment' => '支付',
 	'transfer' => '转账',
 
+	'out_of_stock' => '缺货',
+
 	'returned_order_submitted' => '已提交',
 	'returned_order_handled' => '处理中',
 	'returned_order_confirmed' => '处理完毕',

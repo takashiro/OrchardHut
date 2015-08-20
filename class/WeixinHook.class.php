@@ -25,59 +25,74 @@ class WeixinHook{
 	static public function __on_order_log_added($order, $log){
 		global $db, $tpre, $_G;
 
-		if($log['operation'] == Order::StatusChanged && $log['extra'] == Order::InDeliveryStation || $log['extra'] == Order::Delivering){
+		if($log['operation'] != Order::StatusChanged)
+			return;
+
+		if($log['extra'] == Order::InDeliveryStation || $log['extra'] == Order::Delivering){
 			$touser = $db->result_first("SELECT wxopenid FROM {$tpre}user WHERE id=".$order->userid);
-			if($touser){
-				if($log['extra'] == Order::InDeliveryStation){
-					$text = lang('weixin', 'your_order_just_arrived_in_delivery_station');
+			if(!$touser)
+				return;
 
-					$fullpath = Address::FullPathIds($order->addressid);
-					if($fullpath){
-						$min_range = Address::MinRange('orderrange', $order->addressid);
-						$station = $db->fetch_first("SELECT id,address FROM {$tpre}station WHERE orderrange IN ($fullpath) ORDER BY $min_range LIMIT 1");
-						if(!empty($station['address'])){
-							$text.= lang('weixin', 'the_station_is_located_in').$station['address'].lang('common', 'period');
-						}
-					}
+			if($log['extra'] == Order::InDeliveryStation){
+				$text = lang('weixin', 'your_order_just_arrived_in_delivery_station');
 
-					if($order->deliverymethod == Order::HomeDelivery){
-						$text.= lang('weixin', 'please_wait_for_the_deliverer');
-					}else{
-						$text.= lang('weixin', 'please_fetch_your_package');
+				$fullpath = Address::FullPathIds($order->addressid);
+				if($fullpath){
+					$min_range = Address::MinRange('orderrange', $order->addressid);
+					$station = $db->fetch_first("SELECT id,address FROM {$tpre}station WHERE orderrange IN ($fullpath) ORDER BY $min_range LIMIT 1");
+					if(!empty($station['address'])){
+						$text.= lang('weixin', 'the_station_is_located_in').$station['address'].lang('common', 'period');
 					}
+				}
+
+				if($order->deliverymethod == Order::HomeDelivery){
+					$text.= lang('weixin', 'please_wait_for_the_deliverer');
 				}else{
-					$text = lang('weixin', 'your_order_is_being_delivered');
+					$text.= lang('weixin', 'please_fetch_your_package');
 				}
-
-				if($log['operator']){
-					$admin = $db->fetch_first("SELECT a.realname,a.mobile FROM {$tpre}administrator a WHERE a.id={$log['operator']}");
-					if($admin){
-						$text.= "\n";
-						$text.= lang('weixin', 'deliverer_is').$admin['realname'];
-						if($admin['mobile']){
-							$text.= '('.lang('common', 'mobile').': '.$admin['mobile'].')';
-						}
-					}
-				}
-
-				global $_G;
-				$text.= "\n订单：";
-
-				foreach($order->getDetails() as $d){
-					$text.= "\n";
-					if($d['state'] == '1'){
-						$text.= '[缺货]';
-					}
-					$text.= $d['productname'];
-					if(!empty($d['subtype'])){
-						$text.= "({$d['subtype']})";
-					}
-					$text.= ($d['amount'] * $d['number']).$d['amountunit'];
-				}
-
-				$wx = new WeixinAPI;
-				$wx->sendTextMessage($touser, $text);
+			}else{
+				$text = lang('weixin', 'your_order_is_being_delivered');
 			}
+
+			if($log['operator']){
+				$admin = $db->fetch_first("SELECT a.realname,a.mobile FROM {$tpre}administrator a WHERE a.id={$log['operator']}");
+				if($admin){
+					$text.= "\n";
+					$text.= lang('weixin', 'deliverer_is').$admin['realname'];
+					if($admin['mobile']){
+						$text.= '('.lang('common', 'mobile').': '.$admin['mobile'].')';
+					}
+				}
+			}
+
+			global $_G;
+			$text.= "\n".lang('common', 'order').'：';
+
+			foreach($order->getDetails() as $d){
+				$text.= "\n";
+				if($d['state'] == '1'){
+					$text.= '['.lang('common', 'out_of_stock').']';
+				}
+				$text.= $d['productname'];
+				if(!empty($d['subtype'])){
+					$text.= "({$d['subtype']})";
+				}
+				$text.= ($d['amount'] * $d['number']).$d['amountunit'];
+			}
+
+			$wx = new WeixinAPI;
+			$wx->sendTextMessage($touser, $text);
+
+		}elseif($log['extra'] == Order::Received){
+			$touser = $db->result_first("SELECT wxopenid FROM {$tpre}user WHERE id=".$order->userid);
+			if(!$touser)
+				return;
+
+			$link = $_G['root_url'].'order.php?action=comment&orderid='.$order->id;
+			$text.= '<a href="'.$link.'">'.lang('weixin', 'thanks_for_supporting_please_rank').'</a>';
+
+			$wx = new WeixinAPI;
+			$wx->sendTextMessage($touser, $text);
 		}
 	}
 }

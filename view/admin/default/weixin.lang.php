@@ -7,6 +7,7 @@ return array(
 	'please_wait_for_the_deliverer' => '等配送员送货上门哦~',
 	'please_fetch_your_package' => '坐等您来自提点取货哦~',
 	'the_station_is_located_in' => '配送站地址：',
+	'thanks_for_supporting_please_rank' => '感谢您购买，请点这里给我们打分吧~',
 
 	'weixin_menu_type_view' => '跳转URL',
 	'weixin_menu_type_click' => '点击事件',
