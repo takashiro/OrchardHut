@@ -37,29 +37,26 @@ var User = {
 	</div>
 </div>
 
-<!--{if count(Product::Types()) > 1}-->
-<div class="product_type">
-	<div class="wrapper">
-		<ul>
-		<!--{loop Product::Types() $typeid $typename}-->
-			<li{if $type == $typeid} class="current"{/if}><a href="market.php?type=$typeid">$typename</a></li>
-		<!--{/loop}-->
-		</ul>
-		<div class="more">▽</div>
-	</div>
-</div>
-<!--{/if}-->
+<div class="market">
+	<!--{if count(Product::Types()) > 1}-->
+	<ul class="product_type">
+	<!--{loop Product::Types() $typeid $typename}-->
+		<li{if $type == $typeid} class="current"{/if}><a href="market.php?type=$typeid">$typename</a></li>
+	<!--{/loop}-->
+	</ul>
+	<!--{/if}-->
 
-<ul class="product_list">
-	<!--{loop $products $p}-->
-	<li data-product-id="$p[id]">
-		<div class="icon" style="background:#$p[icon_background]">
-			<img data-original="$p[icon]" />
-		</div>
-		<div class="detail" style="background:#$p[background_color]">
-			<div class="name" style="color:#$p[text_color];">$p[name]</div>
-			<div class="soldout">销量：<span class="value">$p[soldout]</span></div>
-			<!--{if !empty($p['briefintro'])}--><div class="briefintro" style="color:#$p[text_color];">$p[briefintro]</div><!--{/if}-->
+	<ul class="product_list">
+		<!--{loop $products $p}-->
+		<li data-product-id="$p[id]">
+			<div class="icon" style="background:#$p[icon_background]">
+				<img data-original="$p[icon]" />
+			</div>
+			<div class="detail" style="background:#$p[background_color]">
+				<div class="name" style="color:#$p[text_color];">$p[name]</div>
+				<div class="soldout">销量：<span class="value">$p[soldout]</span></div>
+				<!--{if !empty($p['briefintro'])}--><div class="briefintro" style="color:#$p[text_color];">$p[briefintro]</div><!--{/if}-->
+			</div>
 			<ul class="rule">
 				<!--{if $p['rule']}-->
 					<!--{loop $p['rule'] $r}-->
@@ -78,9 +75,9 @@ var User = {
 			</div>
 			<div class="photo"><img data-original="$p[photo]" /></div>
 			<div class="introduction">$p[introduction]</div>
-		</div>
-	</li>
-	<!--{/loop}-->
-</ul>
+		</li>
+		<!--{/loop}-->
+	</ul>
+</div>
 
 {template footer}

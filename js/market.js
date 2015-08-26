@@ -20,6 +20,8 @@ takashiro@qq.com
 ************************************************************************/
 
 $(function(){
+	$('.product_list').css('min-height', $('.product_type').height());
+
 	$('.order_input input').change(function(e){
 		var input = $(e.target);
 		var numberbox = input.parent();
@@ -95,7 +97,7 @@ $(function(){
 		}else{
 			var brief = $($.parseHTML('<div></div>'));
 			brief.addClass('brief');
-			brief.html('多个品种可选');
+			brief.html('');
 			if(list.length == 2){
 				if(list.eq(0).find('.subtype').html() == '' && list.eq(1).find('.subtype').html() == ''
 					&& list.eq(0).find('.briefintro').html() == '' && list.eq(1).find('.briefintro').html() == ''){
@@ -155,30 +157,11 @@ $(function(){
 		popup_message(title.html(), detail.html());
 	});
 
-	$('.product_type .more').click(function(e){
-		var more = $(e.target);
-		var wrapper = more.parent();
-		var ul = wrapper.children('ul');
-		if(ul.children().length <= 3){
-			more.animate({opacity: 0.4});
-			more.unbind('click');
-		}else{
-			var original_height = wrapper.data('original_height');
-			if(!original_height){
-				wrapper.data('original_height', wrapper.height());
-				wrapper.animate({height: ul.height()});
-			}else{
-				wrapper.data('original_height', '');
-				wrapper.animate({height: original_height});
-			}
-		}
-	});
-
 	$(window).scroll(function(){
 		var product_type = $('.product_type');
 		if(product_type.length <= 0)
 			return;
-		var offset_top = product_type.offset().top - $(window).scrollTop();
+		var offset_top = $('.product_list').offset().top - $(window).scrollTop();
 		if(product_type.hasClass('product_type_fixed')){
 			if(offset_top > 0){
 				product_type.removeClass('product_type_fixed');
@@ -193,8 +176,9 @@ $(function(){
 	$('.product_list').on('click', '.icon, .name', function(e){
 		var target = $(this);
 		var detail = target.is('.icon') ? target.next() : target.parent();
-		var photo = detail.children('.photo');
-		var introduction = detail.children('.introduction');
+		var rightpanel = detail.parent();
+		var photo = rightpanel.children('.photo');
+		var introduction = rightpanel.children('.introduction');
 		var name = detail.children('.name');
 
 		var title = name.html();
