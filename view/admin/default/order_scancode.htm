@@ -9,17 +9,6 @@ $(function(){
 	$('#action').change(focusOnId);
 
 	$('#mark_form').submit(function(e){
-		var customlabel = $('#customlabel').val();
-		if(customlabel.length == 0){
-			$('#customlabel').focus();
-			return false;
-		}
-
-		var labelnumber = parseInt(customlabel, 10);
-		if(!isNaN(labelnumber)){
-			customlabel = labelnumber;
-		}
-
 		var orderid = $('#orderid').val();
 		if(orderid.length == 13){
 			orderid = orderid.substr(3, 9);
