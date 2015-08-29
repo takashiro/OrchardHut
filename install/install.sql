@@ -335,6 +335,7 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   `loginkey` smallint(5) unsigned NOT NULL,
   `trickflag` int(11) unsigned NOT NULL,
   `referrerid` mediumint(8) unsigned NOT NULL,
+  `getuiclientid` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`),
   UNIQUE KEY `qqopenid` (`qqopenid`),
