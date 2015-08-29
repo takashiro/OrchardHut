@@ -26,10 +26,10 @@ class OrderModule extends AdminControlPanelModule{
 
 	public function getPermissions(){
 		return array(
-			'order_deliver',
-			'order_deliver_w',
 			'order_sort',
 			'order_sort_w',
+			'order_deliver',
+			'order_deliver_w',
 			'order_to_station',
 		);
 	}
@@ -44,6 +44,24 @@ class OrderModule extends AdminControlPanelModule{
 
 	public function listAction($action = 'list'){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
+		$available_status = array();
+		if($_G['admin']->hasPermission('order_sort')){
+			$available_status[Order::Unsorted] = false;
+			$available_status[Order::Sorted] = false;
+		}
+		if($_G['admin']->hasPermission('order_to_station')){
+			$available_status[Order::Sorted] = false;
+			$available_status[Order::ToDeliveryStation] = false;
+		}
+		if($_G['admin']->hasPermission('order_deliver')){
+			$available_status[Order::ToDeliveryStation] = false;
+			$available_status[Order::InDeliveryStation] = false;
+			$available_status[Order::Delivering] = false;
+			$available_status[Order::Received] = false;
+			$available_status[Order::Rejected] = false;
+		}
+		$available_status[Order::Canceled] = false;
 
 		//显示（或导出Excel表格）订单列表
 		if($action == 'list'){
@@ -68,22 +86,27 @@ class OrderModule extends AdminControlPanelModule{
 
 			$deliverymethod = -1;
 
-			//判断当前管理员的权限，过滤掉无权限查看的订单
-			if(!$_G['admin']->hasPermission('order_sort')){
-				unset($display_status[Order::Unsorted]);
-			}
-
-			if(!$_G['admin']->hasPermission('order_deliver')){
-				unset($display_status[Order::Sorted], $display_status[Order::Delivering]);
+			//过滤掉无权限查看的订单
+			foreach($display_status as $statusid => $value){
+				if(!isset($available_status[$statusid])){
+					unset($display_status[$statusid]);
+				}else{
+					$available_status[$statusid] = true;
+				}
 			}
 
 			//按订单号查询
 			if(!empty($_REQUEST['orderid'])){
 				$condition[] = 'o.id='.intval($_REQUEST['orderid']);
-				$display_status[Order::Received] = $display_status[Order::Rejected] = true;
 
 				$time_start = '';
 				$time_end = '';
+				$available_status;
+				foreach($available_status as &$checked){
+					$checked = true;
+				}
+				unset($checked);
+				$display_status = $available_status;
 			}
 
 			//下单起始时间
@@ -130,7 +153,11 @@ class OrderModule extends AdminControlPanelModule{
 			}
 
 			$display_status = array_keys($display_status);
-			$condition[] = 'o.status IN ('.implode(',', $display_status).')';
+			if($display_status){
+				$condition[] = 'o.status IN ('.implode(',', $display_status).')';
+			}else{
+				$condition[] = '0';
+			}
 
 			//过滤掉送货地点不在当前管理员的管辖范围内的订单
 			$limitation_addressids = $_G['admin']->getLimitations();
@@ -261,6 +288,9 @@ class OrderModule extends AdminControlPanelModule{
 				}
 				unset($o, $order_details);
 			}
+
+
+		//高级查找
 		}else{
 			$display_status = array_keys(Order::$Status);
 			unset($display_status[Order::Canceled]);
@@ -288,23 +318,6 @@ class OrderModule extends AdminControlPanelModule{
 					unset($address_components[$cid]);
 				}
 			}
-		}
-
-		$available_status = Order::$Status;
-		if(!$_G['admin']->hasPermission('order_sort')){
-			unset($available_status[Order::Unsorted]);
-		}
-		if(!$_G['admin']->hasPermission('order_deliver')){
-			unset($available_status[Order::Sorted], $available_status[Order::Delivering]);
-		}
-
-		foreach($available_status as &$checked){
-			$checked = false;
-		}
-		unset($checked);
-
-		foreach($display_status as $status){
-			$available_status[$status] = true;
 		}
 
 		$delivery_methods = Order::$DeliveryMethod;
