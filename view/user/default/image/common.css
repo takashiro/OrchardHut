@@ -125,7 +125,7 @@ button.remove{
 
 .announcement .body{
 	background:url(announcement_bg.jpg);
-	height:160px;
+	height:106px;
 	margin:auto;
 	box-shadow:0 5px 16px #dc5858;
 	padding:10px;
@@ -155,7 +155,7 @@ button.remove{
 
 .announcement .body .content li{
 	margin:10px 0;
-	list-style-type: circle;
+	list-style-type: none;
 }
 
 .announcement .body .content li .title_link{
@@ -222,6 +222,10 @@ ul.product_list{
 	width:100%;
 	line-height:2em;
 	color:#A59999;
+}
+
+.market{
+	background: #FD7170;
 }
 
 .market ul.product_list{
