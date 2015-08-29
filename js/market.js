@@ -121,8 +121,8 @@ $(function(){
 
 			var countdown_icon = rule.find('.countdown:eq(0)').clone();
 			if(countdown_icon.length > 0){
-				var detail = rule.parent();
-				var icon = detail.prev();
+				var li = rule.parent();
+				var icon = li.children('.icon');
 				icon.append(countdown_icon);
 			}
 

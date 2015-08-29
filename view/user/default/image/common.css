@@ -231,18 +231,23 @@ ul.product_list{
 .market ul.product_list{
 	width: auto;
 	margin-left: 87px;
+	border-right: #EA6363 1px solid;
 }
 
 ul.product_list > li{
 	margin-bottom:2px;
 	position: relative;
+	border-bottom: #EA6363 1px solid;
+	padding-top: 10px;
+	padding-bottom: 5px;
 }
 
 ul.product_list > li .icon{
 	width: 80px;
 	height: 80px;
 	position:absolute;
-	left:0;
+	top: 10px;
+	left: 10px;
 	cursor:pointer;
 }
 
@@ -261,7 +266,7 @@ ul.product_list > li .icon .countdown{
 ul.product_list > li .detail{
 	min-height: 80px;
 	padding-left: 0.5em;
-	margin-left: 80px;
+	margin-left: 95px;
 	line-height: 1.5em;
 }
 
@@ -276,8 +281,11 @@ ul.product_list > li .detail .soldout{
 	right:1em;
 }
 
+ul.product_list > li ul.rule{
+	margin: 10px 10px 0 10px;
+}
+
 ul.product_list > li ul.rule li{
-	padding-left:0.5em;
 	border-bottom:white 2px solid;
 	line-height:40px;
 	position:relative;
@@ -286,6 +294,10 @@ ul.product_list > li ul.rule li{
 ul.product_list > li ul.rule li .intro{
 	display:block;
 	line-height:1.4em;
+}
+
+ul.product_list > li ul.rule li .countdown{
+	margin:0 2px;
 }
 
 ul.product_list > li .more{
@@ -325,7 +337,6 @@ ul.product_list > li .brief{
 	color:white;
 	text-align:center;
 	display:inline-block;
-	margin:0 2px;
 }
 
 footer{
@@ -535,7 +546,7 @@ footer ul.button_list .submenu a{
 }
 
 .numberbox{
-	width:130px;
+	width:125px;
 	text-align:center;
 	height:35px;
 }

@@ -1,6 +1,16 @@
 
-.container, .product_type_fixed .wrapper{
+.container, footer{
 	width:800px;
+}
+
+.market .product_type_fixed{
+	left: 50%;
+	margin-left: -400px;
+}
+
+footer{
+	left: 50%;
+	margin-left: -400px;
 }
 
 #sharebox{

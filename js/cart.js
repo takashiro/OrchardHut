@@ -23,7 +23,7 @@ $(function(){
 
 	$('.cart .product_list button.remove').click(function(e){
 		var button = $(e.target);
-		var li = button.parent().parent();
+		var li = button.parent();
 		var price_id = parseInt(li.data('price-id'), 10);
 		if(!isNaN(price_id)){
 			var subtotal = parseFloat(li.find('.subtotal .number').html());
