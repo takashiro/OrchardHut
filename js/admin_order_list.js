@@ -99,12 +99,8 @@ $(function(){
 	});
 
 	function batchProcessOrder(mod_action){
-		var mpage = $('.mpage');
-		if(mpage.length <= 0)
-			return;
-
-		var basic_url = $('.mpage a:not(.current)').eq(0).attr('href').replace(/(\&?page\=)[\d]+/i, '');
-		mpage.remove();
+		var basic_url = location.href;
+		$('.mpage').remove();
 
 		var orderlist = $('#orderlist');
 		orderlist.html('处理中……');
@@ -143,13 +139,16 @@ $(function(){
 					for(var i = 0; i < response.data.length; i++){
 						var order = response.data[i];
 						if(mod_action == 'mark_indp'){
-							if(order.status != Order.Sorted || order.deliverymethod != Order.StationDelivery)
+							if(order.status != Order.ToDeliveryStation || order.deliverymethod != Order.StationDelivery)
 								continue;
 						}else if(mod_action == 'mark_delivering'){
-							if(order.status != Order.Sorted || order.deliverymethod != Order.HomeDelivery)
+							if(order.status != Order.ToDeliveryStation || order.deliverymethod != Order.HomeDelivery)
 								continue;
 						}else if(mod_action == 'mark_sorted'){
 							if(order.status != Order.Unsorted)
+								continue;
+						}else if(mod_action == 'mark_todp'){
+							if(order.status != Order.Sorted)
 								continue;
 						}
 

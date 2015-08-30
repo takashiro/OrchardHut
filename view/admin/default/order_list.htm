@@ -38,7 +38,10 @@ var Order = {
 	HomeDelivery : {echo Order::HomeDelivery},
 
 	Unsorted : {echo Order::Unsorted},
-	Sorted : {echo Order::Sorted}
+	Sorted : {echo Order::Sorted},
+	ToDeliveryStation : {echo Order::ToDeliveryStation},
+	InDeliveryStation : {echo Order::InDeliveryStation},
+	Delivering : {echo Order::Delivering}
 };
 
 $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_components)});
@@ -49,7 +52,8 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 <div class="box">
 	<h1>订单管理</h1>
 	<div class="content">
-		<form id="condition_form" class="quick_search" action="$mod_url" method="post">
+		<form id="condition_form" class="quick_search" action="admin.php" method="get">
+			<input type="hidden" name="mod" value="$mod" />
 			<dl>
 				<dt>订单号：</dt>
 				<dd><input type="text" name="orderid" style="width:3em" /></dd>

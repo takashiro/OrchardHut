@@ -73,8 +73,14 @@ class OrderModule extends AdminControlPanelModule{
 				$display_status = $_POST['display_status'];
 			}elseif(isset($_GET['display_status'])){
 				$display_status = array();
-				foreach(explode(',', $_GET['display_status']) as $status){
-					$display_status[$status] = true;
+				if(is_string($_GET['display_status'])){
+					foreach(explode(',', $_GET['display_status']) as $status){
+						$display_status[$status] = true;
+					}
+				}else{
+					foreach($_GET['display_status'] as $status => $on){
+						$display_status[$status] = true;
+					}
 				}
 			}else{
 				$display_status = array();
