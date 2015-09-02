@@ -46,6 +46,8 @@ return array(
 	'successfully_changed_key' => '修改索引成功。',
 	'successfully_optimized_tables' => '成功优化表碎片。',
 	'sucessfully_cleared_authkeys' => '成功清除过期的验证密钥',
+
+	'getui_configuration_error' => '个推配置错误。',
 );
 
 ?>

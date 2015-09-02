@@ -1,0 +1,30 @@
+{template header}
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=getui">个推</a></li>
+	<li>App推送消息</li>
+</ol>
+
+<div class="box">
+	<h1>App推送消息</h1>
+	<div class="content edit_form">
+		<form action="###" method="post" class="toast">
+			<table>
+				<tr>
+					<th>标题</th>
+					<td><input type="text" name="title" class="wide" /></td>
+				</tr>
+				<tr>
+					<th>内容</th>
+					<td><textarea name="content" class="wide"></textarea></td>
+				</tr>
+			</table>
+			<div class="post_button">
+				<button type="submit">推送</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+{template footer}

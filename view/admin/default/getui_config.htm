@@ -1,0 +1,39 @@
+<!--{template header}-->
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=getui">个推</a></li>
+	<li>设置</li>
+</ol>
+
+<div class="box edit_form">
+	<h1>个推设置</h1>
+	<form class="toast" action="$mod_url&action=config" method="post">
+
+	<table>
+		<tr>
+			<th><label>APP ID：</label></th>
+			<td><input type="text" name="getuiconfig[app_id]" value="$getuiconfig[app_id]" class="wide" /></td>
+		</tr>
+		<tr>
+			<th><label>APP Key：</label></th>
+			<td><input type="text" name="getuiconfig[app_key]" value="$getuiconfig[app_key]" class="wide" /></td>
+		</tr>
+		<tr>
+			<th><label>Master Secret：</label></th>
+			<td><input type="text" name="getuiconfig[master_secret]" value="$getuiconfig[master_secret]" class="wide" /></td>
+		</tr>
+		<tr>
+			<th><label>Host：</label></th>
+			<td><input type="text" name="getuiconfig[host]" value="$getuiconfig[host]" class="wide" /></td>
+		</tr>
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">修改设置</button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->
