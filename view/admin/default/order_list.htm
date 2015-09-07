@@ -76,7 +76,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 				<dt>收货方式：</dt>
 				<dd>{echo Template::select('deliverymethod', $delivery_methods, $deliverymethod)}</dd>
 				<dt>支付状态：</dt>
-				<dd>{echo Template::select('alipaystate', array(0 => '全部') + AlipayNotify::$TradeState, $alipaystate)}</dd>
+				<dd>{echo Template::select('tradestate', array(0 => '全部') + Order::$TradeState, $tradestate)}</dd>
 			</dl>
 			<div class="post_buttons">
 				<button type="submit" name="format" value="html">查找</button>
@@ -159,7 +159,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 						</td>
 						<td>
 							<div>{echo Order::$PaymentMethod[$o['paymentmethod']]}</div>
-							<!--{if $o['alipaystate']}-->{echo AlipayNotify::$TradeState[$o['alipaystate']]}<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}-->等待付款<!--{/if}-->
+							<!--{if $o['tradestate']}-->{echo Order::$TradeState[$o['tradestate']]}<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}-->等待付款<!--{/if}-->
 						</td>
 						<td>{echo rdate($o['dateline'])}</td>
 						<td>

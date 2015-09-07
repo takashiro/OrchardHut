@@ -99,7 +99,7 @@ window.close();
 			<th>付款状态：</th>
 			<td>
 				{echo Order::$PaymentMethod[$order['paymentmethod']]}
-				<!--{if $order['alipaystate']}-->({echo AlipayNotify::$TradeState[$order['alipaystate']]})<!--{elseif $order['paymentmethod'] != Order::PaidWithCash}-->(等待付款)<!--{/if}-->
+				<!--{if $order['tradestate']}-->({echo Order::$TradeState[$order['tradestate']]})<!--{elseif $order['paymentmethod'] != Order::PaidWithCash}-->(等待付款)<!--{/if}-->
 			</td>
 		</tr>
 	</table>

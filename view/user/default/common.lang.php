@@ -15,14 +15,14 @@ return array(
 	'order_canceled' => '已取消',
 
 	'order_paidwithcash' => '货到付现',
-	'order_paidonline' => '支付宝',
+	'order_paidwithalipay' => '支付宝',
 	'order_paidwithwallet' => '钱包余额',
 
-	'alipay_waitbuyerpay' => '待付款',
-	'alipay_tradeclosed' => '关闭',
-	'alipay_tradesuccess' => '成功',
-	'alipay_tradepending' => '待收款',
-	'alipay_tradefinished' => '结束',
+	'order_waitbuyerpay' => '待付款',
+	'order_tradeclosed' => '关闭',
+	'order_tradesuccess' => '成功',
+	'order_tradepending' => '待收款',
+	'order_tradefinished' => '结束',
 
 	'home_delivery' => '送货上门',
 	'station_delivery' => '自提点取货',

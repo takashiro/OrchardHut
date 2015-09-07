@@ -21,8 +21,8 @@ foreach($returned_orders as $o){
 	echo ',', rdate($o['dateline']);
 	echo ',', Order::$PaymentMethod[$o['paymentmethod']];
 	echo ',';
-	if($o['alipaystate']){
-		echo AlipayNotify::$TradeState[$o['alipaystate']];
+	if($o['tradestate']){
+		echo Order::$TradeState[$o['tradestate']];
 	}elseif($o['paymentmethod'] != Order::PaidWithCash){
 		echo '(等待付款)';
 	}

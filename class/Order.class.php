@@ -37,13 +37,22 @@ class Order extends DBObject{
 	//Payment Method
 	public static $PaymentMethod;
 	const PaidWithCash = 0;
-	const PaidOnline = 1;
+	const PaidWithAlipay = 1;
 	const PaidWithWallet = 2;
 
 	//Delivery Method
 	public static $DeliveryMethod;
 	const HomeDelivery = 0;
 	const StationDelivery = 1;
+
+
+	//Trade State
+	public static $TradeState;
+	const WaitBuyerPay = 1;		//交易创建，等待买家付款。
+	const TradeClosed = 2;		//在指定时间段内未支付时关闭的交易；在交易完成全额退款成功时关闭的交易。
+	const TradeSuccess = 3;		//交易成功，且可对该交易做操作，如：多级分润、退款等。
+	const TradePending = 4;		//等待卖家收款（买家付款后，如果卖家账号被冻结）。
+	const TradeFinished = 5;	//交易成功且结束，即不可再做任何操作
 
 	private $detail = array();
 	private $quantity_limit = array();
@@ -271,7 +280,7 @@ class Order extends DBObject{
 			global $_G;
 			$order = new Order($_GET['orderid']);
 			if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
-				$order->paymentmethod = Order::PaidOnline;
+				$order->paymentmethod = Order::PaidWithAlipay;
 				//商户网站订单系统中唯一订单号，必填
 				$_G['alipaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
 
@@ -300,9 +309,9 @@ class Order extends DBObject{
 				exit;
 			}
 
-			$order->paymentmethod = Order::PaidOnline;
-			$order->alipaystate = AlipayNotify::$TradeStateEnum[$trade_status];
-			$order->alipaytradeid = $trade_no;
+			$order->paymentmethod = Order::PaidWithAlipay;
+			$order->tradestate = AlipayNotify::$TradeStateEnum[$trade_status];
+			$order->tradeid = $trade_no;
 		}
 	}
 
@@ -326,13 +335,30 @@ Order::$Status = array(
 
 Order::$PaymentMethod = array(
 	Order::PaidWithCash => lang('common', 'order_paidwithcash'),
-	Order::PaidOnline => lang('common', 'order_paidonline'),
+	Order::PaidWithAlipay => lang('common', 'order_paidwithalipay'),
 	Order::PaidWithWallet => lang('common', 'order_paidwithwallet'),
 );
 
 Order::$DeliveryMethod = array(
 	Order::HomeDelivery => lang('common', 'home_delivery'),
 	Order::StationDelivery => lang('common', 'station_delivery'),
+);
+
+
+Order::$TradeState = array(
+	Order::WaitBuyerPay => lang('common', 'order_waitbuyerpay'),
+	Order::TradeSuccess => lang('common', 'order_tradesuccess'),
+	Order::TradeClosed => lang('common', 'order_tradeclosed'),
+	Order::TradePending => lang('common', 'order_tradepending'),
+	Order::TradeFinished => lang('common', 'order_tradefinished'),
+);
+
+AlipayNotify::$TradeStateEnum = array(
+	'WAIT_BUYER_PAY' => Order::WaitBuyerPay,
+	'TRADE_CLOSED' => Order::TradeClosed,
+	'TRADE_SUCCESS' => Order::TradeSuccess,
+	'TRADE_PENDING' => Order::TradePending,
+	'TRADE_FINISHED' => Order::TradeFinished,
 );
 
 ?>

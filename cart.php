@@ -244,7 +244,7 @@ switch($action){
 			}
 
 			//将订单插入到数据库中
-			$order->alipaystate = 0;
+			$order->tradestate = 0;
 			$order_succeeded = $order->insert();
 
 			//清空购物车
@@ -260,7 +260,7 @@ switch($action){
 					}
 
 				//若使用线上支付，进入支付宝界面
-				}elseif($order->paymentmethod == Order::PaidOnline){
+				}elseif($order->paymentmethod == Order::PaidWithAlipay){
 					redirect('alipay.php?orderid='.$order->id);
 				}
 

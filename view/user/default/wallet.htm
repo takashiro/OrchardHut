@@ -58,7 +58,7 @@
 						<td>
 							<!--{if $l['type'] == Wallet::RechargeLog}-->
 								支付宝转入{$l[cost]}{echo Product::$PriceUnit}<br />
-								(<!--{if $l['alipaystate']}-->{echo AlipayNotify::$TradeState[$l['alipaystate']]}<!--{else}-->等待付款<!--{/if}-->)
+								(<!--{if $l['tradestate']}-->{echo Order::$TradeState[$l['tradestate']]}<!--{else}-->等待付款<!--{/if}-->)
 							<!--{elseif $l['type'] == Wallet::OrderRefundLog || $l['type'] == Wallet::OrderPaymentLog}-->
 								<a href="order.php?action=view&orderid=$l[orderid]">订单{echo Wallet::$LogType[$l['type']]}</a>
 							<!--{/if}-->

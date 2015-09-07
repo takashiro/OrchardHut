@@ -158,7 +158,7 @@ class BankAccount extends DBObject{
 	static public function __on_user_wallet_changed($uid, $delta){
 		if($delta > 0){
 			global $db, $tpre;
-			$method = Order::PaidOnline;
+			$method = Order::PaidWithAlipay;
 			$db->query("UPDATE {$tpre}bankaccount
 				SET amount=amount+$delta
 				WHERE handleorder=1 AND orderpaymentmethod=$method AND addressrange=0

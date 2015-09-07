@@ -37,7 +37,8 @@ if(isset($_GET['orderid'])){
 		showmsg('order_not_exist', 'back');
 	}
 
-	if(!empty($order->alipaystate)){
+	if(!empty($order->tradestate)){
+		//@todo: Judge payment method
 		showmsg('your_alipay_wallet_is_processing_the_order', 'back');
 	}
 

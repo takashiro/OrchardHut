@@ -157,7 +157,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 			showmsg('successfully_handled_returned_order', 'refresh');
 		}
 
-		$returned_orders = $db->fetch_all("SELECT r.*,o.addressid,o.extaddress,o.totalprice,o.userid,o.mobile,o.addressee,o.dateline AS orderdateline,o.paymentmethod,o.alipaystate
+		$returned_orders = $db->fetch_all("SELECT r.*,o.addressid,o.extaddress,o.totalprice,o.userid,o.mobile,o.addressee,o.dateline AS orderdateline,o.paymentmethod,o.tradestate
 			FROM {$tpre}returnedorder r
 				LEFT JOIN {$tpre}order o ON o.id=r.id
 			WHERE $condition");
@@ -266,7 +266,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 			$condition = '1';
 		}
 
-		$returned_orders = $db->fetch_all("SELECT r.*,o.addressid,o.extaddress,o.totalprice,o.userid,o.mobile,o.addressee,o.dateline AS orderdateline,o.paymentmethod,o.alipaystate
+		$returned_orders = $db->fetch_all("SELECT r.*,o.addressid,o.extaddress,o.totalprice,o.userid,o.mobile,o.addressee,o.dateline AS orderdateline,o.paymentmethod,o.tradestate
 			FROM {$tpre}returnedorder r
 				LEFT JOIN {$tpre}order o ON o.id=r.id
 			WHERE $condition

@@ -53,10 +53,10 @@ foreach($orders as $o){
 	echo isset(Order::$DeliveryMethod[$o['deliverymethod']]) ? Order::$DeliveryMethod[$o['deliverymethod']] : '?', ',';
 	echo isset(Order::$PaymentMethod[$o['paymentmethod']]) ? Order::$PaymentMethod[$o['paymentmethod']] : '未知', ',';
 	if($o['paymentmethod'] != Order::PaidWithCash){
-		if(empty($o['alipaystate'])){
+		if(empty($o['tradestate'])){
 			echo '等待付款';
 		}else{
-			echo isset(AlipayNotify::$TradeState[$o['alipaystate']]) ? AlipayNotify::$TradeState[$o['alipaystate']] : '未知';
+			echo isset(Order::$TradeState[$o['tradestate']]) ? Order::$TradeState[$o['tradestate']] : '未知';
 		}
 	}
 	echo ',';

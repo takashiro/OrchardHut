@@ -27,7 +27,7 @@ if(!$_G['user']->isLoggedIn()){
 }
 
 $paymentconfig = readdata('payment');
-if(empty($paymentconfig['enabled_method'][Order::PaidOnline])){
+if(empty($paymentconfig['enabled_method'][Order::PaidWithAlipay])){
 	showmsg('alipay_is_disabled');
 }
 

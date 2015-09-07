@@ -36,8 +36,8 @@
 								<li>
 									{echo Order::$PaymentMethod[$o['paymentmethod']]}
 									<!--{if $o['paymentmethod'] != Order::PaidWithCash}-->
-									<!--{if $o['alipaystate']}-->
-									({echo AlipayNotify::$TradeState[$o['alipaystate']]})
+									<!--{if $o['tradestate']}-->
+									({echo Order::$TradeState[$o['tradestate']]})
 									<!--{else}-->
 									(等待付款)
 									<!--{/if}-->
@@ -54,7 +54,7 @@
 							<!--{elseif $o['status'] == Order::Received}-->
 								<a href="order.php?action=comment&orderid=$o[id]">[评价]</a>
 							<!--{/if}-->
-							<!--{if $o['paymentmethod'] != Order::PaidWithCash && empty($o['alipaystate']) && $o['status'] != Order::Canceled}-->
+							<!--{if $o['paymentmethod'] != Order::PaidWithCash && empty($o['tradestate']) && $o['status'] != Order::Canceled}-->
 								<a href="order.php?action=pay&orderid=$o[id]">[付款]</a>
 							<!--{/if}-->
 							<!--{if $o['status'] != Order::Unsorted}-->

@@ -41,7 +41,7 @@ case 'delete':
 	}
 
 	if(empty($_GET['confirm'])){
-		if($order->paymentmethod == Order::PaidOnline && $order->alipaystate != AlipayNotify::TradeSuccess){
+		if($order->paymentmethod == Order::PaidWithAlipay && $order->tradestate != AlipayNotify::TradeSuccess){
 			showmsg('alipay_not_updated_confirm_to_cancel_order', 'confirm');
 		}else{
 			showmsg('confirm_to_cancel_order', 'confirm');
@@ -215,7 +215,8 @@ case 'pay':
 			showmsg('order_not_exist', 'back');
 		}
 
-		if(!empty($order->alipaystate)){
+		if(!empty($order->tradestate)){
+			//@todo: Judge payment method
 			showmsg('your_alipay_wallet_is_processing_the_order', 'back');
 		}
 	}else{
@@ -223,10 +224,10 @@ case 'pay':
 	}
 
 	$paymentconfig = readdata('payment');
-	if($paymentconfig['enabled_method'][Order::PaidOnline] && $paymentconfig['enabled_method'][Order::PaidWithWallet]){
+	if($paymentconfig['enabled_method'][Order::PaidWithAlipay] && $paymentconfig['enabled_method'][Order::PaidWithWallet]){
 		include view('order_pay');
 		exit;
-	}elseif($paymentconfig['enabled_method'][Order::PaidOnline]){
+	}elseif($paymentconfig['enabled_method'][Order::PaidWithAlipay]){
 		redirect('alipay.php?orderid='.$orderid);
 	}elseif($paymentconfig['enabled_method'][Order::PaidWithWallet]){
 		redirect('wallet.php?orderid='.$orderid);

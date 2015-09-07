@@ -35,7 +35,7 @@
 	<div class="content">
 		<table>
 			<thead>
-				<tr><td>用户ID</td><td>用户昵称</td><td>时间</td><td>实际充入金额</td><td>赠费金额</td><td>原充入金额</td><td>支付宝订单号</td></tr>
+				<tr><td>用户ID</td><td>用户昵称</td><td>时间</td><td>实际充入金额</td><td>赠费金额</td><td>原充入金额</td><td>交易编号</td></tr>
 			</thead>
 			<tbody>
 			<!--{loop $logs $l}-->
@@ -46,7 +46,7 @@
 				<td>$l[delta]</td>
 				<td>{echo $l['delta'] - $l['cost']}</td>
 				<td>$l[cost]</td>
-				<td>$l[alipaytradeid]</td>
+				<td>$l[tradeid]</td>
 			</tr>
 			<!--{/loop}-->
 			<tr>

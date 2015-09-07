@@ -212,16 +212,16 @@ class OrderModule extends AdminControlPanelModule{
 			}
 
 			//根据付款状态查询订单
-			if(empty($_REQUEST['alipaystate'])){
-				$alipaystate = 0;
+			if(empty($_REQUEST['tradestate'])){
+				$tradestate = 0;
 			}else{
-				$alipaystate = intval($_REQUEST['alipaystate']);
+				$tradestate = intval($_REQUEST['tradestate']);
 
 				//@todo: resolve the hack
-				if($alipaystate != 1){
-					$condition[] = 'o.alipaystate='.$alipaystate;
+				if($tradestate != 1){
+					$condition[] = 'o.tradestate='.$tradestate;
 				}else{
-					$condition[] = 'o.alipaystate IN (0,1)';
+					$condition[] = 'o.tradestate IN (0,1)';
 				}
 			}
 
@@ -356,7 +356,7 @@ class OrderModule extends AdminControlPanelModule{
 					'stat',
 					'mobile', 'addressee',
 					'userid',
-					'alipaystate',
+					'tradestate',
 				);
 				foreach($vars as $var){
 					if($$var){
