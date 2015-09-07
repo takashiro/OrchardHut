@@ -217,8 +217,8 @@ class AlipayNotify {
 
 AlipayNotify::$TradeState = array(
 	AlipayNotify::WaitBuyerPay => lang('common', 'alipay_waitbuyerpay'),
-	AlipayNotify::TradeClosed => lang('common', 'alipay_tradeclosed'),
 	AlipayNotify::TradeSuccess => lang('common', 'alipay_tradesuccess'),
+	AlipayNotify::TradeClosed => lang('common', 'alipay_tradeclosed'),
 	AlipayNotify::TradePending => lang('common', 'alipay_tradepending'),
 	AlipayNotify::TradeFinished => lang('common', 'alipay_tradefinished'),
 );
