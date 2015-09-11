@@ -66,7 +66,10 @@ class WeixinHook{
 			}
 
 			global $_G;
-			$text.= "\n".lang('common', 'order').'：';
+
+			$text.= "\n".lang('common', 'order_id').':'.$order->id;
+
+			$text.= "\n".lang('common', 'order_detail').':';
 
 			foreach($order->getDetails() as $d){
 				$text.= "\n";
