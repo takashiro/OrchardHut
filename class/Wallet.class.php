@@ -39,7 +39,7 @@ class Wallet{
 		global $db, $tpre;
 		$db->query("UPDATE {$tpre}user SET wallet=wallet-{$order->totalprice} WHERE id={$this->user->id} AND wallet>={$order->totalprice}");
 		if($db->affected_rows > 0){
-			$order->tradestate = AlipayNotify::TradeSuccess;
+			$order->tradestate = Order::TradeSuccess;
 			$order->paymentmethod = Order::PaidWithWallet;
 			$log = array(
 				'uid' => $this->user->id,
@@ -97,12 +97,12 @@ class Wallet{
 			$log = array(
 				'paymentmethod' => Order::PaidWithAlipay,
 				'tradeid' => $trade_no,
-				'state' => AlipayNotify::$TradeStateEnum[$trade_status],
+				'tradestate' => AlipayNotify::$TradeStateEnum[$trade_status],
 			);
 			$table = $db->select_table('userwalletlog');
 			$table->update($log, array('id' => $id));
 
-			if($log['tradestate'] == AlipayNotify::TradeSuccess || $log['tradestate'] == AlipayNotify::TradeFinished){
+			if($log['tradestate'] == Order::TradeSuccess || $log['tradestate'] == Order::TradeFinished){
 				global $tpre;
 				$db->query("UPDATE {$tpre}userwalletlog SET recharged=1 WHERE id='$id'");
 				if($db->affected_rows > 0){
@@ -135,7 +135,7 @@ class Wallet{
 	}
 
 	static public function __on_order_canceled($order){
-		if(($order->tradestate == AlipayNotify::TradeSuccess || $order->tradestate == AlipayNotify::TradeFinished) && $order->paymentmethod != Order::PaidWithCash){
+		if(($order->tradestate == Order::TradeSuccess || $order->tradestate == Order::TradeFinished) && $order->paymentmethod != Order::PaidWithCash){
 			global $db, $tpre;
 			$db->query("UPDATE {$tpre}user SET wallet=wallet+{$order->totalprice} WHERE id={$order->userid}");
 			if ($db->affected_rows > 0){
