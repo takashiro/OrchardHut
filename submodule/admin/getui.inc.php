@@ -72,16 +72,17 @@ class GeTuiModule extends AdminControlPanelModule{
 			$template->set_isClearable(true);//通知栏是否可清除
 
 			$message = new IGtAppMessage;
-			$message->set_isOffline(false);//是否离线
+			$message->set_isOffline(true);//是否离线
+			$message->set_appIdList(array($config['app_id']));
 			$message->set_offlineExpireTime(3600 * 12 * 1000);//离线时间
 			$message->set_data($template);//设置推送消息类型
-			$message->set_PushNetWorkType(1);//设置是否根据WIFI推送消息，1为wifi推送，0为不限制推送
+			$message->set_PushNetWorkType(0);//设置是否根据WIFI推送消息，1为wifi推送，0为不限制推送
 
 			try{
 				$rep = $igt->pushMessageToApp($message);
-				//print_r($rep);
+				showmsg($rep['result']);
 			}catch(Exception $e){
-				showmsg($e->getMessage());
+				showmsg($e->getMessage().var_export($config, true));
 			}
 			exit;
 		}
