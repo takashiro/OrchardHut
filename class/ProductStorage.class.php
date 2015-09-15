@@ -68,7 +68,8 @@ class ProductStorage extends DBObject{
 
 	static public function IsBookingMode(){
 		$today_end = 24 * 3600;
-		$today_now = TIMESTAMP % $today_end + TIMEZONE * 3600;
+		$today_now = (TIMESTAMP + TIMEZONE * 3600) % $today_end;
+
 		$config = self::ReadConfig();
 		$offset = $config['bookingtime_start'];
 		$end = $config['bookingtime_end'];
