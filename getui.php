@@ -23,12 +23,12 @@ takashiro@qq.com
 require_once './core/init.inc.php';
 
 if(!$_G['user']->isLoggedIn()){
-	exit;
+	exit('not logged in');
 }
 
 if(isset($_REQUEST['clientid'])){
 	$_G['user']->getuiclientid = $_REQUEST['clientid'];
-	exit('1');
+	exit('succeeded');
 }
 
 ?>
