@@ -215,9 +215,9 @@ case 'pay':
 			showmsg('order_not_exist', 'back');
 		}
 
-		if(!empty($order->tradestate)){
-			//@todo: Judge payment method
-			showmsg('your_alipay_wallet_is_processing_the_order', 'back');
+		if(!empty($order->paymentmethod)){
+			$interface = Order::$PaymentInterface[$order->paymentmethod];
+			redirect($interface.'?orderid='.$order->id);
 		}
 	}else{
 		showmsg('illegal_operation');
