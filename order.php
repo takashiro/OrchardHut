@@ -41,7 +41,7 @@ case 'delete':
 	}
 
 	if(empty($_GET['confirm'])){
-		if($order->paymentmethod == Order::PaidWithAlipay && $order->tradestate != AlipayNotify::TradeSuccess){
+		if($order->paymentmethod == Order::PaidWithAlipay && $order->tradestate != Order::TradeSuccess){
 			showmsg('alipay_not_updated_confirm_to_cancel_order', 'confirm');
 		}else{
 			showmsg('confirm_to_cancel_order', 'confirm');
