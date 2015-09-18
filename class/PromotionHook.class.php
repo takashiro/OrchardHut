@@ -38,7 +38,7 @@ class PromotionHook{
 					LEFT JOIN {$tpre}user u ON u.id=o.userid
 					LEFT JOIN {$tpre}user r ON r.id=u.referrerid
 				WHERE o.id={$order->id}");
-			if(!$referrer)
+			if(!$referrer || empty($referrer['id']))
 				return;
 
 			$referrer_order = $db->result_first("SELECT id FROM {$tpre}order WHERE userid={$referrer['id']} LIMIT 1");
