@@ -1,5 +1,15 @@
 {template header}
 
+<script type="text/javascript">
+$(function(){
+	$('ul.paymentmethod li input').click(function(){
+		var input = $(this);
+		var form = $('#rechargeform');
+		form.attr('action', input.attr('value'));
+	});
+});
+</script>
+
 <div class="box">
 	<h1>我的钱包</h1>
 	<div class="content">
@@ -13,7 +23,7 @@
 		</div>
 
 		<div class="edit_form">
-			<form action="alipay.php" method="get">
+			<form id="rechargeform" action="alipay.php" method="get">
 				<table>
 					<tr>
 						<th><label>余额：</label></th>
@@ -24,6 +34,19 @@
 						<td><input type="text" name="recharge" value="100.00" />{echo Product::$PriceUnit}</td>
 					</tr>
 				</table>
+
+				<div class="lightbox">
+					<h1>付款方式</h1>
+					<div class="content">
+						<ul class="mselect paymentmethod">
+						<!--{loop Order::$PaymentMethod $methodid $name}-->
+						<!--{if !empty(Order::$PaymentInterface[$methodid]) && $methodid != Order::PaidWithWallet && !empty($paymentconfig['enabled_method'][$methodid])}-->
+							<li><input type="radio" value="{echo Order::$PaymentInterface[$methodid]}" />$name</li>
+						<!--{/if}-->
+						<!--{/loop}-->
+						</ul>
+					</div>
+				</div>
 
 				<div class="post_buttons">
 					<button type="submit">充值</button>
@@ -57,7 +80,7 @@
 						<td><!--{if $l['delta'] > 0}-->+<!--{/if}-->{$l[delta]}</td>
 						<td>
 							<!--{if $l['type'] == Wallet::RechargeLog}-->
-								支付宝转入{$l[cost]}{echo Product::$PriceUnit}<br />
+								<!--{if $l['tradestate']}-->{echo Order::$PaymentMethod[$l['paymentmethod']]}<!--{/if}-->转入{$l[cost]}{echo Product::$PriceUnit}<br />
 								(<!--{if $l['tradestate']}-->{echo Order::$TradeState[$l['tradestate']]}<!--{else}-->等待付款<!--{/if}-->)
 							<!--{elseif $l['type'] == Wallet::OrderRefundLog || $l['type'] == Wallet::OrderPaymentLog}-->
 								<a href="order.php?action=view&orderid=$l[orderid]">订单{echo Wallet::$LogType[$l['type']]}</a>

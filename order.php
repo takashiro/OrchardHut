@@ -224,6 +224,12 @@ case 'pay':
 	}
 
 	$paymentconfig = readdata('payment');
+
+	$enabled_method_count = 0;
+	foreach($paymentconfig['enabled_method'] as $methodid => $enabled){
+		$enabled_method_count++;
+	}
+
 	if($paymentconfig['enabled_method'][Order::PaidWithAlipay] && $paymentconfig['enabled_method'][Order::PaidWithWallet]){
 		include view('order_pay');
 		exit;

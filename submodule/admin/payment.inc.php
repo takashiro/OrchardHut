@@ -44,13 +44,20 @@ class PaymentModule extends AdminControlPanelModule{
 				'ali_public_key_path' => trim($_POST['alipay']['ali_public_key_path']),
 			);
 
+			@$bestpay = array(
+				'key' => trim($_POST['bestpay']['key']),
+				'merchantid' => trim($_POST['bestpay']['merchantid']),
+			);
+
 			writedata('payment', $payment);
 			writedata('alipay', $alipay);
+			writedata('bestpay', $bestpay);
 			showmsg('edit_succeed', 'refresh');
 		}
 
 		$payment = readdata('payment');
 		$alipay = readdata('alipay');
+		$bestpay = readdata('bestpay');
 
 		include view('payment_config');
 	}

@@ -36,6 +36,7 @@ class Order extends DBObject{
 
 	//Payment Method
 	public static $PaymentMethod;
+	public static $PaymentInterface;
 	const PaidWithCash = 0;
 	const PaidWithAlipay = 1;
 	const PaidWithWallet = 2;
@@ -330,14 +331,14 @@ class Order extends DBObject{
 			if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
 				$order->paymentmethod = Order::PaidWithBestpay;
 				//商户网站订单系统中唯一订单号，必填
-				$_G['alipaytrade']['tradeid'] = self::$AlipayTradeNoPrefix.$order->id;
+				$_G['bestpaytrade']['tradeid'] = self::$AlipayTradeNoPrefix.$order->id;
 
 				//订单名称
-				$_G['alipaytrade']['subject'] = $_G['config']['sitename'].'订单'.$order->id;
+				$_G['bestpaytrade']['subject'] = $_G['config']['sitename'].'订单'.$order->id;
 
 				//付款金额
-				$_G['alipaytrade']['total_fee'] = $order->totalprice;
-				$_G['alipaytrade']['attached_fee'] = $order->deliveryfee;
+				$_G['bestpaytrade']['total_fee'] = $order->totalprice;
+				$_G['bestpaytrade']['attached_fee'] = $order->deliveryfee;
 			}else{
 				showmsg('order_not_exist');
 			}
@@ -382,6 +383,13 @@ Order::$PaymentMethod = array(
 	Order::PaidWithAlipay => lang('common', 'order_paidwithalipay'),
 	Order::PaidWithWallet => lang('common', 'order_paidwithwallet'),
 	Order::PaidWithBestpay => lang('common', 'order_paidwithbestpay'),
+);
+
+Order::$PaymentInterface = array(
+	Order::PaidWithCash => '',
+	Order::PaidWithAlipay => 'alipay.php',
+	Order::PaidWithWallet => 'wallet.php',
+	Order::PaidWithBestpay => 'bestpay.php',
 );
 
 Order::$DeliveryMethod = array(

@@ -59,6 +59,10 @@ $attachamount = $_G['bestpaytrade']['attached_fee'];
 $orderamount = $_G['bestpaytrade']['total_fee'];
 $productamount = $orderamount - $attachamount;
 
+$productamount = sprintf('%.2f', $productamount);
+$attachamount = sprintf('%.2f', $attachamount);
+$orderamount = sprintf('%.2f', $orderamount);
+
 $orderdate = date('YmdHis');					//订单日期
 
 $macmd5 = "MERCHANTID=$merchantid&ORDERSEQ=$ordid&ORDERDATE=$orderdate&ORDERAMOUNT=$orderamount&KEY=$key";
@@ -102,5 +106,6 @@ $customerid = $_G['user']->id;
 	<input type=hidden name="CUSTOMERID" value="<?php echo $customerid?>"/>
 	<input type=hidden name="MAC" value="<?php echo $mac; ?>"/>
 </form>
+Loading……
 </body>
 </html>

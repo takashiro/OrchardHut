@@ -54,7 +54,7 @@ if(isset($_GET['orderid'])){
 	showmsg('order_is_successfully_paid', 'back');
 }
 
-$limit = 10;
+$limit = 5;
 $offset = ($page - 1) * $limit;
 $table = $db->select_table('userwalletlog');
 $pagenum = $table->result_first('COUNT(*)', "uid={$_USER['id']}");

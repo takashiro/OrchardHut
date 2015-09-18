@@ -260,8 +260,10 @@ switch($action){
 					}
 
 				//若使用线上支付，进入支付宝界面
-				}elseif($order->paymentmethod == Order::PaidWithAlipay){
-					redirect('alipay.php?orderid='.$order->id);
+				}elseif($order->paymentmethod != Order::PaidWithCash){
+					if(!empty(Order::$PaymentInterface[$order->paymentmethod])){
+						redirect(Order::$PaymentInterface[$order->paymentmethod].'?orderid='.$order->id);
+					}
 				}
 
 				if(!$item_deleted){

@@ -10,8 +10,14 @@ li a{
 	<h1>付款方式</h1>
 	<div class="content">
 		<ul class="mselect">
+		<!--{if !empty($paymentconfig['enabled_method'][Order::PaidWithWallet])}-->
 			<li><a href="{if $order->totalprice <= $_G['user']->wallet}wallet.php?orderid=$orderid{else}javascript:alert('余额不足');{/if}">钱包余额 (可用{$_USER[wallet]}{echo Product::$PriceUnit})</a></li>
-			<li><a href="alipay.php?orderid=$orderid">支付宝</a></li>
+		<!--{/if}-->
+		<!--{loop Order::$PaymentMethod $methodid $name}-->
+		<!--{if $methodid != Order::PaidWithWallet && !empty(Order::$PaymentInterface[$methodid]) && !empty($paymentconfig['enabled_method'][$methodid])}-->
+			<li><a href="{echo Order::$PaymentInterface[$methodid]}?orderid=$orderid">$name</a></li>
+		<!--{/if}-->
+		<!--{/loop}-->
 		</ul>
 	</div>
 </div>
