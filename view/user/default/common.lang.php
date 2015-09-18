@@ -19,6 +19,7 @@ return array(
 	'order_paidwithcash' => '货到付现',
 	'order_paidwithalipay' => '支付宝',
 	'order_paidwithwallet' => '钱包余额',
+	'order_paidwithbestpay' => '翼支付',
 
 	'order_waitbuyerpay' => '待付款',
 	'order_tradeclosed' => '关闭',

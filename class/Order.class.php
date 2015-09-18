@@ -39,6 +39,8 @@ class Order extends DBObject{
 	const PaidWithCash = 0;
 	const PaidWithAlipay = 1;
 	const PaidWithWallet = 2;
+	const PaidWithBestpay = 3;
+	const PaidWithWeChat = 4;
 
 	//Delivery Method
 	public static $DeliveryMethod;
@@ -320,6 +322,48 @@ class Order extends DBObject{
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
 			showmsg('the_order_is_successfully_paid', 'order.php');
 	}
+
+	static public function __on_bestpay_started(){
+		if(isset($_GET['orderid'])){
+			global $_G;
+			$order = new Order($_GET['orderid']);
+			if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
+				$order->paymentmethod = Order::PaidWithBestpay;
+				//商户网站订单系统中唯一订单号，必填
+				$_G['alipaytrade']['tradeid'] = self::$AlipayTradeNoPrefix.$order->id;
+
+				//订单名称
+				$_G['alipaytrade']['subject'] = $_G['config']['sitename'].'订单'.$order->id;
+
+				//付款金额
+				$_G['alipaytrade']['total_fee'] = $order->totalprice;
+				$_G['alipaytrade']['attached_fee'] = $order->deliveryfee;
+			}else{
+				showmsg('order_not_exist');
+			}
+		}
+	}
+
+	static public function __on_bestpay_notified($out_trade_no, $trade_no, $trade_status){
+		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
+		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, $prefix_len) == 0){
+			$order = new Order(substr($out_trade_no, $prefix_len));
+			if(!$order->exists()){
+				writelog('bestpaynotify', "ORDER_NOT_EXIST\t$out_trade_no\t$trade_no\t$trade_status");
+				exit;
+			}
+
+			$order->paymentmethod = Order::PaidWithBestpay;
+			$order->tradestate = $trade_status == '0000' ? Order::TradeSuccess : Order::WaitBuyerPay;
+			$order->tradeid = $trade_no;
+		}
+	}
+
+	static public function __on_bestpay_callback_executed($out_trade_no, $trade_no, $result){
+		//以异步通知为准，此处不处理只通知
+		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
+			showmsg('the_order_is_successfully_paid', 'order.php');
+	}
 }
 
 Order::$Status = array(
@@ -337,6 +381,7 @@ Order::$PaymentMethod = array(
 	Order::PaidWithCash => lang('common', 'order_paidwithcash'),
 	Order::PaidWithAlipay => lang('common', 'order_paidwithalipay'),
 	Order::PaidWithWallet => lang('common', 'order_paidwithwallet'),
+	Order::PaidWithBestpay => lang('common', 'order_paidwithbestpay'),
 );
 
 Order::$DeliveryMethod = array(
