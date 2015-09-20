@@ -12,7 +12,7 @@ $address_format = Address::Format();
 echo chr(0xEF), chr(0xBB), chr(0xBF);
 
 //输出表头
-echo 'UID,用户名,昵称,注册时间,订单数量,钱包余额,手机号';
+echo 'UID,用户名,昵称,注册时间,最后登录时间,订单数量,钱包余额,手机号';
 foreach($address_format as $format){
 	if(empty($format))
 		break;
@@ -25,7 +25,10 @@ foreach($user_list as $u){
 	if(strlen($u['account']) <= 15){
 		echo $u['account'];
 	}
-	echo ',', $u['nickname'], ',', rdate($u['regtime']), ',', $u['ordernum'], ',', $u['wallet'], ',', $u['mobile'];
+	echo ',', $u['nickname'], ',', rdate($u['regtime']), ',';
+	if($u['logintime'] > 0)
+		echo rdate($u['logintime']);
+	echo ',', $u['ordernum'], ',', $u['wallet'], ',', $u['mobile'];
 
 	$address_path = Address::FullPath($u['addressid']);
 	$maxi = count($address_format);
