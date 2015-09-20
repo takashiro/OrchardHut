@@ -87,7 +87,7 @@ class UserModule extends AdminControlPanelModule{
 
 		//根据最后下单的送货范围查询
 		$addressid = null;
-		if(isset($_REQUEST['address'])){
+		if(!empty($_REQUEST['address'])){
 			$addressid = intval($_REQUEST['address']);
 			$address_range = Address::Extension($addressid);
 			$condition[] = 'o.addressid IN ('.implode(',', $address_range).')';
