@@ -100,7 +100,7 @@ case 'return':
 	if(empty($_GET['orderid'])) exit('access denied');
 	$orderid = intval($_GET['orderid']);
 	$order = new Order($orderid);
-	if(!$order->exists() || $order->userid != $_G['user']->id){
+	if(!$order->exists() || $order->userid != $_G['user']->id || $order->status == Order::Unsorted || $order->status == Order::Canceled){
 		showmsg('order_not_exist', 'refresh');
 	}
 

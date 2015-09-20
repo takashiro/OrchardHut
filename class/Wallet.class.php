@@ -64,6 +64,8 @@ class Wallet{
 				'uid' => $_G['user']->id,
 				'dateline' => TIMESTAMP,
 				'cost' => floatval($_GET['recharge']),
+				'type' => self::RechargeLog,
+				'paymentmethod' => Order::PaidWithAlipay,
 			);
 
 			$log['cost'] = round($log['cost'] * 100) / 100;
@@ -83,6 +85,20 @@ class Wallet{
 				$_G['alipaytrade']['total_fee'] = $log['cost'];
 			}else{
 				showmsg('the_number_you_must_be_kidding_me', 'back');
+			}
+		}elseif(isset($_GET['rechargeid'])){
+			global $_G, $db;
+
+			$logid = intval($_GET['rechargeid']);
+			$table = $db->select_table('userwalletlog');
+			$log = $table->fetch_first('*', array('id' => $logid, 'type' => self::RechargeLog));
+
+			if(!empty($log['id']) && isset($log['cost']) && $log['cost'] > 0){
+				$_G['alipaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$log['id'];
+				$_G['alipaytrade']['subject'] = $_G['config']['sitename'].'充值'.$log['id'];
+				$_G['alipaytrade']['total_fee'] = $log['cost'];
+			}else{
+				showmsg('illegal_operation');
 			}
 		}
 	}
@@ -142,6 +158,8 @@ class Wallet{
 				'uid' => $_G['user']->id,
 				'dateline' => TIMESTAMP,
 				'cost' => floatval($_GET['recharge']),
+				'type' => self::RechargeLog,
+				'paymentmethod' => Order::PaidWithBestpay,
 			);
 
 			$log['cost'] = round($log['cost'] * 100) / 100;
@@ -161,6 +179,20 @@ class Wallet{
 				$_G['bestpaytrade']['total_fee'] = $log['cost'];
 			}else{
 				showmsg('the_number_you_must_be_kidding_me', 'back');
+			}
+		}elseif(isset($_GET['rechargeid'])){
+			global $_G, $db;
+
+			$logid = intval($_GET['rechargeid']);
+			$table = $db->select_table('userwalletlog');
+			$log = $table->fetch_first('*', array('id' => $logid, 'type' => self::RechargeLog));
+
+			if(!empty($log['id']) && isset($log['cost']) && $log['cost'] > 0){
+				$_G['bestpaytrade']['tradeid'] = self::$AlipayTradeNoPrefix.$log['id'];
+				$_G['bestpaytrade']['subject'] = $_G['config']['sitename'].'充值'.$log['id'];
+				$_G['bestpaytrade']['total_fee'] = $log['cost'];
+			}else{
+				showmsg('illegal_operation');
 			}
 		}
 	}
