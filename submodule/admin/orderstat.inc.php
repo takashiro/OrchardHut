@@ -103,6 +103,16 @@ class OrderStatModule extends AdminControlPanelModule{
 			$condition[] = '0';
 		}
 
+		//过滤配送方式
+		$delivery_methods = Order::$DeliveryMethod;
+		$delivery_methods[-1] = '';
+		$deliverymethod = -1;
+		isset($_REQUEST['deliverymethod']) && $deliverymethod = intval($_REQUEST['deliverymethod']);
+		isset($delivery_methods[$deliverymethod]) || $deliverymethod = -1;
+		if($deliverymethod != -1){
+			$condition[] = 'o.deliverymethod='.$deliverymethod;
+		}
+
 		//生成查询条件子句
 		if($condition){
 			$condition = implode(' AND ', $condition);

@@ -39,6 +39,10 @@ p.subtype{
 				<!--{/loop}-->
 			</dd>
 		</dl>
+		<dl>
+			<dt>收货方式：</dt>
+			<dd>{echo Template::select('deliverymethod', $delivery_methods, $deliverymethod)}</dd>
+		</dl>
 		<div class="post_buttons">
 			<button type="submit" name="format" value="html">查找</button>
 			<button type="submit" name="format" value="csv">导出Excel</button>
