@@ -113,6 +113,20 @@ class OrderStatModule extends AdminControlPanelModule{
 			$condition[] = 'o.deliverymethod='.$deliverymethod;
 		}
 
+		//根据付款状态查询订单
+		if(empty($_REQUEST['tradestate'])){
+			$tradestate = 0;
+		}else{
+			$tradestate = intval($_REQUEST['tradestate']);
+
+			//@todo: resolve the hack
+			if($tradestate != 1){
+				$condition[] = 'o.tradestate='.$tradestate;
+			}else{
+				$condition[] = 'o.tradestate IN (0,1)';
+			}
+		}
+
 		//生成查询条件子句
 		if($condition){
 			$condition = implode(' AND ', $condition);
