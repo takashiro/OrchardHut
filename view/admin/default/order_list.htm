@@ -94,6 +94,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 			</div>
 		</form>
 
+		<!--{if empty($stat['statonly'])}-->
 		<div id="orderlist" class="list" style="font-size:10pt">
 			<table>
 				<thead>
@@ -116,7 +117,6 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 					</tr>
 				</thead>
 				<tbody>
-				<!--{if empty($stat['statonly'])}-->
 					<!--{loop $orders $o}-->
 					<tr data-primaryvalue="$o[id]">
 						<td>
@@ -178,19 +178,6 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 						<td style="width:10%;"><div style="font-size:9pt;max-height:100px;overflow-y:auto;">$o[message]</div></td>
 					</tr>
 					<!--{/loop}-->
-				<!--{/if}-->
-				<!--{if !empty($stat['item'])}-->
-					<!--{loop $statdata['item'] $item}-->
-					<tr>
-						<td></td>
-						<td colspan="{echo count($address_format) + 1}"></td>
-						<td colspan="2"></td>
-						<td>$item[productname]<!--{if !empty($item['subtype'])}-->($item[subtype])<!--{/if}--> $item[num] $item[amountunit]</td>
-						<td>{$item[totalprice]}{echo Product::$PriceUnit}</td>
-						<td colspan="4"></td>
-					</tr>
-					<!--{/loop}-->
-				<!--{/if}-->
 				<!--{if !empty($stat['totalprice'])}-->
 					<tr>
 						<td>总计</td>
@@ -198,12 +185,49 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 						<td colspan="2"></td>
 						<td>$pagenum 个订单</td>
 						<td>{$statdata['totalprice']}{echo Product::$PriceUnit}</td>
-						<td colspan="5"></td>
+						<td colspan="6"></td>
 					</tr>
 				<!--{/if}-->
 				</tbody>
 			</table>
 		</div>
+		<!--{/if}-->
+
+		<!--{if !empty($stat['item'])}-->
+		<div id="itemlist" class="list" style="font-size:10pt">
+			<table>
+				<thead>
+					<tr>
+						<td></td>
+						<td>物品名称</td>
+						<td>物品子分类</td>
+						<td>数量</td>
+						<td>价格</td>
+					</tr>
+				</thead>
+				<tbody>
+					<!--{loop $statdata['item'] $item}-->
+					<tr>
+						<td></td>
+						<td>$item[productname]</td>
+						<td><!--{if !empty($item['subtype'])}-->($item[subtype])<!--{/if}--></td>
+						<td>$item[num] $item[amountunit]</td>
+						<td>{$item[totalprice]}{echo Product::$PriceUnit}</td>
+					</tr>
+					<!--{/loop}-->
+					<!--{if !empty($stat['totalprice'])}-->
+						<tr>
+							<td></td>
+							<td>总计</td>
+							<td></td>
+							<td>$pagenum 个订单</td>
+							<td>{$statdata['totalprice']}{echo Product::$PriceUnit}</td>
+						</tr>
+					<!--{/if}-->
+				</tbody>
+			</table>
+		</div>
+		<!--{/if}-->
 	</div>
 </div>
 
