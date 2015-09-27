@@ -252,8 +252,9 @@ class OrderModule extends AdminControlPanelModule{
 					$limit_subsql = "LIMIT $offset,$limit";
 				}
 
+				$received_status = Order::Received;
 				$orders = $db->fetch_all("SELECT o.*,
-						(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND dateline<o.dateline) AS ordernum
+						(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND dateline<o.dateline AND status=$received_status) AS ordernum
 					FROM {$tpre}order o
 					WHERE $condition
 					ORDER BY o.status,o.dtime_from,o.dateline
