@@ -22,29 +22,40 @@ takashiro@qq.com
 
 require_once './core/init.inc.php';
 
-if(!$_G['user']->isLoggedIn()){
-	redirect('memcp.php');
-}
-
-$paymentconfig = readdata('payment');
-if(empty($paymentconfig['enabled_method'][Order::PaidWithAlipay])){
-	showmsg('alipay_is_disabled');
-}
-
 /* To make use of the following codes, you have to add the rewrite rules below.
 RewriteEngine On
 RewriteBase /
 RewriteRule ^alipay(.*)\.htm$ alipay.php?querystring=$1
 */
 
-if(empty($_GET['skipprotector']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
-	if(empty($_GET['querystring'])){
+if(empty($_GET['querystring'])){
+	if(empty($_GET['skipprotector']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
+		$_SERVER['QUERY_STRING'].= '&'.User::COOKIE_VAR.'='.urlencode($_COOKIE[User::COOKIE_VAR]);
 		rheader('Location: alipay'.base64_encode($_SERVER['QUERY_STRING']).'.htm');
-	}else{
-		$protected_url = 'alipay.php?'.base64_decode($_GET['querystring']).'&skipprotector=1';
-		include view('protector');
+		exit;
 	}
+}else{
+	$protected_url = 'alipay.php?'.base64_decode($_GET['querystring']).'&skipprotector=1';
+	include view('protector');
 	exit;
+}
+
+if(!$_G['user']->isLoggedIn()){
+	if(!empty($_GET[User::COOKIE_VAR])){
+		$_COOKIE[User::COOKIE_VAR] = $_GET[User::COOKIE_VAR];
+		$_G['user']->login();
+		rsetcookie(User::COOKIE_VAR, $_GET[User::COOKIE_VAR]);
+	}
+
+	if(!$_G['user']->isLoggedIn()){
+		writelog('unexpected_result', var_export(array('post' => $_POST, 'get' => $_GET, 'cookie' => $_COOKIE), true));
+		showmsg('inaccessible_if_not_logged_in', 'memcp.php');
+	}
+}
+
+$paymentconfig = readdata('payment');
+if(empty($paymentconfig['enabled_method'][Order::PaidWithAlipay])){
+	showmsg('alipay_is_disabled');
 }
 
 $_G['alipaytrade'] = array(
