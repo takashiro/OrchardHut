@@ -82,7 +82,7 @@ $(function(){
 							<!--{if $l['type'] == Wallet::RechargeLog}-->
 								{echo Order::$PaymentMethod[$l['paymentmethod']]}转入{$l[cost]}{echo Product::$PriceUnit}<br />
 								(<!--{if $l['tradestate']}-->{echo Order::$TradeState[$l['tradestate']]}<!--{else}-->等待付款<!--{/if}-->)
-								<!--{if $_G['user']->id == 1 && !empty(Order::$PaymentInterface[$l['paymentmethod']]) && $l['tradestate'] != Order::TradeSuccess && $l['tradestate'] != Order::TradeFinished}-->
+								<!--{if !empty(Order::$PaymentInterface[$l['paymentmethod']]) && $l['tradestate'] != Order::TradeSuccess && $l['tradestate'] != Order::TradeFinished}-->
 								<a href="{echo Order::$PaymentInterface[$l['paymentmethod']]}?rechargeid=$l[id]">[继续]</a>
 								<!--{/if}-->
 							<!--{elseif $l['type'] == Wallet::OrderRefundLog || $l['type'] == Wallet::OrderPaymentLog}-->
