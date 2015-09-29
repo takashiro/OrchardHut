@@ -28,28 +28,9 @@
 		<h2>支付宝设置</h2>
 		<table>
 			<tr>
-				<th><label>收款账号：</label></th>
-				<td><input type="text" name="alipay[email]" value="$alipay[email]" style="width:18em" /></td>
-				<td class="tips">必须是通过认证的企业支付宝账号</td>
-			</tr>
-			<tr>
 				<th><label>Partner ID：</label></th>
 				<td><input type="text" name="alipay[partner]" value="$alipay[partner]" style="width:18em" maxlength="16" /></td>
 				<td class="tips">该企业支付宝账号对应的合作身份者id，以2088开头的16位纯数字</td>
-			</tr>
-			<tr>
-				<th><label>Key：</label></th>
-				<td><input type="text" name="alipay[key]" value="$alipay[key]" style="width:18em" maxlength="32" /></td>
-				<td class="tips">安全检验码，32个字母（或数字）组成，签名方式为“MD5”时必填</td>
-			</tr>
-			<tr>
-				<th><label>签名方式：</label></th>
-				<td>{echo Template::radio('alipay[sign_type]', array('0001' => 'RSA', 'MD5' => 'MD5'), $alipay['sign_type'])}</td>
-			</tr>
-			<tr>
-				<th><label>字符编码方式：</label></th>
-				<td><input type="text" name="alipay[input_charset]" value="$alipay[input_charset]" /></td>
-				<td class="tips">目前支持 gbk 或 utf-8</td>
 			</tr>
 			<tr>
 				<th><label>传输协议：</label></th>
@@ -65,18 +46,6 @@
 				<th><label>支付宝公钥路径：</label></th>
 				<td>./data/alipay_public_key_<input type="text" name="alipay[ali_public_key_path]" value="$alipay[ali_public_key_path]" style="width:16em" />.pem</td>
 				<td class="tips">签名方式设置为“RSA”时必填</td>
-			</tr>
-			<tr>
-				<th><label>异步通知URL：</label></th>
-				<td>{$_G[root_url]}api/alipay_notify.php</td>
-			</tr>
-			<tr>
-				<th><label>同步通知URL：</label></th>
-				<td>{$_G[root_url]}alipay_callback.php</td>
-			</tr>
-			<tr>
-				<th><label>操作中断返回URL：</label></th>
-				<td>{$_G[root_url]}order.php</td>
 			</tr>
 		</table>
 

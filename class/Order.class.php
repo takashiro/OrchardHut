@@ -307,13 +307,8 @@ class Order extends DBObject{
 				exit;
 			}
 
-			if(!isset(AlipayNotify::$TradeStateEnum[$trade_status])){
-				writelog('alipaynotify', "UNEXPECTED_ORDER_STATE\t$out_trade_no\t$trade_no\t$trade_status");
-				exit;
-			}
-
 			$order->paymentmethod = Order::PaidWithAlipay;
-			$order->tradestate = AlipayNotify::$TradeStateEnum[$trade_status];
+			$order->tradestate = $trade_status;
 			$order->tradeid = $trade_no;
 		}
 	}

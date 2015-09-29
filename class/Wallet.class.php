@@ -113,7 +113,7 @@ class Wallet{
 			$log = array(
 				'paymentmethod' => Order::PaidWithAlipay,
 				'tradeid' => $trade_no,
-				'tradestate' => AlipayNotify::$TradeStateEnum[$trade_status],
+				'tradestate' => $trade_status,
 			);
 			$table = $db->select_table('userwalletlog');
 			$table->update($log, array('id' => $id));

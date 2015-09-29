@@ -1,8 +1,13 @@
-﻿<?php
+<?php
+
 /* *
  * 功能：支付宝服务器异步通知页面
  * 版本：3.3
  * 日期：2012-07-23
+ * 说明：
+ * 以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+ * 该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
+
 
  *************************页面功能说明*************************
  * 创建该页面文件时，请留心该页面文件中无任何HTML代码及空格。
@@ -12,48 +17,31 @@
  */
 
 require_once '../core/init.inc.php';
-require_once submodule('alipay', 'init');
+require_once submodule('alipay', 'config');
 
 //计算得出通知验证结果
 $alipayNotify = new AlipayNotify($alipay_config);
 $verify_result = $alipayNotify->verifyNotify();
 
 if($verify_result){//验证成功
-	//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
-    //获取支付宝的通知返回参数，可参考技术文档中服务器异步通知参数列表
-
-	//解析notify_data
-	//注意：该功能PHP5环境及以上支持，需开通curl、SSL等PHP配置环境。建议本地调试时使用PHP开发软件
-	$notify_data = '';
-	if($alipay_config['sign_type'] == '0001'){
-		$notify_data = $alipayNotify->decrypt($_POST['notify_data']);
-	}elseif($alipay_config['sign_type'] == 'MD5'){
-		$notify_data = $_POST['notify_data'];
-	}
-
-	if(!$notify_data){
+	if(!isset(AlipayNotify::$TradeStateEnum[$_POST['trade_status']])){
+		writelog('alipay_notify', "UNEXPECTED_ORDER_STATE\tPOST = ".var_export($_POST, true));
 		exit('fail');
 	}
 
-	$doc = new DOMDocument;
-	if(!$doc->loadXML($notify_data, LIBXML_NOERROR | LIBXML_NOWARNING)){
-		exit('fail');
-	}
+	$arguments = array(
+		//商户订单号
+		$_POST['out_trade_no'],
 
-	if(!empty($doc->getElementsByTagName('notify')->item(0)->nodeValue)){
-		$alipaytrade = array(
-			//商户订单号
-			$doc->getElementsByTagName('out_trade_no')->item(0)->nodeValue,
-			//支付宝交易号
-			$doc->getElementsByTagName('trade_no')->item(0)->nodeValue,
-			//交易状态
-			$doc->getElementsByTagName('trade_status')->item(0)->nodeValue,
-		);
+		//支付宝交易号
+		$_POST['trade_no'],
 
-		runhooks('alipay_notified', $alipaytrade);
+		//交易状态
+		AlipayNotify::$TradeStateEnum[$_POST['trade_status']],
+	);
 
-		exit('success');
-	}
+	runhooks('alipay_notified', $alipaytrade);
+	exit('success');
 
 }else{
     //验证失败

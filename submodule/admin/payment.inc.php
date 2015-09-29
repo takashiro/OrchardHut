@@ -34,11 +34,7 @@ class PaymentModule extends AdminControlPanelModule{
 			}
 
 			@$alipay = array(
-				'email' => trim($_POST['alipay']['email']),
 				'partner' => trim($_POST['alipay']['partner']),
-				'key' => trim($_POST['alipay']['key']),
-				'sign_type' => $_POST['alipay']['sign_type'],
-				'input_charset' => $_POST['alipay']['input_charset'],
 				'transport' => trim($_POST['alipay']['transport']),
 				'private_key_path' => trim($_POST['alipay']['private_key_path']),
 				'ali_public_key_path' => trim($_POST['alipay']['ali_public_key_path']),
