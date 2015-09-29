@@ -27,6 +27,17 @@ if(!$_G['user']->isLoggedIn()){
 	redirect('memcp.php');
 }
 
+$tradestates = array(0, Order::WaitBuyerPay);
+$tradestates = implode(',', $tradestates);
+$unsorted_status = Order::Unsorted;
+$paid_with_cash = Order::PaidWithCash;
+$unpaid_num = $db->result_first("SELECT COUNT(*)
+	FROM {$tpre}order
+	WHERE userid={$_G['user']->id} AND tradestate IN ($tradestates) AND status=$unsorted_status AND paymentmethod!=$paid_with_cash");
+if($unpaid_num > 0){
+	showmsg('please_cancel_or_pay_your_previous_order', 'order.php');
+}
+
 $actions = array('order', 'deleteaddress');
 $action = isset($_POST['action']) && in_array($_POST['action'], $actions) ? $_POST['action'] : $actions[0];
 

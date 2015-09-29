@@ -66,7 +66,7 @@ case 'mark_received':
 
 	$orderid = !empty($_GET['orderid']) ? intval($_GET['orderid']) : 0;
 	if($orderid > 0){
-		$old_status = array(Order::Sorted, Order::Delivering, Order::InDeliveryStation);
+		$old_status = array(Order::Sorted, Order::ToDeliveryStation, Order::Delivering, Order::InDeliveryStation);
 		$old_status = implode(',', $old_status);
 		$new_status = Order::Received;
 		$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND userid={$_USER['id']} AND status IN ($old_status)");
@@ -200,7 +200,7 @@ case 'comment':
 	break;
 
 case 'deliveringnum':
-	$status = array(Order::Sorted, Order::Delivering, Order::InDeliveryStation);
+	$status = array(Order::Sorted, Order::ToDeliveryStation, Order::Delivering, Order::InDeliveryStation);
 	$status = implode(',', $status);
 	$num = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid={$_USER['id']} AND status IN ($status)");
 	echo $num;
@@ -249,7 +249,18 @@ default:
 
 	$table = $db->select_table('order');
 	$condition = 'userid='.$_G['user']->id;
-	$orders = $table->fetch_all('*', $condition." ORDER BY id DESC LIMIT $offset,$limit");
+	$unsorted = Order::Unsorted;
+	$paid_with_cash = Order::PaidWithCash;
+	$trade_success = Order::TradeSuccess;
+	$orders = $table->fetch_all('*', $condition." ORDER BY
+		(CASE paymentmethod
+			WHEN $paid_with_cash THEN $trade_success
+			ELSE
+				(CASE status
+					WHEN $unsorted THEN tradestate
+					ELSE $trade_success
+				END)
+		END),id DESC LIMIT $offset,$limit");
 	$pagenum = $table->result_first('COUNT(*)', $condition);
 
 	if($orders){

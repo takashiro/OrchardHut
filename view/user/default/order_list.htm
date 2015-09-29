@@ -49,12 +49,12 @@
 							<a href="order.php?action=view&orderid=$o[id]" class="view">[详细]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
 								<a href="order.php?action=delete&orderid=$o[id]">[取消]</a>
-							<!--{elseif $o['status'] == Order::InDeliveryStation || $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
+							<!--{elseif $o['status'] == Order::Sorted || $o['status'] == Order::ToDeliveryStation || $o['status'] == Order::InDeliveryStation || $o['status'] == Order::Delivering}-->
 								<a href="order.php?action=mark_received&orderid=$o[id]">[签收]</a>
 							<!--{elseif $o['status'] == Order::Received}-->
 								<a href="order.php?action=comment&orderid=$o[id]">[评价]</a>
 							<!--{/if}-->
-							<!--{if $o['paymentmethod'] != Order::PaidWithCash && empty($o['tradestate']) && $o['status'] != Order::Canceled}-->
+							<!--{if $o['paymentmethod'] != Order::PaidWithCash && (empty($o['tradestate']) || $o['tradestate'] == Order::WaitBuyerPay) && $o['status'] != Order::Canceled}-->
 								<a href="order.php?action=pay&orderid=$o[id]">[付款]</a>
 							<!--{/if}-->
 							<!--{if $o['status'] != Order::Unsorted && $o['status'] != Order::Canceled}-->
