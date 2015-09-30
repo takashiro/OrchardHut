@@ -112,8 +112,8 @@ $parameter = array(
 	'total_fee'	=> $total_fee,
 	'show_url' => $show_url,
 	'body' => $body,
-	'it_b_pay' => $it_b_pay,
-	'extern_token' => $extern_token,
+	//'it_b_pay' => $it_b_pay,
+	//'extern_token' => $extern_token,
 	'_input_charset' => $alipay_config['input_charset'],
 );
 

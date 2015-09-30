@@ -40,7 +40,7 @@ if($verify_result){//验证成功
 		AlipayNotify::$TradeStateEnum[$_POST['trade_status']],
 	);
 
-	runhooks('alipay_notified', $alipaytrade);
+	runhooks('alipay_notified', $arguments);
 	exit('success');
 
 }else{
