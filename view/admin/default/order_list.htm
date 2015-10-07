@@ -94,7 +94,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 			</div>
 		</form>
 
-		<!--{if empty($stat['statonly'])}-->
+		<!--{if empty($stat['statonly']) || !empty($stat['totalprice'])}-->
 		<div id="orderlist" class="list" style="font-size:10pt">
 			<table>
 				<thead>
