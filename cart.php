@@ -63,22 +63,34 @@ switch($action){
 		}
 
 		if($priceids){//Now the shopping cart is not empty. Let's calculate as a cashier.
+			//Check if the current user group can buy it
+			$price_limit = Product::PriceLimits($priceids);
+			foreach($priceids as $i => $priceid){
+				if(!empty($price_limit[$priceid]) && !in_array($_G['user']->groupid, $price_limit[$priceid])){
+					unset($priceids[$i]);
+				}
+			}
+
 			$check_booking_mode = ProductStorage::IsBookingMode() ? ' OR s.mode='.ProductStorage::BookingMode : '';
 
-			$priceids = implode(',', $priceids);
-			$products = $db->fetch_all("SELECT p.*,r.*,r.id AS priceid
-				FROM {$tpre}productprice r
-					LEFT JOIN {$tpre}product p ON p.id=r.productid
-					LEFT JOIN {$tpre}productcountdown c ON c.id=r.id
-					LEFT JOIN {$tpre}productstorage s ON s.id=r.storageid
-				WHERE r.id IN ($priceids)
-					AND p.hide=0
-					AND (r.storageid IS NULL OR s.num>=r.amount $check_booking_mode)
-					AND (c.id IS NULL OR (c.start_time<=$timestamp AND c.end_time>=$timestamp))
-					AND r.id NOT IN (SELECT masked_priceid
-									FROM {$tpre}productcountdown c
-										LEFT JOIN {$tpre}productprice m ON m.id=c.id
-									WHERE m.productid=r.productid AND c.start_time<=$timestamp AND c.end_time>=$timestamp)");
+			if($priceids){
+				$priceids = implode(',', $priceids);
+				$products = $db->fetch_all("SELECT p.*,r.*,r.id AS priceid
+					FROM {$tpre}productprice r
+						LEFT JOIN {$tpre}product p ON p.id=r.productid
+						LEFT JOIN {$tpre}productcountdown c ON c.id=r.id
+						LEFT JOIN {$tpre}productstorage s ON s.id=r.storageid
+					WHERE r.id IN ($priceids)
+						AND p.hide=0
+						AND (r.storageid IS NULL OR s.num>=r.amount $check_booking_mode)
+						AND (c.id IS NULL OR (c.start_time<=$timestamp AND c.end_time>=$timestamp))
+						AND r.id NOT IN (SELECT masked_priceid
+										FROM {$tpre}productcountdown c
+											LEFT JOIN {$tpre}productprice m ON m.id=c.id
+										WHERE m.productid=r.productid AND c.start_time<=$timestamp AND c.end_time>=$timestamp)");
+			}else{
+				$products = array();
+			}
 
 			//Remove deleted product prices from the shopping cart and update cookie
 			$filtered_cart = array();

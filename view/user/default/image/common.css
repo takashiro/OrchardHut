@@ -339,6 +339,19 @@ ul.product_list > li .brief{
 	display:inline-block;
 }
 
+.limit{
+	background:black;
+	height:22px;
+	line-height:22px;
+	font-size:10pt;
+	border-radius:5px;
+	color:white;
+	text-align:center;
+	display:inline-block;
+	padding: 0 5px;
+	margin: 0 3px;
+}
+
 footer{
 	width:100%;
 	text-align:center;

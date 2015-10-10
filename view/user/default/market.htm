@@ -58,15 +58,18 @@ var User = {
 				<!--{if !empty($p['briefintro'])}--><div class="briefintro" style="color:#$p[text_color];">$p[briefintro]</div><!--{/if}-->
 			</div>
 			<ul class="rule">
-				<!--{if $p['rule']}-->
-					<!--{loop $p['rule'] $r}-->
+				<!--{eval $sold_out = true;}-->
+				<!--{loop $p['rule'] $r}-->
+					<!--{if empty($price_limit[$r['id']]) || in_array($_G['user']->groupid, $price_limit[$r['id']])}-->
+						<!--{eval $sold_out = false;}-->
 						<li data-product-id="$p[id]" data-price-id="$r[id]" data-storage-id="$r[storageid]" data-quantity-limit="$r[quantitylimit]">
 							<span class="intro" style="color:#$p[text_color];"><span class="subtype">$r[subtype]</span><!--{if !empty($r['briefintro'])}--><span class="briefintro">$r[briefintro]</span><!--{/if}--></span>
-							<span class="price" style="color:#$p[text_color];">$r[price]</span><span class="priceunit">{echo Product::$PriceUnit}</span><span class="amount" style="color:#$p[text_color];">$r[amount]</span><span class="amountunit" style="color:#$p[text_color];">$r[amountunit]</span><!--{if $r['is_countdown']}--><div class="countdown" style="background:#$p[text_color]">降</div><!--{/if}-->
+							<span class="price" style="color:#$p[text_color];">$r[price]</span><span class="priceunit">{echo Product::$PriceUnit}</span><span class="amount" style="color:#$p[text_color];">$r[amount]</span><span class="amountunit" style="color:#$p[text_color];">$r[amountunit]</span><!--{if $r['is_countdown']}--><div class="countdown" style="background:#$p[text_color]">降</div><!--{/if}--><!--{if !empty($price_limit[$r['id']])}--><!--{loop $price_limit[$r['id']] $usergroupid}--><div class="limit" style="background:#$p[text_color]">{echo UserGroup::Name($usergroupid)}专享</div><!--{/loop}--><!--{/if}-->
 							<div class="order_input"><input type="text" class="number" /><!--{if $r['amount'] > 1}--><div class="unit">x{$r[amount]}</div><!--{/if}--></div>
 						</li>
-					<!--{/loop}-->
-				<!--{else}-->
+					<!--{/if}-->
+				<!--{/loop}-->
+				<!--{if $sold_out}-->
 				<li>啊哦，$p[name]已经卖光了QAQ</li>
 				<!--{/if}-->
 			</ul>

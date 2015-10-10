@@ -64,6 +64,9 @@ foreach($products as $product){
 	}
 }
 
+//取得价格限定的用户组
+$price_limit = Product::PriceLimits($priceids);
+
 //取得产品库存信息
 $quantity_limit = Product::QuantityLimits($priceids);
 
