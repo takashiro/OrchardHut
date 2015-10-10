@@ -1,0 +1,59 @@
+<!--{template header}-->
+
+<script type="text/javascript">
+$(function(){
+	$('#usergroup_list').editlist({
+		'edit': '$mod_url&action=edit',
+		'delete': '$mod_url&action=delete',
+		'attr' : ['id', 'name', 'type', 'minordernum', 'maxordernum']
+	});
+});
+</script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=user">用户</a></li>
+	<li>用户组</li>
+</ol>
+
+<div class="box list">
+	<h2>用户组</h2>
+	<div class="headactions">
+		<a href="$mod_url&action=refreshAll">刷新所有用户</a>
+	</div>
+
+	<div class="notice">
+		<ol>
+			<li>普通组：普通用户所在的组别，可以根据最小订单数量和最大订单数量自动提升和下降。</li>
+			<li>特殊组：可以由管理员分配给用户，特殊组后不根据订单数量自动提升。</li>
+		</ol>
+	</div>
+
+	<div class="content">
+		<table id="usergroup_list">
+			<thead><tr><td>ID</td><td>名称</td><td>类型</td><td>最小订单数量</td><td>最大订单数量</td><td>操作</td></tr></thead>
+			<tbody>
+			<!--{loop $usergroups $u}-->
+				<tr data-primaryvalue="$u[id]">
+					<td>$u[id]</td>
+					<td>$u[name]</td>
+					<td>{echo UserGroup::$Type[$u['type']]}</td>
+					<td>$u[minordernum]</td>
+					<td>$u[maxordernum]</td>
+					<td></td>
+				</tr>
+			<!--{/loop}-->
+				<tr>
+					<td></td>
+					<td><input type="text" /></td>
+					<td>{echo Template::select('', UserGroup::$Type)}</td>
+					<td><input type="text" /></td>
+					<td><input type="text" /></td>
+					<td><button type="button" class="add">添加</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--{template footer}-->
