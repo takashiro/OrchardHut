@@ -60,13 +60,23 @@ class UserGroupModule extends AdminControlPanelModule{
 	}
 
 	public function refreshAllAction(){
-		global $db;
+		global $db, $page, $mod_url;
+
+		$limit = 100;
+		$offset = ($page - 1) * $limit;
+
 		$table = $db->select_table('usergroup');
-		$user = $table->fetch_all('id');
-		foreach($user as $u){
-			UserGroup::RefreshUser($u['id']);
+		$user = $table->fetch_all('id', "1 LIMIT $offset,$limit");
+		if($user){
+			foreach($user as $u){
+				UserGroup::RefreshUser($u['id']);
+			}
+
+			$page++;
+			showmsg('processing_all_usergroups', $mod_url.'&action=refreshAll&page='.$page);
 		}
-		showmsg('succesfully_refresh_all_usergroup', 'refresh');
+
+		showmsg('succesfully_refresh_all_usergroup', $mod_url);
 	}
 
 }

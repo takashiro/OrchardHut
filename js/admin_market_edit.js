@@ -41,6 +41,13 @@ $(function(){
 		'buttons' : {'delete':'删除'}
 	});
 
+	$('#pricelimit_list').editlist({
+		'edit' : mod_url + '&action=editpricelimit&productid=' + product_id,
+		'delete' : mod_url + '&action=deletepricelimit&productid=' + product_id,
+		'attr' : ['priceid', 'usergroupid'],
+		'buttons' : {'delete':'删除'}
+	});
+
 	$('input.color').spectrum({
 		'chooseText' : '选择',
 		'cancelText' : '取消',
@@ -50,7 +57,7 @@ $(function(){
 
 	$('#price_list tr:not(:last-child)').click(function(){
 		var id = $(this).children('td:first-child').html();
-		$('#countdown_list tr:last-child td:first-child input').val(id);
+		$('input.priceid').val(id);
 	});
 
 	$('#storage_list tr:not(:last-child)').click(function(){

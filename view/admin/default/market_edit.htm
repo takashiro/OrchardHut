@@ -150,7 +150,7 @@ var product_id = $product[id];
 				</tr>
 				<!--{/loop}-->
 				<tr>
-					<td><input type="text" class="number narrow" /></td>
+					<td><input type="text" class="number narrow priceid" /></td>
 					<td><input type="text" /></td>
 					<td><input type="text" /></td>
 					<td><input type="text" class="number narrow" value="1" /></td>
@@ -202,6 +202,41 @@ var product_id = $product[id];
 			</tbody>
 		</table>
 	</div>
+</div>
+
+<div class="box">
+	<h1>限定用户组</h1>
+	<div id="pricelimit_list" class="content list edit_list">
+		<table>
+			<thead>
+				<tr>
+					<td>价格编号</td>
+					<td>限定用户组</td>
+					<td>操作</td>
+				</tr>
+			</thead>
+			<tbody>
+				<!--{loop $pricelimits $p}-->
+				<tr data-primaryvalue="$p[id]">
+					<td>$p[priceid]</td>
+					<td data-realvalue="$p[usergroupid]">{echo UserGroup::Name($p['usergroupid'])}</td>
+					<td></td>
+				</tr>
+				<!--{/loop}-->
+				<tr>
+					<td><input type="text" class="number priceid" /></td>
+					<td>{echo Template::select('', UserGroup::Names())}</td>
+					<td><button type="button" class="add">添加</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="notice">
+	<ul>
+		<li>添加限定用户组后，仅有该用户组可以查看并选择某个价格。</li>
+	</ul>
 </div>
 
 {template footer}

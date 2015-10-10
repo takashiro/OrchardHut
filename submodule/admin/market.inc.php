@@ -128,6 +128,10 @@ class MarketModule extends AdminControlPanelModule{
 			$countdowns = $product->getCountdowns();
 			$storages = $product->getStorages();
 			$product = $product->toArray();
+
+			$table = $db->select_table('productpricelimit');
+			$pricelimits = $table->fetch_all('*', 'productid='.$product['id']);
+
 			include view('market_edit');
 		}
 	}
@@ -186,6 +190,46 @@ class MarketModule extends AdminControlPanelModule{
 		$product = new Product;
 		$product->id = intval($_GET['productid']);
 		echo json_encode($product->deleteStorage($_POST['id']));
+	}
+
+	public function editPriceLimitAction(){
+		if(empty($_GET['productid']))
+			exit('access denied');
+		$productid = intval($_GET['productid']);
+		$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+
+		$attrs = array();
+		if(isset($_POST['priceid'])){
+			$attrs['priceid'] = intval($_POST['priceid']);
+		}
+		if(isset($_POST['usergroupid'])){
+			$attrs['usergroupid'] = intval($_POST['usergroupid']);
+		}
+
+		global $db;
+		$table = $db->select_table('productpricelimit');
+		if($id > 0){
+			$table->update($attrs, array('id' => $id, 'productid' => $productid));
+			$attrs['id'] = $id;
+		}else{
+			$attrs['productid'] = $productid;
+			$table->insert($attrs);
+			$attrs['id'] = $table->insert_id();
+		}
+		echo json_encode($attrs);
+		exit;
+	}
+
+	public function deletePriceLimitAction(){
+		if(empty($_GET['productid']) || empty($_POST['id']))
+			exit('access denied');
+		$productid = intval($_GET['productid']);
+		$id = intval($_POST['id']);
+		global $db;
+		$table = $db->select_table('productpricelimit');
+		$table->delete(array('id' => $id, 'productid' => $productid));
+		echo $table->affected_rows();
+		exit;
 	}
 }
 
