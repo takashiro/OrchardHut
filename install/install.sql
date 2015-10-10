@@ -129,9 +129,9 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `dtime_to` int(11) unsigned NOT NULL,
   `deliveryfee` decimal(5,2) NOT NULL DEFAULT '0.00',
   `paymentmethod` tinyint(4) NOT NULL,
+  `customlabel` varchar(32) NOT NULL,
   `tradeid` varchar(255) NOT NULL,
   `tradestate` tinyint(4) NOT NULL,
-  `customlabel` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `dateline` (`dateline`)
@@ -230,6 +230,17 @@ CREATE TABLE IF NOT EXISTS `hut_productprice` (
   `quantitylimit` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `hut_productpricelimit`;
+CREATE TABLE IF NOT EXISTS `hut_productpricelimit` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `productid` mediumint(8) unsigned NOT NULL,
+  `priceid` int(11) unsigned NOT NULL,
+  `usergroupid` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `productid` (`productid`),
+  KEY `priceid` (`priceid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productquantitylimit`;
@@ -336,12 +347,23 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   `trickflag` int(11) unsigned NOT NULL,
   `referrerid` mediumint(8) unsigned NOT NULL,
   `getuiclientid` varchar(50) DEFAULT NULL,
+  `groupid` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`),
   UNIQUE KEY `qqopenid` (`qqopenid`),
   UNIQUE KEY `mobile` (`mobile`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `wxopenid` (`wxopenid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `hut_usergroup`;
+CREATE TABLE IF NOT EXISTS `hut_usergroup` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(4) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `minordernum` mediumint(8) unsigned NOT NULL,
+  `maxordernum` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_userwalletlog`;
@@ -352,11 +374,11 @@ CREATE TABLE IF NOT EXISTS `hut_userwalletlog` (
   `type` tinyint(4) unsigned NOT NULL,
   `delta` decimal(9,2) NOT NULL,
   `cost` decimal(9,2) NOT NULL,
+  `recharged` tinyint(1) NOT NULL,
+  `orderid` mediumint(8) unsigned NOT NULL,
   `paymentmethod` tinyint(4) NOT NULL,
   `tradeid` varchar(255) NOT NULL,
   `tradestate` tinyint(4) NOT NULL,
-  `recharged` tinyint(1) NOT NULL,
-  `orderid` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
