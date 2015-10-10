@@ -134,6 +134,11 @@ class User extends DBObject{
 		return $attr;
 	}
 
+	public function insert($extra = ''){
+		$this->groupid = UserGroup::ByOrderNum('id', 0);
+		parent::insert($extra);
+	}
+
 	public static function Register($user){
 		global $db;
 
@@ -166,6 +171,8 @@ class User extends DBObject{
 		if($table->result_first('id', array('account' => $user['account'])) > 0){
 			return self::DUPLICATED_ACCOUNT;
 		}
+
+		$user['groupid'] = UserGroup::ByOrderNum('id', 0);
 
 		$table->insert($user);
 		return $table->insert_id();
