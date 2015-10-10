@@ -65,7 +65,7 @@ class UserGroupModule extends AdminControlPanelModule{
 		$limit = 100;
 		$offset = ($page - 1) * $limit;
 
-		$table = $db->select_table('usergroup');
+		$table = $db->select_table('user');
 		$user = $table->fetch_all('id', "1 LIMIT $offset,$limit");
 		if($user){
 			foreach($user as $u){
