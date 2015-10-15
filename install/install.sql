@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
   `displayorder` tinyint(3) NOT NULL,
   `hidden` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_administrator`;
 CREATE TABLE IF NOT EXISTS `hut_administrator` (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `hut_administrator` (
   `loginkey` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_announcement`;
 CREATE TABLE IF NOT EXISTS `hut_announcement` (
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `hut_announcement` (
   `displayorder` tinyint(3) NOT NULL,
   `dateline` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_authkey`;
 CREATE TABLE IF NOT EXISTS `hut_authkey` (
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
   `mobile` varchar(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_deliverytime`;
 CREATE TABLE IF NOT EXISTS `hut_deliverytime` (
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `hut_deliverytime` (
   `effective_time` int(11) unsigned NOT NULL,
   `expiry_time` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_order`;
 CREATE TABLE IF NOT EXISTS `hut_order` (
@@ -132,10 +132,11 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `customlabel` varchar(32) NOT NULL,
   `tradeid` varchar(255) NOT NULL,
   `tradestate` tinyint(4) NOT NULL,
+  `tradetime` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
-  KEY `dateline` (`dateline`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  KEY `tradetime` (`tradetime`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_ordercomment`;
 CREATE TABLE IF NOT EXISTS `hut_ordercomment` (
@@ -163,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
   `state` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_orderlog`;
 CREATE TABLE IF NOT EXISTS `hut_orderlog` (
@@ -176,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `hut_orderlog` (
   `dateline` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_prepaidreward`;
 CREATE TABLE IF NOT EXISTS `hut_prepaidreward` (
@@ -205,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `hut_product` (
   `displayorder` tinyint(4) NOT NULL,
   `hide` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productcountdown`;
 CREATE TABLE IF NOT EXISTS `hut_productcountdown` (
@@ -230,7 +231,7 @@ CREATE TABLE IF NOT EXISTS `hut_productprice` (
   `quantitylimit` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productpricelimit`;
 CREATE TABLE IF NOT EXISTS `hut_productpricelimit` (
@@ -241,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `hut_productpricelimit` (
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`),
   KEY `priceid` (`priceid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productquantitylimit`;
 CREATE TABLE IF NOT EXISTS `hut_productquantitylimit` (
@@ -260,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `hut_productstorage` (
   `mode` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `productid` (`productid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productstoragelog`;
 CREATE TABLE IF NOT EXISTS `hut_productstoragelog` (
@@ -287,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `hut_producttype` (
   `displayorder` tinyint(3) unsigned NOT NULL,
   `hidden` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_productunit`;
 CREATE TABLE IF NOT EXISTS `hut_productunit` (
@@ -296,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `hut_productunit` (
   `type` tinyint(1) NOT NULL,
   `hidden` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_returnedorder`;
 CREATE TABLE IF NOT EXISTS `hut_returnedorder` (
@@ -354,7 +355,7 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   UNIQUE KEY `mobile` (`mobile`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `wxopenid` (`wxopenid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_usergroup`;
 CREATE TABLE IF NOT EXISTS `hut_usergroup` (
@@ -364,7 +365,7 @@ CREATE TABLE IF NOT EXISTS `hut_usergroup` (
   `minordernum` mediumint(8) unsigned NOT NULL,
   `maxordernum` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_userwalletlog`;
 CREATE TABLE IF NOT EXISTS `hut_userwalletlog` (

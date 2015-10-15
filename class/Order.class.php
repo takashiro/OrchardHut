@@ -76,6 +76,7 @@ class Order extends DBObject{
 		$attr = parent::toReadable();
 
 		$attr['dateline'] = rdate($attr['dateline']);
+		$attr['tradetime'] = rdate($attr['tradetime']);
 
 		$attr['detail'] = $this->detail;
 
@@ -310,6 +311,8 @@ class Order extends DBObject{
 			$order->paymentmethod = Order::PaidWithAlipay;
 			$order->tradestate = $trade_status;
 			$order->tradeid = $trade_no;
+			if($order->tradestate == Order::TradeSuccess)
+				$order->tradetime = TIMESTAMP;
 		}
 	}
 
@@ -352,6 +355,8 @@ class Order extends DBObject{
 			$order->paymentmethod = Order::PaidWithBestpay;
 			$order->tradestate = $trade_status == '0000' ? Order::TradeSuccess : Order::WaitBuyerPay;
 			$order->tradeid = $trade_no;
+			if($order->tradestate == Order::TradeSuccess)
+				$order->tradetime = TIMESTAMP;
 		}
 	}
 

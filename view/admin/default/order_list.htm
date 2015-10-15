@@ -110,7 +110,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 						<td>价格</td>
 						<td width="65">物流状态</td>
 						<td>付款状态</td>
-						<td width="100">下单时间</td>
+						<td width="100">交易时间</td>
 						<td width="100">收货时间</td>
 						<td width="50">操作</td>
 						<td>留言</td>
@@ -161,7 +161,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 							<div>{echo Order::$PaymentMethod[$o['paymentmethod']]}</div>
 							<!--{if $o['tradestate']}-->{echo Order::$TradeState[$o['tradestate']]}<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}-->等待付款<!--{/if}-->
 						</td>
-						<td>{echo rdate($o['dateline'])}</td>
+						<td title="下单时间：{echo rdate($o['dateline'])}"><!--{if $o['tradetime']}-->{echo rdate($o['tradetime'])}<!--{/if}--></td>
 						<td>
 						<!--{if $o['deliverymethod'] == Order::StationDelivery}-->
 							配送站自提

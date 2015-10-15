@@ -36,7 +36,7 @@ class OrderStatModule extends AdminControlPanelModule{
 		$time_start = null;
 		if(isset($_REQUEST['time_start'])){
 			$time_start = rstrtotime($_REQUEST['time_start']);
-			$condition[] = 'o.dateline>='.$time_start;
+			$condition[] = 'o.tradetime>='.$time_start;
 		}else{
 			$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
 
@@ -52,7 +52,7 @@ class OrderStatModule extends AdminControlPanelModule{
 		$time_end = null;
 		if(isset($_REQUEST['time_end'])){
 			$time_end = rstrtotime($_REQUEST['time_end']);
-			$condition[] = 'o.dateline<='.$time_end;
+			$condition[] = 'o.tradetime<='.$time_end;
 		}else{
 			$time_end = $time_start + 24 * 3600;
 		}

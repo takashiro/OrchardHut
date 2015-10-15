@@ -41,6 +41,7 @@ class Wallet{
 		if($db->affected_rows > 0){
 			$order->tradestate = Order::TradeSuccess;
 			$order->paymentmethod = Order::PaidWithWallet;
+			$order->tradetime = TIMESTAMP;
 			$log = array(
 				'uid' => $this->user->id,
 				'type' => self::OrderPaymentLog,

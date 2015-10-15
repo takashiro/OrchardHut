@@ -139,12 +139,12 @@ class OrderModule extends AdminControlPanelModule{
 			}
 
 			if($time_start !== ''){
-				$condition[] = 'o.dateline>='.$time_start;
+				$condition[] = 'o.tradetime>='.$time_start;
 				$time_start = rdate($time_start, 'Y-m-d H:i');
 			}
 
 			if($time_end !== ''){
-				$condition[] = 'o.dateline<='.$time_end;
+				$condition[] = 'o.tradetime<='.$time_end;
 				$time_end = rdate($time_end, 'Y-m-d H:i');
 			}
 
@@ -254,10 +254,10 @@ class OrderModule extends AdminControlPanelModule{
 
 				$received_status = Order::Received;
 				$orders = $db->fetch_all("SELECT o.*,
-						(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND dateline<o.dateline AND status=$received_status) AS ordernum
+						(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND status=$received_status) AS ordernum
 					FROM {$tpre}order o
 					WHERE $condition
-					ORDER BY o.tradestate DESC,o.status,o.dtime_from,o.dateline
+					ORDER BY o.tradestate DESC,o.status,o.dtime_from,o.tradetime
 					$limit_subsql");
 			}else{
 				$orders = array();
@@ -377,6 +377,7 @@ class OrderModule extends AdminControlPanelModule{
 					foreach($orders as &$o){
 						$o['deliveryaddress'] = Address::FullPathString($o['addressid']).' '.$o['extaddress'];
 						$o['dateline'] = rdate($o['dateline']);
+						$o['tradetime'] = rdate($o['tradetime']);
 					}
 					unset($o);
 				}

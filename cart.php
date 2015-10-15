@@ -289,6 +289,9 @@ switch($action){
 					}
 				}
 
+				if($order->paymentmethod == Order::PaidWithCash)
+					$order->tradetime = TIMESTAMP;
+
 				if(!$item_deleted){
 					showmsg('successfully_submitted_order', 'order.php');
 				}else{

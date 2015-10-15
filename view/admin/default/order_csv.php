@@ -14,7 +14,7 @@ echo '编号';
 foreach($address_format as $name){
 	echo ',', $name;
 }
-echo ',地址,收件人,电话,历史订单,物品,价格(', Product::$PriceUnit, '),物流状态,收货方式,付款方式,付款状态,时间,留言', "\r\n";
+echo ',地址,收件人,电话,历史订单,物品,价格(', Product::$PriceUnit, '),物流状态,收货方式,下单时间,付款方式,付款状态,付款时间,留言', "\r\n";
 
 function output_order_detail($d){
 	if($d['state'] == 1){
@@ -51,6 +51,7 @@ foreach($orders as $o){
 	echo '",', $o['totalprice'], ',';
 	echo isset(Order::$Status[$o['status']]) ? Order::$Status[$o['status']] : '未知', ',';
 	echo isset(Order::$DeliveryMethod[$o['deliverymethod']]) ? Order::$DeliveryMethod[$o['deliverymethod']] : '?', ',';
+	echo rdate($o['dateline']), ',';
 	echo isset(Order::$PaymentMethod[$o['paymentmethod']]) ? Order::$PaymentMethod[$o['paymentmethod']] : '未知', ',';
 	if($o['paymentmethod'] != Order::PaidWithCash){
 		if(empty($o['tradestate'])){
@@ -60,7 +61,7 @@ foreach($orders as $o){
 		}
 	}
 	echo ',';
-	echo rdate($o['dateline']), ',', $o['message'], "\r\n";
+	echo rdate($o['tradetime']), ',', $o['message'], "\r\n";
 }
 
 ?>
