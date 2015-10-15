@@ -25,7 +25,7 @@ $_G = array();
 $_G['starttime'] = microtime(true);
 
 define('S_ROOT', dirname(dirname(__FILE__)).'/');
-define('S_VERSION', '2.3');
+define('S_VERSION', '2.4');
 error_reporting(0);
 set_time_limit(0);
 
