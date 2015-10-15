@@ -115,6 +115,20 @@ class OrderModule extends AdminControlPanelModule{
 				$display_status = $available_status;
 			}
 
+			//根据付款状态查询订单
+			if(empty($_REQUEST['tradestate'])){
+				$tradestate = Order::TradeSuccess;
+			}else{
+				$tradestate = intval($_REQUEST['tradestate']);
+
+				//@todo: resolve the hack
+				if($tradestate != 1){
+					$condition[] = 'o.tradestate='.$tradestate;
+				}else{
+					$condition[] = 'o.tradestate IN (0,1)';
+				}
+			}
+
 			//下单起始时间
 			if(isset($_REQUEST['time_start'])){
 				$time_start = empty($_REQUEST['time_start']) ? '' : rstrtotime($_REQUEST['time_start']);
@@ -138,13 +152,14 @@ class OrderModule extends AdminControlPanelModule{
 				$time_end = $time_start + 1 * 24 * 3600;
 			}
 
+			$timefield = $tradestate >= Order::TradeSuccess ? 'tradetime' : 'dateline';
 			if($time_start !== ''){
-				$condition[] = 'o.tradetime>='.$time_start;
+				$condition[] = 'o.'.$timefield.'>='.$time_start;
 				$time_start = rdate($time_start, 'Y-m-d H:i');
 			}
 
 			if($time_end !== ''){
-				$condition[] = 'o.tradetime<='.$time_end;
+				$condition[] = 'o.'.$timefield.'<='.$time_end;
 				$time_end = rdate($time_end, 'Y-m-d H:i');
 			}
 
@@ -211,20 +226,6 @@ class OrderModule extends AdminControlPanelModule{
 				$mobile = '';
 			}
 
-			//根据付款状态查询订单
-			if(empty($_REQUEST['tradestate'])){
-				$tradestate = 0;
-			}else{
-				$tradestate = intval($_REQUEST['tradestate']);
-
-				//@todo: resolve the hack
-				if($tradestate != 1){
-					$condition[] = 'o.tradestate='.$tradestate;
-				}else{
-					$condition[] = 'o.tradestate IN (0,1)';
-				}
-			}
-
 			//连接成WHERE子句
 			$condition = implode(' AND ', $condition);
 
@@ -257,7 +258,7 @@ class OrderModule extends AdminControlPanelModule{
 						(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND status=$received_status) AS ordernum
 					FROM {$tpre}order o
 					WHERE $condition
-					ORDER BY o.tradestate DESC,o.status,o.dtime_from,o.tradetime
+					ORDER BY o.status,o.dtime_from,o.tradetime
 					$limit_subsql");
 			}else{
 				$orders = array();
@@ -357,7 +358,6 @@ class OrderModule extends AdminControlPanelModule{
 					'stat',
 					'mobile', 'addressee',
 					'userid',
-					'tradestate',
 				);
 				foreach($vars as $var){
 					if($$var){

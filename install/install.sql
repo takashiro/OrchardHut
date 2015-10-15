@@ -135,7 +135,8 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   `tradetime` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
-  KEY `tradetime` (`tradetime`)
+  KEY `tradetime` (`tradetime`),
+  KEY `dateline` (`dateline`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_ordercomment`;
