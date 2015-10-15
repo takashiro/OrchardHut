@@ -40,10 +40,10 @@ class DeliveryModule extends AdminControlPanelModule{
 		}
 
 		foreach($timespan as &$time){
-			@list($H, $i, $s) = explode(':', $time);
-			$H = intval($H);
-			$i = intval($i);
-			$s = intval($s);
+			$time = explode(':', $time);
+			$H = isset($time[0]) ? intval($time[0]) : 0;
+			$i = isset($time[1]) ? intval($time[1]) : 0;
+			$s = isset($time[2]) ? intval($time[2]) : 0;
 			$time = $H * 3600 + $i * 60 + $s;
 		}
 		unset($time);
