@@ -89,13 +89,12 @@ window.close();
 		<tr><th>收件人：</th><td>$order[addressee](电话：$order[mobile])</td></tr>
 		<tr><th>订单号：</th><td>$order[id]</td></tr>
 		<tr><th>下单时间：</th><td>$order[dateline]</td></tr>
-		<tr><th>付款时间：</th><td>$order[tradetime]</td></tr>
+		<tr><th>付款时间：</th><td><!--{if $order['tradetime']}-->$order[tradetime]<!--{/if}--></td></tr>
 		<tr><th>配送地址：</th><td>$order[deliveryaddress]</td></tr>
 		<!--{if !empty($order['message'])}-->
 		<tr><th>用户留言：</th><td>$order[message]</td></tr>
 		<!--{/if}-->
 		<tr><th>总金额：</th><td>{$order[totalprice]}{echo Product::$PriceUnit}</td></tr>
-		<tr><th>物流状态：</th><td>{echo Order::$Status[$order['status']]}</td></tr>
 		<tr>
 			<th>付款状态：</th>
 			<td>

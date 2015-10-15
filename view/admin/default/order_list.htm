@@ -111,6 +111,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 						<td width="65">物流状态</td>
 						<td>付款状态</td>
 						<td width="100">付款时间</td>
+						<td width="100">收货方式</td>
 						<td width="50">操作</td>
 						<td>留言</td>
 					</tr>
@@ -161,6 +162,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 							<!--{if $o['tradestate']}-->{echo Order::$TradeState[$o['tradestate']]}<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}-->等待付款<!--{/if}-->
 						</td>
 						<td title="下单时间：{echo rdate($o['dateline'])}"><!--{if $o['tradetime']}-->{echo rdate($o['tradetime'])}<!--{/if}--></td>
+						<td>{echo Order::$DeliveryMethod[$o['deliverymethod']]}</td>
 						<td>
 							<a class="print" href="$mod_url&action=ticket&orderid=$o[id]" target="_blank">[打印]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
