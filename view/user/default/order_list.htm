@@ -57,7 +57,7 @@
 							<!--{if $o['paymentmethod'] != Order::PaidWithCash && (empty($o['tradestate']) || $o['tradestate'] == Order::WaitBuyerPay) && $o['status'] != Order::Canceled}-->
 								<a href="order.php?action=pay&orderid=$o[id]">[付款]</a>
 							<!--{/if}-->
-							<!--{if $o['status'] != Order::Unsorted && $o['status'] != Order::Canceled}-->
+							<!--{if $o['status'] == Order::Received}-->
 							<a href="order.php?action=return&orderid=$o[id]">[退货]</a>
 							<!--{/if}-->
 						</td>
