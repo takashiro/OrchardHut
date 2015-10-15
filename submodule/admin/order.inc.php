@@ -258,7 +258,7 @@ class OrderModule extends AdminControlPanelModule{
 						(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND status=$received_status) AS ordernum
 					FROM {$tpre}order o
 					WHERE $condition
-					ORDER BY o.status,o.dtime_from,o.tradetime
+					ORDER BY o.status,o.tradetime
 					$limit_subsql");
 			}else{
 				$orders = array();

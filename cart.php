@@ -244,28 +244,6 @@ switch($action){
 				$order->deliveryfee = 0;
 			}
 
-			//录入订单的收货时间
-			if($order->deliverymethod == Order::HomeDelivery && !empty($_POST['deliverytime'])){
-				$dtid = intval($_POST['deliverytime']);
-				$table = $db->select_table('deliverytime');
-				$delivery = $table->fetch_first('*', 'id='.$dtid);
-
-				if($delivery){
-					list($Y, $m, $d, $H, $i, $s) = explode('-', rdate(TIMESTAMP, 'Y-m-d-H-i-s'));
-					$today = gmmktime(0, 0, 0, $m, $d, $Y) - TIMEZONE * 3600;
-					$splitter = $H * 3600 + $i * 60 + $s;
-					if($delivery['deadline'] <= $splitter){
-						$delivery['time_from'] += 24 * 3600;
-						$delivery['time_to'] += 24 * 3600;
-					}
-					$delivery['time_from'] += $today;
-					$delivery['time_to'] += $today;
-
-					$order->dtime_from = $delivery['time_from'];
-					$order->dtime_to = $delivery['time_to'];
-				}
-			}
-
 			//将订单插入到数据库中
 			$order->tradestate = 0;
 			$order_succeeded = $order->insert();

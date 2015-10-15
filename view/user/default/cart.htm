@@ -106,8 +106,8 @@ $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 				<div class="content">
 					<p>运费：<span id="deliveryfee"> - </span>{echo Product::$PriceUnit}</p>
 					<ul class="mselect">
-						<li class="checked"><input type="radio" name="deliverymethod" value="{echo Order::StationDelivery}" checked="checked" onclick="$('.deliverytime').hide()" />自提点取货</li>
-						<li><input type="radio" name="deliverymethod" value="{echo Order::HomeDelivery}" onclick="$('.deliverytime').show()" />送货上门</li>
+						<li class="checked"><input type="radio" name="deliverymethod" value="{echo Order::StationDelivery}" checked="checked" />自提点取货</li>
+						<li><input type="radio" name="deliverymethod" value="{echo Order::HomeDelivery}" />送货上门</li>
 					</ul>
 					<!--{loop Order::$DeliveryMethod $methodid $methodname}-->
 					<!--{if $deliveryconfig[$methodid]['fee'] > 0}-->
@@ -116,18 +116,6 @@ $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 					</p>
 					<!--{/if}-->
 					<!--{/loop}-->
-				</div>
-			</div>
-			<div class="lightbox deliverytime" style="display:none">
-				<h1>收货时间</h1>
-				<div class="content">
-					<ul class="mselect">
-						<!--{eval list($i, $s) = each($delivery_timespans);}-->
-						<li class="checked"><input type="radio" name="deliverytime" value="$s[id]" checked="checked" />{echo rdate($s['time_from'], 'm月d日 H:i')}~{echo rdate($s['time_to'], 'H:i')}</li>
-						<!--{eval while(list($i, $s) = each($delivery_timespans)){ }-->
-						<li><input type="radio" name="deliverytime" value="$s[id]" />{echo rdate($s['time_from'], 'm月d日 H:i')}~{echo rdate($s['time_to'], 'H:i')}</li>
-						<!--{eval } }-->
-					</ul>
 				</div>
 			</div>
 			<div class="post_buttons">
