@@ -30,6 +30,11 @@ RewriteRule ^alipay(.*)\.htm$ alipay.php?querystring=$1
 
 if(empty($_GET['querystring'])){
 	if(empty($_GET['skipprotector']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
+		if(!$_G['user']->isLoggedIn()){
+			writelog('unexpected_result', '1:'.var_export(array('post' => $_POST, 'get' => $_GET, 'cookie' => $_COOKIE, 'server' => $_SERVER), true));
+			showmsg('inaccessible_if_not_logged_in', 'memcp.php');
+		}
+
 		$_SERVER['QUERY_STRING'].= '&'.User::COOKIE_VAR.'='.urlencode($_COOKIE[User::COOKIE_VAR]);
 		rheader('Location: alipay'.base64_encode($_SERVER['QUERY_STRING']).'.htm');
 		exit;
@@ -48,7 +53,7 @@ if(!$_G['user']->isLoggedIn()){
 	}
 
 	if(!$_G['user']->isLoggedIn()){
-		writelog('unexpected_result', var_export(array('post' => $_POST, 'get' => $_GET, 'cookie' => $_COOKIE), true));
+		writelog('unexpected_result', '2:'.var_export(array('post' => $_POST, 'get' => $_GET, 'cookie' => $_COOKIE, 'server' => $_SERVER), true));
 		showmsg('inaccessible_if_not_logged_in', 'memcp.php');
 	}
 }
