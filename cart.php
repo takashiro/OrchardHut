@@ -246,6 +246,7 @@ switch($action){
 
 			//将订单插入到数据库中
 			$order->tradestate = 0;
+			$order->tradetime = 0;
 			$order_succeeded = $order->insert();
 
 			//清空购物车
