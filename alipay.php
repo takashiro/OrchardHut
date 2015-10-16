@@ -31,7 +31,7 @@ RewriteRule ^alipay(.*)\.htm$ alipay.php?querystring=$1
 if(empty($_GET['querystring'])){
 	if(empty($_GET['skipprotector']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 		if(!$_G['user']->isLoggedIn()){
-			writelog('unexpected_result', '1:'.var_export(array('post' => $_POST, 'get' => $_GET, 'cookie' => $_COOKIE, 'server' => $_SERVER), true));
+			writelog('unexpected_result', '1: '.$_SERVER['HTTP_USER_AGENT'].' '.$_SERVER['QUERY_STRING']);
 			showmsg('inaccessible_if_not_logged_in', 'memcp.php');
 		}
 
@@ -50,10 +50,13 @@ if(!$_G['user']->isLoggedIn()){
 		$_COOKIE[User::COOKIE_VAR] = $_GET[User::COOKIE_VAR];
 		$_G['user']->login();
 		rsetcookie(User::COOKIE_VAR, $_GET[User::COOKIE_VAR]);
+		if(!$_G['user']->isLoggedIn()){
+			writelog('unexpected_result', '3:'.$_SERVER['HTTP_USER_AGENT'].' '.$_SERVER['QUERY_STRING']);
+		}
 	}
 
 	if(!$_G['user']->isLoggedIn()){
-		writelog('unexpected_result', '2:'.var_export(array('post' => $_POST, 'get' => $_GET, 'cookie' => $_COOKIE, 'server' => $_SERVER), true));
+		writelog('unexpected_result', '2:'.$_SERVER['HTTP_USER_AGENT'].' '.$_SERVER['QUERY_STRING']);
 		showmsg('inaccessible_if_not_logged_in', 'memcp.php');
 	}
 }

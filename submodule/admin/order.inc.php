@@ -155,9 +155,9 @@ class OrderModule extends AdminControlPanelModule{
 						$time_end = $time1;
 					}else{
 						while($time1 >= TIMESTAMP){
-							$i--;
 							$time2 = $time1;
-							$time1 = $time_start + $deliverytimes[$max - (-$i % $max)]['deadline'] - 24 * 3600 * floor(-$i / $max);
+							$time1 = $time_start + $deliverytimes[$max - 1 - (-$i % $max)]['deadline'] - 24 * 3600 * floor(-$i / $max);
+							$i--;
 						}
 						$time_start = $time1;
 						$time_end = $time2;

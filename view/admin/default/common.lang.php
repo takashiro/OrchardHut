@@ -52,6 +52,8 @@ return array(
 	'permission_promotion' => '推广设置',
 	'permission_handle_returnedorder' => '初步处理退单',
 	'permission_confirm_returnedorder' => '确认处理退单',
+	'permission_usergroup' => '用户组',
+	'permission_getui' => '个推',
 
 	'product_storage_normal_mode' => '标准',
 	'product_storage_booking_mode' => '预售',
