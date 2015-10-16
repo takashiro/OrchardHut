@@ -254,12 +254,10 @@ switch($action){
 
 			//显示订单提交结果
 			if($order_succeeded){
-				//若为钱包支付，直接扣款，扣款不足则转为货到付款
+				//若为钱包支付，直接扣款
 				if($order->paymentmethod == Order::PaidWithWallet){
 					$wallet = new Wallet($_G['user']);
-					if(!$wallet->pay($order)){
-						$order->paymentmethod = Order::PaidWithCash;
-					}
+					$wallet->pay($order);
 
 				//若使用线上支付，进入支付宝界面
 				}elseif($order->paymentmethod != Order::PaidWithCash){
@@ -268,6 +266,7 @@ switch($action){
 					}
 				}
 
+				//货到付款的时间默认为下单时间，方便后台统一处理
 				if($order->paymentmethod == Order::PaidWithCash)
 					$order->tradetime = TIMESTAMP;
 
