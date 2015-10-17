@@ -29,7 +29,15 @@ RewriteRule ^alipay(.*)\.htm$ alipay.php?querystring=$1
 */
 
 if(empty($_GET['querystring'])){
-	if(empty($_GET['skipprotector']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
+	function isWeixin(){
+		if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false)
+			return true;
+		if(strpos($_SERVER['HTTP_USER_AGENT'], 'GT-I9500') !== false && strpos($_SERVER['HTTP_USER_AGENT'], 'MQQBrowser') !== false)
+			return true;
+		return false;
+	}
+
+	if(empty($_GET['skipprotector']) && isWeixin()){
 		if(!$_G['user']->isLoggedIn()){
 			writelog('unexpected_result', '1: '.$_SERVER['HTTP_USER_AGENT'].' '.$_SERVER['QUERY_STRING']);
 			showmsg('inaccessible_if_not_logged_in', 'memcp.php');
