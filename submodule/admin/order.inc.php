@@ -116,16 +116,19 @@ class OrderModule extends AdminControlPanelModule{
 			}
 
 			//根据付款状态查询订单
-			if(empty($_REQUEST['tradestate'])){
+			if(!isset($_REQUEST['tradestate'])){
 				$tradestate = Order::TradeSuccess;
+				$condition[] = 'o.tradestate='.$tradestate;
 			}else{
 				$tradestate = intval($_REQUEST['tradestate']);
 
 				//@todo: resolve the hack
-				if($tradestate != 1){
-					$condition[] = 'o.tradestate='.$tradestate;
-				}else{
-					$condition[] = 'o.tradestate IN (0,1)';
+				if($tradestate > 0){
+					if($tradestate != 1){
+						$condition[] = 'o.tradestate='.$tradestate;
+					}else{
+						$condition[] = 'o.tradestate IN (0,1)';
+					}
 				}
 			}
 
@@ -331,7 +334,6 @@ class OrderModule extends AdminControlPanelModule{
 				unset($o, $order_details);
 			}
 
-
 		//高级查找
 		}else{
 			$display_status = array_keys(Order::$Status);
@@ -378,9 +380,10 @@ class OrderModule extends AdminControlPanelModule{
 					'stat',
 					'mobile', 'addressee',
 					'userid',
+					'tradestate',
 				);
 				foreach($vars as $var){
-					if($$var){
+					if(isset($$var)){
 						$query_string[$var] = $$var;
 					}
 				}
