@@ -103,7 +103,7 @@ class AddressModule extends AdminControlPanelModule{
 			while($delete_id){
 				$delete_id = implode(',', $delete_id);
 
-				global $db;
+				global $db, $tpre;
 				$table = $db->select_table('addresscomponent');
 				$table->delete("id IN ($delete_id)");
 				$affected_rows += $db->affected_rows;
