@@ -249,6 +249,9 @@ switch($action){
 			$order->tradetime = 0;
 			$order_succeeded = $order->insert();
 
+			//更新用户信息
+			$_G['user']->addressid = $order->addressid;
+
 			//清空购物车
 			rsetcookie('shopping_cart', '{}');
 

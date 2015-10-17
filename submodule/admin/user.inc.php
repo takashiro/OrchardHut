@@ -65,7 +65,9 @@ class UserModule extends AdminControlPanelModule{
 		}
 
 		if($order_condition){
-			$order_condition = ' AND '.implode(' AND ', $order_condition);
+			$order_condition = implode(' AND ', $order_condition);
+			$condition[] = "EXISTS (SELECT * FROM {$tpre}order o WHERE $order_condition)";
+			$order_condition = 'AND '.$order_condition;
 		}else{
 			$order_condition = '';
 		}
@@ -110,7 +112,6 @@ class UserModule extends AdminControlPanelModule{
 
 			$user_num = $db->result_first("SELECT COUNT(*)
 				FROM {$tpre}user u
-					LEFT JOIN {$tpre}order o ON o.userid=u.id AND o.id=(SELECT MAX(id) FROM {$tpre}order WHERE userid=u.id)
 				WHERE $condition");
 
 			$limit = 20;
@@ -118,11 +119,27 @@ class UserModule extends AdminControlPanelModule{
 			$limit_subsql = "LIMIT $offset, $limit";
 		}
 
-		$user_list = $db->fetch_all("SELECT u.*, $subquery_ordernum AS ordernum, o.addressid, o.mobile
+		$user_list = $db->fetch_all("SELECT u.*
 			FROM {$tpre}user u
-				LEFT JOIN {$tpre}order o ON o.userid=u.id AND o.id=(SELECT MAX(id) FROM {$tpre}order WHERE userid=u.id)
-			WHERE $condition
-			$limit_subsql");
+			WHERE $condition $limit_subsql");
+
+		$userids = array();
+		$user_map = array();
+		foreach($user_list as &$u){
+			$userids[] = $u['id'];
+			$user_map[$u['id']] = &$u;
+		}
+		unset($u);
+		$userids = implode(',', $userids);
+		$user_ordernum = $db->fetch_all("SELECT userid,COUNT(*) AS ordernum FROM {$tpre}order WHERE userid IN ($userids) GROUP BY userid");
+		foreach($user_ordernum as $u){
+			$user_map[$u['userid']]['ordernum'] = $u['ordernum'];
+		}
+		unset($u, $user_map);
+		foreach($user_list as &$u){
+			isset($u['ordernum']) || $u['ordernum'] = 0;
+		}
+		unset($u);
 
 		if($output_format == 'html'){
 			if($query_string){

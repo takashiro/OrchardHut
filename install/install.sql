@@ -342,6 +342,7 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   `regtime` int(11) unsigned NOT NULL,
   `qqopenid` varchar(32) DEFAULT NULL,
   `wxopenid` varchar(32) DEFAULT NULL,
+  `wxunionid` varchar(32) DEFAULT NULL,
   `wallet` decimal(9,2) NOT NULL,
   `formkey` tinyint(4) unsigned NOT NULL,
   `logintime` int(11) unsigned NOT NULL,
@@ -350,12 +351,15 @@ CREATE TABLE IF NOT EXISTS `hut_user` (
   `referrerid` mediumint(8) unsigned NOT NULL,
   `getuiclientid` varchar(50) DEFAULT NULL,
   `groupid` mediumint(8) unsigned NOT NULL,
+  `addressid` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`),
   UNIQUE KEY `qqopenid` (`qqopenid`),
   UNIQUE KEY `mobile` (`mobile`),
   UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `wxopenid` (`wxopenid`)
+  UNIQUE KEY `wxopenid` (`wxopenid`),
+  UNIQUE KEY `wxunionid` (`wxunionid`),
+  KEY `addressid` (`addressid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `hut_usergroup`;
@@ -383,7 +387,7 @@ CREATE TABLE IF NOT EXISTS `hut_userwalletlog` (
   `tradestate` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
 ALTER TABLE `hut_bankaccountlog`
