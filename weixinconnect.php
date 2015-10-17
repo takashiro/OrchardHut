@@ -67,6 +67,9 @@ if($action == 'login'){
 		}else{
 			$user->nickname = lang('message', 'wxuser');
 		}
+		if($wxuser && isset($wxuser['unionid'])){
+			$user->wxunionid = $wxuser['unionid'];
+		}
 
 		if(!empty($_COOKIE['referrerid'])){
 			$referrerid = intval($_COOKIE['referrerid']);
@@ -116,6 +119,18 @@ if($action == 'login'){
 
 	if($authkey->matchOnce($_GET['key'])){
 		$_G['user']->wxopenid = $_GET['user'];
+
+		$wx = new WeixinAPI;
+		$wxuser = $wx->getUserInfo($_GET['user']);
+		if($wxuser){
+			if(isset($wxuser['nickname'])){
+				$user->nickname = $wxuser['nickname'];
+			}
+			if(isset($wxuser['unionid'])){
+				$user->wxunionid = $wxuser['unionid'];
+			}
+		}
+
 		showmsg('successfully_binded_wxopenid', 'index.php');
 	}else{
 		showmsg('invalid_wxbind_link');
