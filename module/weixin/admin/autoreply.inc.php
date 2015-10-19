@@ -22,81 +22,10 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class WeixinModule extends AdminControlPanelModule{
-
-	public function menuAction(){
-		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
-
-		$wx = new WeixinAPI;
-
-		$post_data = file_get_contents('php://input');
-		if(!empty($post_data)){
-			$button = json_decode($post_data);
-			if($button){
-				$menu = array(
-					'button' => $button,
-				);
-
-				$wx->setMenu($menu);
-
-				if($wx->hasError()){
-					showmsg($wx->getErrorMessage(), 'back');
-				}else{
-					showmsg('edit_succeed', 'refresh');
-				}
-			}else{
-				$wx->setMenu(NULL);
-				showmsg('edit_succeed', 'refresh');
-			}
-		}else{
-			$menu = $wx->getMenu();
-		}
-
-		$item_types = array();
-		$types = array(
-			'view',
-			'click',
-			'scancode_push',
-			'scancode_waitmsg',
-			'pic_sysphoto',
-			'pic_photo_or_album',
-			'pic_weixin',
-			'location_select',
-		);
-		foreach($types as $type){
-			$item_types[$type] = lang('weixin', 'weixin_menu_type_'.$type);
-		}
-
-		include view('weixin_menu');
-	}
+class WeixinAutoreplyModule extends AdminControlPanelModule{
 
 	public function defaultAction(){
-		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
-
-		$wxconnect_fields = array(
-			'app_id', 'app_secret', 'account', 'token', 'aes_key',
-			'subscribe_text', 'entershop_keyword', 'bind_keyword', 'bind2_keyword',
-			'follow_guide_page',
-		);
-
-		if($_POST){
-			$wxconnect = array();
-			$p = &$_POST['wxconnect'];
-			foreach($wxconnect_fields as $var){
-				$wxconnect[$var] = isset($p[$var]) ? $p[$var] : '';
-			}
-			$wxconnect['no_prompt_on_login'] = !empty($p['no_prompt_on_login']);
-			$wxconnect['encoding_mode'] = isset($p['encoding_mode']) ? intval($p['encoding_mode']) : WeixinServer::RAW_MESSAGE;
-			writedata('wxconnect', $wxconnect);
-			showmsg('successfully_updated_wxconnect_config', 'refresh');
-		}
-
-		$wxconnect = readdata('wxconnect');
-		foreach($wxconnect_fields as $var){
-			isset($wxconnect[$var]) || $wxconnect[$var] = '';
-		}
-
-		include view('weixin_config');
+		$this->listAction();
 	}
 
 	public function editAction(){
@@ -153,7 +82,7 @@ class WeixinModule extends AdminControlPanelModule{
 
 		$table = $db->select_table('autoreply');
 		$autoreply = $table->fetch_all('*');
-		include view('weixin_autoreply');
+		include view('autoreply');
 	}
 
 }
