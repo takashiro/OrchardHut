@@ -35,6 +35,10 @@ class User extends DBObject{
 		}
 
 		if(!$account){
+			if(empty($_COOKIE[static::COOKIE_VAR]) && !empty($_GET[static::COOKIE_VAR])){
+				rsetcookie(static::COOKIE_VAR, $_GET[static::COOKIE_VAR]);
+				$_COOKIE[static::COOKIE_VAR] = $_GET[static::COOKIE_VAR];
+			}
 			if(!empty($_COOKIE[static::COOKIE_VAR])){
 				$cookie = $this->decodeCookie($_COOKIE[static::COOKIE_VAR]);
 

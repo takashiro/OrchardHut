@@ -54,19 +54,8 @@ if(empty($_GET['querystring'])){
 }
 
 if(!$_G['user']->isLoggedIn()){
-	if(!empty($_GET[User::COOKIE_VAR])){
-		$_COOKIE[User::COOKIE_VAR] = $_GET[User::COOKIE_VAR];
-		$_G['user']->login();
-		rsetcookie(User::COOKIE_VAR, $_GET[User::COOKIE_VAR]);
-		if(!$_G['user']->isLoggedIn()){
-			writelog('unexpected_result', '3:'.$_SERVER['HTTP_USER_AGENT'].' '.$_SERVER['QUERY_STRING']);
-		}
-	}
-
-	if(!$_G['user']->isLoggedIn()){
-		writelog('unexpected_result', '2:'.$_SERVER['HTTP_USER_AGENT'].' '.$_SERVER['QUERY_STRING']);
-		showmsg('inaccessible_if_not_logged_in', 'memcp.php');
-	}
+	writelog('unexpected_result', '2: '.$_SERVER['HTTP_USER_AGENT'].' '.$_SERVER['QUERY_STRING']);
+	showmsg('inaccessible_if_not_logged_in', 'memcp.php');
 }
 
 $paymentconfig = readdata('payment');
