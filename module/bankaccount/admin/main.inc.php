@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class BankAccountModule extends AdminControlPanelModule{
+class BankAccountMainModule extends AdminControlPanelModule{
 
 	public function editAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
@@ -75,7 +75,7 @@ class BankAccountModule extends AdminControlPanelModule{
 		$a = $a->toReadable();
 
 		$paymentconfig = readdata('payment');
-		include view('bankaccount_edit');
+		include view('edit');
 	}
 
 	public function deleteAction(){
@@ -133,7 +133,7 @@ class BankAccountModule extends AdminControlPanelModule{
 		}
 		unset($a);
 
-		include view('bankaccount_transfer');
+		include view('transfer');
 	}
 
 	public function withdrawAction(){
@@ -174,7 +174,7 @@ class BankAccountModule extends AdminControlPanelModule{
 		$account = new BankAccount($id);
 		if ($account->exists()) {
 			$account = $account->toReadable();
-			include view('bankaccount_withdraw');
+			include view('withdraw');
 		}
 	}
 
@@ -224,7 +224,7 @@ class BankAccountModule extends AdminControlPanelModule{
 			FROM {$tpre}bankaccountlog l
 			WHERE $condition");
 
-		include view('bankaccount_log');
+		include view('log');
 	}
 
 	public function listAction(){
@@ -235,7 +235,7 @@ class BankAccountModule extends AdminControlPanelModule{
 		$table = $db->select_table('bankaccount');
 		$accounts = $table->fetch_all('*', "1 LIMIT $offset,$limit");
 		$pagenum = $table->result_first('COUNT(*)');
-		include view('bankaccount_list');
+		include view('list');
 	}
 
 	public function defaultAction(){
