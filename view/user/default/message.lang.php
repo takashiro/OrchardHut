@@ -43,14 +43,6 @@ return array(
 	'confirm_to_mark_order_as_received' => '您确认已经收到订单吗？',
 	'successfully_received' => '成功确认收货！欢迎再光临！',
 
-	'please_unbind_your_qq_first' => '请先解除已经绑定的QQ。',
-	'binded_qq_cannot_be_binded_again' => '该QQ已经绑定其他账号，您不能再次绑定。您需要通过该QQ登录本站解除绑定，才能绑定新账号。',
-	'successfully_logged_in_via_qq' => '您成功通过QQ登录本站！',
-	'you_have_not_bind_qq' => '您未绑定QQ账号。',
-	'qqopenid_cannot_be_unbinded_with_empty_account' => '您的账号是通过QQ登录自动注册的，需要先设定本站登录账号和密码才能解绑，否则会造成您的账号无法再次登录。',
-	'confirm_to_unbind_qq' => '您确定要解除与QQ的绑定吗？',
-	'successfully_unbinded_qq' => '成功解除与QQ的绑定。',
-
 	'wxuser' => '微信用户',
 	'unexpected_link_with_inadequate_parameters' => '啊哦，我们遇到了点意外（参数不足）。',
 	'expired_wxlogin_link' => '保护您个人信息的安全是果果坚持的原则，所以果果给您的一部分链接只有效5分钟噢。您可以重新操作一次（如再发送【商城】）来获取链接。',

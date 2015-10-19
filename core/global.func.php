@@ -1,7 +1,7 @@
 <?php
 
 /***********************************************************************
-Orchard Hut Online Shop
+Elf Web App Framework
 Copyright (C) 2013-2015  Kazuichi Takashiro
 
 This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,21 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
+function modulelist(){
+	//@to-do: cache the list?
+	$module_list = array();
+	$module_dirs = opendir(S_ROOT.'module/');
+	while($module_dir = readdir($module_dirs)){
+		if(is_dir('module/'.$module_dir.'/admin')){
+			$module_list[] = $module_dir;
+		}
+	}
+	return $module_list;
+}
+
 function loadtranslation($target, $style, $type){
 	static $lang = array();
+
 	if(!isset($lang[$target][$style][$type])){
 		$file = S_ROOT.'view/'.$target.'/'.$style.'/'.$type.'.lang.php';
 		$lang[$target][$style][$type] = file_exists($file) ? include $file : array();
@@ -53,6 +66,17 @@ function lang($type, $from){
 		$lang = loadtranslation('user', 'default', $type);
 		if(isset($lang[$from])){
 			return $lang[$from];
+		}
+	}
+
+	$module_list = modulelist();
+	foreach($module_list as $module){
+		$file = S_ROOT.'/module/'.$module.'/'.$type.'.lang.php';
+		if(file_exists($file)){
+			$lang = include $file;
+			if(isset($lang[$from])){
+				return $lang[$from];
+			}
 		}
 	}
 
@@ -202,21 +226,21 @@ function rhtmlspecialchars($str){
 	We defined several statements used in template files like {if} {elseif} {/if} which
 	can be quoted with <!-- and --> as HTML comments. Template files must be parsed into PHP scripts before they run.
 */
-function view($templateName){
+function view($template_name){
 	global $_G;
 
 	$target = defined('IN_ADMINCP') ? 'admin' : 'user';
-	$filePath = S_ROOT.'data/template/'.$target.'_'.$_G['style'].'_'.$templateName.'.tpl.php';
+	$file_path = S_ROOT.'data/template/'.$target.'_'.$_G['style'].'_'.$template_name.'.tpl.php';
 
-	$forced_parse = !file_exists($filePath);
+	$forced_parse = !file_exists($file_path);
 	if($forced_parse || !empty($_G['config']['refresh_template'])){
-		$template = new Template($target, $_G['style'], $templateName);
-		if($forced_parse || $template->getLastModifiedTime() > filemtime($filePath)){
-			file_put_contents($filePath, $template->parse());
+		$template = new Template($target, $_G['style'], $template_name);
+		if($forced_parse || $template->getLastModifiedTime() > filemtime($file_path)){
+			file_put_contents($file_path, $template->parse());
 		}
 	}
 
-	return $filePath;
+	return $file_path;
 }
 
 function submodule($module, $submodule){

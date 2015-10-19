@@ -154,9 +154,11 @@
 						</ul>
 					</li>
 					<!--{/if}-->
-					<!--{if $_G['admin']->hasPermission('qqconnect')}-->
-					<li><a href="admin.php?mod=qqconnect">QQ互联</a></li>
-					<!--{/if}-->
+					<!--{loop $module_list $module_name}-->
+						<!--{if $_G['admin']->hasPermission($module_name)}-->
+						<li><a href="admin.php?mod=$module_name">{echo lang('common', 'module_'.$module_name)}</a></li>
+						<!--{/if}-->
+					<!--{/loop}-->
 					<!--{if $_G['admin']->hasPermission('system')}-->
 					<li>
 						<a href="admin.php?mod=system">系统</a>

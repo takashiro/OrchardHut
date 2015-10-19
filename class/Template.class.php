@@ -1,7 +1,7 @@
 <?php
 
 /***********************************************************************
-Orchard Hut Online Shop
+Elf Web App Framework
 Copyright (C) 2013-2015  Kazuichi Takashiro
 
 This program is free software: you can redistribute it and/or modify
@@ -64,6 +64,25 @@ class Template{
 	}
 
 	public function getSourcePath(){
+		if(defined('MOD_ROOT')){
+			if(defined('IN_ADMINCP')){
+				$htmpath = MOD_ROOT.'admin/view/'.$this->name.'.htm';
+				if(file_exists($htmpath))
+					return $htmpath;
+
+				$htmpath = MOD_ROOT.'admin/view/'.$this->name.'.php';
+				if(file_exists($htmpath))
+					return $htmpath;
+			}else{
+				$htmpath = MOD_ROOT.'view/'.$this->name.'.htm';
+				if(file_exists($htmpath))
+					return $htmpath;
+				$htmpath = MOD_ROOT.'view/'.$this->name.'.php';
+				if(file_exists($htmpath))
+					return $htmpath;
+			}
+		}
+
 		$htmpath = $this->getDirectoryPath().$this->name.'.htm';
 		if(!file_exists($htmpath)){
 			$htmpath = $this->getDirectoryPath().$this->name.'.php';

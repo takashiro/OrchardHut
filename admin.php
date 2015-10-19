@@ -69,9 +69,23 @@ $mod = isset($_GET['mod']) ? trim($_GET['mod']) : 'home';
 $module_path = submodule('admin', $mod);
 $mod_url = 'admin.php?mod='.$mod;
 if(!file_exists($module_path)){
-	$mod = 'home';
-	$mod_url = 'admin.php?mod=home';
-	$module_path = submodule('admin', 'home');
+	$mods = explode(':', $mod);
+	if(preg_match('/^\w+$/', $mod[0])){
+		if(empty($mods[1]) || !preg_match('/^\w+$/', $mods[1])){
+			$mods[1] = 'main';
+		}
+		$module_path = 'module/'.$mods[0].'/admin/'.$mods[1].'.inc.php';
+	}
+
+	if(file_exists($module_path)){
+		define('MOD_NAME', $mods[0]);
+		define('MOD_ROOT', S_ROOT.'module/'.$mods[0].'/');
+	}else{
+		$mod = 'home';
+		$mod_url = 'admin.php?mod=home';
+		$module_path = submodule('admin', 'home');
+	}
+	unset($mods);
 }
 
 if(!$_G['admin']->hasPermission($mod)){
@@ -85,6 +99,7 @@ if(!class_exists($classname, false)){
 }
 $module = new $classname;
 
+$module_list = modulelist();
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'].'Action' : 'defaultAction';
 if(method_exists($module, $action)){
 	$module->$action();

@@ -1,7 +1,7 @@
 <?php
 
 /***********************************************************************
-Orchard Hut Online Shop
+Elf Web App Framework
 Copyright (C) 2013-2015  Kazuichi Takashiro
 
 This program is free software: you can redistribute it and/or modify
@@ -20,27 +20,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-if(!defined('IN_ADMINCP')) exit('access denied');
-
-class QQConnectModule extends AdminControlPanelModule{
-
-	public function defaultAction(){
-		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
-
-		$qqconnect = readdata('qqconnect');
-		foreach(array('appid', 'appkey', 'callback', 'scope', 'errorReport', 'storageType', 'host', 'user', 'password', 'database') as $var){
-			isset($qqconnect[$var]) || $qqconnect[$var] = '';
-			isset($_POST['qqconnect'][$var]) && $qqconnect[$var] = $_POST['qqconnect'][$var];
-		}
-
-		if($_POST){
-			writedata('qqconnect', $qqconnect);
-			showmsg('successfully_updated_qqconnect_config', 'refresh');
-		}
-
-		include view('qqconnect');
-	}
-
-}
+return array(
+	'module_qqconnect' => 'QQ互联',
+);
 
 ?>

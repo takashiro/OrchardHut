@@ -1,7 +1,7 @@
 <?php
 
 /***********************************************************************
-Orchard Hut Online Shop
+Elf Web App Framework
 Copyright (C) 2013-2015  Kazuichi Takashiro
 
 This program is free software: you can redistribute it and/or modify

@@ -28,8 +28,10 @@ class Oauth{
     }
 
     public function qq_login(){
+        global $_G;
+        $callback = $_G['root_url'].'?mod=qqconnect&callback=1';
+
         $appid = $this->recorder->readInc("appid");
-        $callback = $this->recorder->readInc("callback");
         $scope = $this->recorder->readInc("scope");
 
         //-------生成唯一随机串防CSRF攻击
@@ -58,11 +60,12 @@ class Oauth{
             $this->error->showError("30001");
         }
 
+        global $_G;
         //-------请求参数列表
         $keysArr = array(
             "grant_type" => "authorization_code",
             "client_id" => $this->recorder->readInc("appid"),
-            "redirect_uri" => urlencode($this->recorder->readInc("callback")),
+            "redirect_uri" => urlencode($_G['root_url'].'?mod=qqconnect&callback=1'),
             "client_secret" => $this->recorder->readInc("appkey"),
             "code" => isset($_GET['code']) ? $_GET['code'] : '',
         );
