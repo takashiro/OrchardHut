@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class QQConnectModule extends AdminControlPanelModule{
+class QQConnectMainModule extends AdminControlPanelModule{
 
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);

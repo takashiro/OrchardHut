@@ -235,9 +235,11 @@ class Administrator extends User{
 	static public function LoadPermissions(){
 		self::$Permissions = readcache('admin_permissions');
 		if(self::$Permissions === null){
+			global $_G;
 			self::$Permissions = array();
+
+			//@to-do: remove this?
 			if($module_dir = opendir(S_ROOT.'submodule/admin')){
-				global $_G;
 				while($file = readdir($module_dir)){
 					if(substr_compare($file, '.inc.php', -8) == 0){
 						$module_name = substr($file, 0, strlen($file) - 8);
@@ -255,26 +257,52 @@ class Administrator extends User{
 					}
 				}
 				closedir($module_dir);
+			}
 
-				foreach(self::$Permissions as $module_name => &$config){
-					foreach($config['parents'] as $p){
-						if(isset(self::$Permissions[$p]) && !in_array($module_name, self::$Permissions[$p]['children'])){
-							self::$Permissions[$p]['children'][] = $module_name;
+			foreach($_G['module_list'] as $module_name){
+				if($module_dir = opendir(S_ROOT.'module/'.$module_name.'/admin')){
+					while($file = readdir($module_dir)){
+						if(substr_compare($file, '.inc.php', -8) == 0){
+							$submodule_name = substr($file, 0, strlen($file) - 8);
+							$class_name = $module_name.$submodule_name.'Module';
+							require_once S_ROOT.'module/'.$module_name.'/admin/'.$file;
+
+							if(class_exists($class_name)){
+								$module = new $class_name;
+								$module_id = $module_name;
+								if($submodule_name != 'main'){
+									$module_id.= ':'.$submodule_name;
+								}
+								self::$Permissions[$module_id] = array(
+									'alias' => $module->getAlias(),
+									'children' => $module->getPermissions(),
+									'parents' => $module->getRequiredPermissions(),
+								);
+							}
 						}
 					}
+					closedir($module_dir);
+				}
+			}
 
-					foreach($config['children'] as $c){
-						if(!isset(self::$Permissions[$c])){
-							self::$Permissions[$c] = array(
-								'alias' => '',
-								'children' => array(),
-								'parents' => array($module_name),
-							);
-						}
+			foreach(self::$Permissions as $module_name => &$config){
+				foreach($config['parents'] as $p){
+					if(isset(self::$Permissions[$p]) && !in_array($module_name, self::$Permissions[$p]['children'])){
+						self::$Permissions[$p]['children'][] = $module_name;
 					}
 				}
-				unset($config);
+
+				foreach($config['children'] as $c){
+					if(!isset(self::$Permissions[$c])){
+						self::$Permissions[$c] = array(
+							'alias' => '',
+							'children' => array(),
+							'parents' => array($module_name),
+						);
+					}
+				}
 			}
+			unset($config);
 			writecache('admin_permissions', self::$Permissions);
 		}
 	}

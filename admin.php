@@ -68,6 +68,7 @@ class AdminControlPanelModule{
 $mod = isset($_GET['mod']) ? trim($_GET['mod']) : 'home';
 $module_path = submodule('admin', $mod);
 $mod_url = 'admin.php?mod='.$mod;
+$classname = $mod.'Module';
 if(!file_exists($module_path)){
 	$mods = explode(':', $mod);
 	if(preg_match('/^\w+$/', $mod[0])){
@@ -80,10 +81,12 @@ if(!file_exists($module_path)){
 	if(file_exists($module_path)){
 		define('MOD_NAME', $mods[0]);
 		define('MOD_ROOT', S_ROOT.'module/'.$mods[0].'/');
+		$classname = $mods[0].$mods[1].'Module';
 	}else{
 		$mod = 'home';
 		$mod_url = 'admin.php?mod=home';
 		$module_path = submodule('admin', 'home');
+		$classname = 'HomeModule';
 	}
 	unset($mods);
 }
@@ -93,13 +96,11 @@ if(!$_G['admin']->hasPermission($mod)){
 }
 require_once $module_path;
 
-$classname = $mod.'Module';
 if(!class_exists($classname, false)){
 	exit('invalid module');
 }
 $module = new $classname;
 
-$module_list = modulelist();
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'].'Action' : 'defaultAction';
 if(method_exists($module, $action)){
 	$module->$action();

@@ -154,9 +154,18 @@
 						</ul>
 					</li>
 					<!--{/if}-->
-					<!--{loop $module_list $module_name}-->
+					<!--{loop $_G['module_list'] $module_name}-->
 						<!--{if $_G['admin']->hasPermission($module_name)}-->
-						<li><a href="admin.php?mod=$module_name">{echo lang('common', 'module_'.$module_name)}</a></li>
+						<li>
+							<a href="admin.php?mod=$module_name">{echo lang('common', 'module_'.$module_name)}</a>
+							<!--{if !empty(Administrator::$Permissions[$module_name]['children'])}-->
+							<ul class="submenu">
+							<!--{loop Administrator::$Permissions[$module_name]['children'] $submodule_name}-->
+								<li><a href="admin.php?mod=$submodule_name">{echo lang('common', 'module_'.$submodule_name)}</a></li>
+							<!--{/loop}-->
+							</ul>
+							<!--{/if}-->
+						</li>
 						<!--{/if}-->
 					<!--{/loop}-->
 					<!--{if $_G['admin']->hasPermission('system')}-->

@@ -20,18 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-function modulelist(){
-	//@to-do: cache the list?
-	$module_list = array();
-	$module_dirs = opendir(S_ROOT.'module/');
-	while($module_dir = readdir($module_dirs)){
-		if(is_dir('module/'.$module_dir.'/admin')){
-			$module_list[] = $module_dir;
-		}
-	}
-	return $module_list;
-}
-
 function loadtranslation($target, $style, $type){
 	static $lang = array();
 
@@ -69,8 +57,8 @@ function lang($type, $from){
 		}
 	}
 
-	$module_list = modulelist();
-	foreach($module_list as $module){
+	global $_G;
+	foreach($_G['module_list'] as $module){
 		$file = S_ROOT.'/module/'.$module.'/'.$type.'.lang.php';
 		if(file_exists($file)){
 			$lang = include $file;
@@ -91,7 +79,8 @@ function showmsg($message, $url_forward = ''){
 
 	$message = lang('message', $message);
 
-	if($_G['user']->hasTrickFlag(User::RANDOM_REDIRECTING_TRICK)){
+	//@to-do: move this
+	if(!empty($_G['user']) && $_G['user']->hasTrickFlag(User::RANDOM_REDIRECTING_TRICK)){
 		$urls = readdata('randomlink');
 		$urlid = rand(0, count($urls));
 		if(isset($urls[$urlid])){
@@ -233,7 +222,7 @@ function view($template_name){
 	if(!defined('MOD_NAME')){
 		$file_path = S_ROOT.'data/template/'.$target.'_'.$_G['style'].'_'.$template_name.'.tpl.php';
 	}else{
-		$file_path = S_ROOT.'data/template/mod_'.MOD_NAME.'_'.$target.'_'.$_G['style'].'_'.$template_name.'.tpl.php';
+		$file_path = S_ROOT.'data/template/'.$target.'_'.$_G['style'].'_mod_'.MOD_NAME.'_'.$template_name.'.tpl.php';
 	}
 
 	$forced_parse = !file_exists($file_path);

@@ -21,7 +21,7 @@ takashiro@qq.com
 ************************************************************************/
 
 define('S_ROOT', dirname(dirname(__FILE__)).'/');//网站根目录常量
-error_reporting(0);//Debug
+//error_reporting(0);//Debug
 
 if(PHP_VERSION < '5.5'){
 	exit('本系统要求PHP版本至少5.5');
@@ -108,36 +108,50 @@ if($_POST){
 	}
 	$db->select_db($dbconfig['name']);
 
-	$line = file('install.sql');
-	$line_max = count($line);
 
-	//Clear utf-8 BOM
-	if(ord($line[0]{0}) == 0xEF && ord($line[0]{1}) == 0xBB && ord($line[0]{2}) == 0xBF){
-		$line[0] = substr($line[0], 3);
+	$sql_files = array('install.sql');
+	$module_dirs = opendir(S_ROOT.'module/');
+	while($module_dir = readdir($module_dirs)){
+		if($module_dir{0} == '.')
+			continue;
+
+		$file = S_ROOT.'module/'.$module.'/install.sql';
+		file_exists($file) && $sql_files[] = $file;
 	}
+	unset($module_dirs);
 
-	$in_sql = false;
-	$sql = '';
-	for($i = 0; $i < $line_max; $i++){
-		if((!$in_sql && substr_compare($line[$i], '--', 0, 2) == 0)){
-			continue;
+	foreach($sql_files as $sql_file){
+		$line = file($sql_file);
+		$line_max = count($line);
+
+		//Clear utf-8 BOM
+		if(ord($line[0]{0}) == 0xEF && ord($line[0]{1}) == 0xBB && ord($line[0]{2}) == 0xBF){
+			$line[0] = substr($line[0], 3);
 		}
 
-		$line[$i] = trim($line[$i]);
-		if(empty($line[$i])){
-			continue;
-		}
-
-		$in_sql = true;
-		$sql.= $line[$i];
-
-		if(substr_compare($line[$i], ';', -1) === 0){
-			$in_sql = false;
-			if($dbconfig['tpre'] != 'hut_'){
-				$sql = preg_replace('/`hut\_(.*?)`/is', "`{$dbconfig['tpre']}\\1`", $sql);
+		$in_sql = false;
+		$sql = '';
+		for($i = 0; $i < $line_max; $i++){
+			if((!$in_sql && substr_compare($line[$i], '--', 0, 2) == 0)){
+				continue;
 			}
-			$db->query($sql);
-			$sql = '';
+
+			$line[$i] = trim($line[$i]);
+			if(empty($line[$i])){
+				continue;
+			}
+
+			$in_sql = true;
+			$sql.= $line[$i];
+
+			if(substr_compare($line[$i], ';', -1) === 0){
+				$in_sql = false;
+				if($dbconfig['tpre'] != 'hut_'){
+					$sql = preg_replace('/`hut\_(.*?)`/is', "`{$dbconfig['tpre']}\\1`", $sql);
+				}
+				$db->query($sql);
+				$sql = '';
+			}
 		}
 	}
 

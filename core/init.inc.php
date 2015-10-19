@@ -26,7 +26,7 @@ $_G['starttime'] = microtime(true);
 
 define('S_ROOT', dirname(dirname(__FILE__)).'/');
 define('S_VERSION', '2.4');
-error_reporting(0);
+//error_reporting(0);
 set_time_limit(0);
 
 ob_start();
@@ -37,8 +37,8 @@ spl_autoload_register(function($classname){
 	if(file_exists($filepath)){
 		require_once $filepath;
 	}else{
-		$module_list = modulelist();
-		foreach($module_list as $module){
+		global $_G;
+		foreach($_G['module_list'] as $module){
 			$filepath = S_ROOT.'module/'.$module.'/class/'.$classname.'.class.php';
 			if(file_exists($filepath)){
 				require_once $filepath;
@@ -47,6 +47,15 @@ spl_autoload_register(function($classname){
 		}
 	}
 });
+
+$_G['module_list'] = array();
+$module_dirs = opendir(S_ROOT.'module/');
+while($module_dir = readdir($module_dirs)){
+	if($module_dir{0} != '.' && is_dir(S_ROOT.'module/'.$module_dir)){
+		$_G['module_list'][] = $module_dir;
+	}
+}
+unset($module_dirs);
 
 require_once S_ROOT.'./core/global.func.php';
 
