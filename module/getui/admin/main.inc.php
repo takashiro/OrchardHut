@@ -22,38 +22,13 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class GeTuiModule extends AdminControlPanelModule{
+class GeTuiMainModule extends AdminControlPanelModule{
 
 	public function defaultAction(){
-		$this->sendAction();
-	}
-
-	public function configAction(){
-		$fields = array('app_id', 'app_key', 'master_secret', 'host');
-
-		if($_POST){
-			$config = array();
-			foreach($fields as $f){
-				$config[$f] = isset($_POST['getuiconfig'][$f]) ? trim($_POST['getuiconfig'][$f]) : '';
-			}
-			writedata('getuiconfig', $config);
-			showmsg('edit_succeed', 'refresh');
-		}
-
-		$getuiconfig = readdata('getuiconfig');
-		foreach($fields as $f){
-			isset($getuiconfig[$f]) || $getuiconfig[$f] = '';
-		}
-
-		extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
-		include view('getui_config');
-	}
-
-	public function sendAction(){
 		if($_POST){
 			$config = readdata('getuiconfig');
 
-			require_once S_ROOT.'plugin/getui/IGt.Push.php';
+			require_once MOD_ROOT.'3rdparty/IGt.Push.php';
 			try{
 				$igt = new IGeTui($config['host'], $config['app_key'], $config['master_secret']);
 			}catch(Exception $e){
@@ -88,7 +63,7 @@ class GeTuiModule extends AdminControlPanelModule{
 		}
 
 		extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
-		include view('getui_send');
+		include view('send');
 	}
 }
 
