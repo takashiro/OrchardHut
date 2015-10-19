@@ -375,6 +375,16 @@ class DatabaseModule extends AdminControlPanelModule{
 		$sql = file_get_contents(S_ROOT.'./install/install.sql');
 		$sql = explode(';', $sql);
 
+		global $_G;
+		foreach($_G['module_list'] as $module){
+			$sql_file = S_ROOT.'module/'.$module.'/install.sql';
+			if(!file_exists($sql_file))
+				continue;
+			$sql_file = file_get_contents($sql_file);
+			$extra_sql = explode(';', $sql_file);
+			$sql = array_merge($sql, $extra_sql);
+		}
+
 		$standard_tables = array();
 
 		foreach($sql as $sentence){
