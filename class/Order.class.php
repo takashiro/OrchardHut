@@ -308,6 +308,9 @@ class Order extends DBObject{
 				exit;
 			}
 
+			if($order->tradestate == $trade_status)
+				return;
+
 			$order->paymentmethod = Order::PaidWithAlipay;
 			$order->tradestate = $trade_status;
 			$order->tradeid = $trade_no;
@@ -316,10 +319,25 @@ class Order extends DBObject{
 		}
 	}
 
-	static public function __on_alipay_callback_executed($out_trade_no, $trade_no, $result){
-		//以异步通知为准，此处不处理只通知
-		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
-			showmsg('the_order_is_successfully_paid', 'order.php');
+	static public function __on_alipay_callback_executed($out_trade_no, $trade_no, $trade_status){
+		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
+		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, $prefix_len) == 0){
+			$order = new Order(substr($out_trade_no, $prefix_len));
+			if(!$order->exists()){
+				writelog('alipaycallback', "ORDER_NOT_EXIST\t$out_trade_no\t$trade_no\t$trade_status");
+				showmsg('order_does_not_exist', 'order.php');
+			}
+
+			$order->paymentmethod = Order::PaidWithAlipay;
+			$order->tradestate = $trade_status;
+			$order->tradeid = $trade_no;
+			if($order->tradestate == Order::TradeSuccess){
+				$order->tradetime = TIMESTAMP;
+				showmsg('the_order_is_successfully_paid', 'order.php');
+			}else{
+				showmsg('please_pay_for_the_order', 'order.php');
+			}
+		}
 	}
 
 	static public function __on_bestpay_started(){
