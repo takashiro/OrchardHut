@@ -107,7 +107,7 @@ if(!empty($_CONFIG['debugmode'])){
 //错误日志
 if(!empty($_CONFIG['log_error'])){
 	set_error_handler(function($errorLevel, $errorMessage, $errorFile, $errorLine){
-		return include submodule('core', 'handleerror');
+		return include S_ROOT.'core/handleerror.inc.php';
 	}, E_ALL);
 
 	register_shutdown_function(function(){
@@ -117,7 +117,7 @@ if(!empty($_CONFIG['log_error'])){
 			$errorMessage = $error['message'];
 			$errorFile = $error['file'];
 			$errorLine = $error['line'];
-			return include submodule('core', 'handleerror');
+			return include S_ROOT.'core/handleerror.inc.php';
 		}
 	});
 }

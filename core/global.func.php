@@ -318,7 +318,7 @@ function rmd5($str){
 }
 
 function writelog($logfile, $data){
-	include submodule('core', 'writelog');
+	include S_ROOT.'core/writelog.inc.php';
 }
 
 function runhooks($hookid, $arguments = array()){
