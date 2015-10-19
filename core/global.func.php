@@ -59,7 +59,7 @@ function lang($type, $from){
 
 	global $_G;
 	foreach($_G['module_list'] as $module){
-		$file = S_ROOT.'/module/'.$module.'/'.$type.'.lang.php';
+		$file = S_ROOT.'/module/'.$module['name'].'/'.$type.'.lang.php';
 		if(file_exists($file)){
 			$lang = include $file;
 			if(isset($lang[$from])){
@@ -347,7 +347,7 @@ function runhooks($hookid, $arguments = array()){
 
 		global $_G;
 		foreach($_G['module_list'] as $module){
-			$classDir = S_ROOT.'module/'.$module.'/class/';
+			$classDir = S_ROOT.'module/'.$module['name'].'/class/';
 			if(is_dir($classDir)){
 				$extraClassFiles = scandir($classDir);
 				$classFiles = array_merge($classFiles, $extraClassFiles);

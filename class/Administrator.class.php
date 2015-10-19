@@ -259,29 +259,25 @@ class Administrator extends User{
 				closedir($module_dir);
 			}
 
-			foreach($_G['module_list'] as $module_name){
-				if($module_dir = opendir(S_ROOT.'module/'.$module_name.'/admin')){
-					while($file = readdir($module_dir)){
-						if(substr_compare($file, '.inc.php', -8) == 0){
-							$submodule_name = substr($file, 0, strlen($file) - 8);
-							$class_name = $module_name.$submodule_name.'Module';
-							require_once S_ROOT.'module/'.$module_name.'/admin/'.$file;
+			foreach($_G['module_list'] as $module_info){
+				if($module_dir = opendir(S_ROOT.'module/'.$module_info['name'].'/admin')){
+					foreach($module_info['submodule'] as $submodule_name){
+						$class_name = $module_info['name'].$submodule_name.'Module';
+						require_once S_ROOT.'module/'.$module_info['name'].'/admin/'.$submodule_name.'.inc.php';
 
-							if(class_exists($class_name)){
-								$module = new $class_name;
-								$module_id = $module_name;
-								if($submodule_name != 'main'){
-									$module_id.= ':'.$submodule_name;
-								}
-								self::$Permissions[$module_id] = array(
-									'alias' => $module->getAlias(),
-									'children' => $module->getPermissions(),
-									'parents' => $module->getRequiredPermissions(),
-								);
+						if(class_exists($class_name)){
+							$module = new $class_name;
+							$module_id = $module_info['name'];
+							if($submodule_name != 'main'){
+								$module_id.= ':'.$submodule_name;
 							}
+							self::$Permissions[$module_id] = array(
+								'alias' => $module->getAlias(),
+								'children' => $module->getPermissions(),
+								'parents' => $module->getRequiredPermissions(),
+							);
 						}
 					}
-					closedir($module_dir);
 				}
 			}
 

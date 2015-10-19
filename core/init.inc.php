@@ -39,7 +39,7 @@ spl_autoload_register(function($classname){
 	}else{
 		global $_G;
 		foreach($_G['module_list'] as $module){
-			$filepath = S_ROOT.'module/'.$module.'/class/'.$classname.'.class.php';
+			$filepath = S_ROOT.'module/'.$module['name'].'/class/'.$classname.'.class.php';
 			if(file_exists($filepath)){
 				require_once $filepath;
 				break;
@@ -51,11 +51,24 @@ spl_autoload_register(function($classname){
 $_G['module_list'] = array();
 $module_dirs = opendir(S_ROOT.'module/');
 while($module_dir = readdir($module_dirs)){
-	if($module_dir{0} != '.' && is_dir(S_ROOT.'module/'.$module_dir)){
-		$_G['module_list'][] = $module_dir;
+	$mod_root = S_ROOT.'module/'.$module_dir.'/';
+	if($module_dir{0} != '.' && is_dir($mod_root)){
+		$submodules = array();
+		$module_files = scandir($mod_root.'admin/');
+		foreach($module_files as $file){
+			if(substr_compare($file, '.inc.php', -8) == 0){
+				$submodule = substr($file, 0, strlen($file) - 8);
+				$submodules[] = $submodule;
+			}
+		}
+
+		$_G['module_list'][] = array(
+			'name' => $module_dir,
+			'submodule' => $submodules,
+		);
 	}
 }
-unset($module_dirs);
+unset($module_dirs, $submodules, $mod_root, $submodule);
 
 require_once S_ROOT.'./core/global.func.php';
 

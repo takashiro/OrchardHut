@@ -377,7 +377,7 @@ class SystemDatabaseModule extends AdminControlPanelModule{
 
 		global $_G;
 		foreach($_G['module_list'] as $module){
-			$sql_file = S_ROOT.'module/'.$module.'/install.sql';
+			$sql_file = S_ROOT.'module/'.$module['name'].'/install.sql';
 			if(!file_exists($sql_file))
 				continue;
 			$sql_file = file_get_contents($sql_file);
