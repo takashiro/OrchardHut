@@ -21,6 +21,7 @@ takashiro@qq.com
 ************************************************************************/
 
 require_once '../core/init.inc.php';
+error_reporting(E_ALL);
 
 $bestpay = readdata('bestpay');
 

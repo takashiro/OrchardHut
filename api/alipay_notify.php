@@ -18,6 +18,7 @@
 
 require_once '../core/init.inc.php';
 require_once submodule('alipay', 'config');
+error_reporting(E_ALL);
 
 //计算得出通知验证结果
 $alipayNotify = new AlipayNotify($alipay_config);
