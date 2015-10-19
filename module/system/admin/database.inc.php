@@ -151,10 +151,10 @@ class SqlTable{
 	}
 }
 
-class DatabaseModule extends AdminControlPanelModule{
+class SystemDatabaseModule extends AdminControlPanelModule{
 
-	public function getAlias(){
-		return 'system';
+	public function getRequiredPermissions(){
+		return array('system');
 	}
 
 	public function defaultAction(){

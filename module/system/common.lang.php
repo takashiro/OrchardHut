@@ -1,7 +1,7 @@
 <?php
 
 /***********************************************************************
-Orchard Hut Online Shop
+Elf Web App Framework
 Copyright (C) 2013-2015  Kazuichi Takashiro
 
 This program is free software: you can redistribute it and/or modify
@@ -20,34 +20,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-if(!defined('IN_ADMINCP')) exit('access denied');
-
-class MailModule extends AdminControlPanelModule{
-
-	public function getAlias(){
-		return 'system';
-	}
-
-	public function defaultAction(){
-		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
-
-		$mailconfig = Mail::$Config;
-
-		if($_POST){
-			foreach($mailconfig as $var => $oldvalue){
-				if(isset($_POST[$var])){
-					$mailconfig[$var] = trim($_POST[$var]);
-				}
-			}
-
-			writedata('mailconfig', $mailconfig);
-
-			showmsg('successfully_updated_system_config', 'back');
-		}
-
-		include view('mail');
-	}
-
-}
+return array(
+	'module_system' => '系统',
+	'module_system:mail' => '邮件',
+	'module_system:cache' => '缓存',
+	'module_system:file' => '文件',
+	'module_system:database' => '数据库',
+);
 
 ?>
