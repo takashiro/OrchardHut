@@ -342,7 +342,18 @@ function runhooks($hookid, $arguments = array()){
 	$hookScripts = readcache('hookscript');
 	if($hookScripts === NULL){
 		$hookScripts = array();
+
 		$classFiles = scandir(S_ROOT.'class/');
+
+		global $_G;
+		foreach($_G['module_list'] as $module){
+			$classDir = S_ROOT.'module/'.$module.'/class/';
+			if(is_dir($classDir)){
+				$extraClassFiles = scandir($classDir);
+				$classFiles = array_merge($classFiles, $extraClassFiles);
+			}
+		}
+
 		foreach($classFiles as $classFile){
 			if(substr_compare($classFile, '.class.php', -10) != 0)
 				continue;
