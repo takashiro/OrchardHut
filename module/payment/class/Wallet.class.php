@@ -149,7 +149,7 @@ class Wallet{
 		//以异步通知为准，此处不处理只通知
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0){
 			self::__on_alipay_notified($out_trade_no, $trade_no, $result);
-			showmsg('wallet_is_successfully_recharged', 'wallet.php');
+			showmsg('wallet_is_successfully_recharged', './?mod=payment');
 		}
 	}
 
@@ -244,7 +244,7 @@ class Wallet{
 
 		//以异步通知为准，此处不处理只通知
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
-			showmsg('wallet_is_successfully_recharged', 'wallet.php');
+			showmsg('wallet_is_successfully_recharged', './?mod=payment');
 	}
 
 	static public function __on_order_canceled($order){

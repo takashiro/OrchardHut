@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class UserWalletModule extends AdminControlPanelModule{
+class PaymentUserWalletModule extends AdminControlPanelModule{
 
 	public function getRequiredPermissions(){
 		return array('payment');

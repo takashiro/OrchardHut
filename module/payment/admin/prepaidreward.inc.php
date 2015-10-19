@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class PrepaidRewardModule extends AdminControlPanelModule{
+class PaymentPrepaidRewardModule extends AdminControlPanelModule{
 
 	public function getRequiredPermissions(){
 		return array('payment');

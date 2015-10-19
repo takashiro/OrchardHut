@@ -236,7 +236,7 @@ case 'pay':
 	}elseif($paymentconfig['enabled_method'][Order::PaidWithAlipay]){
 		redirect('alipay.php?orderid='.$orderid);
 	}elseif($paymentconfig['enabled_method'][Order::PaidWithWallet]){
-		redirect('wallet.php?orderid='.$orderid);
+		redirect('./?mod=payment&orderid='.$orderid);
 	}else{
 		showmsg('payment_is_now_disabled', 'back');
 	}

@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class PaymentModule extends AdminControlPanelModule{
+class PaymentMainModule extends AdminControlPanelModule{
 
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
@@ -55,7 +55,7 @@ class PaymentModule extends AdminControlPanelModule{
 		$alipay = readdata('alipay');
 		$bestpay = readdata('bestpay');
 
-		include view('payment_config');
+		include view('config');
 	}
 
 }
