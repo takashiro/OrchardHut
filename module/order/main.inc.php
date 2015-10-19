@@ -51,7 +51,7 @@ case 'delete':
 	if($db->affected_rows > 0){
 		$order->addLog($_G['user'], Order::StatusChanged, Order::Canceled);
 		$order->cancel();
-		showmsg('successfully_canceled_order', 'order.php');
+		showmsg('successfully_canceled_order', './?mod=order');
 	}
 
 	showmsg('order_not_exist', 'back');
@@ -73,7 +73,7 @@ case 'mark_received':
 			$order->addLog($_G['user'], Order::StatusChanged, Order::Received);
 
 			rsetcookie('order-number-cache-time', 0);
-			showmsg('successfully_received', 'order.php');
+			showmsg('successfully_received', './?mod=order');
 		}
 	}
 

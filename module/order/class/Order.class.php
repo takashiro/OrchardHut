@@ -325,7 +325,7 @@ class Order extends DBObject{
 			$order = new Order(substr($out_trade_no, $prefix_len));
 			if(!$order->exists()){
 				writelog('alipaycallback', "ORDER_NOT_EXIST\t$out_trade_no\t$trade_no\t$trade_status");
-				showmsg('order_does_not_exist', 'order.php');
+				showmsg('order_does_not_exist', './?mod=order');
 			}
 
 			$order->paymentmethod = Order::PaidWithAlipay;
@@ -333,9 +333,9 @@ class Order extends DBObject{
 			$order->tradeid = $trade_no;
 			if($order->tradestate == Order::TradeSuccess){
 				$order->tradetime = TIMESTAMP;
-				showmsg('the_order_is_successfully_paid', 'order.php');
+				showmsg('the_order_is_successfully_paid', './?mod=order');
 			}else{
-				showmsg('please_pay_for_the_order', 'order.php');
+				showmsg('please_pay_for_the_order', './?mod=order');
 			}
 		}
 	}
@@ -381,7 +381,7 @@ class Order extends DBObject{
 	static public function __on_bestpay_callback_executed($out_trade_no, $trade_no, $result){
 		//以异步通知为准，此处不处理只通知
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
-			showmsg('the_order_is_successfully_paid', 'order.php');
+			showmsg('the_order_is_successfully_paid', './?mod=order');
 	}
 }
 

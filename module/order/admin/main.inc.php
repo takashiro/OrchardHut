@@ -389,7 +389,7 @@ class OrderMainModule extends AdminControlPanelModule{
 
 				$query_string = http_build_query($query_string);
 
-				include view('order_list');
+				include view('list');
 			}else{
 				if($template_format == 'ticket' || $template_format == 'barcode'){
 					$ticketconfig = readdata('ticket');
@@ -400,10 +400,10 @@ class OrderMainModule extends AdminControlPanelModule{
 					}
 					unset($o);
 				}
-				include view('order_'.$template_format);
+				include view($template_format);
 			}
 		}else{
-			include view('order_search');
+			include view('search');
 		}
 	}
 
@@ -573,7 +573,7 @@ class OrderMainModule extends AdminControlPanelModule{
 
 			$ticketconfig = readdata('ticket');
 
-			include view('order_'.$ticket_type);
+			include view($ticket_type);
 		}
 	}
 
