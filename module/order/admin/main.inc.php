@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class OrderModule extends AdminControlPanelModule{
+class OrderMainModule extends AdminControlPanelModule{
 
 	public function getPermissions(){
 		return array(
@@ -36,10 +36,6 @@ class OrderModule extends AdminControlPanelModule{
 
 	public function defaultAction(){
 		$this->listAction();
-	}
-
-	public function searchAction(){
-		$this->listAction('search');
 	}
 
 	public function listAction($action = 'list'){
@@ -634,11 +630,6 @@ class OrderModule extends AdminControlPanelModule{
 		}
 
 		echo json_encode($result);
-	}
-
-	public function scancodeAction(){
-		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
-		include view('order_scancode');
 	}
 
 }

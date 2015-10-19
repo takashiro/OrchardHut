@@ -22,7 +22,11 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class TicketPrinterModule extends AdminControlPanelModule{
+class OrderTicketPrinterModule extends AdminControlPanelModule{
+
+	public function getRequiredPermissions(){
+		return array('order');
+	}
 
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);

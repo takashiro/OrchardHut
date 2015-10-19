@@ -20,8 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-require_once './core/init.inc.php';
-
 if(!$_G['user']->isLoggedIn()){
 	redirect('memcp.php');
 }
@@ -93,7 +91,7 @@ case 'view':
 	$orderlog = $order->getLogs();
 	$order = $order->toReadable();
 
-	include view('order_detail');
+	include view('detail');
 	break;
 
 case 'return':
@@ -170,7 +168,7 @@ case 'return':
 		$returned_order_config['reason_options'] = explode("\n", $returned_order_config['reason_options']);
 	}
 
-	include view('order_return');
+	include view('return');
 	break;
 
 case 'comment':
@@ -196,7 +194,7 @@ case 'comment':
 
 	$comment = $order->getComment();
 	$order = $order->toReadable();
-	include view('order_comment');
+	include view('comment');
 	break;
 
 case 'deliveringnum':
@@ -231,7 +229,7 @@ case 'pay':
 	}
 
 	if($paymentconfig['enabled_method'][Order::PaidWithAlipay] && $paymentconfig['enabled_method'][Order::PaidWithWallet]){
-		include view('order_pay');
+		include view('pay');
 		exit;
 	}elseif($paymentconfig['enabled_method'][Order::PaidWithAlipay]){
 		redirect('alipay.php?orderid='.$orderid);
@@ -288,7 +286,7 @@ default:
 		unset($o);
 	}
 
-	include view('order_list');
+	include view('list');
 }
 
 ?>

@@ -33,26 +33,6 @@
 
 		<section class="main">
 			<ul class="menu">
-				<!--{if $_G['admin']->hasPermission('order') || $_G['admin']->hasPermission('orderstat') || $_G['admin']->hasPermission('ticket') || $_G['admin']->hasPermission('ticketprinter')}-->
-				<li>
-					<a href="{if $_G['admin']->hasPermission('order')}admin.php?mod=order{else}###{/if}">订单</a>
-					<ul class="submenu">
-						<li><a href="admin.php?mod=order&action=scancode">扫码处理</a></li>
-						<!--{if $_G['admin']->hasPermission('orderstat')}-->
-						<li><a href="admin.php?mod=orderstat">分拣报表</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('order')}-->
-						<li><a href="admin.php?mod=order&action=search">高级查找</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('ticket')}-->
-						<li><a href="admin.php?mod=ticket">小票设置</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('ticketprinter')}-->
-						<li><a href="admin.php?mod=ticketprinter" target="_blank">打印提货单</a></li>
-						<!--{/if}-->
-					</ul>
-				</li>
-				<!--{/if}-->
 				<!--{if $_G['admin']->hasPermission('returnedorder')}-->
 				<li>
 					<a href="admin.php?mod=returnedorder">退单</a>
@@ -101,14 +81,16 @@
 					</ul>
 				</li>
 				<!--{/if}-->
-				<!--{loop $_G['module_list'] $module_name}-->
-					<!--{if $_G['admin']->hasPermission($module_name)}-->
+				<!--{loop $_G['module_list'] $module}-->
+					<!--{if $_G['admin']->hasPermission($module['name'])}-->
 					<li>
-						<a href="admin.php?mod=$module_name">{echo lang('common', 'module_'.$module_name)}</a>
-						<!--{if !empty(Administrator::$Permissions[$module_name]['children'])}-->
+						<a href="admin.php?mod=$module[name]">{echo lang('common', 'module_'.$module['name'])}</a>
+						<!--{if count($module['submodule']) > 1}-->
 						<ul class="submenu">
-						<!--{loop Administrator::$Permissions[$module_name]['children'] $submodule_name}-->
-							<li><a href="admin.php?mod=$submodule_name">{echo lang('common', 'module_'.$submodule_name)}</a></li>
+						<!--{loop $module['submodule'] $submodule_name}-->
+							<!--{if $submodule_name != 'main'}-->
+							<li><a href="admin.php?mod={$module['name']}:{$submodule_name}">{echo lang('common', 'module_'.$module['name'].':'.$submodule_name)}</a></li>
+							<!--{/if}-->
 						<!--{/loop}-->
 						</ul>
 						<!--{/if}-->
