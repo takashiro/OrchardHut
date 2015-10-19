@@ -22,7 +22,11 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class StationModule extends AdminControlPanelModule{
+class DeliveryStationModule extends AdminControlPanelModule{
+
+	public function getRequiredPermissions(){
+		return array('delivery');
+	}
 
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);

@@ -21,7 +21,9 @@ takashiro@qq.com
 ************************************************************************/
 
 return array(
-	'module_address' => '地址',
+	'module_delivery' => '配送',
+	'module_delivery:address' => '地址',
+	'module_delivery:station' => '配送站',
 );
 
 ?>

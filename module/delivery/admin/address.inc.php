@@ -22,7 +22,11 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class AddressModule extends AdminControlPanelModule{
+class DeliveryAddressModule extends AdminControlPanelModule{
+
+	public function getRequiredPermissions(){
+		return array('delivery');
+	}
 
 	public function defaultAction(){
 		$this->listAction();
@@ -145,7 +149,7 @@ class AddressModule extends AdminControlPanelModule{
 
 		$addressformat = readdata('addressformat');
 
-		include view('main');
+		include view('address');
 	}
 }
 
