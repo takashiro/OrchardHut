@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class AdminModule extends AdminControlPanelModule{
+class AdminMainModule extends AdminControlPanelModule{
 
 	public function editAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
@@ -107,7 +107,7 @@ class AdminModule extends AdminControlPanelModule{
 
 		$address_components = Address::AvailableComponents();
 
-		include view('admin_edit');
+		include view('edit');
 	}
 
 	public function deleteAction(){
@@ -132,7 +132,7 @@ class AdminModule extends AdminControlPanelModule{
 		$table = $db->select_table('administrator');
 		$admins = $table->fetch_all('*', "1 LIMIT $offset,$limit");
 		$pagenum = $table->result_first('COUNT(*)');
-		include view('admin_list');
+		include view('list');
 	}
 
 	public function defaultAction(){
