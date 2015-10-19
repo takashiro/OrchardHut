@@ -30,9 +30,9 @@ var cookiepre = '$_CONFIG[cookiepre]';
 				<p>
 				<!--{if $_G['user']->isLoggedIn()}-->
 					<a href="./?mod=order">$_USER[account]</a>
-					<a href="memcp.php?action=logout">[退出]</a>
+					<a href="./?mod=user&action=logout">[退出]</a>
 				<!--{else}-->
-					<a href="memcp.php?action=login" class="button">登录</a>
+					<a href="./?mod=user&action=login" class="button">登录</a>
 					<a href="./?mod=qqconnect"><img src="./view/user/$_G[style]/image/qqlogin_small.png" /></a>
 				<!--{/if}-->
 				</p>

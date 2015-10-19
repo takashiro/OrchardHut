@@ -40,7 +40,7 @@ if(empty($_GET['querystring'])){
 	if(empty($_GET['skipprotector']) && isWeixin()){
 		if(!$_G['user']->isLoggedIn()){
 			writelog('unexpected_result', '1: '.$_SERVER['HTTP_USER_AGENT'].' '.$_SERVER['QUERY_STRING']);
-			showmsg('inaccessible_if_not_logged_in', 'memcp.php');
+			showmsg('inaccessible_if_not_logged_in', './?mod=user');
 		}
 
 		$_SERVER['QUERY_STRING'].= '&'.User::COOKIE_VAR.'='.urlencode($_COOKIE[User::COOKIE_VAR]);
@@ -55,7 +55,7 @@ if(empty($_GET['querystring'])){
 
 if(!$_G['user']->isLoggedIn()){
 	writelog('unexpected_result', '2: '.$_SERVER['HTTP_USER_AGENT'].' '.$_SERVER['QUERY_STRING']);
-	showmsg('inaccessible_if_not_logged_in', 'memcp.php');
+	showmsg('inaccessible_if_not_logged_in', './?mod=user');
 }
 
 $paymentconfig = readdata('payment');

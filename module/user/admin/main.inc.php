@@ -29,7 +29,7 @@ function parse_time_range($var){
 	return array($start, $end);
 }
 
-class UserModule extends AdminControlPanelModule{
+class UserMainModule extends AdminControlPanelModule{
 
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
@@ -148,9 +148,9 @@ class UserModule extends AdminControlPanelModule{
 				$query_string = '';
 			}
 
-			include view('user_list');
+			include view('list');
 		}else{
-			include view('user_csv');
+			include view('list_csv');
 		}
 	}
 

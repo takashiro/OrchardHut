@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-require_once './core/init.inc.php';
+if(!defined('S_ROOT')) exit('access denied');
 
 $actions = array('login', 'logout', 'register', 'edit');
 $action = !empty($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
@@ -64,7 +64,7 @@ if($action == 'login'){
 	$_G['user']->logout();
 	rsetcookie('delivering-order-number');
 	rsetcookie('order-number-cache-time');
-	redirect('memcp.php');
+	redirect('./?mod=user');
 
 }elseif($action == 'register'){
 	if($_POST){
@@ -90,7 +90,7 @@ if($action == 'login'){
 		}
 	}
 
-	redirect('memcp.php');
+	redirect('./?mod=user');
 
 }else if($action == 'edit'){
 	if($_POST){
@@ -182,7 +182,7 @@ if($action == 'login'){
 			}
 		}
 
-		showmsg('successfully_update_profile', 'memcp.php');
+		showmsg('successfully_update_profile', './?mod=user');
 	}
 
 	$referrer = new User;
@@ -191,7 +191,7 @@ if($action == 'login'){
 	}
 	$referrer = $referrer->toReadable();
 
-	include view('memcp_edit');
+	include view('edit');
 }
 
 ?>

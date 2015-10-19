@@ -30,7 +30,7 @@ class UserGroupModule extends AdminControlPanelModule{
 		$table = $db->select_table('usergroup');
 		$usergroups = $table->fetch_all('*', '1 ORDER BY type,minordernum,maxordernum');
 
-		include view('usergroup_list');
+		include view('group_list');
 	}
 
 	public function editAction(){

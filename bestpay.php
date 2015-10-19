@@ -23,7 +23,7 @@ takashiro@qq.com
 require_once './core/init.inc.php';
 
 if(!$_G['user']->isLoggedIn()){
-	redirect('memcp.php');
+	redirect('./?mod=user');
 }
 
 $paymentconfig = readdata('payment');

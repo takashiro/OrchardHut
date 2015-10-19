@@ -105,7 +105,7 @@ if(!empty($targetKeyword)){
 			$words = $words[0];
 		}
 
-		$weixin->replyTextMessage(lang('message', 'if_not_logged_in_comma')."<a href=\"{$_G['root_url']}memcp.php?action=login\">".lang('message', 'click_here_and_login')."</a>，".lang('message', 'and_reply').$words);
+		$weixin->replyTextMessage(lang('message', 'if_not_logged_in_comma')."<a href=\"{$_G['root_url']}./?mod=user&action=login\">".lang('message', 'click_here_and_login')."</a>，".lang('message', 'and_reply').$words);
 	}
 
 	if(isset($wx['bind2_keyword']) && Autoreply::MatchKeywords($wx['bind2_keyword'], $targetKeyword)){

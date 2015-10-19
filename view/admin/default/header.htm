@@ -33,17 +33,6 @@
 
 		<section class="main">
 			<ul class="menu">
-				<li>
-					<a href="###">用户</a>
-					<ul class="submenu">
-						<!--{if $_G['admin']->hasPermission('user')}-->
-						<li><a href="admin.php?mod=user">用户</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('usergroup')}-->
-						<li><a href="admin.php?mod=usergroup">用户组</a></li>
-						<!--{/if}-->
-					</ul>
-				</li>
 				<!--{loop $_G['module_list'] $module}-->
 					<!--{if $_G['admin']->hasPermission($module['name'])}-->
 					<li>

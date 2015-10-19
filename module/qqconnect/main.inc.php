@@ -85,7 +85,7 @@ if($action == 'login'){
 
 }elseif($action == 'unbind'){
 	if(!$_G['user']->isLoggedIn()){
-		showmsg('binding_require_user_logged_in', 'memcp.php');
+		showmsg('binding_require_user_logged_in', './?mod=user');
 	}
 
 	if(!$_G['user']->qqopenid){
@@ -93,7 +93,7 @@ if($action == 'login'){
 	}
 
 	if(empty($_G['user']->account)){
-		showmsg('qqopenid_cannot_be_unbinded_with_empty_account', 'memcp.php');
+		showmsg('qqopenid_cannot_be_unbinded_with_empty_account', './?mod=user');
 	}
 
 	if(empty($_GET['confirm'])){
