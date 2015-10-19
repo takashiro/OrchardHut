@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class ReturnedOrderModule extends AdminControlPanelModule{
+class ReturnedOrderMainModule extends AdminControlPanelModule{
 
 	public function getPermissions(){
 		return array(
@@ -165,7 +165,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 
 		$address_format = Address::Format();
 
-		include view('returnedorder_list');
+		include view('list');
 	}
 
 	public function configAction(){
@@ -182,7 +182,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 		$config = readdata('returnedorderconfig');
-		include view('returnedorder_config');
+		include view('config');
 	}
 
 	public function logAction(){
@@ -292,7 +292,7 @@ class ReturnedOrderModule extends AdminControlPanelModule{
 
 		$query_string = http_build_query($query_data);
 
-		include view('returnedorder_log_'.$format);
+		include view('log_'.$format);
 	}
 
 

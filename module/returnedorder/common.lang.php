@@ -21,7 +21,7 @@ takashiro@qq.com
 ************************************************************************/
 
 return array(
-	'module_promotion' => '推广',
+	'module_returnedorder' => '退单',
 );
 
 ?>
