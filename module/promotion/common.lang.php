@@ -1,7 +1,7 @@
 <?php
 
 /***********************************************************************
-Orchard Hut Online Shop
+Elf Web App Framework
 Copyright (C) 2013-2015  Kazuichi Takashiro
 
 This program is free software: you can redistribute it and/or modify
@@ -20,31 +20,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-if(!defined('IN_ADMINCP')) exit('access denied');
-
-class PromotionModule extends AdminControlPanelModule{
-
-	public function defaultAction(){
-		if($_POST){
-			$config = array();
-			if(isset($_POST['orderrewardratio'])){
-				$config['orderrewardratio'] = intval($_POST['orderrewardratio']);
-			}
-
-			foreach(Order::$PaymentMethod as $methodid => $methodname){
-				$config['enabled_method'][$methodid] = !empty($_POST['enabled_method'][$methodid]);
-			}
-
-			writedata('promotion', $config);
-			showmsg('edit_succeed', 'refresh');
-		}
-
-		$config = readdata('promotion');
-
-		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
-		include view('promotion');
-	}
-
-}
+return array(
+	'module_promotion' => '推广',
+);
 
 ?>
