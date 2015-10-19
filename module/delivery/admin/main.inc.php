@@ -126,7 +126,7 @@ class DeliveryMainModule extends AdminControlPanelModule{
 		}
 		unset($s);
 
-		include view('delivery');
+		include view('config');
 	}
 }
 
