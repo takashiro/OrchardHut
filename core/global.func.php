@@ -230,7 +230,11 @@ function view($template_name){
 	global $_G;
 
 	$target = defined('IN_ADMINCP') ? 'admin' : 'user';
-	$file_path = S_ROOT.'data/template/'.$target.'_'.$_G['style'].'_'.$template_name.'.tpl.php';
+	if(!defined('MOD_NAME')){
+		$file_path = S_ROOT.'data/template/'.$target.'_'.$_G['style'].'_'.$template_name.'.tpl.php';
+	}else{
+		$file_path = S_ROOT.'data/template/mod_'.MOD_NAME.'_'.$target.'_'.$_G['style'].'_'.$template_name.'.tpl.php';
+	}
 
 	$forced_parse = !file_exists($file_path);
 	if($forced_parse || !empty($_G['config']['refresh_template'])){

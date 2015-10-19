@@ -33,7 +33,19 @@ ob_start();
 
 //类自动加载
 spl_autoload_register(function($classname){
-	require_once S_ROOT.'./class/'.$classname.'.class.php';
+	$filepath = S_ROOT.'./class/'.$classname.'.class.php';
+	if(file_exists($filepath)){
+		require_once $filepath;
+	}else{
+		$module_list = modulelist();
+		foreach($module_list as $module){
+			$filepath = S_ROOT.'module/'.$module.'/class/'.$classname.'.class.php';
+			if(file_exists($filepath)){
+				require_once $filepath;
+				break;
+			}
+		}
+	}
 });
 
 require_once S_ROOT.'./core/global.func.php';

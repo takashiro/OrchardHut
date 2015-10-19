@@ -145,7 +145,7 @@ class AddressModule extends AdminControlPanelModule{
 
 		$addressformat = readdata('addressformat');
 
-		include view('address_component');
+		include view('main');
 	}
 }
 
