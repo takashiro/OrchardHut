@@ -120,22 +120,6 @@
 					</ul>
 				</li>
 				<!--{/if}-->
-				<!--{if $_G['admin']->hasPermission('address') || $_G['admin']->hasPermission('delivery') || $_G['admin']->hasPermission('station')}-->
-				<li>
-					<a href="###">配送</a>
-					<ul class="submenu">
-						<!--{if $_G['admin']->hasPermission('address')}-->
-						<li><a href="admin.php?mod=address">收货地址</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('station')}-->
-						<li><a href="admin.php?mod=station">配送站</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('delivery')}-->
-						<li><a href="admin.php?mod=delivery">配送设置</a></li>
-						<!--{/if}-->
-					</ul>
-				</li>
-				<!--{/if}-->
 				<!--{if $_G['admin']->hasPermission('admin')}-->
 				<li><a href="admin.php?mod=admin">管理员</a></li>
 				<!--{/if}-->
