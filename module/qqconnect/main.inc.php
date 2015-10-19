@@ -77,7 +77,7 @@ if($action == 'login'){
 
 			$user->force_login();
 
-			showmsg('successfully_logged_in_via_qq', 'market.php');
+			showmsg('successfully_logged_in_via_qq', './?mod=product');
 		}
 	}else{
 		$qc->qq_login();

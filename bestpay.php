@@ -37,7 +37,7 @@ if(empty($bestpay['key']) || empty($bestpay['merchantid'])){
 }
 
 if(!empty($_GET['ret'])){
-	showmsg('支付成功！', 'market.php');
+	showmsg('支付成功！', './?mod=product');
 }
 
 $_G['bestpaytrade'] = array(

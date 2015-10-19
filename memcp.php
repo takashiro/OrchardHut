@@ -78,7 +78,7 @@ if($action == 'login'){
 				}
 				rsetcookie('referrerid');
 			}
-			redirect('market.php');
+			redirect('./?mod=product');
 		}elseif($uid == User::INVALID_ACCOUNT){
 			showmsg('account_too_short_or_too_long', 'back');
 		}elseif($uid == User::INVALID_PASSWORD){

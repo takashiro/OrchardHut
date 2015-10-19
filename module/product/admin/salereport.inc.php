@@ -22,10 +22,10 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class SaleReportModule extends AdminControlPanelModule{
+class ProductSaleReportModule extends AdminControlPanelModule{
 
 	public function getRequiredPermissions(){
-		return array('market');
+		return array('product');
 	}
 
 	public function defaultAction(){

@@ -20,8 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-require_once './core/init.inc.php';
-
 if(isset($_GET['referrerid']) && !$_G['user']->isLoggedIn()){
 	$referrerid = intval($_GET['referrerid']);
 	rsetcookie('referrerid', $referrerid);
@@ -78,7 +76,7 @@ $wxconfig = readdata('wxconnect');
 
 //生成JS脚本签名
 $wxconfig['nonce'] = randomstr(16);
-$current_url = $_G['root_url'].'market.php'.($_SERVER['QUERY_STRING'] ? '?'.$_SERVER['QUERY_STRING'] : '');
+$current_url = $_G['root_url'].'?mod=product'.($_SERVER['QUERY_STRING'] ? '&'.$_SERVER['QUERY_STRING'] : '');
 $wx = new WeixinAPI;
 $wxconfig['signature'] = $wx->generateSignature($wxconfig['nonce'], $current_url);
 

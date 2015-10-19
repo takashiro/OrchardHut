@@ -114,9 +114,9 @@ switch($action){
 
 		if(!$products){
 			if($item_deleted){
-				showmsg('shopping_cart_empty_because_of_item_deleted', 'market.php');
+				showmsg('shopping_cart_empty_because_of_item_deleted', './?mod=product');
 			}else{
-				showmsg('shopping_cart_empty', 'market.php');
+				showmsg('shopping_cart_empty', './?mod=product');
 			}
 		}
 
@@ -279,7 +279,7 @@ switch($action){
 					showmsg('successfully_submitted_order_with_item_deleted', 'order.php');
 				}
 			}else{
-				showmsg('failed_to_submit_order', 'market.php');
+				showmsg('failed_to_submit_order', './?mod=product');
 			}
 		}
 

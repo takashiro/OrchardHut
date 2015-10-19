@@ -25,7 +25,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 class ProductStorageModule extends AdminControlPanelModule{
 
 	public function getRequiredPermissions(){
-		return array('market');
+		return array('product');
 	}
 
 	public function editAction(){
@@ -173,7 +173,7 @@ class ProductStorageModule extends AdminControlPanelModule{
 
 		$time_start && $time_start = rdate($time_start);
 		$time_end && $time_end = rdate($time_end);
-		include view('productstorage_log');
+		include view('storage_log');
 	}
 
 	public function configAction(){
@@ -210,7 +210,7 @@ class ProductStorageModule extends AdminControlPanelModule{
 			$storageconfig[$var] = sprintf('%02d', $H).':'.sprintf('%02d', $i).':'.sprintf('%02d', $s);
 		}
 
-		include view('productstorage_config');
+		include view('storage_config');
 	}
 
 	public function defaultAction(){
@@ -280,7 +280,7 @@ class ProductStorageModule extends AdminControlPanelModule{
 		$table = $db->select_table('bankaccount');
 		$bankaccounts = $table->fetch_all('*');
 
-		include view('productstorage');
+		include view('storage');
 	}
 
 }

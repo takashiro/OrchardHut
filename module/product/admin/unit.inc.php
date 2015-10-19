@@ -26,7 +26,7 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 class ProductUnitModule extends AdminControlPanelModule{
 
 	public function getRequiredPermissions(){
-		return array('market');
+		return array('product');
 	}
 
 	public function editAction(){
@@ -80,7 +80,7 @@ class ProductUnitModule extends AdminControlPanelModule{
 		$table = $db->select_table('productunit');
 		$product_units = $table->fetch_all('*', '1 ORDER BY type,id');
 
-		include view('productunit');
+		include view('unit');
 	}
 
 }

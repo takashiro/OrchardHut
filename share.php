@@ -37,7 +37,7 @@ if(isset($_GET['uid'])){
 		if($_G['user']->referrerid > 0){
 			$referrer = new User;
 			$referrer->fetch('id,nickname,regtime', array('id' => $_G['user']->referrerid));
-			showmsg(lang('message', 'your_referrer_is').$referrer->nickname, 'market.php');
+			showmsg(lang('message', 'your_referrer_is').$referrer->nickname, './?mod=product');
 		}
 
 		if($_G['user']->id != $referrerid){
@@ -45,14 +45,14 @@ if(isset($_GET['uid'])){
 			$referrer->fetch('id,nickname,regtime', array('id' => $referrerid));
 			if($referrer->exists() && $referrer->regtime < $_G['user']->regtime){
 				$_G['user']->referrerid = $referrerid;
-				showmsg(lang('message', 'your_referrer_is').$referrer->nickname, 'market.php');
+				showmsg(lang('message', 'your_referrer_is').$referrer->nickname, './?mod=product');
 			}else{
-				showmsg('you_registered_earlier_than_the_referrer', 'market.php');
+				showmsg('you_registered_earlier_than_the_referrer', './?mod=product');
 			}
 		}
 	}else{
 		rsetcookie('referrerid', $referrerid);
-		redirect('market.php');
+		redirect('./?mod=product');
 	}
 }
 

@@ -62,28 +62,6 @@
 					</ul>
 				</li>
 				<!--{/if}-->
-				<!--{if $_G['admin']->hasPermission('market')}-->
-				<li>
-					<a href="admin.php?mod=market">商品</a>
-					<ul class="submenu">
-						<!--{if $_G['admin']->hasPermission('productstorage')}-->
-						<li><a href="admin.php?mod=productstorage">库存管理</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('balancereport')}-->
-						<li><a href="admin.php?mod=balancereport">毛利报表</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('salereport')}-->
-						<li><a href="admin.php?mod=salereport">销售报表</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('productunit')}-->
-						<li><a href="admin.php?mod=productunit">商品单位</a></li>
-						<!--{/if}-->
-						<!--{if $_G['admin']->hasPermission('producttype')}-->
-						<li><a href="admin.php?mod=producttype">商品类型</a></li>
-						<!--{/if}-->
-					</ul>
-				</li>
-				<!--{/if}-->
 				<!--{if $_G['admin']->hasPermission('payment')}-->
 				<li>
 					<a href="admin.php?mod=payment">支付</a>

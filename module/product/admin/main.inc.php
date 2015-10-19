@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class MarketModule extends AdminControlPanelModule{
+class ProductMainModule extends AdminControlPanelModule{
 
 	public function defaultAction(){
 		$this->listAction();
@@ -51,7 +51,7 @@ class MarketModule extends AdminControlPanelModule{
 		$products = $table->fetch_all('*', $condition.' ORDER BY hide,type,displayorder LIMIT '.$offset.','.$limit);
 		$pagenum = $table->result_first('COUNT(*)', $condition);
 
-		include view('market');
+		include view('list');
 	}
 
 	public function editAction(){
@@ -132,7 +132,7 @@ class MarketModule extends AdminControlPanelModule{
 			$table = $db->select_table('productpricelimit');
 			$pricelimits = $table->fetch_all('*', 'productid='.$product['id']);
 
-			include view('market_edit');
+			include view('edit');
 		}
 	}
 
