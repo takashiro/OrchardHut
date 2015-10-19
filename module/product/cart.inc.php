@@ -20,6 +20,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
+if(!defined('S_ROOT')) exit('access denied');
+
 //Disallow guests opening the shopping cart
 if(!$_G['user']->isLoggedIn()){
 	redirect('memcp.php');

@@ -20,6 +20,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
+if(!defined('S_ROOT')) exit('access denied');
+
 if(isset($_GET['referrerid']) && !$_G['user']->isLoggedIn()){
 	$referrerid = intval($_GET['referrerid']);
 	rsetcookie('referrerid', $referrerid);
