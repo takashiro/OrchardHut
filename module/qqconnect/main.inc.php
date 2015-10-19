@@ -102,7 +102,7 @@ if($action == 'login'){
 
 	$_G['user']->qqopenid = NULL;
 
-	showmsg('successfully_unbinded_qq', 'order.php');
+	showmsg('successfully_unbinded_qq', './?mod=order');
 }
 
 ?>

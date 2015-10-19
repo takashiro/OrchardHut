@@ -29,7 +29,7 @@ var cookiepre = '$_CONFIG[cookiepre]';
 			<div id="sharebox" data-id="share-box">
 				<p>
 				<!--{if $_G['user']->isLoggedIn()}-->
-					<a href="order.php">$_USER[account]</a>
+					<a href="./?mod=order">$_USER[account]</a>
 					<a href="memcp.php?action=logout">[退出]</a>
 				<!--{else}-->
 					<a href="memcp.php?action=login" class="button">登录</a>

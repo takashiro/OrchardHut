@@ -86,7 +86,7 @@ $(function(){
 								<a href="{echo Order::$PaymentInterface[$l['paymentmethod']]}?rechargeid=$l[id]">[继续]</a>
 								<!--{/if}-->
 							<!--{elseif $l['type'] == Wallet::OrderRefundLog || $l['type'] == Wallet::OrderPaymentLog}-->
-								<a href="order.php?action=view&orderid=$l[orderid]">订单{echo Wallet::$LogType[$l['type']]}</a>
+								<a href="./?mod=order&action=view&orderid=$l[orderid]">订单{echo Wallet::$LogType[$l['type']]}</a>
 							<!--{/if}-->
 						</td>
 					</tr>

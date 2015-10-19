@@ -20,8 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-require_once './core/init.inc.php';
-
 //Disallow guests opening the shopping cart
 if(!$_G['user']->isLoggedIn()){
 	redirect('memcp.php');
@@ -35,7 +33,7 @@ $unpaid_num = $db->result_first("SELECT COUNT(*)
 	FROM {$tpre}order
 	WHERE userid={$_G['user']->id} AND tradestate IN ($tradestates) AND status=$unsorted_status AND paymentmethod!=$paid_with_cash");
 if($unpaid_num > 0){
-	showmsg('please_cancel_or_pay_your_previous_order', 'order.php');
+	showmsg('please_cancel_or_pay_your_previous_order', './?mod=order');
 }
 
 $actions = array('order', 'deleteaddress');
@@ -127,12 +125,12 @@ switch($action){
 			if($_G['user']->hasTrickFlag(User::ORDER_IGNORING_TRICK)){
 				rsetcookie('shopping_cart', '{}');
 				writelog('trick', "{$_G['user']->id}\torder ignored");
-				showmsg('successfully_submitted_order', 'order.php');
+				showmsg('successfully_submitted_order', './?mod=order');
 			}
 
 			//处理提交的订单开始
 			if(empty($_POST['formkey']) || !$_G['user']->checkFormKey($_POST['formkey'])){
-				showmsg('you_submitted_a_duplicated_order', 'order.php');
+				showmsg('you_submitted_a_duplicated_order', './?mod=order');
 			}
 
 			$order = new Order;
@@ -274,9 +272,9 @@ switch($action){
 					$order->tradetime = TIMESTAMP;
 
 				if(!$item_deleted){
-					showmsg('successfully_submitted_order', 'order.php');
+					showmsg('successfully_submitted_order', './?mod=order');
 				}else{
-					showmsg('successfully_submitted_order_with_item_deleted', 'order.php');
+					showmsg('successfully_submitted_order_with_item_deleted', './?mod=order');
 				}
 			}else{
 				showmsg('failed_to_submit_order', './?mod=product');

@@ -67,7 +67,7 @@ $_G['alipaytrade'] = array(
 	'out_trade_no' => '',
 	'subject' => '',
 	'total_fee' => 0.00,
-	'show_url' => 'order.php',
+	'show_url' => './?mod=order',
 );
 
 runhooks('alipay_started');

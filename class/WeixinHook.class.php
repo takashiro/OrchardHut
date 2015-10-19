@@ -91,7 +91,7 @@ class WeixinHook{
 			if(!$touser)
 				return;
 
-			$link = $_G['root_url'].'order.php?action=comment&orderid='.$order->id;
+			$link = $_G['root_url'].'?mod=order&action=comment&orderid='.$order->id;
 			$text = '<a href="'.$link.'">'.lang('weixin', 'thanks_for_supporting_please_rank').'</a>';
 
 			$wx = new WeixinAPI;

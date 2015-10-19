@@ -33,7 +33,7 @@ if($_G['user']->isLoggedIn()){
 
 if($action == 'login'){
 	if($_G['user']->isLoggedIn()){
-		showmsg('you_have_logged_in', 'order.php');
+		showmsg('you_have_logged_in', './?mod=order');
 	}
 
 	if($_POST){
@@ -48,7 +48,7 @@ if($action == 'login'){
 
 		if($result == User::ACTION_SUCCEEDED){
 			if(empty($_POST['http_referer'])){
-				showmsg('successfully_logged_in', 'order.php');
+				showmsg('successfully_logged_in', './?mod=order');
 			}else{
 				showmsg('successfully_logged_in', $_POST['http_referer']);
 			}
