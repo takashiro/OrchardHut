@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class AnnouncementModule extends AdminControlPanelModule{
+class AnnouncementMainModule extends AdminControlPanelModule{
 
 	public function defaultAction(){
 		$this->listAction();
@@ -33,7 +33,7 @@ class AnnouncementModule extends AdminControlPanelModule{
 
 		$table = $db->select_table('announcement');
 		$announcements = $table->fetch_all('*', '1 ORDER BY displayorder,time_start DESC,time_end');
-		include view('announcement_list');
+		include view('list');
 	}
 
 	public function editAction(){
@@ -109,7 +109,7 @@ class AnnouncementModule extends AdminControlPanelModule{
 				);
 			}
 
-			include view('announcement_edit');
+			include view('edit');
 		}
 	}
 

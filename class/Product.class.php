@@ -542,13 +542,15 @@ class Product extends DBObject{
 	}
 
 	static public function PriceLimits($priceids){
-		global $db;
-		$table = $db->select_table('productpricelimit');
-		$limits = $table->fetch_all('priceid,usergroupid', 'priceid IN ('.implode(',', $priceids).')');
 		$result = array();
-		foreach($limits as $l){
-			isset($result[$l['priceid']]) || $result[$l['priceid']] = array();
-			$result[$l['priceid']][] = $l['usergroupid'];
+		if($priceids){
+			global $db;
+			$table = $db->select_table('productpricelimit');
+			$limits = $table->fetch_all('priceid,usergroupid', 'priceid IN ('.implode(',', $priceids).')');
+			foreach($limits as $l){
+				isset($result[$l['priceid']]) || $result[$l['priceid']] = array();
+				$result[$l['priceid']][] = $l['usergroupid'];
+			}
 		}
 		return $result;
 	}
