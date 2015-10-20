@@ -35,7 +35,7 @@ class HomeModule extends AdminControlPanelModule{
 			redirect('admin.php?mod=order');
 		}else{
 			foreach(Administrator::$Permissions as $perm => $v){
-				if($perm == 'home' || $perm == 'memcp')
+				if($perm == 'home' || $perm == 'cp')
 					continue;
 
 				if($_G['admin']->hasPermission($perm)){
@@ -43,7 +43,7 @@ class HomeModule extends AdminControlPanelModule{
 				}
 			}
 
-			redirect('admin.php?mod=memcp');
+			redirect('admin.php?mod=cp');
 		}
 	}
 }

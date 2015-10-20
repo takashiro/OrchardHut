@@ -22,7 +22,7 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
-class MemcpModule extends AdminControlPanelModule{
+class CpModule extends AdminControlPanelModule{
 
 	public function getAlias(){
 		return 'public';

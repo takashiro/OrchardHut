@@ -240,10 +240,6 @@ function module($id){
 	return S_ROOT.'module/'.$id.'.inc.php';
 }
 
-function submodule($module, $submodule){
-	return S_ROOT.'submodule/'.$module.'/'.$submodule.'.inc.php';
-}
-
 function rdate($dateline, $format = 'Y-m-d H:i:s'){
 	return gmdate($format, $dateline + TIMEZONE * 3600);
 }

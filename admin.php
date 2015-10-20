@@ -66,29 +66,26 @@ class AdminControlPanelModule{
 }
 
 $mod = isset($_GET['mod']) ? trim($_GET['mod']) : 'home';
-$module_path = submodule('admin', $mod);
+$module_path = 'core/admin_'.$mod.'.inc.php';
 $mod_url = 'admin.php?mod='.$mod;
-$classname = $mod.'Module';
-if(!file_exists($module_path)){
+
+if(file_exists($module_path)){
+	$classname = $mod.'Module';
+}else{
 	$mods = explode(':', $mod);
 	if(preg_match('/^\w+$/', $mod[0])){
 		if(empty($mods[1]) || !preg_match('/^\w+$/', $mods[1])){
 			$mods[1] = 'main';
 		}
-		$module_path = 'module/'.$mods[0].'/admin/'.$mods[1].'.inc.php';
+		$extra_module_path = 'module/'.$mods[0].'/admin/'.$mods[1].'.inc.php';
 	}
-
-	if(file_exists($module_path)){
+	if(!empty($extra_module_path) && file_exists($extra_module_path)){
 		define('MOD_NAME', $mods[0]);
 		define('MOD_ROOT', S_ROOT.'module/'.$mods[0].'/');
+		$module_path = $extra_module_path;
 		$classname = $mods[0].$mods[1].'Module';
-	}else{
-		$mod = 'home';
-		$mod_url = 'admin.php?mod=home';
-		$module_path = submodule('admin', 'home');
-		$classname = 'HomeModule';
 	}
-	unset($mods);
+	unset($mods, $extra_module_path);
 }
 
 if(!$_G['admin']->hasPermission($mod)){
@@ -97,7 +94,7 @@ if(!$_G['admin']->hasPermission($mod)){
 require_once $module_path;
 
 if(!class_exists($classname, false)){
-	exit('invalid module');
+	exit('Invalid module. Class not exist: '.$classname);
 }
 $module = new $classname;
 
