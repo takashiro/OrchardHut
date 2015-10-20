@@ -25,7 +25,7 @@ return array(
 	'module_order:scancode' => '扫码处理',
 	'module_order:stat' => '分拣报表',
 	'module_order:search' => '高级查找',
-	'module_order:ticketconfig' => '商品单位',
+	'module_order:ticketconfig' => '小票设置',
 	'module_order:ticketprinter' => '打印提货单',
 
 	'permission_order:scancode' => '扫码处理',

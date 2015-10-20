@@ -42,7 +42,7 @@ class OrderTicketConfigModule extends AdminControlPanelModule{
 		}
 
 		$config = readdata('ticket');
-		include view('ticket');
+		include view('ticket_config');
 	}
 
 }
