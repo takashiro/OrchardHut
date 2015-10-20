@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-require_once './core/init.inc.php';
+if(!defined('S_ROOT')) exit('access denied');
 
 $actions = array('login', 'bind', 'unbind');
 $action = !empty($_GET['action']) && in_array($_GET['action'], $actions) ? $_GET['action'] : $actions[0];

@@ -60,7 +60,7 @@ if($request['MsgType'] == 'event'){
 						if($user->id == $referrerid){
 							$user = $request['FromUserName'];
 							$key = Authkey::Generate($user);
-							$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=login&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
+							$weixin->replyTextMessage("<a href=\"{$_G['root_url']}?mod=weixin&action=login&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
 						}elseif($user->referrerid > 0){
 							$referrer = new User;
 							$referrer->fetch('id,nickname', array('id' => $user->referrerid));
@@ -76,7 +76,7 @@ if($request['MsgType'] == 'event'){
 					}else{
 						$user = $request['FromUserName'];
 						$key = Authkey::Generate($user);
-						$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=login&referrerid=$referrerid&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
+						$weixin->replyTextMessage("<a href=\"{$_G['root_url']}?mod=weixin&action=login&referrerid=$referrerid&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
 					}
 				}else{
 					$weixin->replyTextMessage(lang('message', 'invalid_qrcode'));
@@ -111,13 +111,13 @@ if(!empty($targetKeyword)){
 	if(isset($wx['bind2_keyword']) && Autoreply::MatchKeywords($wx['bind2_keyword'], $targetKeyword)){
 		$user = $request['FromUserName'];
 		$key = Authkey::Generate($user);
-		$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=bind&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
+		$weixin->replyTextMessage("<a href=\"{$_G['root_url']}?mod=weixin&action=bind&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
 	}
 
 	if(isset($wx['entershop_keyword']) && Autoreply::MatchKeywords($wx['entershop_keyword'], $targetKeyword)){
 		$user = $request['FromUserName'];
 		$key = Authkey::Generate($user);
-		$weixin->replyTextMessage("<a href=\"{$_G['root_url']}weixinconnect.php?action=login&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
+		$weixin->replyTextMessage("<a href=\"{$_G['root_url']}?mod=weixin&action=login&user=$user&key=$key\">".lang('message', 'click_and_enter_shop').'</a>');
 	}
 
 	$reply = Autoreply::Find($targetKeyword);
