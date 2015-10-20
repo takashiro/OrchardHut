@@ -30,5 +30,3 @@ return array(
 	'usergroup_normal' => '普通组',
 	'usergroup_special' => '特殊组',
 );
-
-?>

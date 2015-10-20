@@ -21,6 +21,8 @@ takashiro@qq.com
 ************************************************************************/
 
 return array(
+	'successfully_updated_qqconnect_config' => '成功修改QQ互联设置！',
+
 	'please_unbind_your_qq_first' => '请先解除已经绑定的QQ。',
 	'binded_qq_cannot_be_binded_again' => '该QQ已经绑定其他账号，您不能再次绑定。您需要通过该QQ登录本站解除绑定，才能绑定新账号。',
 	'successfully_logged_in_via_qq' => '您成功通过QQ登录本站！',

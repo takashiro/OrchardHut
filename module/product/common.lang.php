@@ -46,5 +46,3 @@ return array(
 	'product_storage_normal_mode' => '标准',
 	'product_storage_booking_mode' => '预售',
 );
-
-?>
