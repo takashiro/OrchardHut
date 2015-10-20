@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-require_once './core/init.inc.php';
+if(!defined('S_ROOT')) exit('access denied');
 
 if(!$_G['user']->isLoggedIn()){
 	redirect('./?mod=user');
@@ -74,8 +74,8 @@ $encodetype = '1';								//加密方式
 $transdate = date('Ymd');						//交易日期
 $busicode = '0001';								//Transaction type, Consume
 
-$pagereturl = $_G['root_url'].'bestpay.php?ret=1';
-$bgreturl = $_G['root_url'].'api/bestpay_notify.php';
+$pagereturl = $_G['root_url'].'?mod=bestpay&ret=1';
+$bgreturl = $_G['root_url'].'module/bestpay/api/notify.php';
 $productdesc = $_G['bestpaytrade']['subject'];
 
 $productid = '0';

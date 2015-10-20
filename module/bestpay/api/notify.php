@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-require_once '../core/init.inc.php';
+require_once '../../../core/init.inc.php';
 error_reporting(E_ALL);
 
 $bestpay = readdata('bestpay');
