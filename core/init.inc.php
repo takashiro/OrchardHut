@@ -53,22 +53,26 @@ $module_dirs = opendir(S_ROOT.'module/');
 while($module_dir = readdir($module_dirs)){
 	$mod_root = S_ROOT.'module/'.$module_dir.'/';
 	if($module_dir{0} != '.' && is_dir($mod_root)){
-		$submodules = array();
-		$module_files = scandir($mod_root.'admin/');
-		foreach($module_files as $file){
-			if(substr_compare($file, '.inc.php', -8) == 0){
-				$submodule = substr($file, 0, strlen($file) - 8);
-				$submodules[] = $submodule;
+		$admin_modules = array();
+
+		$admin_module_path = $mod_root.'admin/';
+		if(is_dir($admin_module_path)){
+			$submodules = scandir($admin_module_path);
+			foreach($submodules as $file){
+				if(substr_compare($file, '.inc.php', -8) == 0){
+					$submodule = substr($file, 0, strlen($file) - 8);
+					$admin_modules[] = $submodule;
+				}
 			}
 		}
 
 		$_G['module_list'][] = array(
 			'name' => $module_dir,
-			'submodule' => $submodules,
+			'admin_modules' => $admin_modules,
 		);
 	}
 }
-unset($module_dirs, $submodules, $mod_root, $submodule);
+unset($module_dirs, $submodules, $mod_root, $admin_modules);
 
 require_once S_ROOT.'./core/global.func.php';
 
@@ -79,7 +83,16 @@ $_G['config'] = (include S_ROOT.'./data/config.inc.php') + (include S_ROOT.'./da
 $_G['config']['db'] = include S_ROOT.'./data/dbconfig.inc.php';
 $_CONFIG = &$_G['config'];
 
-$_G['root_url'] = htmlspecialchars('http://'.$_SERVER['HTTP_HOST'].preg_replace("/\/+(api|archiver|wap)?\/*$/i", '', substr($PHP_SELF, 0, strrpos($PHP_SELF, '/'))).'/');
+$root_url = dirname($PHP_SELF);
+$current_dir = realpath(dirname($_SERVER['SCRIPT_FILENAME']));
+$target_dir = realpath(S_ROOT);
+while($current_dir != $target_dir){
+	$current_dir = dirname($current_dir);
+	$root_url = dirname($root_url);
+}
+$_G['root_url'] = htmlspecialchars('http://'.$_SERVER['HTTP_HOST'].$root_url.'/');
+unset($root_url, $current_dir, $target_dir);
+
 $_G['style'] = $_G['config']['style'];
 empty($_G['style']) && $_G['style'] = 'default';
 

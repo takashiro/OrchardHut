@@ -236,6 +236,10 @@ function view($template_name){
 	return $file_path;
 }
 
+function module($id){
+	return S_ROOT.'module/'.$id.'.inc.php';
+}
+
 function submodule($module, $submodule){
 	return S_ROOT.'submodule/'.$module.'/'.$submodule.'.inc.php';
 }

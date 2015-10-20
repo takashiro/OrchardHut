@@ -34,12 +34,12 @@
 		<section class="main">
 			<ul class="menu">
 				<!--{loop $_G['module_list'] $module}-->
-					<!--{if $_G['admin']->hasPermission($module['name'])}-->
+					<!--{if $_G['admin']->hasPermission($module['name']) && !empty($module['admin_modules'])}-->
 					<li>
 						<a href="admin.php?mod=$module[name]">{echo lang('common', 'module_'.$module['name'])}</a>
-						<!--{if count($module['submodule']) > 1}-->
+						<!--{if count($module['admin_modules']) > 1}-->
 						<ul class="submenu">
-						<!--{loop $module['submodule'] $submodule_name}-->
+						<!--{loop $module['admin_modules'] $submodule_name}-->
 							<!--{if $submodule_name != 'main'}-->
 							<li><a href="admin.php?mod={$module['name']}:{$submodule_name}">{echo lang('common', 'module_'.$module['name'].':'.$submodule_name)}</a></li>
 							<!--{/if}-->
