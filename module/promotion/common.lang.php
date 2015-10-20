@@ -22,6 +22,8 @@ takashiro@qq.com
 
 return array(
 	'module_promotion' => '推广',
+
+	'permission_promotion' => '推广设置',
 );
 
 ?>

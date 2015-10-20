@@ -22,6 +22,9 @@ takashiro@qq.com
 
 return array(
 	'module_bankaccount' => '账户',
+
+	'permission_bankaccount' => '资金账户',
+	'permission_bankaccount_comment' => '',
 );
 
 ?>

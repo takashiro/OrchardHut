@@ -24,6 +24,10 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class UserGroupModule extends AdminControlPanelModule{
 
+	public function getRequiredPermissions(){
+		return array('user');
+	}
+
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 

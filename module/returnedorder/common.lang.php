@@ -22,6 +22,10 @@ takashiro@qq.com
 
 return array(
 	'module_returnedorder' => '退单',
+
+	'permission_returnedorder' => '退单',
+	'permission_handle_returnedorder' => '初步处理退单',
+	'permission_confirm_returnedorder' => '确认处理退单',
 );
 
 ?>

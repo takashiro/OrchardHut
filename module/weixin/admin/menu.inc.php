@@ -24,6 +24,10 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class WeixinMenuModule extends AdminControlPanelModule{
 
+	public function getRequiredPermissions(){
+		return array('weixin');
+	}
+
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 

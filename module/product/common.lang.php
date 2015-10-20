@@ -27,6 +27,24 @@ return array(
 	'module_product:balancereport' => '毛利报表',
 	'module_product:unit' => '商品单位',
 	'module_product:type' => '商品类型',
+
+	'permission_product' => '商品管理',
+	'permission_product:unit' => '商品单位设置',
+	'permission_product:unit_comment' => '',
+	'permission_product:type' => '商品类型设置',
+	'permission_product:type_comment' => '',
+	'permission_product:salereport' => '销售报表',
+	'permission_product:salereport_comment' => '',
+	'permission_product:balancereport' => '毛利报表',
+	'permission_product:balancereport_comment' => '',
+	'permission_product:ticket' => '小票设置',
+	'permission_product:ticket_comment' => '',
+	'permission_product:storage' => '库存管理',
+	'permission_product:storage_comment' => '',
+
+	'storage_import' => '进货',
+	'product_storage_normal_mode' => '标准',
+	'product_storage_booking_mode' => '预售',
 );
 
 ?>

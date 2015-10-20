@@ -22,6 +22,9 @@ takashiro@qq.com
 
 return array(
 	'module_qqconnect' => 'QQ互联',
+
+	'permission_qqconnect' => 'QQ互联设置',
+	'permission_qqconnect_comment' => '',
 );
 
 ?>

@@ -23,6 +23,12 @@ takashiro@qq.com
 return array(
 	'module_user' => '用户',
 	'module_user:group' => '用户组',
+
+	'permission_user' => '用户管理',
+	'permission_user:group' => '用户组管理',
+
+	'usergroup_normal' => '普通组',
+	'usergroup_special' => '特殊组',
 );
 
 ?>

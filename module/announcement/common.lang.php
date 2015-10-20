@@ -22,6 +22,9 @@ takashiro@qq.com
 
 return array(
 	'module_announcement' => '公告',
+
+	'permission_announcement' => '管理公告',
+	'permission_announcement_comment' => '',
 );
 
 ?>

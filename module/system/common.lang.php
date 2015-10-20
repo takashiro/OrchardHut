@@ -26,6 +26,13 @@ return array(
 	'module_system:cache' => '缓存',
 	'module_system:file' => '文件',
 	'module_system:database' => '数据库',
+
+	'permission_system' => '系统设置',
+	'permission_system_comment' => '',
+	'permission_system:cache' => '缓存管理',
+	'permission_system:database' => '数据库校验',
+	'permission_system:file' => '文件校验',
+	'permission_system:mail' => '邮件设置',
 );
 
 ?>

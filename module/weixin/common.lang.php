@@ -24,6 +24,13 @@ return array(
 	'module_weixin' => '微信',
 	'module_weixin:autoreply' => '自动回复',
 	'module_weixin:menu' => '自定义菜单',
+
+	'permission_weixin' => '微信参数设置',
+	'permission_weixin_comment' => '',
+	'permission_weixin:autoreply' => '自动回复',
+	'permission_weixin:autoreply_comment' => '',
+	'permission_weixin:menu' => '自定义菜单',
+	'permission_weixin:menu_comment' => '',
 );
 
 ?>

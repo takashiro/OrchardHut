@@ -23,6 +23,9 @@ takashiro@qq.com
 return array(
 	'module_getui' => '个推',
 	'module_getui:config' => '个推配置',
+
+	'permission_getui' => '个推发送消息',
+	'permission_getui:config' => '个推配置',
 );
 
 ?>

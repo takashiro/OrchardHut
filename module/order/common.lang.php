@@ -27,6 +27,19 @@ return array(
 	'module_order:search' => '高级查找',
 	'module_order:ticketconfig' => '商品单位',
 	'module_order:ticketprinter' => '打印提货单',
+
+	'permission_order:scancode' => '扫码处理',
+	'permission_order:search' => '高级查找',
+	'permission_order:ticketconfig' => '小票设置',
+	'permission_order:ticketprinter' => '自助印票',
+	'permission_order:stat' => '分拣报表',
+
+	'permission_order' => '订单管理',
+	'permission_order_sort' => '查看待分拣订单',
+	'permission_order_sort_w' => '分拣订单',
+	'permission_order_deliver' => '查看待配送订单',
+	'permission_order_deliver_w' => '配送订单',
+	'permission_order_to_station' => '标记订单为发车在途',
 );
 
 ?>

@@ -24,6 +24,10 @@ if(!defined('IN_ADMINCP')) exit('access denied');
 
 class WeixinAutoreplyModule extends AdminControlPanelModule{
 
+	public function getRequiredPermissions(){
+		return array('weixin');
+	}
+
 	public function defaultAction(){
 		$this->listAction();
 	}

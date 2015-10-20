@@ -24,6 +24,12 @@ return array(
 	'module_delivery' => '配送',
 	'module_delivery:address' => '地址',
 	'module_delivery:station' => '配送站',
+
+	'permission_delivery' => '配送设置',
+	'permission_delivery_comment' => '',
+	'permission_delivery:address' => '管理地址',
+	'permission_delivery:address_comment' => '',
+	'permission_delivery:station' => '配送站管理',
 );
 
 ?>
