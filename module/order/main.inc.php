@@ -217,7 +217,7 @@ case 'pay':
 
 		if(!empty($order->paymentmethod)){
 			$interface = Order::$PaymentInterface[$order->paymentmethod];
-			redirect($interface.'?orderid='.$order->id);
+			redirect('./?mod='.$interface.'&orderid='.$order->id);
 		}
 	}else{
 		showmsg('illegal_operation');
@@ -234,7 +234,7 @@ case 'pay':
 		include view('pay');
 		exit;
 	}elseif($paymentconfig['enabled_method'][Order::PaidWithAlipay]){
-		redirect('alipay.php?orderid='.$orderid);
+		redirect('./?mod=alipay&orderid='.$orderid);
 	}elseif($paymentconfig['enabled_method'][Order::PaidWithWallet]){
 		redirect('./?mod=payment&orderid='.$orderid);
 	}else{

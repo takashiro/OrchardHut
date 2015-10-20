@@ -16,8 +16,8 @@
  * 如果没有收到该页面返回的 success 信息，支付宝会在24小时内按一定的时间策略重发通知
  */
 
-require_once '../core/init.inc.php';
-require_once submodule('alipay', 'config');
+require_once '../../../core/init.inc.php';
+require_once module('alipay/config');
 error_reporting(E_ALL);
 
 //计算得出通知验证结果

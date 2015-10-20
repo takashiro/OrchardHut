@@ -2,11 +2,7 @@
 
 <script type="text/javascript">
 $(function(){
-	$('ul.paymentmethod li input').click(function(){
-		var input = $(this);
-		var form = $('#rechargeform');
-		form.attr('action', input.attr('value'));
-	});
+	$('ul.paymentmethod li input:first').prop('checked', true);
 });
 </script>
 
@@ -23,7 +19,7 @@ $(function(){
 		</div>
 
 		<div class="edit_form">
-			<form id="rechargeform" action="alipay.php" method="get">
+			<form id="rechargeform" action="./" method="get">
 				<table>
 					<tr>
 						<th><label>余额：</label></th>
@@ -41,7 +37,7 @@ $(function(){
 						<ul class="mselect paymentmethod">
 						<!--{loop Order::$PaymentMethod $methodid $name}-->
 						<!--{if !empty(Order::$PaymentInterface[$methodid]) && $methodid != Order::PaidWithWallet && !empty($paymentconfig['enabled_method'][$methodid])}-->
-							<li><input type="radio" name="paymentmethod" value="{echo Order::$PaymentInterface[$methodid]}" />$name</li>
+							<li><input type="radio" name="mod" value="{echo Order::$PaymentInterface[$methodid]}" />$name</li>
 						<!--{/if}-->
 						<!--{/loop}-->
 						</ul>
@@ -55,7 +51,7 @@ $(function(){
 		</div>
 
 		<!--{if !empty($prepaidreward)}-->
-		<!--{loop $prepaidreward $r}--><a href="alipay.php?recharge=$r[minamount]" class="button" style="width:auto">充{$r[minamount]}<!--{if $r['maxamount'] > $r['minamount']}--> ~ {$r[maxamount]}<!--{/if}-->{echo Product::$PriceUnit}返{$r[reward]}{echo Product::$PriceUnit}</a> <!--{/loop}-->
+		<!--{loop $prepaidreward $r}--><a href="./?mod=alipay&recharge=$r[minamount]" class="button" style="width:auto">充{$r[minamount]}<!--{if $r['maxamount'] > $r['minamount']}--> ~ {$r[maxamount]}<!--{/if}-->{echo Product::$PriceUnit}返{$r[reward]}{echo Product::$PriceUnit}</a> <!--{/loop}-->
 		<!--{/if}-->
 
 		<div class="order_list">
@@ -83,7 +79,7 @@ $(function(){
 								{echo Order::$PaymentMethod[$l['paymentmethod']]}转入{$l[cost]}{echo Product::$PriceUnit}<br />
 								(<!--{if $l['tradestate']}-->{echo Order::$TradeState[$l['tradestate']]}<!--{else}-->等待付款<!--{/if}-->)
 								<!--{if !empty(Order::$PaymentInterface[$l['paymentmethod']]) && $l['tradestate'] != Order::TradeSuccess && $l['tradestate'] != Order::TradeFinished}-->
-								<a href="{echo Order::$PaymentInterface[$l['paymentmethod']]}?rechargeid=$l[id]">[继续]</a>
+								<a href="./?mod={echo Order::$PaymentInterface[$l['paymentmethod']]}&rechargeid=$l[id]">[继续]</a>
 								<!--{/if}-->
 							<!--{elseif $l['type'] == Wallet::OrderRefundLog || $l['type'] == Wallet::OrderPaymentLog}-->
 								<a href="./?mod=order&action=view&orderid=$l[orderid]">订单{echo Wallet::$LogType[$l['type']]}</a>

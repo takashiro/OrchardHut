@@ -20,8 +20,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-require_once './core/init.inc.php';
-require_once submodule('alipay', 'config');
+require_once '../../../core/init.inc.php';
+require_once module('alipay/config');
 
 //计算得出通知验证结果
 $alipayNotify = new AlipayNotify($alipay_config);

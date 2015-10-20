@@ -405,9 +405,9 @@ Order::$PaymentMethod = array(
 
 Order::$PaymentInterface = array(
 	Order::PaidWithCash => '',
-	Order::PaidWithAlipay => 'alipay.php',
-	Order::PaidWithWallet => './?mod=payment',
-	Order::PaidWithBestpay => 'bestpay.php',
+	Order::PaidWithAlipay => 'alipay',
+	Order::PaidWithWallet => 'payment',
+	Order::PaidWithBestpay => 'bestpay',
 );
 
 Order::$DeliveryMethod = array(

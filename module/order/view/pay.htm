@@ -15,7 +15,7 @@ li a{
 		<!--{/if}-->
 		<!--{loop Order::$PaymentMethod $methodid $name}-->
 		<!--{if $methodid != Order::PaidWithWallet && !empty(Order::$PaymentInterface[$methodid]) && !empty($paymentconfig['enabled_method'][$methodid])}-->
-			<li><a href="{echo Order::$PaymentInterface[$methodid]}?orderid=$orderid">$name</a></li>
+			<li><a href="./?mod={echo Order::$PaymentInterface[$methodid]}&orderid=$orderid">$name</a></li>
 		<!--{/if}-->
 		<!--{/loop}-->
 		</ul>

@@ -13,8 +13,8 @@
  * 调试通知返回时，可查看或改写log日志的写入TXT里的数据，来检查通知返回是否正常
  */
 
-require_once S_ROOT.'core/alipay_core.func.php';
-require_once S_ROOT.'core/alipay_rsa.func.php';
+require_once S_ROOT.'module/alipay/lib/core.func.php';
+require_once S_ROOT.'module/alipay/lib/rsa.func.php';
 
 class AlipayNotify {
     /**

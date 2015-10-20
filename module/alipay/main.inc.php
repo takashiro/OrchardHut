@@ -20,12 +20,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-require_once './core/init.inc.php';
+if(!defined('S_ROOT')) exit('access denied');
 
 /* To make use of the following codes, you have to add the rewrite rules below.
 RewriteEngine On
 RewriteBase /
-RewriteRule ^alipay(.*)\.htm$ alipay.php?querystring=$1
+RewriteRule ^alipay(.*)\.htm$ index.php?mod=alipay&querystring=$1
 */
 
 if(empty($_GET['querystring'])){
@@ -48,7 +48,7 @@ if(empty($_GET['querystring'])){
 		exit;
 	}
 }else{
-	$protected_url = 'alipay.php?'.base64_decode($_GET['querystring']).'&skipprotector=1';
+	$protected_url = './?mod=alipay&'.base64_decode($_GET['querystring']).'&skipprotector=1';
 	include view('protector');
 	exit;
 }
@@ -75,7 +75,9 @@ runhooks('alipay_started');
 if(empty($_G['alipaytrade']['out_trade_no']) || empty($_G['alipaytrade']['subject']) || !is_numeric($_G['alipaytrade']['total_fee']))
 	showmsg('illegal_operation');
 
-require_once submodule('alipay', 'config');
+require_once module('alipay/config');
+if(empty($alipay_config['partner']) || empty($alipay_config['transport']) || empty($alipay_config['private_key_path']) || empty($alipay_config['ali_public_key_path']))
+showmsg('alipay_config_error');
 
 //支付类型
 $payment_type = '1';
