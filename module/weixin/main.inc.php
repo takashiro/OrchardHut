@@ -46,7 +46,7 @@ if($action == 'login'){
 	}
 
 	if(!$authkey->matchOnce($_GET['key'])){
-		showmsg('invalid_wxlogin_link');
+		showmsg('expired_wxlogin_link');
 	}
 
 	$user = new User;

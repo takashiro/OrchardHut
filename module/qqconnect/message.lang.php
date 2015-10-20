@@ -30,6 +30,7 @@ return array(
 	'qqopenid_cannot_be_unbinded_with_empty_account' => '您的账号是通过QQ登录自动注册的，需要先设定本站登录账号和密码才能解绑，否则会造成您的账号无法再次登录。',
 	'confirm_to_unbind_qq' => '您确定要解除与QQ的绑定吗？',
 	'successfully_unbinded_qq' => '成功解除与QQ的绑定。',
+	'binding_require_user_logged_in' => '请先登录，然后再进行绑定操作。',
 );
 
 ?>
