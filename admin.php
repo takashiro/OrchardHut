@@ -66,7 +66,7 @@ class AdminControlPanelModule{
 }
 
 $mod = isset($_GET['mod']) ? trim($_GET['mod']) : 'home';
-$module_path = 'core/admin_'.$mod.'.inc.php';
+$module_path = 'core/admin/'.$mod.'.inc.php';
 $mod_url = 'admin.php?mod='.$mod;
 
 if(file_exists($module_path)){

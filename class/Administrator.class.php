@@ -238,13 +238,12 @@ class Administrator extends User{
 			global $_G;
 			self::$Permissions = array();
 
-			//@to-do: remove this?
-			if($module_dir = opendir(S_ROOT.'submodule/admin')){
+			if($module_dir = opendir(S_ROOT.'core/admin')){
 				while($file = readdir($module_dir)){
 					if(substr_compare($file, '.inc.php', -8) == 0){
 						$module_name = substr($file, 0, strlen($file) - 8);
 						$class_name = $module_name.'Module';
-						require_once S_ROOT.'submodule/admin/'.$file;
+						require_once S_ROOT.'core/admin/'.$file;
 
 						if(class_exists($class_name)){
 							$module = new $class_name;
@@ -260,23 +259,21 @@ class Administrator extends User{
 			}
 
 			foreach($_G['module_list'] as $module_info){
-				if($module_dir = opendir(S_ROOT.'module/'.$module_info['name'].'/admin')){
-					foreach($module_info['submodule'] as $submodule_name){
-						$class_name = $module_info['name'].$submodule_name.'Module';
-						require_once S_ROOT.'module/'.$module_info['name'].'/admin/'.$submodule_name.'.inc.php';
+				foreach($module_info['admin_modules'] as $submodule_name){
+					$class_name = $module_info['name'].$submodule_name.'Module';
+					require_once S_ROOT.'module/'.$module_info['name'].'/admin/'.$submodule_name.'.inc.php';
 
-						if(class_exists($class_name)){
-							$module = new $class_name;
-							$module_id = $module_info['name'];
-							if($submodule_name != 'main'){
-								$module_id.= ':'.$submodule_name;
-							}
-							self::$Permissions[$module_id] = array(
-								'alias' => $module->getAlias(),
-								'children' => $module->getPermissions(),
-								'parents' => $module->getRequiredPermissions(),
-							);
+					if(class_exists($class_name)){
+						$module = new $class_name;
+						$module_id = $module_info['name'];
+						if($submodule_name != 'main'){
+							$module_id.= ':'.$submodule_name;
 						}
+						self::$Permissions[$module_id] = array(
+							'alias' => $module->getAlias(),
+							'children' => $module->getPermissions(),
+							'parents' => $module->getRequiredPermissions(),
+						);
 					}
 				}
 			}
