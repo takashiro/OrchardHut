@@ -1,6 +1,6 @@
 
-DROP TABLE IF EXISTS `hut_returnedorder`;
-CREATE TABLE IF NOT EXISTS `hut_returnedorder` (
+DROP TABLE IF EXISTS `pre_returnedorder`;
+CREATE TABLE IF NOT EXISTS `pre_returnedorder` (
   `id` mediumint(8) unsigned NOT NULL,
   `dateline` int(11) unsigned NOT NULL,
   `reason` text NOT NULL,
@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS `hut_returnedorder` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `hut_returnedorderdetail`;
-CREATE TABLE IF NOT EXISTS `hut_returnedorderdetail` (
+DROP TABLE IF EXISTS `pre_returnedorderdetail`;
+CREATE TABLE IF NOT EXISTS `pre_returnedorderdetail` (
   `id` int(11) unsigned NOT NULL,
   `orderid` mediumint(8) unsigned NOT NULL,
   `number` int(11) unsigned NOT NULL,

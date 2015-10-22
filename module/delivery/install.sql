@@ -2,8 +2,8 @@
 ALTER TABLE `pre_user` ADD `addressid` mediumint(8) unsigned NOT NULL;
 ALTER TABLE `pre_user` ADD KEY `addressid` (`addressid`);
 
-DROP TABLE IF EXISTS `hut_addresscomponent`;
-CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
+DROP TABLE IF EXISTS `pre_addresscomponent`;
+CREATE TABLE IF NOT EXISTS `pre_addresscomponent` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
   `parentid` mediumint(8) unsigned NOT NULL,
@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `hut_deliveryaddress`;
-CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
+DROP TABLE IF EXISTS `pre_deliveryaddress`;
+CREATE TABLE IF NOT EXISTS `pre_deliveryaddress` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` mediumint(8) unsigned NOT NULL,
   `addressid` mediumint(8) unsigned NOT NULL,
@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS `hut_deliveryaddress` (
   KEY `userid` (`userid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `hut_deliverytime`;
-CREATE TABLE IF NOT EXISTS `hut_deliverytime` (
+DROP TABLE IF EXISTS `pre_deliverytime`;
+CREATE TABLE IF NOT EXISTS `pre_deliverytime` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `hidden` tinyint(1) NOT NULL,
   `time_from` mediumint(8) unsigned NOT NULL,
@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS `hut_deliverytime` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `hut_station`;
-CREATE TABLE IF NOT EXISTS `hut_station` (
+DROP TABLE IF EXISTS `pre_station`;
+CREATE TABLE IF NOT EXISTS `pre_station` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `address` varchar(255) NOT NULL,

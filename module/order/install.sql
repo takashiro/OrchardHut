@@ -1,6 +1,6 @@
 
-DROP TABLE IF EXISTS `hut_order`;
-CREATE TABLE IF NOT EXISTS `hut_order` (
+DROP TABLE IF EXISTS `pre_order`;
+CREATE TABLE IF NOT EXISTS `pre_order` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `userid` mediumint(8) unsigned NOT NULL,
   `dateline` int(11) unsigned NOT NULL,
@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS `hut_order` (
   KEY `dateline` (`dateline`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `hut_ordercomment`;
-CREATE TABLE IF NOT EXISTS `hut_ordercomment` (
+DROP TABLE IF EXISTS `pre_ordercomment`;
+CREATE TABLE IF NOT EXISTS `pre_ordercomment` (
   `orderid` mediumint(8) unsigned NOT NULL,
   `dateline` int(11) unsigned NOT NULL,
   `level1` tinyint(3) unsigned NOT NULL,
@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS `hut_ordercomment` (
   PRIMARY KEY (`orderid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `hut_orderdetail`;
-CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
+DROP TABLE IF EXISTS `pre_orderdetail`;
+CREATE TABLE IF NOT EXISTS `pre_orderdetail` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `orderid` mediumint(8) unsigned NOT NULL,
   `productid` mediumint(8) unsigned NOT NULL,
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS `hut_orderdetail` (
   KEY `orderid` (`orderid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `hut_orderlog`;
-CREATE TABLE IF NOT EXISTS `hut_orderlog` (
+DROP TABLE IF EXISTS `pre_orderlog`;
+CREATE TABLE IF NOT EXISTS `pre_orderlog` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `orderid` mediumint(8) unsigned NOT NULL,
   `operator` mediumint(8) unsigned DEFAULT NULL,

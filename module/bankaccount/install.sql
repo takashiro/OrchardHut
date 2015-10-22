@@ -1,6 +1,6 @@
 
-DROP TABLE IF EXISTS `hut_bankaccount`;
-CREATE TABLE IF NOT EXISTS `hut_bankaccount` (
+DROP TABLE IF EXISTS `pre_bankaccount`;
+CREATE TABLE IF NOT EXISTS `pre_bankaccount` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `remark` varchar(50) NOT NULL,
   `amount` decimal(9,2) NOT NULL,
@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS `hut_bankaccount` (
   KEY `addressrange` (`addressrange`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `hut_bankaccountlog`;
-CREATE TABLE IF NOT EXISTS `hut_bankaccountlog` (
+DROP TABLE IF EXISTS `pre_bankaccountlog`;
+CREATE TABLE IF NOT EXISTS `pre_bankaccountlog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `accountid` mediumint(8) unsigned NOT NULL,
   `delta` decimal(9,2) NOT NULL,

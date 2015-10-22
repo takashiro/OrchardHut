@@ -1,6 +1,6 @@
 
-DROP TABLE IF EXISTS `hut_announcement`;
-CREATE TABLE IF NOT EXISTS `hut_announcement` (
+DROP TABLE IF EXISTS `pre_announcement`;
+CREATE TABLE IF NOT EXISTS `pre_announcement` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL,
   `content` text NOT NULL,

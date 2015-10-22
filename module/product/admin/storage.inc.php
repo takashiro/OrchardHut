@@ -246,7 +246,7 @@ class ProductStorageModule extends AdminControlPanelModule{
 
 			$ids = array();
 			$query = $db->query("SELECT MAX(id)
-					FROM `hut_productstoragelog`
+					FROM `{$tpre}productstoragelog`
 					WHERE storageid IN ($storageids) GROUP BY storageid,importamountunit");
 			while($r = $query->fetch_row()){
 				$ids[] = $r[0];
@@ -254,7 +254,7 @@ class ProductStorageModule extends AdminControlPanelModule{
 			$ids = implode(',', $ids);
 
 			$storage_unit_ratio = $db->fetch_all("SELECT storageid,amount,importamount,importamountunit
-				FROM `hut_productstoragelog`
+				FROM `{$tpre}productstoragelog`
 				WHERE id IN ($ids)
 				ORDER BY id DESC");
 		}
