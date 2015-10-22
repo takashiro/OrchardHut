@@ -37,7 +37,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode(Address::Ava
 		</div>
 	</form>
 
-	<p>用户数：$user_num ({echo sprintf('%.2f', $user_num / $total_user_num * 100)}%), 总用户数：$total_user_num</p>
+	<p>用户数：$user_num ({echo sprintf('%.2f', $total_user_num > 0 ? $user_num / $total_user_num * 100 : 100)}%), 总用户数：$total_user_num</p>
 	<div class="content list">
 		<table>
 			<thead>

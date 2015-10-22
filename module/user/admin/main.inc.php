@@ -122,6 +122,10 @@ class UserMainModule extends AdminControlPanelModule{
 		$user_list = $db->fetch_all("SELECT u.*
 			FROM {$tpre}user u
 			WHERE $condition $limit_subsql");
+		foreach($user_list as &$u){
+			$u['ordernum'] = 0;
+		}
+		unset($u);
 
 		$userids = array();
 		$user_map = array();
@@ -130,16 +134,15 @@ class UserMainModule extends AdminControlPanelModule{
 			$user_map[$u['id']] = &$u;
 		}
 		unset($u);
-		$userids = implode(',', $userids);
-		$user_ordernum = $db->fetch_all("SELECT userid,COUNT(*) AS ordernum FROM {$tpre}order WHERE userid IN ($userids) GROUP BY userid");
-		foreach($user_ordernum as $u){
-			$user_map[$u['userid']]['ordernum'] = $u['ordernum'];
+
+		if($userids){
+			$userids = implode(',', $userids);
+			$user_ordernum = $db->fetch_all("SELECT userid,COUNT(*) AS ordernum FROM {$tpre}order WHERE userid IN ($userids) GROUP BY userid");
+			foreach($user_ordernum as $u){
+				$user_map[$u['userid']]['ordernum'] = $u['ordernum'];
+			}
+			unset($u, $user_map);
 		}
-		unset($u, $user_map);
-		foreach($user_list as &$u){
-			isset($u['ordernum']) || $u['ordernum'] = 0;
-		}
-		unset($u);
 
 		if($output_format == 'html'){
 			if($query_string){
