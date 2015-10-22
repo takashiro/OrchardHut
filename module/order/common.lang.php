@@ -52,6 +52,8 @@ return array(
 	'order_received' => '已签收',
 	'order_rejected' => '已拒收',
 	'order_canceled' => '已取消',
+	'order_refund' => '退款',
+	'order_payment' => '支付',
 
 	'order_waitbuyerpay' => '待付款',
 	'order_tradeclosed' => '关闭',
