@@ -34,9 +34,6 @@ class Order extends DBObject{
 	const Canceled = 6;
 	const ToDeliveryStation = 7;
 
-	//Payment Method
-	public static $PaymentInterface;
-
 	//Delivery Method
 	public static $DeliveryMethod;
 	const HomeDelivery = 0;
@@ -396,13 +393,6 @@ Wallet::$PaymentMethod = array(
 	Wallet::ViaAlipay => lang('common', 'order_paidwithalipay'),
 	Wallet::ViaWallet => lang('common', 'order_paidwithwallet'),
 	Wallet::ViaBestpay => lang('common', 'order_paidwithbestpay'),
-);
-
-Order::$PaymentInterface = array(
-	Wallet::ViaCash => '',
-	Wallet::ViaAlipay => 'alipay',
-	Wallet::ViaWallet => 'payment',
-	Wallet::ViaBestpay => 'bestpay',
 );
 
 Order::$DeliveryMethod = array(

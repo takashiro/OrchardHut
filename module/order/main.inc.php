@@ -216,7 +216,7 @@ case 'pay':
 		}
 
 		if(!empty($order->paymentmethod)){
-			$interface = Order::$PaymentInterface[$order->paymentmethod];
+			$interface = Wallet::$PaymentInterface[$order->paymentmethod];
 			redirect('./?mod='.$interface.'&orderid='.$order->id);
 		}
 	}else{
