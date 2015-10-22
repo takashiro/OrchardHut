@@ -1,4 +1,7 @@
 
+ALTER TABLE `pre_user` ADD `addressid` mediumint(8) unsigned NOT NULL;
+ALTER TABLE `pre_user` ADD KEY `addressid` (`addressid`);
+
 DROP TABLE IF EXISTS `hut_addresscomponent`;
 CREATE TABLE IF NOT EXISTS `hut_addresscomponent` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,

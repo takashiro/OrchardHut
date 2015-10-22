@@ -25,3 +25,6 @@ CREATE TABLE IF NOT EXISTS `hut_bankaccountlog` (
   KEY `accountid` (`accountid`),
   KEY `dateline` (`dateline`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `pre_bankaccountlog`
+  ADD CONSTRAINT `accountid` FOREIGN KEY (`accountid`) REFERENCES `pre_bankaccount` (`id`);

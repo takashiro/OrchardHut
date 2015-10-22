@@ -51,6 +51,7 @@ class Order extends DBObject{
 
 	//Trade State
 	public static $TradeState;
+	public static $TradeStateEnum;
 	const WaitBuyerPay = 1;		//交易创建，等待买家付款。
 	const TradeClosed = 2;		//在指定时间段内未支付时关闭的交易；在交易完成全额退款成功时关闭的交易。
 	const TradeSuccess = 3;		//交易成功，且可对该交易做操作，如：多级分润、退款等。
@@ -422,6 +423,14 @@ Order::$TradeState = array(
 	Order::TradeClosed => lang('common', 'order_tradeclosed'),
 	Order::TradePending => lang('common', 'order_tradepending'),
 	Order::TradeFinished => lang('common', 'order_tradefinished'),
+);
+
+Order::$TradeStateEnum = array(
+	'WAIT_BUYER_PAY' => Order::WaitBuyerPay,
+	'TRADE_CLOSED' => Order::TradeClosed,
+	'TRADE_SUCCESS' => Order::TradeSuccess,
+	'TRADE_PENDING' => Order::TradePending,
+	'TRADE_FINISHED' => Order::TradeFinished,
 );
 
 ?>

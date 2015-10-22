@@ -100,6 +100,10 @@ class UserGroup extends DBObject{
 		if($log['operation'] == Order::StatusChanged && $log['extra'] == Order::Received)
 			UserGroup::RefreshUser($order->userid);
 	}
+
+	static public function __on_user_register($user){
+		$user->groupid = UserGroup::ByOrderNum('id', 0);
+	}
 }
 
 UserGroup::$Type = array(
