@@ -26,6 +26,14 @@ return array(
 	'permission_returnedorder' => '退单',
 	'permission_handle_returnedorder' => '初步处理退单',
 	'permission_confirm_returnedorder' => '确认处理退单',
+
+	'returned_order_submitted' => '已提交',
+	'returned_order_handled' => '处理中',
+	'returned_order_confirmed' => '处理完毕',
+	'returned_order_unhandled_detail' => '未处理',
+	'returned_order_invalid_detail' => '条件不符',
+	'returned_order_fee_only' => '退款',
+	'returned_order_fee_and_item' => '退货退款',
 );
 
 ?>

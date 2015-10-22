@@ -40,6 +40,29 @@ return array(
 	'permission_order_deliver' => '查看待配送订单',
 	'permission_order_deliver_w' => '配送订单',
 	'permission_order_to_station' => '标记订单为发车在途',
+
+	'order' => '订单',
+	'order_id' => '订单编号',
+	'order_detail' => '订单详情',
+	'order_unsorted' => '待出库',
+	'order_sorted' => '已打包',
+	'order_to_delivery_station' => '发车在途',
+	'order_in_delivery_station' => '到配送站',
+	'order_delivering' => '送货中',
+	'order_received' => '已签收',
+	'order_rejected' => '已拒收',
+	'order_canceled' => '已取消',
+
+	'order_waitbuyerpay' => '待付款',
+	'order_tradeclosed' => '关闭',
+	'order_tradesuccess' => '成功',
+	'order_tradepending' => '待收款',
+	'order_tradefinished' => '结束',
+
+	'out_of_stock' => '缺货',
+
+	'home_delivery' => '送货上门',
+	'station_delivery' => '自提点取货',
 );
 
 ?>
