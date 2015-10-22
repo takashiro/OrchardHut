@@ -388,13 +388,6 @@ Order::$Status = array(
 	Order::Canceled => lang('common', 'order_canceled'),
 );
 
-Wallet::$PaymentMethod = array(
-	Wallet::ViaCash => lang('common', 'order_paidwithcash'),
-	Wallet::ViaAlipay => lang('common', 'order_paidwithalipay'),
-	Wallet::ViaWallet => lang('common', 'order_paidwithwallet'),
-	Wallet::ViaBestpay => lang('common', 'order_paidwithbestpay'),
-);
-
 Order::$DeliveryMethod = array(
 	Order::HomeDelivery => lang('common', 'home_delivery'),
 	Order::StationDelivery => lang('common', 'station_delivery'),
