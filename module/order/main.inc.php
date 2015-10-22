@@ -41,7 +41,7 @@ case 'delete':
 	}
 
 	if(empty($_GET['confirm'])){
-		if($order->paymentmethod == Order::PaidWithAlipay && $order->tradestate != Order::TradeSuccess){
+		if($order->paymentmethod == Wallet::ViaAlipay && $order->tradestate != Order::TradeSuccess){
 			showmsg('alipay_not_updated_confirm_to_cancel_order', 'confirm');
 		}else{
 			showmsg('confirm_to_cancel_order', 'confirm');
@@ -230,12 +230,12 @@ case 'pay':
 		$enabled_method_count++;
 	}
 
-	if($paymentconfig['enabled_method'][Order::PaidWithAlipay] && $paymentconfig['enabled_method'][Order::PaidWithWallet]){
+	if($paymentconfig['enabled_method'][Wallet::ViaAlipay] && $paymentconfig['enabled_method'][Wallet::ViaWallet]){
 		include view('pay');
 		exit;
-	}elseif($paymentconfig['enabled_method'][Order::PaidWithAlipay]){
+	}elseif($paymentconfig['enabled_method'][Wallet::ViaAlipay]){
 		redirect('./?mod=alipay&orderid='.$orderid);
-	}elseif($paymentconfig['enabled_method'][Order::PaidWithWallet]){
+	}elseif($paymentconfig['enabled_method'][Wallet::ViaWallet]){
 		redirect('./?mod=payment&orderid='.$orderid);
 	}else{
 		showmsg('payment_is_now_disabled', 'back');
@@ -250,7 +250,7 @@ default:
 	$table = $db->select_table('order');
 	$condition = 'userid='.$_G['user']->id;
 	$unsorted = Order::Unsorted;
-	$paid_with_cash = Order::PaidWithCash;
+	$paid_with_cash = Wallet::ViaCash;
 	$trade_success = Order::TradeSuccess;
 	$orders = $table->fetch_all('*', $condition." ORDER BY
 		(CASE paymentmethod

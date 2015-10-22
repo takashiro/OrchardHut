@@ -30,7 +30,7 @@ if(!$_G['user']->isLoggedIn()){
 $tradestates = array(0, Order::WaitBuyerPay);
 $tradestates = implode(',', $tradestates);
 $unsorted_status = Order::Unsorted;
-$paid_with_cash = Order::PaidWithCash;
+$paid_with_cash = Wallet::ViaCash;
 $unpaid_num = $db->result_first("SELECT COUNT(*)
 	FROM {$tpre}order
 	WHERE userid={$_G['user']->id} AND tradestate IN ($tradestates) AND status=$unsorted_status AND paymentmethod!=$paid_with_cash");
@@ -211,8 +211,8 @@ switch($action){
 			$order->message = !empty($_POST['message']) ? trim($_POST['message']) : '';
 
 			//判断订单的支付方式是否合法
-			$order->paymentmethod = isset($_POST['paymentmethod']) ? intval($_POST['paymentmethod']) : Order::PaidWithCash;
-			isset(Order::$PaymentMethod[$order->paymentmethod]) || $order->paymentmethod = Order::PaidWithCash;
+			$order->paymentmethod = isset($_POST['paymentmethod']) ? intval($_POST['paymentmethod']) : Wallet::ViaCash;
+			isset(Wallet::$PaymentMethod[$order->paymentmethod]) || $order->paymentmethod = Wallet::ViaCash;
 			if(empty($paymentconfig['enabled_method'][$order->paymentmethod])){
 				foreach($paymentconfig['enabled_method'] as $methodid => $enabled){
 					if($enabled){
@@ -258,19 +258,19 @@ switch($action){
 			//显示订单提交结果
 			if($order_succeeded){
 				//若为钱包支付，直接扣款
-				if($order->paymentmethod == Order::PaidWithWallet){
+				if($order->paymentmethod == Wallet::ViaWallet){
 					$wallet = new Wallet($_G['user']);
 					$wallet->pay($order);
 
 				//若使用线上支付，进入支付宝界面
-				}elseif($order->paymentmethod != Order::PaidWithCash){
+				}elseif($order->paymentmethod != Wallet::ViaCash){
 					if(!empty(Order::$PaymentInterface[$order->paymentmethod])){
 						redirect('./?mod='.Order::$PaymentInterface[$order->paymentmethod].'&orderid='.$order->id.'&'.User::COOKIE_VAR.'='.urlencode($_COOKIE[User::COOKIE_VAR]));
 					}
 				}
 
 				//货到付款的时间默认为下单时间，方便后台统一处理
-				if($order->paymentmethod == Order::PaidWithCash)
+				if($order->paymentmethod == Wallet::ViaCash)
 					$order->tradetime = TIMESTAMP;
 
 				if(!$item_deleted){

@@ -31,7 +31,7 @@ class PromotionMainModule extends AdminControlPanelModule{
 				$config['orderrewardratio'] = intval($_POST['orderrewardratio']);
 			}
 
-			foreach(Order::$PaymentMethod as $methodid => $methodname){
+			foreach(Wallet::$PaymentMethod as $methodid => $methodname){
 				$config['enabled_method'][$methodid] = !empty($_POST['enabled_method'][$methodid]);
 			}
 

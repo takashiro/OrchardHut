@@ -83,7 +83,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($all_address
 							</div>
 						</td>
 						<td rowspan="$rowspan">{echo rdate($o['dateline'])}</td>
-						<td rowspan="$rowspan">{echo Order::$PaymentMethod[$o['paymentmethod']]}<!--{if $o['tradestate']}--><br />({echo Order::$TradeState[$o['tradestate']]})<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}--><br />(等待付款)<!--{/if}--></td>
+						<td rowspan="$rowspan">{echo Wallet::$PaymentMethod[$o['paymentmethod']]}<!--{if $o['tradestate']}--><br />({echo Order::$TradeState[$o['tradestate']]})<!--{elseif $o['paymentmethod'] != Wallet::ViaCash}--><br />(等待付款)<!--{/if}--></td>
 						<td colspan="4"></td>
 						<td rowspan="$rowspan"><div class="reason">$o[reason]</div></td>
 						<td rowspan="$rowspan">$o[returnedfee]</td>

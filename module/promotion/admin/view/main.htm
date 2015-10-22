@@ -14,7 +14,7 @@
 		<tr>
 			<th><label>产生回扣的支付方式：</th></label>
 			<td>
-			<!--{loop Order::$PaymentMethod $methodid $methodname}-->
+			<!--{loop Wallet::$PaymentMethod $methodid $methodname}-->
 				{echo Template::checkbox("enabled_method[$methodid]", $methodname, !empty($config['enabled_method'][$methodid]))}
 			<!--{/loop}-->
 			</td>

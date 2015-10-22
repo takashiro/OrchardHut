@@ -42,7 +42,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 		<tr>
 			<th><label>订单支付方式：</label></th>
 			<td>
-				<!--{loop Order::$PaymentMethod $methodid $label}-->
+				<!--{loop Wallet::$PaymentMethod $methodid $label}-->
 					<!--{if !empty($paymentconfig['enabled_method'][$methodid])}-->
 					<label><input type="radio" name="orderpaymentmethod" value="$methodid" {if isset($a['orderpaymentmethod']) && $methodid == $a['orderpaymentmethod']}checked="checked"{/if} />$label</label>
 					<!--{/if}-->

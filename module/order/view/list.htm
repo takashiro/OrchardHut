@@ -34,8 +34,8 @@
 								<li>{$o[totalprice]}{echo Product::$PriceUnit}<!--{if $o['deliveryfee'] > 0}--><span class="deliveryfee">(含运费{$o[deliveryfee]}{echo Product::$PriceUnit})</span><!--{/if}--></li>
 								<li>{echo Order::$Status[$o['status']]}</li>
 								<li>
-									{echo Order::$PaymentMethod[$o['paymentmethod']]}
-									<!--{if $o['paymentmethod'] != Order::PaidWithCash}-->
+									{echo Wallet::$PaymentMethod[$o['paymentmethod']]}
+									<!--{if $o['paymentmethod'] != Wallet::ViaCash}-->
 									<!--{if $o['tradestate']}-->
 									({echo Order::$TradeState[$o['tradestate']]})
 									<!--{else}-->
@@ -54,7 +54,7 @@
 							<!--{elseif $o['status'] == Order::Received}-->
 								<a href="./?mod=order&action=comment&orderid=$o[id]">[评价]</a>
 							<!--{/if}-->
-							<!--{if $o['paymentmethod'] != Order::PaidWithCash && (empty($o['tradestate']) || $o['tradestate'] == Order::WaitBuyerPay) && $o['status'] != Order::Canceled}-->
+							<!--{if $o['paymentmethod'] != Wallet::ViaCash && (empty($o['tradestate']) || $o['tradestate'] == Order::WaitBuyerPay) && $o['status'] != Order::Canceled}-->
 								<a href="./?mod=order&action=pay&orderid=$o[id]">[付款]</a>
 							<!--{/if}-->
 							<!--{if $o['status'] == Order::Received}-->

@@ -98,8 +98,8 @@ window.close();
 		<tr>
 			<th>付款状态：</th>
 			<td>
-				{echo Order::$PaymentMethod[$order['paymentmethod']]}
-				<!--{if $order['tradestate']}-->({echo Order::$TradeState[$order['tradestate']]})<!--{elseif $order['paymentmethod'] != Order::PaidWithCash}-->(等待付款)<!--{/if}-->
+				{echo Wallet::$PaymentMethod[$order['paymentmethod']]}
+				<!--{if $order['tradestate']}-->({echo Order::$TradeState[$order['tradestate']]})<!--{elseif $order['paymentmethod'] != Wallet::ViaCash}-->(等待付款)<!--{/if}-->
 			</td>
 		</tr>
 	</table>

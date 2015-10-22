@@ -35,13 +35,7 @@ class Order extends DBObject{
 	const ToDeliveryStation = 7;
 
 	//Payment Method
-	public static $PaymentMethod;
 	public static $PaymentInterface;
-	const PaidWithCash = 0;
-	const PaidWithAlipay = 1;
-	const PaidWithWallet = 2;
-	const PaidWithBestpay = 3;
-	const PaidWithWeChat = 4;
 
 	//Delivery Method
 	public static $DeliveryMethod;
@@ -285,7 +279,7 @@ class Order extends DBObject{
 			global $_G;
 			$order = new Order($_GET['orderid']);
 			if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
-				$order->paymentmethod = Order::PaidWithAlipay;
+				$order->paymentmethod = Wallet::ViaAlipay;
 				//商户网站订单系统中唯一订单号，必填
 				$_G['alipaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
 
@@ -312,7 +306,7 @@ class Order extends DBObject{
 			if($order->tradestate == $trade_status)
 				return;
 
-			$order->paymentmethod = Order::PaidWithAlipay;
+			$order->paymentmethod = Wallet::ViaAlipay;
 			$order->tradestate = $trade_status;
 			$order->tradeid = $trade_no;
 			if($order->tradestate == Order::TradeSuccess)
@@ -329,7 +323,7 @@ class Order extends DBObject{
 				showmsg('order_does_not_exist', './?mod=order');
 			}
 
-			$order->paymentmethod = Order::PaidWithAlipay;
+			$order->paymentmethod = Wallet::ViaAlipay;
 			$order->tradestate = $trade_status;
 			$order->tradeid = $trade_no;
 			if($order->tradestate == Order::TradeSuccess){
@@ -346,7 +340,7 @@ class Order extends DBObject{
 			global $_G;
 			$order = new Order($_GET['orderid']);
 			if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
-				$order->paymentmethod = Order::PaidWithBestpay;
+				$order->paymentmethod = Wallet::ViaBestpay;
 				//商户网站订单系统中唯一订单号，必填
 				$_G['bestpaytrade']['tradeid'] = self::$AlipayTradeNoPrefix.$order->id;
 
@@ -371,7 +365,7 @@ class Order extends DBObject{
 				exit;
 			}
 
-			$order->paymentmethod = Order::PaidWithBestpay;
+			$order->paymentmethod = Wallet::ViaBestpay;
 			$order->tradestate = $trade_status == '0000' ? Order::TradeSuccess : Order::WaitBuyerPay;
 			$order->tradeid = $trade_no;
 			if($order->tradestate == Order::TradeSuccess)
@@ -397,18 +391,18 @@ Order::$Status = array(
 	Order::Canceled => lang('common', 'order_canceled'),
 );
 
-Order::$PaymentMethod = array(
-	Order::PaidWithCash => lang('common', 'order_paidwithcash'),
-	Order::PaidWithAlipay => lang('common', 'order_paidwithalipay'),
-	Order::PaidWithWallet => lang('common', 'order_paidwithwallet'),
-	Order::PaidWithBestpay => lang('common', 'order_paidwithbestpay'),
+Wallet::$PaymentMethod = array(
+	Wallet::ViaCash => lang('common', 'order_paidwithcash'),
+	Wallet::ViaAlipay => lang('common', 'order_paidwithalipay'),
+	Wallet::ViaWallet => lang('common', 'order_paidwithwallet'),
+	Wallet::ViaBestpay => lang('common', 'order_paidwithbestpay'),
 );
 
 Order::$PaymentInterface = array(
-	Order::PaidWithCash => '',
-	Order::PaidWithAlipay => 'alipay',
-	Order::PaidWithWallet => 'payment',
-	Order::PaidWithBestpay => 'bestpay',
+	Wallet::ViaCash => '',
+	Wallet::ViaAlipay => 'alipay',
+	Wallet::ViaWallet => 'payment',
+	Wallet::ViaBestpay => 'bestpay',
 );
 
 Order::$DeliveryMethod = array(

@@ -6,7 +6,7 @@
 <script type="text/javascript" src="./data/js/addresscomponent.js?$_CONFIG[refversion]"></script>
 <script type="text/javascript">
 var DeliveryConfig = {echo json_encode($deliveryconfig)};
-var Order = {PaidWithWallet : {echo Order::PaidWithWallet}};
+var Order = {PaidWithWallet : {echo Wallet::ViaWallet}};
 $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 </script>
 <script type="text/javascript" src="./js/cart.js?$_CONFIG[refversion]"></script>
@@ -65,7 +65,7 @@ $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 				<h1>付款方式<em>钱包余额：<span id="userwallet">{$_USER[wallet]}</span>{echo Product::$PriceUnit}</em></h1>
 				<div class="content">
 					<ul class="mselect">
-					<!--{loop Order::$PaymentMethod $methodid $label}-->
+					<!--{loop Wallet::$PaymentMethod $methodid $label}-->
 						<!--{if !empty($paymentconfig['enabled_method'][$methodid])}-->
 						<li><input type="radio" name="paymentmethod" value="$methodid" />$label</li>
 						<!--{/if}-->

@@ -52,8 +52,8 @@ foreach($orders as $o){
 	echo isset(Order::$Status[$o['status']]) ? Order::$Status[$o['status']] : '未知', ',';
 	echo isset(Order::$DeliveryMethod[$o['deliverymethod']]) ? Order::$DeliveryMethod[$o['deliverymethod']] : '?', ',';
 	echo rdate($o['dateline']), ',';
-	echo isset(Order::$PaymentMethod[$o['paymentmethod']]) ? Order::$PaymentMethod[$o['paymentmethod']] : '未知', ',';
-	if($o['paymentmethod'] != Order::PaidWithCash){
+	echo isset(Wallet::$PaymentMethod[$o['paymentmethod']]) ? Wallet::$PaymentMethod[$o['paymentmethod']] : '未知', ',';
+	if($o['paymentmethod'] != Wallet::ViaCash){
 		if(empty($o['tradestate'])){
 			echo '等待付款';
 		}else{

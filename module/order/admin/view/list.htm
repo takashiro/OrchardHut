@@ -158,8 +158,8 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 							<!--{/if}-->
 						</td>
 						<td>
-							<div>{echo Order::$PaymentMethod[$o['paymentmethod']]}</div>
-							<!--{if $o['tradestate']}-->{echo Order::$TradeState[$o['tradestate']]}<!--{elseif $o['paymentmethod'] != Order::PaidWithCash}-->等待付款<!--{/if}-->
+							<div>{echo Wallet::$PaymentMethod[$o['paymentmethod']]}</div>
+							<!--{if $o['tradestate']}-->{echo Order::$TradeState[$o['tradestate']]}<!--{elseif $o['paymentmethod'] != Wallet::ViaCash}-->等待付款<!--{/if}-->
 						</td>
 						<td title="下单时间：{echo rdate($o['dateline'])}"><!--{if $o['tradetime']}-->{echo rdate($o['tradetime'])}<!--{/if}--></td>
 						<td>{echo Order::$DeliveryMethod[$o['deliverymethod']]}</td>
