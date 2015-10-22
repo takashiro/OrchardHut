@@ -57,7 +57,7 @@ foreach($orders as $o){
 		if(empty($o['tradestate'])){
 			echo '等待付款';
 		}else{
-			echo isset(Order::$TradeState[$o['tradestate']]) ? Order::$TradeState[$o['tradestate']] : '未知';
+			echo isset(Wallet::$TradeState[$o['tradestate']]) ? Wallet::$TradeState[$o['tradestate']] : '未知';
 		}
 	}
 	echo ',';

@@ -22,7 +22,7 @@ foreach($returned_orders as $o){
 	echo ',', Wallet::$PaymentMethod[$o['paymentmethod']];
 	echo ',';
 	if($o['tradestate']){
-		echo Order::$TradeState[$o['tradestate']];
+		echo Wallet::$TradeState[$o['tradestate']];
 	}elseif($o['paymentmethod'] != Wallet::ViaCash){
 		echo '(等待付款)';
 	}

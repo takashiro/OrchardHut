@@ -55,12 +55,6 @@ return array(
 	'order_refund' => '退款',
 	'order_payment' => '支付',
 
-	'order_waitbuyerpay' => '待付款',
-	'order_tradeclosed' => '关闭',
-	'order_tradesuccess' => '成功',
-	'order_tradepending' => '待收款',
-	'order_tradefinished' => '结束',
-
 	'out_of_stock' => '缺货',
 
 	'home_delivery' => '送货上门',

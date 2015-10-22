@@ -37,7 +37,7 @@
 									{echo Wallet::$PaymentMethod[$o['paymentmethod']]}
 									<!--{if $o['paymentmethod'] != Wallet::ViaCash}-->
 									<!--{if $o['tradestate']}-->
-									({echo Order::$TradeState[$o['tradestate']]})
+									({echo Wallet::$TradeState[$o['tradestate']]})
 									<!--{else}-->
 									(等待付款)
 									<!--{/if}-->
@@ -54,7 +54,7 @@
 							<!--{elseif $o['status'] == Order::Received}-->
 								<a href="./?mod=order&action=comment&orderid=$o[id]">[评价]</a>
 							<!--{/if}-->
-							<!--{if $o['paymentmethod'] != Wallet::ViaCash && (empty($o['tradestate']) || $o['tradestate'] == Order::WaitBuyerPay) && $o['status'] != Order::Canceled}-->
+							<!--{if $o['paymentmethod'] != Wallet::ViaCash && (empty($o['tradestate']) || $o['tradestate'] == Wallet::WaitBuyerPay) && $o['status'] != Order::Canceled}-->
 								<a href="./?mod=order&action=pay&orderid=$o[id]">[付款]</a>
 							<!--{/if}-->
 							<!--{if $o['status'] == Order::Received}-->

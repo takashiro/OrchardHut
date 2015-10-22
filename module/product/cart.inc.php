@@ -27,7 +27,7 @@ if(!$_G['user']->isLoggedIn()){
 	redirect('./?mod=user');
 }
 
-$tradestates = array(0, Order::WaitBuyerPay);
+$tradestates = array(0, Wallet::WaitBuyerPay);
 $tradestates = implode(',', $tradestates);
 $unsorted_status = Order::Unsorted;
 $paid_with_cash = Wallet::ViaCash;

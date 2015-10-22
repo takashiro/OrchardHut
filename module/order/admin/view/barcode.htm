@@ -118,7 +118,7 @@ $(function(){
 	<dt>付款状态</dt>
 	<dd>
 		{echo Wallet::$PaymentMethod[$order['paymentmethod']]}
-		<!--{if $order['tradestate']}-->({echo Order::$TradeState[$order['tradestate']]})<!--{elseif $order['paymentmethod'] != Wallet::ViaCash}-->(等待付款)<!--{/if}-->
+		<!--{if $order['tradestate']}-->({echo Wallet::$TradeState[$order['tradestate']]})<!--{elseif $order['paymentmethod'] != Wallet::ViaCash}-->(等待付款)<!--{/if}-->
 	</dd>
 </dl>
 <div class="signature">

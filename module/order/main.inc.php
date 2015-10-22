@@ -41,7 +41,7 @@ case 'delete':
 	}
 
 	if(empty($_GET['confirm'])){
-		if($order->paymentmethod == Wallet::ViaAlipay && $order->tradestate != Order::TradeSuccess){
+		if($order->paymentmethod == Wallet::ViaAlipay && $order->tradestate != Wallet::TradeSuccess){
 			showmsg('alipay_not_updated_confirm_to_cancel_order', 'confirm');
 		}else{
 			showmsg('confirm_to_cancel_order', 'confirm');
@@ -251,7 +251,7 @@ default:
 	$condition = 'userid='.$_G['user']->id;
 	$unsorted = Order::Unsorted;
 	$paid_with_cash = Wallet::ViaCash;
-	$trade_success = Order::TradeSuccess;
+	$trade_success = Wallet::TradeSuccess;
 	$orders = $table->fetch_all('*', $condition." ORDER BY
 		(CASE paymentmethod
 			WHEN $paid_with_cash THEN $trade_success

@@ -34,7 +34,7 @@ class OrderStatModule extends AdminControlPanelModule{
 
 		//根据付款状态查询订单
 		if(empty($_REQUEST['tradestate'])){
-			$tradestate = Order::TradeSuccess;
+			$tradestate = Wallet::TradeSuccess;
 		}else{
 			$tradestate = intval($_REQUEST['tradestate']);
 
@@ -47,7 +47,7 @@ class OrderStatModule extends AdminControlPanelModule{
 		}
 
 		//时间条件
-		$timefield = $tradestate >= Order::TradeSuccess ? 'tradetime' : 'dateline';
+		$timefield = $tradestate >= Wallet::TradeSuccess ? 'tradetime' : 'dateline';
 		$time_start = null;
 		if(isset($_REQUEST['time_start'])){
 			$time_start = rstrtotime($_REQUEST['time_start']);
