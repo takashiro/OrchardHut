@@ -24,28 +24,18 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 Introduction
 ------------
 
-Orchard Hut is a mini e-shop system (embeded in WeChat, optional).
+Orchard Hut is a mini e-shop system (embeded in WeChat, optional)
+based on Elf Web App (http://github.com/takashiro/Elf)
 
 Features
 ----------
 
-1. Basic Functions
-    * Error Reporter, record each run-time error as a report in data/error/
-    * File-based data storage and cache
-    * Simple but powerful template engine with statements like if, elseif, else, loop, echo and eval.
-    * Frequently-used input elements like select, radio and checkbox can be output easily without foreach or many if statments
-    * MySQL connection class
-    * Automatically attached and removed cookie prefix to avoid cookie collision
-    * Hook engine, for open-close principle
-    * Timed announcements
-    *
-
-2. Product management
+1. Product management
     * Multiple prices for one product
     * Storage management
     * Timed price
 
-3. Online Payment
+2. Online Payment
     * Alipay via mobile webpage supported
 
 
@@ -54,6 +44,8 @@ Running Environment
 1. PHP 5.5
 2. MySQL 5
 3. Apache Or IIS
-4. PHP extension: cURL, openssl
+4. PHP extension: cURL, openssl, mcrypt
 
-Run http://yoursitename/install and it will be working.
+Clone Elf Web App and move the repo into a new subdirectory named extension
+in the root directory of Elf.
+Run http://yoursite/install and it will be working.
