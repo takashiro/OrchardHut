@@ -2,6 +2,8 @@
 ALTER TABLE `pre_user` ADD `addressid` mediumint(8) unsigned NOT NULL;
 ALTER TABLE `pre_user` ADD KEY `addressid` (`addressid`);
 
+ALTER TABLE `pre_administrator` ADD `limitation` text NOT NULL;
+
 DROP TABLE IF EXISTS `pre_addresscomponent`;
 CREATE TABLE IF NOT EXISTS `pre_addresscomponent` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
