@@ -2,12 +2,12 @@
 <html>
 <head>
 <title>$_CONFIG[sitename]自助打印提货单</title>
+<base href="{$_G[root_url]}" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<link rel="shortcut icon" href="./view/admin/$_G[style]/image/favicon.ico"/>
-<link rel="stylesheet" href="{__TEMPLATE_ROOT__}image/ticket_printer.css?$_CONFIG[refversion]" type="text/css" />
+<link rel="stylesheet" href="./extension/module/order/admin/view/image/ticket_printer.css?$_CONFIG[refversion]" type="text/css" />
 <!--{if !empty($_CONFIG[jquery_cdn])}-->
 <script type="text/javascript" src="$_CONFIG[jquery_cdn]"></script>
 <!--{/if}-->
@@ -23,7 +23,7 @@
 		</header>
 
 		<div class="box">
-			<h2><img src="{__TEMPLATE_ROOT__}image/logo.png" width="150" height="50" />自助打印提货单</h2>
+			<h2><img src="extension/view/user/pink/image/logo.png" width="150" height="50" />自助打印提货单</h2>
 			<div class="content">
 				<table>
 					<tr>

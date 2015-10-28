@@ -29,7 +29,7 @@ class OrderSearchModule extends AdminControlPanelModule{
 	}
 
 	public function defaultAction(){
-		require_once MOD_ROOT.'admin/main.inc.php';
+		require_once MOD_ROOT.'main.inc.php';
 		$ordermodule = new OrderMainModule;
 		$ordermodule->listAction('search');
 	}

@@ -173,7 +173,7 @@ class OrderStatModule extends AdminControlPanelModule{
 
 		$formats = array('html', 'csv');
 		$format = isset($_REQUEST['format']) && in_array($_REQUEST['format'], $formats) ? $_REQUEST['format'] : 'html';
-		include view('orderstat_'.$format);
+		include view('stat_'.$format);
 	}
 
 }

@@ -126,7 +126,8 @@ $(function(){
 				icon.append(countdown_icon);
 			}
 
-			more_button.click(function(){
+			more_button.click(function(e){
+				e.preventDefault();
 				if(list.is(':visible')){
 					list.hide();
 					brief.show();
