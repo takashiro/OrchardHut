@@ -124,7 +124,7 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 			}
 
 			$ticketconfig = readdata('ticket');
-			include view('ticket_config');
+			include view('list_ticket');
 
 		}else{
 			include view('ticket_printer');

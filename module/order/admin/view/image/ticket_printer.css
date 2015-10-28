@@ -7,6 +7,16 @@ body, input, select, textarea, button{
 	font-family: '微软雅黑';
 }
 
+header{
+	display: none;
+}
+
+footer{
+	text-align: center;
+	font-size: 9pt;
+	color: gray;
+}
+
 .container{
 	min-width: 500px;
 }
