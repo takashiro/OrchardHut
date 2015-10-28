@@ -75,11 +75,10 @@ $(function(){
 		$(this).html('');
 	});
 
-	$('a.wechat_login').click(function(){
+	$('a.wechat_login').click(function(e){
+		e.preventDefault();
 		if(follow_guide_page == undefined || window.navigator.userAgent.indexOf('MicroMessenger') == -1){
-			var title = '微信扫码';
-			var content = '<ol><li>扫码关注公众号：<br /><img src="./view/user/default/image/wx_qrcode.png" /></li><li>点击公众号菜单“进入商城”选项。</li></ol>';
-			popup_message(title, content);
+			location.href = './?mod=weixin:qrconnect';
 		}else{
 			location.href = follow_guide_page;
 		}
