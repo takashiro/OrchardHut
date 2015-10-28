@@ -400,7 +400,7 @@ class OrderMainModule extends AdminControlPanelModule{
 					}
 					unset($o);
 				}
-				include view($template_format);
+				include view('list_'.$template_format);
 			}
 		}else{
 			include view('search');
