@@ -29,11 +29,11 @@ var cookiepre = '$_CONFIG[cookiepre]';
 			<div id="sharebox" data-id="share-box">
 				<p>
 				<!--{if $_G['user']->isLoggedIn()}-->
-					<a href="./?mod=order">$_USER[account]</a>
-					<a href="./?mod=user&action=logout">[退出]</a>
+					<a href="index.php?mod=order">$_USER[account]</a>
+					<a href="index.php?mod=user&action=logout">[退出]</a>
 				<!--{else}-->
-					<a href="./?mod=user&action=login" class="button">登录</a>
-					<a href="./?mod=qqconnect"><img src="{__TEMPLATE_ROOT__}image/qqlogin_small.png" /></a>
+					<a href="index.php?mod=user&action=login" class="button">登录</a>
+					<a href="index.php?mod=qqconnect"><img src="{__TEMPLATE_ROOT__}image/qqlogin_small.png" /></a>
 				<!--{/if}-->
 				</p>
 			</div>

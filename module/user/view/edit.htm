@@ -3,7 +3,7 @@
 <div class="box edit_form">
 	<h1>我的个人信息</h1>
 
-	<form action="./?mod=user" method="post">
+	<form action="index.php?mod=user" method="post">
 	<table>
 		<tr>
 			<th><label>用户名：</label></th>
@@ -41,9 +41,9 @@
 			<th><label>绑定QQ：</label></th>
 			<td>
 				<!--{if $_G['user']->qqopenid}-->
-				已绑定，<a href="./?mod=qqconnect&action=unbind">点此解绑</a>
+				已绑定，<a href="index.php?mod=qqconnect&action=unbind">点此解绑</a>
 				<!--{else}-->
-				未绑定，<a href="./?mod=qqconnect">点此绑定</a>
+				未绑定，<a href="index.php?mod=qqconnect">点此绑定</a>
 				<!--{/if}-->
 			</td>
 		</tr>
@@ -51,7 +51,7 @@
 			<th><label>绑定微信：</label></th>
 			<td>
 				<!--{if $_G['user']->wxopenid}-->
-				已绑定，<a href="./?mod=weixin&action=unbind">点此解绑</a>
+				已绑定，<a href="index.php?mod=weixin&action=unbind">点此解绑</a>
 				<!--{else}-->
 				未绑定，请关注$_CONFIG[sitename]官方公众账号，发送“绑定”。
 				<!--{/if}-->

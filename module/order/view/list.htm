@@ -7,8 +7,8 @@
 			<div class="icon_home"></div>
 			<div class="account">$_USER[account]</div>
 			<ul class="operation">
-				<li><a href="./?mod=user">修改个人信息</a></li>
-				<li><a href="./?mod=user&action=logout">退出</a></li>
+				<li><a href="index.php?mod=user">修改个人信息</a></li>
+				<li><a href="index.php?mod=user&action=logout">退出</a></li>
 			</ul>
 		</div>
 
@@ -46,19 +46,19 @@
 							</ul>
 						</td>
 						<td class="operation">
-							<a href="./?mod=order&action=view&orderid=$o[id]" class="view">[详细]</a>
+							<a href="index.php?mod=order&action=view&orderid=$o[id]" class="view">[详细]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
-								<a href="./?mod=order&action=delete&orderid=$o[id]">[取消]</a>
+								<a href="index.php?mod=order&action=delete&orderid=$o[id]">[取消]</a>
 							<!--{elseif $o['status'] == Order::Sorted || $o['status'] == Order::ToDeliveryStation || $o['status'] == Order::InDeliveryStation || $o['status'] == Order::Delivering}-->
-								<a href="./?mod=order&action=mark_received&orderid=$o[id]">[签收]</a>
+								<a href="index.php?mod=order&action=mark_received&orderid=$o[id]">[签收]</a>
 							<!--{elseif $o['status'] == Order::Received}-->
-								<a href="./?mod=order&action=comment&orderid=$o[id]">[评价]</a>
+								<a href="index.php?mod=order&action=comment&orderid=$o[id]">[评价]</a>
 							<!--{/if}-->
 							<!--{if $o['paymentmethod'] != Wallet::ViaCash && (empty($o['tradestate']) || $o['tradestate'] == Wallet::WaitBuyerPay) && $o['status'] != Order::Canceled}-->
-								<a href="./?mod=order&action=pay&orderid=$o[id]">[付款]</a>
+								<a href="index.php?mod=order&action=pay&orderid=$o[id]">[付款]</a>
 							<!--{/if}-->
 							<!--{if $o['status'] == Order::Received}-->
-							<a href="./?mod=order&action=return&orderid=$o[id]">[退货]</a>
+							<a href="index.php?mod=order&action=return&orderid=$o[id]">[退货]</a>
 							<!--{/if}-->
 						</td>
 					</tr>
@@ -69,6 +69,6 @@
 	</div>
 </div>
 
-{eval echo Template::mpage($pagenum, $page, $limit, './?mod=order')}
+{eval echo Template::mpage($pagenum, $page, $limit, 'index.php?mod=order')}
 
 {template footer}

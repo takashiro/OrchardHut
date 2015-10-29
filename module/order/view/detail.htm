@@ -38,8 +38,10 @@
 							重新分拣了订单
 						<!--{elseif $log['extra'] == Order::Sorted}-->
 							为您打包了订单
+						<!--{elseif $log['extra'] == Order::ToDeliveryStation}-->
+							正将订单送至配送站
 						<!--{elseif $log['extra'] == Order::InDeliveryStation}-->
-							已将订单送至配送站
+							已将订单送达配送站
 						<!--{elseif $log['extra'] == Order::Delivering}-->
 							正在为您配送
 						<!--{elseif $log['extra'] == Order::Received}-->

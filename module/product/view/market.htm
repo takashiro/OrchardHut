@@ -41,7 +41,7 @@ var User = {
 	<!--{if count(Product::Types()) > 1}-->
 	<ul class="product_type">
 	<!--{loop Product::Types() $typeid $typename}-->
-		<li{if $type == $typeid} class="current"{/if}><a href="./?mod=product&type=$typeid">$typename</a></li>
+		<li{if $type == $typeid} class="current"{/if}><a href="index.php?mod=product&type=$typeid">$typename</a></li>
 	<!--{/loop}-->
 	</ul>
 	<!--{/if}-->

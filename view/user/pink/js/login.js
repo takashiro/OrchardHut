@@ -78,7 +78,7 @@ $(function(){
 	$('a.wechat_login').click(function(e){
 		e.preventDefault();
 		if(follow_guide_page == undefined || window.navigator.userAgent.indexOf('MicroMessenger') == -1){
-			location.href = './?mod=weixin:qrconnect';
+			location.href = 'index.php?mod=weixin:qrconnect';
 		}else{
 			location.href = follow_guide_page;
 		}

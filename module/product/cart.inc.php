@@ -24,7 +24,7 @@ if(!defined('S_ROOT')) exit('access denied');
 
 //Disallow guests opening the shopping cart
 if(!$_G['user']->isLoggedIn()){
-	redirect('./?mod=user');
+	redirect('index.php?mod=user');
 }
 
 $tradestates = array(0, Wallet::WaitBuyerPay);
@@ -35,7 +35,7 @@ $unpaid_num = $db->result_first("SELECT COUNT(*)
 	FROM {$tpre}order
 	WHERE userid={$_G['user']->id} AND tradestate IN ($tradestates) AND status=$unsorted_status AND paymentmethod!=$paid_with_cash");
 if($unpaid_num > 0){
-	showmsg('please_cancel_or_pay_your_previous_order', './?mod=order');
+	showmsg('please_cancel_or_pay_your_previous_order', 'index.php?mod=order');
 }
 
 $actions = array('order', 'deleteaddress');
@@ -114,9 +114,9 @@ switch($action){
 
 		if(!$products){
 			if($item_deleted){
-				showmsg('shopping_cart_empty_because_of_item_deleted', './?mod=product');
+				showmsg('shopping_cart_empty_because_of_item_deleted', 'index.php?mod=product');
 			}else{
-				showmsg('shopping_cart_empty', './?mod=product');
+				showmsg('shopping_cart_empty', 'index.php?mod=product');
 			}
 		}
 
@@ -127,12 +127,12 @@ switch($action){
 			if($_G['user']->hasTrickFlag(User::ORDER_IGNORING_TRICK)){
 				rsetcookie('shopping_cart', '{}');
 				writelog('trick', "{$_G['user']->id}\torder ignored");
-				showmsg('successfully_submitted_order', './?mod=order');
+				showmsg('successfully_submitted_order', 'index.php?mod=order');
 			}
 
 			//处理提交的订单开始
 			if(empty($_POST['formkey']) || !$_G['user']->checkFormKey($_POST['formkey'])){
-				showmsg('you_submitted_a_duplicated_order', './?mod=order');
+				showmsg('you_submitted_a_duplicated_order', 'index.php?mod=order');
 			}
 
 			$order = new Order;
@@ -265,7 +265,7 @@ switch($action){
 				//若使用线上支付，进入支付宝界面
 				}elseif($order->paymentmethod != Wallet::ViaCash){
 					if(!empty(Wallet::$PaymentInterface[$order->paymentmethod])){
-						redirect('./?mod='.Wallet::$PaymentInterface[$order->paymentmethod].'&orderid='.$order->id);
+						redirect('index.php?mod='.Wallet::$PaymentInterface[$order->paymentmethod].'&orderid='.$order->id);
 					}
 				}
 
@@ -274,12 +274,12 @@ switch($action){
 					$order->tradetime = TIMESTAMP;
 
 				if(!$item_deleted){
-					showmsg('successfully_submitted_order', './?mod=order');
+					showmsg('successfully_submitted_order', 'index.php?mod=order');
 				}else{
-					showmsg('successfully_submitted_order_with_item_deleted', './?mod=order');
+					showmsg('successfully_submitted_order_with_item_deleted', 'index.php?mod=order');
 				}
 			}else{
-				showmsg('failed_to_submit_order', './?mod=product');
+				showmsg('failed_to_submit_order', 'index.php?mod=product');
 			}
 		}
 

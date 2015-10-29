@@ -11,11 +11,11 @@ li a{
 	<div class="content">
 		<ul class="mselect">
 		<!--{if !empty($paymentconfig['enabled_method'][Wallet::ViaWallet])}-->
-			<li><a href="{if $order->totalprice <= $_G['user']->wallet}./?mod=payment&orderid=$orderid{else}javascript:alert('余额不足');{/if}">钱包余额 (可用{$_USER[wallet]}{echo Product::$PriceUnit})</a></li>
+			<li><a href="{if $order->totalprice <= $_G['user']->wallet}index.php?mod=payment&orderid=$orderid{else}javascript:alert('余额不足');{/if}">钱包余额 (可用{$_USER[wallet]}{echo Product::$PriceUnit})</a></li>
 		<!--{/if}-->
 		<!--{loop Wallet::$PaymentMethod $methodid $name}-->
 		<!--{if $methodid != Wallet::ViaWallet && !empty(Wallet::$PaymentInterface[$methodid]) && !empty($paymentconfig['enabled_method'][$methodid])}-->
-			<li><a href="./?mod={echo Wallet::$PaymentInterface[$methodid]}&orderid=$orderid">$name</a></li>
+			<li><a href="index.php?mod={echo Wallet::$PaymentInterface[$methodid]}&orderid=$orderid">$name</a></li>
 		<!--{/if}-->
 		<!--{/loop}-->
 		</ul>

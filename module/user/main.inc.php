@@ -33,7 +33,7 @@ if($_G['user']->isLoggedIn()){
 
 if($action == 'login'){
 	if($_G['user']->isLoggedIn()){
-		showmsg('you_have_logged_in', './?mod=order');
+		showmsg('you_have_logged_in', 'index.php?mod=order');
 	}
 
 	if($_POST){
@@ -48,7 +48,7 @@ if($action == 'login'){
 
 		if($result == User::ACTION_SUCCEEDED){
 			if(empty($_POST['http_referer'])){
-				showmsg('successfully_logged_in', './?mod=order');
+				showmsg('successfully_logged_in', 'index.php?mod=order');
 			}else{
 				showmsg('successfully_logged_in', $_POST['http_referer']);
 			}
@@ -64,7 +64,7 @@ if($action == 'login'){
 	$_G['user']->logout();
 	rsetcookie('delivering-order-number');
 	rsetcookie('order-number-cache-time');
-	redirect('./?mod=user');
+	redirect('index.php?mod=user');
 
 }elseif($action == 'register'){
 	if($_POST){
@@ -78,7 +78,7 @@ if($action == 'login'){
 				}
 				rsetcookie('referrerid');
 			}
-			redirect('./?mod=product');
+			redirect('index.php?mod=product');
 		}elseif($uid == User::INVALID_ACCOUNT){
 			showmsg('account_too_short_or_too_long', 'back');
 		}elseif($uid == User::INVALID_PASSWORD){
@@ -90,7 +90,7 @@ if($action == 'login'){
 		}
 	}
 
-	redirect('./?mod=user');
+	redirect('index.php?mod=user');
 
 }else if($action == 'edit'){
 	if($_POST){
@@ -182,7 +182,7 @@ if($action == 'login'){
 			}
 		}
 
-		showmsg('successfully_update_profile', './?mod=user');
+		showmsg('successfully_update_profile', 'index.php?mod=user');
 	}
 
 	$referrer = new User;

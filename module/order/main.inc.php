@@ -23,7 +23,7 @@ takashiro@qq.com
 if(!defined('S_ROOT')) exit('access denied');
 
 if(!$_G['user']->isLoggedIn()){
-	redirect('./?mod=user');
+	redirect('index.php?mod=user');
 }
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -53,7 +53,7 @@ case 'delete':
 	if($db->affected_rows > 0){
 		$order->addLog($_G['user'], Order::StatusChanged, Order::Canceled);
 		$order->cancel();
-		showmsg('successfully_canceled_order', './?mod=order');
+		showmsg('successfully_canceled_order', 'index.php?mod=order');
 	}
 
 	showmsg('order_not_exist', 'back');
@@ -75,7 +75,7 @@ case 'mark_received':
 			$order->addLog($_G['user'], Order::StatusChanged, Order::Received);
 
 			rsetcookie('order-number-cache-time', 0);
-			showmsg('successfully_received', './?mod=order');
+			showmsg('successfully_received', 'index.php?mod=order');
 		}
 	}
 
@@ -217,7 +217,7 @@ case 'pay':
 
 		if(!empty($order->paymentmethod)){
 			$interface = Wallet::$PaymentInterface[$order->paymentmethod];
-			redirect('./?mod='.$interface.'&orderid='.$order->id);
+			redirect('index.php?mod='.$interface.'&orderid='.$order->id);
 		}
 	}else{
 		showmsg('illegal_operation');
@@ -234,9 +234,9 @@ case 'pay':
 		include view('pay');
 		exit;
 	}elseif($paymentconfig['enabled_method'][Wallet::ViaAlipay]){
-		redirect('./?mod=alipay&orderid='.$orderid);
+		redirect('index.php?mod=alipay&orderid='.$orderid);
 	}elseif($paymentconfig['enabled_method'][Wallet::ViaWallet]){
-		redirect('./?mod=payment&orderid='.$orderid);
+		redirect('index.php?mod=payment&orderid='.$orderid);
 	}else{
 		showmsg('payment_is_now_disabled', 'back');
 	}
