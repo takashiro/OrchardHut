@@ -573,7 +573,7 @@ class OrderMainModule extends AdminControlPanelModule{
 
 			$ticketconfig = readdata('ticket');
 
-			include view($ticket_type);
+			include view('list_'.$ticket_type);
 		}
 	}
 
