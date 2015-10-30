@@ -14,6 +14,9 @@ var follow_guide_page = '$wx[follow_guide_page]';
 		<div class="header">
 			$_CONFIG[sitename] - 用户<span id="action_text">登录</span>
 		</div>
+		<!--{if strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false || (strpos($_SERVER['HTTP_USER_AGENT'], 'GT-I9500') !== false && strpos($_SERVER['HTTP_USER_AGENT'], 'MQQBrowser') !== false)}-->
+		<p>微信的内置浏览器就是会抽风诶，真是没办法QAQ。咱表示已经习惯了喵，关了这个页面重新点公众号下的【进入商城】吧。要是有设置或注册账号（非微信公众号登录方式）的话，也可以通过下面的登录框登录哦。</p>
+		<!--{/if}-->
 		<label for="account">账号</label><input type="text" id="account" name="account" />
 		<label for="password">密码</label><input type="password" id="password" name="password" />
 		<div class="for_register">

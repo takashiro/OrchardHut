@@ -22,18 +22,12 @@ takashiro@qq.com
 
 if(!defined('S_ROOT')) exit('access denied');
 
-$actions = array('login', 'logout', 'register', 'edit');
-$action = !empty($_REQUEST['action']) && in_array($_REQUEST['action'], $actions) ? $_REQUEST['action'] : $actions[0];
+$action = !empty($_REQUEST['action']) ? trim($_REQUEST['action']) : ($_G['user']->isLoggedIn() ? 'home' : 'login');
 
-if($_G['user']->isLoggedIn()){
-	if($action != 'logout'){
-		$action = 'edit';
-	}
-}
-
-if($action == 'login'){
+switch($action){
+case 'login':
 	if($_G['user']->isLoggedIn()){
-		showmsg('you_have_logged_in', 'index.php?mod=order');
+		showmsg('you_have_logged_in', 'index.php');
 	}
 
 	if($_POST){
@@ -48,7 +42,7 @@ if($action == 'login'){
 
 		if($result == User::ACTION_SUCCEEDED){
 			if(empty($_POST['http_referer'])){
-				showmsg('successfully_logged_in', 'index.php?mod=order');
+				showmsg('successfully_logged_in', 'index.php');
 			}else{
 				showmsg('successfully_logged_in', $_POST['http_referer']);
 			}
@@ -59,14 +53,16 @@ if($action == 'login'){
 
 	$wx = readdata('wxconnect');
 	include view('login');
+	break;
 
-}elseif($action == 'logout'){
+case 'logout':
 	$_G['user']->logout();
 	rsetcookie('delivering-order-number');
 	rsetcookie('order-number-cache-time');
-	redirect('index.php?mod=user');
+	redirect('index.php');
+	break;
 
-}elseif($action == 'register'){
+case 'register':
 	if($_POST){
 		$uid = User::Register($_POST);
 		if($uid > 0){
@@ -90,9 +86,10 @@ if($action == 'login'){
 		}
 	}
 
-	redirect('index.php?mod=user');
+	redirect('index.php');
+	break;
 
-}else if($action == 'edit'){
+case 'edit':
 	if($_POST){
 		if(isset($_POST['mobile'])){
 			$mobile = trim($_POST['mobile']);
@@ -192,6 +189,11 @@ if($action == 'login'){
 	$referrer = $referrer->toReadable();
 
 	include view('edit');
+	break;
+
+default:
+	$paymentconfig = readdata('payment');
+	include view('home');
 }
 
 ?>

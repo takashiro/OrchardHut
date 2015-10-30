@@ -825,6 +825,7 @@ input.number{
 .edit_form table th{
 	width:30%;
 	text-align:right;
+	vertical-align:top;
 }
 
 .edit_form table td{

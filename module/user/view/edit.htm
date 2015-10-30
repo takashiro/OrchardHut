@@ -1,81 +1,64 @@
 <!--{template header}-->
 
-<div class="box edit_form">
-	<h1>我的个人信息</h1>
+<div class="box">
+	<h1>个人信息</h1>
 
-	<form action="index.php?mod=user" method="post">
-	<table>
-		<tr>
-			<th><label>用户名：</label></th>
-			<td>
-				<input type="text" id="account" name="account" {if !empty($_G['user']->account)} value="{echo $_G['user']->account}" readonly="readonly" {/if} />
-				<div class="tips">用户名用于直接登录本站，不可修改。通过其他账号（如QQ、微信）登录本站的用户可以进行设置。</div>
-			</td>
-		</tr>
-		<tr>
-			<th><label>昵称：</label></th>
-			<td>
-				<input type="text" id="nickname" name="nickname" value="$_USER[nickname]" />
-				<div class="tips">设置昵称后，您的用户名仅用于登录，昵称替代用户名显示</div>
-			</td>
-		</tr>
-		<tr>
-			<th><label>旧密码：</label></th>
-			<td>
-				<input type="password" id="old_password" name="old_password" />
-				<div class="tips">若您不需要修改登录密码，此处密码请留空。通过其他账号（如QQ、微信）登录的用户若要修改密码，此处请留空。</div>
-			</td>
-		</tr>
-		<tr>
-			<th><label>新密码：</label></th>
-			<td>
-				<input type="password" id="new_password" name="new_password" />
-				<div class="tips">该密码用于配合用户名登录本站。不需修改密码请留空。</div>
-			</td>
-		</tr>
-		<tr>
-			<th><label>再次确认：</label></th>
-			<td><input type="password" id="new_password2" name="new_password2" /></td>
-		</tr>
-		<tr>
-			<th><label>绑定QQ：</label></th>
-			<td>
-				<!--{if $_G['user']->qqopenid}-->
-				已绑定，<a href="index.php?mod=qqconnect&action=unbind">点此解绑</a>
-				<!--{else}-->
-				未绑定，<a href="index.php?mod=qqconnect">点此绑定</a>
-				<!--{/if}-->
-			</td>
-		</tr>
-		<tr>
-			<th><label>绑定微信：</label></th>
-			<td>
-				<!--{if $_G['user']->wxopenid}-->
-				已绑定，<a href="index.php?mod=weixin&action=unbind">点此解绑</a>
-				<!--{else}-->
-				未绑定，请关注$_CONFIG[sitename]官方公众账号，发送“绑定”。
-				<!--{/if}-->
-			</td>
-		</tr>
-		<tr>
-			<th><label>E-mail：</label></th>
-			<td><input type="text" id="email" name="email" value="$_USER[email]" /></td>
-		</tr>
-		<tr>
-			<th><label>手机号码：</label></th>
-			<td><input type="text" id="mobile" name="mobile" value="$_USER[mobile]" /></td>
-		</tr>
-		<tr>
-			<th><label>我的推荐人：</label></th>
-			<td><!--{if !empty($referrer['id'])}-->$referrer[account]<!--{else}-->无<!--{/if}--></td>
-		</tr>
-	</table>
+	<div class="content edit_form">
+		<div class="profile">
+			<div class="icon_home"></div>
+			<div class="account">$_USER[account]</div>
+		</div>
 
-	<div class="post_buttons">
-		<button type="submit">修改个人信息</button>
+		<form action="index.php?mod=user" method="post">
+		<table>
+			<tr>
+				<th><label>用户名：</label></th>
+				<td>
+					<input type="text" id="account" name="account" {if !empty($_G['user']->account)} value="{echo $_G['user']->account}" readonly="readonly" {/if} />
+					<div class="tips">用户名用于直接登录本站，不可修改。通过其他账号（如QQ、微信）登录本站的用户可以进行设置。</div>
+				</td>
+			</tr>
+			<tr>
+				<th><label>昵称：</label></th>
+				<td>
+					<input type="text" id="nickname" name="nickname" value="$_USER[nickname]" />
+					<div class="tips">设置昵称后，您的用户名仅用于登录，昵称替代用户名显示</div>
+				</td>
+			</tr>
+			<tr>
+				<th><label>旧密码：</label></th>
+				<td>
+					<input type="password" id="old_password" name="old_password" />
+					<div class="tips">若您不需要修改登录密码，此处密码请留空。通过其他账号（如QQ、微信）登录的用户若要修改密码，此处请留空。</div>
+				</td>
+			</tr>
+			<tr>
+				<th><label>新密码：</label></th>
+				<td>
+					<input type="password" id="new_password" name="new_password" />
+					<div class="tips">该密码用于配合用户名登录本站。不需修改密码请留空。</div>
+				</td>
+			</tr>
+			<tr>
+				<th><label>再次确认：</label></th>
+				<td><input type="password" id="new_password2" name="new_password2" /></td>
+			</tr>
+			<tr>
+				<th><label>E-mail：</label></th>
+				<td><input type="text" id="email" name="email" value="$_USER[email]" /></td>
+			</tr>
+			<tr>
+				<th><label>手机号码：</label></th>
+				<td><input type="text" id="mobile" name="mobile" value="$_USER[mobile]" /></td>
+			</tr>
+		</table>
+
+		<div class="post_buttons">
+			<button type="submit">修改个人信息</button>
+		</div>
+
+		</form>
 	</div>
-
-	</form>
 </div>
 
 <!--{template footer}-->
