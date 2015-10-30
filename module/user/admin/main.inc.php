@@ -92,7 +92,7 @@ class UserMainModule extends AdminControlPanelModule{
 		if(!empty($_REQUEST['address'])){
 			$addressid = intval($_REQUEST['address']);
 			$address_range = Address::Extension($addressid);
-			$condition[] = 'o.addressid IN ('.implode(',', $address_range).')';
+			$condition[] = 'u.addressid IN ('.implode(',', $address_range).')';
 			$query_string[] = 'address='.$addressid;
 		}
 
