@@ -21,4 +21,6 @@ return array(
 	'two_different_passwords' => '您两次输入的密码不一致，请重新输入。',
 	'incorrect_old_password' => '您输入的旧密码不正确，请重新输入。',
 	'successfully_update_profile' => '修改个人信息成功！',
+
+	'user_does_not_exist' => '该用户不存在。',
 );

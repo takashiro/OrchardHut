@@ -157,6 +157,21 @@ class UserMainModule extends AdminControlPanelModule{
 		}
 	}
 
+	public function profileAction(){
+		if(empty($_GET['id']))
+			exit('parameter id is missing.');
+
+		$id = intval($_GET['id']);
+		global $db;
+		$table = $db->select_table('user');
+		$user = $table->fetch_first('*', 'id='.$id);
+		if(!$user)
+			showmsg('user_does_not_exist');
+
+		extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
+		include view('profile');
+	}
+
 }
 
 ?>
