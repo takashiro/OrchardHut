@@ -48,6 +48,10 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 </script>
 <script type="text/javascript" src="./js/datetime.js?$_CONFIG[refversion]"></script>
 <script type="text/javascript" src="./extension/module/order/admin/view/js/admin_order_list.js?$_CONFIG[refversion]"></script>
+<style type="text/css">
+#orderlist{font-size: 10pt;}
+div.datetime{font-size: 9pt;}
+</style>
 
 <div class="box">
 	<h1>订单管理</h1>
@@ -95,22 +99,21 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 		</form>
 
 		<!--{if empty($stat['statonly']) || !empty($stat['totalprice'])}-->
-		<div id="orderlist" class="list" style="font-size:10pt">
+		<div id="orderlist" class="list">
 			<table>
 				<thead>
 					<tr>
 						<td>编号</td>
-					<!--{loop $address_format $name}-->
-						<td>$name</td>
-					<!--{/loop}-->
 						<td>地址</td>
 						<td>收件人</td>
 						<td>历史订单</td>
+					<!--{if $_G['admin']->hasPermission('user')}-->
+						<td>用户</td>
+					<!--{/if}-->
 						<td>物品</td>
 						<td>价格</td>
 						<td width="65">物流状态</td>
 						<td>付款状态</td>
-						<td width="100">付款时间</td>
 						<td width="100">收货方式</td>
 						<td width="50">操作</td>
 						<td>留言</td>
@@ -125,13 +128,12 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 							<div>($o[customlabel])</div>
 							<!--{/if}-->
 						</td>
-						<!--{eval $maxi = count($address_format);}-->
-						<!--{eval for($i = 0; $i < $maxi; $i++){}-->
-							<td>{echo isset($o['address'][$i]['name']) ? $o['address'][$i]['name'] : ''}</td>
-						<!--{eval }}-->
-						<td>$o[extaddress]</td>
+						<td>{echo Address::FullPathString($o['addressid'])} $o[extaddress]</td>
 						<td><a href="$mod_url&action=list&time_start=&time_end=&addressee=$o[addressee]">$o[addressee]</a><br /><a href="$mod_url&action=list&time_start=&time_end=&mobile=$o[mobile]">$o[mobile]</a></td>
 						<td><a href="$mod_url&action=list&time_start=&time_end=&tradestate=0&userid=$o[userid]">$o[ordernum]</a></td>
+						<!--{if $_G['admin']->hasPermission('user')}-->
+						<td><a href="admin.php?mod=user&action=profile&id=$o[userid]">$o[userid]</a></td>
+						<!--{/if}-->
 						<td>
 							<ul class="order_detail{if !$_G['admin']->hasPermission('order_sort_w') || $o['status'] != Order::Unsorted} disabled{/if}">
 							<!--{loop $o['detail'] $d}-->
@@ -157,14 +159,13 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 								<div><a class="mark_rejected" href="{$mod_url}&action=mark_rejected&orderid=$o[id]" title="将订单标记为已拒收">[已拒收]</a></div>
 							<!--{/if}-->
 						</td>
-						<td>
-							<div>{echo Wallet::$PaymentMethod[$o['paymentmethod']]}</div>
+						<td title="下单时间：{echo rdate($o['dateline'])}">
+							{echo Wallet::$PaymentMethod[$o['paymentmethod']]}&nbsp;
 							<!--{if $o['tradestate']}-->{echo Wallet::$TradeState[$o['tradestate']]}<!--{elseif $o['paymentmethod'] != Wallet::ViaCash}-->等待付款<!--{/if}-->
+							<!--{if $o['tradetime']}--><div class="datetime">{echo rdate($o['tradetime'])}</div><!--{/if}-->
 						</td>
-						<td title="下单时间：{echo rdate($o['dateline'])}"><!--{if $o['tradetime']}-->{echo rdate($o['tradetime'])}<!--{/if}--></td>
 						<td>{echo Order::$DeliveryMethod[$o['deliverymethod']]}</td>
 						<td>
-							<a href="admin.php?mod=user&action=profile&id=$o[userid]">[用户]</a>
 							<a class="print" href="$mod_url&action=ticket&orderid=$o[id]" target="_blank">[打印]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
 							<br /><a class="delete" href="$mod_url&action=cancel&orderid=$o[id]">[取消]</a>
