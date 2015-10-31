@@ -164,6 +164,7 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 						<td title="下单时间：{echo rdate($o['dateline'])}"><!--{if $o['tradetime']}-->{echo rdate($o['tradetime'])}<!--{/if}--></td>
 						<td>{echo Order::$DeliveryMethod[$o['deliverymethod']]}</td>
 						<td>
+							<a href="admin.php?mod=user&action=profile&id=$o[userid]">[用户]</a>
 							<a class="print" href="$mod_url&action=ticket&orderid=$o[id]" target="_blank">[打印]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
 							<br /><a class="delete" href="$mod_url&action=cancel&orderid=$o[id]">[取消]</a>
