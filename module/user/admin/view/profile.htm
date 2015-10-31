@@ -13,10 +13,12 @@
 		<tr>
 			<th>昵称：</th>
 			<td>$user[nickname]</td>
+			<td class="tips">通常与微信号昵称或QQ昵称相同</td>
 		</tr>
 		<tr>
-			<th>账号：</th>
+			<th>用户名：</th>
 			<td>$user[account]</td>
+			<td class="tips">用于登录，未设置该项的用户仅能通过QQ或微信登录</td>
 		</tr>
 		<tr>
 			<th>密码：</th>
@@ -32,11 +34,11 @@
 		</tr>
 		<tr>
 			<th>微信公众号登录：</th>
-			<td><!--{if !empty($user['wxopenid'])}-->已<!--{else}-->未<!--{/if}-->授权</td>
+			<td><!--{if !empty($user['wxopenid'])}-->已<!--{else}-->未<!--{/if}-->绑定</td>
 		</tr>
 		<tr>
 			<th>网站/App微信登录：</th>
-			<td><!--{if !empty($user['wxunionid'])}-->已<!--{else}-->未<!--{/if}-->授权</td>
+			<td><!--{if !empty($user['wxunionid'])}-->已<!--{else}-->未<!--{/if}-->绑定</td>
 		</tr>
 		<tr>
 			<th>手机：</th>
