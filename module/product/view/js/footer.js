@@ -95,7 +95,7 @@ $(function(){
 	var current_time = parseInt(new Date().valueOf() / 1000);
 	if(isNaN(delivered_num) || isNaN(cache_time) || current_time - cache_time >= 1800){
 		$('#delivering-order-number').numbernotice(0);
-		$.post('order.php?action=deliveringnum', {}, function(data){
+		$.post('index.php?mod=order&action=deliveringnum', {}, function(data){
 			delivered_num = parseInt(data, 10);
 			if(!isNaN(delivered_num)){
 				setcookie('delivering-order-number', delivered_num);
