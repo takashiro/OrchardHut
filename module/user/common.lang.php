@@ -25,6 +25,7 @@ return array(
 	'module_user:group' => '用户组',
 
 	'permission_user' => '用户管理',
+	'permission_user_reset_password' => '重置用户密码',
 	'permission_user:group' => '用户组管理',
 
 	'usergroup_normal' => '普通组',

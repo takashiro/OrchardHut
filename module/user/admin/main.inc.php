@@ -31,6 +31,12 @@ function parse_time_range($var){
 
 class UserMainModule extends AdminControlPanelModule{
 
+	public function getPermissions(){
+		return array(
+			'user_reset_password',
+		);
+	}
+
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
@@ -170,6 +176,30 @@ class UserMainModule extends AdminControlPanelModule{
 
 		extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
 		include view('profile');
+	}
+
+	public function resetPasswordAction(){
+		global $_G;
+		if(empty($_G['admin']) || !$_G['admin']->hasPermission('user_reset_password'))
+			exit('permission denied');
+
+		if(empty($_GET['id']))
+			exit('parameter id is missing.');
+
+		if(empty($_POST['new_password']))
+			exit('parameter new_password is missing.');
+
+		$pwmd5 = rmd5($_POST['new_password']);
+
+		$id = intval($_GET['id']);
+		global $db;
+		$table = $db->select_table('user');
+		$table->update(array('pwmd5' => $pwmd5), 'id='.$id);
+		if($db->affected_rows > 0){
+			showmsg('user_password_is_successfully_reset', 'refresh');
+		}else{
+			showmsg('user_does_not_exist', 'refresh');
+		}
 	}
 
 }

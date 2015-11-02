@@ -24,6 +24,17 @@
 			<th>密码：</th>
 			<td><!--{if empty($user['pwmd5'])}-->无<!--{else}-->有<!--{/if}-->登录密码</td>
 		</tr>
+		<!--{if $_G['admin']->hasPermission('user_reset_password') && !empty($user['account'])}-->
+		<tr>
+			<th>重置密码：</th>
+			<td>
+				<form action="$mod_url&action=resetpassword&id=$user[id]" method="post" class="quick_search">
+					<input type="text" name="new_password" />
+					<button type="submit">重置</button>
+				</form>
+			</td>
+		</tr>
+		<!--{/if}-->
 		<tr>
 			<th>真实姓名：</th>
 			<td>$user[realname]</td>

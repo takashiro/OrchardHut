@@ -23,4 +23,5 @@ return array(
 	'successfully_update_profile' => '修改个人信息成功！',
 
 	'user_does_not_exist' => '该用户不存在。',
+	'user_password_is_successfully_reset' => '成功重置用户密码。',
 );
