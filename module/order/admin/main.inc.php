@@ -273,9 +273,10 @@ class OrderMainModule extends AdminControlPanelModule{
 				}
 
 				$received_status = Order::Received;
-				$orders = $db->fetch_all("SELECT o.*,
+				$orders = $db->fetch_all("SELECT o.*,u.nickname,u.account,
 						(SELECT COUNT(*) FROM {$tpre}order WHERE userid=o.userid AND status=$received_status) AS ordernum
 					FROM {$tpre}order o
+						LEFT JOIN {$tpre}user u ON u.id=o.userid
 					WHERE $condition
 					ORDER BY o.status,o.tradetime
 					$limit_subsql");

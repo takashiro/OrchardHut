@@ -132,7 +132,9 @@ div.datetime{font-size: 9pt;}
 						<td><a href="$mod_url&action=list&time_start=&time_end=&addressee=$o[addressee]">$o[addressee]</a><br /><a href="$mod_url&action=list&time_start=&time_end=&mobile=$o[mobile]">$o[mobile]</a></td>
 						<td><a href="$mod_url&action=list&time_start=&time_end=&tradestate=0&userid=$o[userid]">$o[ordernum]</a></td>
 						<!--{if $_G['admin']->hasPermission('user')}-->
-						<td><a href="admin.php?mod=user&action=profile&id=$o[userid]">$o[userid]</a></td>
+						<td>
+							<a href="admin.php?mod=user&action=profile&id=$o[userid]"><!--{if !empty($o['nickname'])}-->$o[nickname]<!--{elseif !empty($o['account'])}-->$o[account]<!--{else}-->$o[userid]<!--{/if}--></a>
+						</td>
 						<!--{/if}-->
 						<td>
 							<ul class="order_detail{if !$_G['admin']->hasPermission('order_sort_w') || $o['status'] != Order::Unsorted} disabled{/if}">
