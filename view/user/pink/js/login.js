@@ -74,9 +74,4 @@ $(function(){
 		$(this).data('hidden_html', $(this).html());
 		$(this).html('');
 	});
-
-	$('a.wechat_login').click(function(e){
-		e.preventDefault();
-		location.href = 'index.php?mod=weixin:connect';
-	});
 });

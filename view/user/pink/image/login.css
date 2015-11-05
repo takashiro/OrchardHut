@@ -26,21 +26,28 @@
 }
 
 .login_api{
-	line-height:30px;
+	width: 184px;
+	margin: auto;
+	padding-bottom: 20px;
+	margin-bottom: 30px;
+	border-bottom: gray 1px dotted;
+}
+
+.login_api a{
+	display: block;
+	height: 64px;
+	line-height: 64px;
+	padding-left: 64px;
+	border: #FFC8C8 1px solid;
+	border-radius: 10px;
+	margin: 10px 0;
+	box-shadow: #FFC8C8 0 0 5px;
 }
 
 .qq_login{
-	display:inline-block;
-	width:120px;
-	height:24px;
-	background:url(qqlogin.png) no-repeat;
-	vertical-align:middle;
+	background: url(qq_logo.png) no-repeat;
 }
 
 .wechat_login{
-	display:inline-block;
-	width:120px;
-	height:24px;
-	background:url(wechatlogin.png) no-repeat;
-	vertical-align:middle;
+	background: url(wx_logo.png) no-repeat;
 }
