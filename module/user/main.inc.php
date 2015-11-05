@@ -90,6 +90,10 @@ case 'register':
 	break;
 
 case 'edit':
+	if(!$_G['user']->isLoggedIn()){
+		showmsg('you_have_logged_in', 'index.php');
+	}
+
 	if($_POST){
 		if(isset($_POST['mobile'])){
 			$mobile = trim($_POST['mobile']);
