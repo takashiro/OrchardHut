@@ -369,6 +369,53 @@ class Order extends DBObject{
 		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
 			showmsg('the_order_is_successfully_paid', 'index.php?mod=order');
 	}
+
+	static public function __on_wechatpay_started(){
+		if(empty($_GET['orderid']))
+			return;
+
+		global $_G;
+		$order = new Order($_GET['orderid']);
+		if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
+			$order->paymentmethod = Wallet::ViaWeChat;
+			//商户网站订单系统中唯一订单号，必填
+			$_G['wechatpaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
+		}else{
+			showmsg('order_not_exist');
+		}
+	}
+
+	static public function __on_wechatpay_createorder(){
+		global $_G;
+		$trade = &$_G['wechatpaytrade'];
+		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
+		if(strncmp($trade['out_trade_no'], self::$AlipayTradeNoPrefix, $prefix_len) != 0)
+			return;
+
+		$order = new Order(substr($trade['out_trade_no'], $prefix_len));
+
+		if($order->exists() && $order->status != Order::Canceled){
+			$trade['total_fee'] = $order->totalprice;
+			$trade['subject'] = $_G['config']['sitename'].'订单'.$order->id;
+			$trade['valid'] = true;
+		}
+	}
+
+	static public function __on_wechatpay_notified($trade){
+		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
+		if(strncmp($trade['out_trade_no'], self::$AlipayTradeNoPrefix, $prefix_len) != 0)
+			return;
+
+		$order = new Order(substr($trade['out_trade_no'], $prefix_len));
+		if(!$order->exists())
+			return;
+
+		$order->paymentmethod = Wallet::ViaWeChat;
+		$order->tradestate = Wallet::TradeSuccess;
+		$order->tradeid = $trade['transaction_id'];
+		if($order->tradestate == Wallet::TradeSuccess)
+			$order->tradetime = TIMESTAMP;
+	}
 }
 
 Order::$Status = array(
