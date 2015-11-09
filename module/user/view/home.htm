@@ -63,9 +63,9 @@ $(function(){
 				<h1>付款方式</h1>
 				<div class="content">
 					<ul class="mselect paymentmethod">
-					<!--{loop Wallet::$PaymentMethod $methodid $name}-->
-					<!--{if !empty(Wallet::$PaymentInterface[$methodid]) && $methodid != Wallet::ViaWallet && !empty($paymentconfig['enabled_method'][$methodid])}-->
-						<li><input type="radio" name="mod" value="{echo Wallet::$PaymentInterface[$methodid]}" />$name</li>
+					<!--{loop $paymentconfig['method'] $method}-->
+					<!--{if !empty(Wallet::$PaymentInterface[$method['id']]) && $method['id'] != Wallet::ViaWallet && !empty($method['enabled'])}-->
+						<li><input type="radio" name="mod" value="{echo Wallet::$PaymentInterface[$method['id']]}" />{echo Wallet::$PaymentMethod[$method['id']]}<!--{if !empty($method['recommended'])}-->(推荐)<!--{/if}--></li>
 					<!--{/if}-->
 					<!--{/loop}-->
 					</ul>

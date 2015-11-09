@@ -65,9 +65,9 @@ $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 				<h1>付款方式<em>钱包余额：<span id="userwallet">{$_USER[wallet]}</span>{echo Product::$PriceUnit}</em></h1>
 				<div class="content">
 					<ul class="mselect">
-					<!--{loop Wallet::$PaymentMethod $methodid $label}-->
-						<!--{if !empty($paymentconfig['enabled_method'][$methodid])}-->
-						<li><input type="radio" name="paymentmethod" value="$methodid" />$label</li>
+					<!--{loop $paymentconfig['method'] $method}-->
+						<!--{if !empty($method['enabled'])}-->
+						<li><input type="radio" name="paymentmethod" value="$method[id]" />{echo Wallet::$PaymentMethod[$method['id']]}<!--{if !empty($method['recommended'])}-->(推荐)<!--{/if}--></li>
 						<!--{/if}-->
 					<!--{/loop}-->
 					</ul>

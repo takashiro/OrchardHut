@@ -224,23 +224,7 @@ case 'pay':
 	}
 
 	$paymentconfig = readdata('payment');
-
-	$enabled_method_count = 0;
-	foreach($paymentconfig['enabled_method'] as $methodid => $enabled){
-		$enabled_method_count++;
-	}
-
-	if($paymentconfig['enabled_method'][Wallet::ViaAlipay] && $paymentconfig['enabled_method'][Wallet::ViaWallet]){
-		include view('pay');
-		exit;
-	}elseif($paymentconfig['enabled_method'][Wallet::ViaAlipay]){
-		redirect('index.php?mod=alipay&orderid='.$orderid);
-	}elseif($paymentconfig['enabled_method'][Wallet::ViaWallet]){
-		redirect('index.php?mod=payment&orderid='.$orderid);
-	}else{
-		showmsg('payment_is_now_disabled', 'back');
-	}
-
+	include view('pay');
 	break;
 
 default:
