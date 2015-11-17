@@ -33,13 +33,33 @@ class DeliveryStationModule extends AdminControlPanelModule{
 
 		$station_list = $db->fetch_all("SELECT * FROM {$tpre}station");
 
+		$condition = array();
+
+		if(isset($_GET['time_start'])){
+			$time_start = rstrtotime($_GET['time_start']);
+			$condition[] = 'o.dateline>='.$time_start;
+			$time_start = rdate($time_start, 'Y-m-d H:i');
+		}else{
+			$time_start = '';
+		}
+
+		if(isset($_GET['time_end'])){
+			$time_end = rstrtotime($_GET['time_end']);
+			$condition[] = 'o.dateline<='.$time_end;
+			$time_end = rdate($time_end, 'Y-m-d H:i');
+		}else{
+			$time_end = '';
+		}
+
+		$condition = $condition ? ' AND '.implode(' AND ', $condition) : '';
+
 		foreach($station_list as &$station){
 			$station_range = Address::Extension($station['orderrange']);
 			$station_range = implode(',', $station_range);
 			$station_comment = $db->fetch_first("SELECT AVG(level1) AS level1,AVG(level2) AS level2,AVG(level3) AS level3, COUNT(*) AS commentnum
 				FROM {$tpre}ordercomment c
 					LEFT JOIN {$tpre}order o ON o.id=c.orderid
-				WHERE o.addressid IN ($station_range)");
+				WHERE o.addressid IN ($station_range) $condition");
 			$station = array_merge($station, $station_comment);
 		}
 		unset($station);
