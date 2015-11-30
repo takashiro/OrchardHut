@@ -217,7 +217,7 @@ case 'pay':
 
 		if(!empty($order->paymentmethod)){
 			$interface = Wallet::$PaymentInterface[$order->paymentmethod];
-			redirect('index.php?mod='.$interface.'&orderid='.$order->id);
+			redirect('index.php?mod='.$interface.'&orderid='.$order->id.'&enable_trade_query=1');
 		}
 	}else{
 		showmsg('illegal_operation');
