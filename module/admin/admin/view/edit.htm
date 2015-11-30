@@ -89,8 +89,8 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 			</dl>
 			</td>
 		</tr>
-		<tr title="选择此项后该管理员的普通权限（全局权限不受限制）限定在指定营业范围内">
-			<th><label>限定管理范围：</label></th>
+		<tr title="选择此项后该管理员的普通权限（全局权限不受限制）限定在指定配送范围内">
+			<th><label>限定配送范围：</label></th>
 			<td>
 				<ul id="limitation_ul">
 					<!--{loop $admin->getLimitations(false) $componentid}-->
@@ -99,6 +99,15 @@ $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_com
 					<li><input type="hidden" class="cascadeselect" name="limitation[]" value="0" data-options="all_addresses" /> <a href="###" class="add">[增加]</a></li>
 				</ul>
 			</td>
+		</tr>
+		<tr title="选择此项后该管理员的普通权限（全局权限不受限制）限定在指定商品类型内">
+			<th><label>限定商品类型：</label></th>
+			<td class="checkbox_list">
+				<!--{loop $product_types $typeid $typename}-->
+				<label><input type="checkbox" name="producttypes[$typeid]" {if in_array($typeid, $a['producttypes'])}checked="checked"{/if} />$typename</label>
+				<!--{/loop}-->
+			</td>
+			<td class="tips">若全部不勾选，视为不限定商品类型，与全部勾选完全相同</td>
 		</tr>
 	</table>
 

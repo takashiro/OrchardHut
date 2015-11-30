@@ -34,7 +34,7 @@ p.subtype{
 		<dl>
 			<dt>商品类型：</dt>
 			<dd>
-				<!--{loop Product::Types() $type_id $type_name}-->
+				<!--{loop $available_product_types $type_id $type_name}-->
 				{echo Template::checkbox("product_type[$type_id]", $type_name, !empty($product_type[$type_id]))}
 				<!--{/loop}-->
 			</dd>

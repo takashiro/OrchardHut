@@ -2,7 +2,7 @@
 
 <ol class="nav">
 	<li><a href="admin.php">管理面板</a></li>
-	<li><a href="admin.php?mod=market">商品</a></li>
+	<li><a href="admin.php?mod=product">商品</a></li>
 	<li>商品列表</li>
 </ol>
 
@@ -51,7 +51,7 @@ $(function(){
 					<!--{/loop}-->
 					<tr>
 						<td><input type="text" /></td>
-						<td>{echo Template::select('', Product::Types())}</td>
+						<td>{echo Template::select('', $product_types)}</td>
 						<td><input type="text" /></td>
 						<td>{eval echo Template::select('', array('否', '是'))}</td>
 						<td><button type="button" class="add">添加</button></td>

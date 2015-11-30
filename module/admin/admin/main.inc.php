@@ -27,6 +27,8 @@ class AdminMainModule extends AdminControlPanelModule{
 	public function editAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
+		$product_types = Product::AvailableTypes();
+
 		$id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
 		$admin = new Administrator($id);
@@ -100,10 +102,19 @@ class AdminMainModule extends AdminControlPanelModule{
 				}
 			}
 
+			if(isset($_POST['producttypes']) && is_array($_POST['producttypes'])){
+				$producttypes = array();
+				foreach($_POST['producttypes'] as $typeid => $checked){
+					isset($product_types[$typeid]) && $producttypes[] = $typeid;
+				}
+				$admin->producttypes = implode(',', $producttypes);
+			}
+
 			showmsg('edit_succeed', $mod_url);
 		}
 
 		$a = $admin->toArray();
+		$a['producttypes'] = empty($a['producttypes']) ? array() : explode(',', $a['producttypes']);
 
 		$address_components = Address::AvailableComponents();
 

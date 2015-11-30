@@ -489,6 +489,22 @@ class Product extends DBObject{
 		}
 	}
 
+	static public function AvailableTypes(){
+		global $_G;
+		if(!isset($_G['admin']) || !($_G['admin'] instanceof Administrator))
+			return array();
+
+		$types = Product::Types();
+		if($_G['admin']->producttypes){
+			$typeids = explode(',', $_G['admin']->producttypes);
+			foreach($types as $typeid => $typename){
+				if(!in_array($typeid, $typeids))
+					unset($types[$typeid]);
+			}
+		}
+		return $types;
+	}
+
 	static public function RefreshCache(){
 		writecache('productunits', NULL);
 		writecache('producttypes', NULL);

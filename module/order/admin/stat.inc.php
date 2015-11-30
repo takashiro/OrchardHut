@@ -73,17 +73,21 @@ class OrderStatModule extends AdminControlPanelModule{
 		}
 
 		//过滤商品类型
+		$available_product_types = Product::AvailableTypes();
+
 		$product_type = array();
 		if(isset($_REQUEST['product_type']) && is_array($_REQUEST['product_type'])){
 			$types = array();
 			foreach($_REQUEST['product_type'] as $type_id => $checked){
-				$product_type[$type_id] = true;
-				$types[] = $type_id;
+				if(isset($available_product_types[$type_id])){
+					$product_type[$type_id] = true;
+					$types[] = $type_id;
+				}
 			}
 
 			$types && $condition[] = 'p.type IN ('.implode(',', $types).')';
 		}else{
-			$product_type = Product::Types();
+			$product_type = $available_product_types;
 			foreach($product_type as &$checked){
 				$checked = false;
 			}

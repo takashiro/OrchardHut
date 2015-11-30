@@ -1,3 +1,5 @@
+ALTER TABLE `pre_administrator` ADD `producttypes` text NOT NULL;
+
 DROP TABLE IF EXISTS `pre_product`;
 CREATE TABLE IF NOT EXISTS `pre_product` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,

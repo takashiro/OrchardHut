@@ -33,6 +33,11 @@ class ProductMainModule extends AdminControlPanelModule{
 
 		$condition = array();
 
+		$product_types = Product::AvailableTypes();
+		if($_G['admin']->producttypes){
+			$condition[] = 'type IN ('.$_G['admin']->producttypes.')';
+		}
+
 		if(isset($_GET['productname'])){
 			$productname = addslashes(trim($_GET['productname']));
 			$condition[] = 'name LIKE \'%'.$productname.'%\'';
@@ -68,6 +73,11 @@ class ProductMainModule extends AdminControlPanelModule{
 				$product = new Product;
 			}else{
 				$product = new Product($productid);
+				if($_G['admin']->producttypes){
+					$typeids = explode(',', $_G['admin']->producttypes);
+					if(!in_array($product->type, $typeids))
+						exit('permission denied');
+				}
 			}
 
 			if(isset($_POST['name'])){
@@ -76,7 +86,13 @@ class ProductMainModule extends AdminControlPanelModule{
 
 			if(isset($_POST['type'])){
 				$typeid = intval($_POST['type']);
+
 				$types = Product::Types();
+				if($_G['admin']->producttypes){
+					$types = explode(',', $_G['admin']->producttypes);
+					$types = array_flip($types);
+				}
+
 				if(array_key_exists($typeid, $types)){
 					$product->type = $typeid;
 				}else{
@@ -123,7 +139,7 @@ class ProductMainModule extends AdminControlPanelModule{
 			}
 
 		}else{
-			$product = new Product($productid);
+			$product = $this->getProductById($productid);
 			$prices = $product->getPrices();
 			$countdowns = $product->getCountdowns();
 			$storages = $product->getStorages();
@@ -139,7 +155,11 @@ class ProductMainModule extends AdminControlPanelModule{
 	public function deleteAction(){
 		$id = !empty($_POST['id']) ? max(0, intval($_POST['id'])) : 0;
 		if($id > 0){
-			Product::Delete($id);
+			$extra = '';
+			if($_G['admin']->producttypes){
+				$extra = 'type IN ('.$_G['admin']->producttypes.')';
+			}
+			Product::Delete($id, $extra);
 		}
 		echo 1;
 	}
@@ -147,48 +167,42 @@ class ProductMainModule extends AdminControlPanelModule{
 	public function editpriceAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
-		$product = new Product;
-		$product->id = intval($_GET['productid']);
+		$product = $this->getProductById($_GET['productid']);
 		echo json_encode($product->editPrice($_POST));
 	}
 
 	public function deletepriceAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
-		$product = new Product;
-		$product->id = intval($_GET['productid']);
+		$product = $this->getProductById($_GET['productid']);
 		echo json_encode($product->deletePrice($_POST['id']));
 	}
 
 	public function editcountdownAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
-		$product = new Product;
-		$product->id = intval($_GET['productid']);
+		$product = $this->getProductById($_GET['productid']);
 		echo json_encode($product->editCountdown($_POST));
 	}
 
 	public function deletecountdownAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
-		$product = new Product;
-		$product->id = intval($_GET['productid']);
+		$product = $this->getProductById($_GET['productid']);
 		echo json_encode($product->deleteCountdown($_POST['id']));
 	}
 
 	public function editstorageAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
-		$product = new Product;
-		$product->id = intval($_GET['productid']);
+		$product = $this->getProductById($_GET['productid']);
 		echo json_encode($product->editStorage($_POST));
 	}
 
 	public function deletestorageAction(){
 		if(empty($_GET['productid']))
 			exit('access denied');
-		$product = new Product;
-		$product->id = intval($_GET['productid']);
+		$product = $this->getProductById($_GET['productid']);
 		echo json_encode($product->deleteStorage($_POST['id']));
 	}
 
@@ -196,6 +210,7 @@ class ProductMainModule extends AdminControlPanelModule{
 		if(empty($_GET['productid']))
 			exit('access denied');
 		$productid = intval($_GET['productid']);
+		$product = $this->getProductById($productid);
 		$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 
 		$attrs = array();
@@ -223,13 +238,27 @@ class ProductMainModule extends AdminControlPanelModule{
 	public function deletePriceLimitAction(){
 		if(empty($_GET['productid']) || empty($_POST['id']))
 			exit('access denied');
+
 		$productid = intval($_GET['productid']);
+		$product = $this->getProductById($productid);
+
 		$id = intval($_POST['id']);
 		global $db;
 		$table = $db->select_table('productpricelimit');
 		$table->delete(array('id' => $id, 'productid' => $productid));
 		echo $table->affected_rows();
 		exit;
+	}
+
+	protected function getProductById($productid){
+		global $_G;
+		$product = new Product($productid);
+		if($_G['admin']->producttypes){
+			$typeids = explode(',', $_G['admin']->producttypes);
+			if(!in_array($product->type, $typeids))
+				exit('permission denied');
+		}
+		return $product;
 	}
 }
 
