@@ -660,18 +660,18 @@ class OrderMainModule extends AdminControlPanelModule{
 			if(isset($xml['response']['trade'])){
 				$trade = $xml['response']['trade'];
 
-				if(!empty($trade['trade_status'])){
-					global $db, $tpre;
+				$arguments = array(
+					//商户订单号
+					$trade['out_trade_no'],
 
-					$prop = array(
-						'tradestate' => Wallet::$TradeStateEnum[$trade['trade_status']],
-					);
-					if($prop['tradestate'] == Order::TradeSuccess)
-						$prop['tradetime'] = TIMESTAMP;
+					//支付宝交易号
+					$trade['trade_no'],
 
-					$table = $db->select_table('order');
-					$table->update($prop, "id=$orderid AND tradestate!='$tradestate'");
-				}
+					//交易状态
+					$trade['trade_status'],
+				);
+
+				runhooks('alipay_notified', $arguments);
 			}
 
 			showmsg('successfully_updated_order_trade_state', 'refresh');
