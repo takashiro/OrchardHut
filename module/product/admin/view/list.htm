@@ -24,6 +24,8 @@ $(function(){
 			<dl>
 				<dt>商品名称：</dt>
 				<dd><input type="text" name="productname" /></dd>
+				<dt>商品类型：</dt>
+				<dd>{echo Template::select('type', array('全部') + $product_types, $type)}</dd>
 			</dl>
 			<button type="submit">查找</button>
 		</form>
@@ -62,6 +64,6 @@ $(function(){
 	</div>
 </div>
 
-{echo Template::mpage($pagenum, $page, $limit, $mod_url.(empty($_GET['type']) ? '': '&type='.$_GET['type']))}
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&'.http_build_query($query_string))}
 
 {template footer}

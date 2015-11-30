@@ -32,6 +32,7 @@ class ProductMainModule extends AdminControlPanelModule{
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$condition = array();
+		$query_string = array();
 
 		$product_types = Product::AvailableTypes();
 		if($_G['admin']->producttypes){
@@ -41,11 +42,19 @@ class ProductMainModule extends AdminControlPanelModule{
 		if(isset($_GET['productname'])){
 			$productname = addslashes(trim($_GET['productname']));
 			$condition[] = 'name LIKE \'%'.$productname.'%\'';
+			$query_string['productname'] = $productname;
 		}
 
 		if(!empty($_GET['type'])){
-			$_GET['type'] = intval($_GET['type']);
-			$condition[] = 'type='.$_GET['type'];
+			$type = intval($_GET['type']);
+			if(isset($product_types[$type])){
+				$condition[] = 'type='.$type;
+				$query_string['type'] = $type;
+			}else{
+				$type = 0;
+			}
+		}else{
+			$type = 0;
 		}
 
 		$limit = 20;
