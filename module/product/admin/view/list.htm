@@ -26,6 +26,8 @@ $(function(){
 				<dd><input type="text" name="productname" /></dd>
 				<dt>商品类型：</dt>
 				<dd>{echo Template::select('type', array('全部') + $product_types, $type)}</dd>
+				<dt>其他选项：</dt>
+				<dd>{echo Template::checkbox('show_hidden', '显示隐藏商品', !empty($show_hidden))}</dd>
 			</dl>
 			<button type="submit">查找</button>
 		</form>

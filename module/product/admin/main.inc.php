@@ -39,7 +39,7 @@ class ProductMainModule extends AdminControlPanelModule{
 			$condition[] = 'type IN ('.$_G['admin']->producttypes.')';
 		}
 
-		if(isset($_GET['productname'])){
+		if(!empty($_GET['productname'])){
 			$productname = addslashes(trim($_GET['productname']));
 			$condition[] = 'name LIKE \'%'.$productname.'%\'';
 			$query_string['productname'] = $productname;
@@ -55,6 +55,13 @@ class ProductMainModule extends AdminControlPanelModule{
 			}
 		}else{
 			$type = 0;
+		}
+
+		$show_hidden = !empty($_GET['show_hidden']);
+		if($show_hidden){
+			$query_string['show_hidden'] = 1;
+		}else{
+			$condition[] = 'hide=0';
 		}
 
 		$limit = 20;
