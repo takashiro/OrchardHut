@@ -11,4 +11,7 @@ return array(
 	'please_fetch_your_package' => '坐等您来自提点取货哦~',
 	'the_station_is_located_in' => '配送站地址：',
 	'thanks_for_supporting_please_rank' => '感谢您购买，请点这里给我们打分吧~',
+
+	'successfully_updated_order_trade_state' => '订单交易状态更新成功。',
+	'order_not_exist_failed_to_update_order_trade_state' => '未查询到该订单，交易状态更新失败。',
 );

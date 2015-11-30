@@ -165,6 +165,7 @@ div.datetime{font-size: 9pt;}
 							{echo Wallet::$PaymentMethod[$o['paymentmethod']]}&nbsp;
 							<!--{if $o['tradestate']}-->{echo Wallet::$TradeState[$o['tradestate']]}<!--{elseif $o['paymentmethod'] != Wallet::ViaCash}-->等待付款<!--{/if}-->
 							<!--{if $o['tradetime']}--><div class="datetime">{echo rdate($o['tradetime'])}</div><!--{/if}-->
+							<!--{if $o['paymentmethod'] == Wallet::ViaAlipay && $o['tradestate'] < 3}--><br /><a href="admin.php?mod=order&action=updatetradestate&orderid=$o[id]" class="update_trade_state_button">[更新]</a><!--{/if}-->
 						</td>
 						<td>{echo Order::$DeliveryMethod[$o['deliverymethod']]}</td>
 						<td>

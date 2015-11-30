@@ -633,6 +633,53 @@ class OrderMainModule extends AdminControlPanelModule{
 		echo json_encode($result);
 	}
 
+	public function updateTradeStateAction(){
+		if(empty($_GET['orderid']))
+			exit('access denied');
+
+		$orderid = intval($_GET['orderid']);
+		if($orderid <= 0)
+			exit('invalid order id');
+
+		require module('alipay/config');
+
+		$parameter = array(
+			'service' => 'single_trade_query',
+			'partner' => $alipay_config['partner'],
+			'out_trade_no' => 'O'.$orderid,
+			'_input_charset' => $alipay_config['input_charset'],
+		);
+
+		$alipaySubmit = new AlipaySubmit($alipay_config);
+		$html_text = $alipaySubmit->buildRequestHttp($parameter);
+
+		$doc = new XML;
+		$doc->loadXML($html_text, 'alipay');
+		$xml = $doc->toArray();
+		if(isset($xml['is_success']) && $xml['is_success'] == 'T'){
+			if(isset($xml['response']['trade'])){
+				$trade = $xml['response']['trade'];
+
+				if(!empty($trade['trade_status'])){
+					global $db, $tpre;
+
+					$prop = array(
+						'tradestate' => Wallet::$TradeStateEnum[$trade['trade_status']],
+					);
+					if($prop['tradestate'] == Order::TradeSuccess)
+						$prop['tradetime'] = TIMESTAMP;
+
+					$table = $db->select_table('order');
+					$table->update($prop, "id=$orderid AND tradestate!='$tradestate'");
+				}
+			}
+
+			showmsg('successfully_updated_order_trade_state', 'refresh');
+		}
+
+		showmsg('order_not_exist_failed_to_update_order_trade_state', 'refresh');
+	}
+
 }
 
 ?>
