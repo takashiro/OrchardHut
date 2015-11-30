@@ -55,7 +55,7 @@ $(function(){
 					<!--{/loop}-->
 					<tr>
 						<td><input type="text" /></td>
-						<td>{echo Template::select('', $product_types)}</td>
+						<td>{echo Template::select('', $product_types, $type)}</td>
 						<td><input type="text" /></td>
 						<td>{eval echo Template::select('', array('否', '是'))}</td>
 						<td><button type="button" class="add">添加</button></td>
