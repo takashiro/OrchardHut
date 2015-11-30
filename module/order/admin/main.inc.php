@@ -109,6 +109,10 @@ class OrderMainModule extends AdminControlPanelModule{
 				}
 				unset($checked);
 				$display_status = $available_status;
+
+				$_REQUEST['tradestate'] = 0;
+				$_REQUEST['time_start'] = $_REQUEST['time_end'] = '';
+				unset($_REQUEST['deliverymethod']);
 			}
 
 			//根据付款状态查询订单
