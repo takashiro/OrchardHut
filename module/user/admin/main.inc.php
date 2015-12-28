@@ -34,6 +34,7 @@ class UserMainModule extends AdminControlPanelModule{
 	public function getPermissions(){
 		return array(
 			'user_reset_password',
+			'user_update_wallet',
 		);
 	}
 
@@ -200,6 +201,43 @@ class UserMainModule extends AdminControlPanelModule{
 		}else{
 			showmsg('user_does_not_exist', 'refresh');
 		}
+	}
+
+	public function updateWalletAction(){
+		global $_G;
+		if(empty($_G['admin']) || !$_G['admin']->hasPermission('user_update_wallet'))
+			exit('permission denied');
+
+		if(empty($_GET['id']))
+			exit('parameter id is missing.');
+
+		if(empty($_POST['wallet_delta']))
+			exit('parameter wallet_delta is missing.');
+
+		$uid = intval($_GET['id']);
+		if($uid <= 0)
+			showmsg('invalid uid', 'back');
+
+		$delta = intval($_POST['wallet_delta']);
+		if($delta == 0)
+			showmsg('the_number_you_must_be_kidding_me', 'back');
+
+		global $db, $tpre;
+		$db->query("UPDATE {$tpre}user SET wallet=wallet+$delta WHERE id=$uid");
+
+		if($db->affected_rows > 0){
+			$log = array(
+				'uid' => $uid,
+				'type' => Wallet::AdminModLog,
+				'dateline' => TIMESTAMP,
+				'delta' => $delta,
+			);
+			$table = $db->select_table('userwalletlog');
+			$table->insert($log);
+			showmsg('update_wallet_successfully', 'refresh');
+		}
+
+		showmsg('failed_to_modify_wallet', 'back');
 	}
 
 }

@@ -26,6 +26,7 @@ return array(
 
 	'permission_user' => '用户管理',
 	'permission_user_reset_password' => '重置用户密码',
+	'permission_user_update_wallet' => '管理用户钱包',
 	'permission_user:group' => '用户组管理',
 
 	'usergroup_normal' => '普通组',
