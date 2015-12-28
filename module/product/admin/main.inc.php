@@ -172,6 +172,7 @@ class ProductMainModule extends AdminControlPanelModule{
 		$id = !empty($_POST['id']) ? max(0, intval($_POST['id'])) : 0;
 		if($id > 0){
 			$extra = '';
+			global $_G;
 			if($_G['admin']->producttypes){
 				$extra = 'type IN ('.$_G['admin']->producttypes.')';
 			}
