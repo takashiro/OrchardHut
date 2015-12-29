@@ -209,6 +209,25 @@ class OrderMainModule extends AdminControlPanelModule{
 				$condition[] = 'o.addressid IN ('.implode(',', $limitation_addressids).')';
 			}
 
+			//过滤掉受产品分类限制的订单
+			if(!empty($_G['admin']->producttypes)){
+				$producttypes = explode(',', $_G['admin']->producttypes);
+				foreach($producttypes as &$producttype){
+					$producttype = intval($producttype);
+				}
+				unset($producttype);
+				$producttypes = implode(',', $producttypes);
+
+				if($producttypes){
+					$condition[] = "EXISTS (SELECT *
+						FROM {$tpre}orderdetail td
+							LEFT JOIN {$tpre}product tp ON tp.id=td.productid
+						WHERE td.orderid=o.id AND tp.type IN ($producttypes))";
+				}else{
+					$condition[] = '0';
+				}
+			}
+
 			//根据送货地址查询订单
 			$delivery_address = array();
 			if(!empty($_REQUEST['delivery_address']) && is_array($_REQUEST['delivery_address'])){
