@@ -79,7 +79,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 	$wxconfig = readdata('wxconnect');
 
 	$wxconfig['nonce'] = randomstr(16);
-	$current_url = $_G['root_url'].'?mod=product'.($_SERVER['QUERY_STRING'] ? '&'.$_SERVER['QUERY_STRING'] : '');
+	$current_url = $_G['site_url'].'?mod=product'.($_SERVER['QUERY_STRING'] ? '&'.$_SERVER['QUERY_STRING'] : '');
 	$wx = new WeixinAPI;
 	$wxconfig['signature'] = $wx->generateSignature($wxconfig['nonce'], $current_url);
 }else{
