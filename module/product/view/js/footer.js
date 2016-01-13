@@ -90,20 +90,22 @@ $(function(){
 		$('li[data-price-id=' + price_id + '] .order_input input').val(number);
 	}
 
-	var delivered_num = parseInt(getcookie('delivering-order-number'), 10);
-	var cache_time = parseInt(getcookie('order-number-cache-time'), 10);
-	var current_time = parseInt(new Date().valueOf() / 1000);
-	if(isNaN(delivered_num) || isNaN(cache_time) || current_time - cache_time >= 1800){
-		$('#delivering-order-number').numbernotice(0);
-		$.post('index.php?mod=order&action=deliveringnum', {}, function(data){
-			delivered_num = parseInt(data, 10);
-			if(!isNaN(delivered_num)){
-				setcookie('delivering-order-number', delivered_num);
-				setcookie('order-number-cache-time', current_time);
-				$('#delivering-order-number').numbernotice(delivered_num);
-			}
-		});
-	}else{
-		$('#delivering-order-number').numbernotice(delivered_num);
+	if(uid){
+		var delivered_num = parseInt(getcookie('delivering-order-number'), 10);
+		var cache_time = parseInt(getcookie('order-number-cache-time'), 10);
+		var current_time = parseInt(new Date().valueOf() / 1000);
+		if(isNaN(delivered_num) || isNaN(cache_time) || current_time - cache_time >= 1800){
+			$('#delivering-order-number').numbernotice(0);
+			$.post('index.php?mod=order&action=deliveringnum', {}, function(data){
+				delivered_num = parseInt(data, 10);
+				if(!isNaN(delivered_num)){
+					setcookie('delivering-order-number', delivered_num);
+					setcookie('order-number-cache-time', current_time);
+					$('#delivering-order-number').numbernotice(delivered_num);
+				}
+			});
+		}else{
+			$('#delivering-order-number').numbernotice(delivered_num);
+		}
 	}
 });
