@@ -218,7 +218,7 @@ class UserMainModule extends AdminControlPanelModule{
 		if($uid <= 0)
 			showmsg('invalid uid', 'back');
 
-		$delta = intval($_POST['wallet_delta']);
+		$delta = floatval($_POST['wallet_delta']);
 		if($delta == 0)
 			showmsg('the_number_you_must_be_kidding_me', 'back');
 
