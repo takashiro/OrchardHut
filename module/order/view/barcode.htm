@@ -1,0 +1,47 @@
+{template header}
+
+<script type="text/javascript" src="./3rdparty/jquery.ean13/jquery-ean13.min.js"></script>
+<script type="text/javascript">
+function id2barcode(id){
+	barcode = '690';
+	var leading_zero_num = 9 - id.length;
+	for(var i = 0; i < leading_zero_num; i++){
+		barcode += '0';
+	}
+	barcode += id;
+	return barcode;
+}
+
+$(function(){
+	$('#barcode').EAN13(id2barcode('$order[id]'));
+});
+</script>
+<style type="text/css">
+canvas#barcode{
+	width: 90%;
+}
+</style>
+
+<div class="box">
+	<h1>我的订单</h1>
+	<div class="content">
+		<canvas id="barcode"></canvas>
+		<dl class="form">
+			<dt>订单编号：</dt><dd>$order[id]</dd>
+			<dt>下单时间：</dt><dd>$order[dateline]</dd>
+			<dt>收件人：</dt><dd>$order[addressee]</dd>
+			<dt>联系电话：</dt><dd>$order[mobile]</dd>
+			<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
+			<dt>用户留言：</dt><dd>$order[message]</dd>
+			<dt>物品：</dt><dd><dl class="order_detail">
+					<!--{loop $order['detail'] $d}-->
+					<dt><!--{if $d['state'] == 1}-->[缺货] <!--{/if}-->$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number']}{$d[amountunit]}</dt>
+					<dd>{$d[subtotal]}{echo Product::$PriceUnit}</dd>
+					<!--{/loop}-->
+			</dl></dd>
+			<dt>总计：</dt><dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
+		</dl>
+	</div>
+</div>
+
+{template footer}
