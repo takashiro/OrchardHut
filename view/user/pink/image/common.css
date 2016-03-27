@@ -199,18 +199,19 @@ button.remove{
 }
 
 ul.product_type li{
-	background: #FD7170;
+	background: white;
 	border: #EA6363 1px solid;
 	border-left: 0 solid;
-	color: white;
+	border-top: 0 solid;
+	color: #FD7170;
 	width: 98%;
 	line-height: 2em;
 	text-align: center;
 }
 
 ul.product_type li.current{
-	background: #FEFBE8;
-	color: #FD7170;
+	background: #FD7170;
+	color: #FEFBE8;
 }
 
 ul.product_type li a{
