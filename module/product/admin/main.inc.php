@@ -98,6 +98,7 @@ class ProductMainModule extends AdminControlPanelModule{
 
 			if(isset($_POST['name'])){
 				$product->name = $_POST['name'];
+				$product->namecapital = Hanzi::ToCapital($product->name);
 			}
 
 			if(isset($_POST['type'])){
