@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS `pre_product`;
 CREATE TABLE IF NOT EXISTS `pre_product` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
+  `namecapital` varchar(50) NOT NULL,
   `type` tinyint(1) unsigned NOT NULL,
   `briefintro` varchar(255) NOT NULL,
   `introduction` text NOT NULL,
@@ -15,7 +16,9 @@ CREATE TABLE IF NOT EXISTS `pre_product` (
   `icon_background` mediumint(8) unsigned NOT NULL DEFAULT '13164714',
   `displayorder` tinyint(4) NOT NULL,
   `hide` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `namecapital` (`namecapital`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `pre_productcountdown`;

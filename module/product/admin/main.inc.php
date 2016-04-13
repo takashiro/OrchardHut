@@ -41,7 +41,7 @@ class ProductMainModule extends AdminControlPanelModule{
 
 		if(!empty($_GET['productname'])){
 			$productname = addslashes(trim($_GET['productname']));
-			$condition[] = 'name LIKE \'%'.$productname.'%\'';
+			$condition[] = '(name LIKE \'%'.$productname.'%\' OR namecapital LIKE \'%'.$productname.'%\')';
 			$query_string['productname'] = $productname;
 		}
 
