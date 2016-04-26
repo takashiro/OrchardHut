@@ -58,6 +58,7 @@ $(function(){
 	});
 
 	$('.deliveryaddress ul li a.remove').click(function(e){
+		e.preventDefault();
 		if(confirm('您确认要删除该收货地址吗？')){
 			var button = $(e.target);
 			var li = button.parent();
@@ -67,7 +68,7 @@ $(function(){
 				'action' : 'deleteaddress',
 				'address_id' : address_id
 			};
-			$.post('cart.php', data, function(response){
+			$.post('index.php?mod=product:cart', data, function(response){
 				li.remove();
 			});
 		}
