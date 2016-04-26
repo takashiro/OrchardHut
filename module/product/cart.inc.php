@@ -272,7 +272,7 @@ switch($action){
 				//货到付款的时间默认为下单时间，方便后台统一处理
 				if($order->paymentmethod == Wallet::ViaCash){
 					$order->tradetime = TIMESTAMP;
-					$order->tradestate = Wallet::TradeFinished;
+					$order->tradestate = Wallet::TradeSuccess;
 				}
 
 				if(!$item_deleted){
