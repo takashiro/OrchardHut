@@ -49,7 +49,6 @@ function id2barcode(id){
 $(function(){
 	$('#print_button').click(function(){
 		$('#print_button').hide();
-		window.print();
 
 		{if !empty($_GET['auto_receive'])}
 		var orderids = [
@@ -60,9 +59,14 @@ $(function(){
 		];
 		orderids.shift();
 
-		$.post('{$mod_url}&mark_received=1', {'orderids' : orderids}, function(){
+		$.post('{$mod_url}&time_start=&time_end=&mark_received=1', {'orderids' : orderids}, function(result){
+			if(result.ok) {
+				window.print();
+			}else{
+				alert('打印失败。未查询到可打印订单。');
+			}
 			window.close();
-		});
+		}, 'json');
 		{else}
 		window.close();
 		{/if}

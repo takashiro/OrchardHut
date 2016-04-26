@@ -31,9 +31,11 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
+		$condition = array();
+
 		//下单起始时间
-		if(empty($_REQUEST['time_start'])){
-			$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
+		if(!isset($_REQUEST['time_start'])){
+			$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd'), rdate(TIMESTAMP, 'Y'));
 
 			//根据截单时间调整时分秒
 			$deliverytimes = DeliveryTime::FetchAllEffective();
@@ -43,21 +45,28 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 			$dt = current($deliverytimes);
 			$time_start += $dt['deadline'];
 			unset($deliverytimes, $dt);
+
+			$condition[] = 'dateline>='.$time_start;
 		}else{
-			$time_start = rstrtotime($_REQUEST['time_start']);
+			if(!empty($_REQUEST['time_start'])){
+				$time_start = rstrtotime($_REQUEST['time_start']);
+				$condition[] = 'dateline>='.$time_start;
+			}
 		}
 
 		//下单截止时间
-		if(empty($_REQUEST['time_end'])){
+		if(!isset($_REQUEST['time_end'])){
 			$time_end = $time_start + 1 * 24 * 3600;
+			$condition[] = 'dateline<='.$time_end;
 		}else{
-			$time_end = rstrtotime($_REQUEST['time_end']);
-			$time_end < $time_start && $time_end = $time_start;
+			if(!empty($_REQUEST['time_end'])){
+				$time_end = rstrtotime($_REQUEST['time_end']);
+				$time_end < $time_start && $time_end = $time_start;
+				$condition[] = 'dateline<='.$time_end;
+			}
 		}
 
 		if(isset($_REQUEST['orderid']) || isset($_REQUEST['mobile']) || isset($_REQUEST['orderids'])){
-			$condition = array('dateline>='.$time_start, 'dateline<='.$time_end);
-
 			//过滤掉送货地点不在当前管理员的管辖范围内的订单
 			$limitation_addressids = $_G['admin']->getLimitations();
 			if($limitation_addressids){
@@ -92,12 +101,16 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 
 			if(!empty($_REQUEST['mark_received'])){
 				$orders = $db->fetch_all("SELECT id FROM {$tpre}order WHERE $condition");
-				foreach($orders as $o){
-					$order = new Order($o['id']);
-					$order->status = Order::Received;
-					$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
+				if($orders){
+					foreach($orders as $o){
+						$order = new Order($o['id']);
+						$order->status = Order::Received;
+						$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
+					}
+					exit(json_encode(array('ok' => 1)));
+				}else{
+					exit(json_encode(array('ok' => 0)));
 				}
-				exit('success');
 			}
 
 			$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition");
