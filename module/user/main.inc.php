@@ -91,7 +91,7 @@ case 'register':
 
 case 'edit':
 	if(!$_G['user']->isLoggedIn()){
-		showmsg('you_have_logged_in', 'index.php');
+		showmsg('inaccessible_if_not_logged_in', 'index.php');
 	}
 
 	if($_POST){
@@ -196,6 +196,10 @@ case 'edit':
 	break;
 
 default:
+	if(!$_G['user']->isLoggedIn()){
+		showmsg('inaccessible_if_not_logged_in', 'index.php');
+	}
+
 	$paymentconfig = readdata('payment');
 	include view('home');
 }
