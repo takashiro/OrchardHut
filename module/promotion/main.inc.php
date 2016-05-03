@@ -55,5 +55,3 @@ if(isset($_GET['uid'])){
 		redirect('index.php?mod=product');
 	}
 }
-
-?>

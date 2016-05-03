@@ -26,5 +26,3 @@ return array(
 	'permission_admin' => '编辑管理员',
 	'permission_admin_comment' => '拥有此项权限的管理员可以将其拥有的权限分配给其他管理员',
 );
-
-?>

@@ -87,5 +87,3 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
 }
 
 include view('market');
-
-?>

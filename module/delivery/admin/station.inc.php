@@ -120,5 +120,3 @@ class DeliveryStationModule extends AdminControlPanelModule{
  	}
 
 }
-
-?>

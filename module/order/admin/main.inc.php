@@ -704,5 +704,3 @@ class OrderMainModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

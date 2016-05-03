@@ -193,5 +193,3 @@ class ProductBalanceReportModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

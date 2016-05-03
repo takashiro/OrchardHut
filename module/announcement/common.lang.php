@@ -26,5 +26,3 @@ return array(
 	'permission_announcement' => '管理公告',
 	'permission_announcement_comment' => '',
 );
-
-?>

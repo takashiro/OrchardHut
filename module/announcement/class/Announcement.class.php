@@ -80,5 +80,3 @@ class Announcement extends DBObject{
 		return $attr;
 	}
 }
-
-?>

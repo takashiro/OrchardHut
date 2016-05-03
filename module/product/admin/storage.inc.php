@@ -284,5 +284,3 @@ class ProductStorageModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

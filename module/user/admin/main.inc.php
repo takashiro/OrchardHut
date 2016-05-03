@@ -241,5 +241,3 @@ class UserMainModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

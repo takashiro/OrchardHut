@@ -35,5 +35,3 @@ return array(
 	'returned_order_fee_only' => '退款',
 	'returned_order_fee_and_item' => '退货退款',
 );
-
-?>

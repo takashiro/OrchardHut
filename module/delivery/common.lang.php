@@ -31,5 +31,3 @@ return array(
 	'permission_delivery:address_comment' => '',
 	'permission_delivery:station' => '配送站管理',
 );
-
-?>

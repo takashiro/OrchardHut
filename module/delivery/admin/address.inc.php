@@ -152,5 +152,3 @@ class DeliveryAddressModule extends AdminControlPanelModule{
 		include view('address');
 	}
 }
-
-?>

@@ -84,5 +84,3 @@ class UserGroupModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

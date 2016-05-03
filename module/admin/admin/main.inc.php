@@ -150,5 +150,3 @@ class AdminMainModule extends AdminControlPanelModule{
 		$this->listAction();
 	}
 }
-
-?>

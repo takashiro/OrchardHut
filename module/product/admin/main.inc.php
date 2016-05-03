@@ -279,5 +279,3 @@ class ProductMainModule extends AdminControlPanelModule{
 		return $product;
 	}
 }
-
-?>

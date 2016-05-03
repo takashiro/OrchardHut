@@ -60,5 +60,3 @@ return array(
 	'home_delivery' => '送货上门',
 	'station_delivery' => '自提点取货',
 );
-
-?>

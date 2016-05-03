@@ -110,5 +110,3 @@ UserGroup::$Type = array(
 	lang('common', 'usergroup_normal'),
 	lang('common', 'usergroup_special'),
 );
-
-?>

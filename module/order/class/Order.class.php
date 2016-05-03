@@ -433,5 +433,3 @@ Order::$DeliveryMethod = array(
 	Order::HomeDelivery => lang('common', 'home_delivery'),
 	Order::StationDelivery => lang('common', 'station_delivery'),
 );
-
-?>

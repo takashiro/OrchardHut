@@ -242,5 +242,3 @@ class BankAccountMainModule extends AdminControlPanelModule{
 		$this->listAction();
 	}
 }
-
-?>

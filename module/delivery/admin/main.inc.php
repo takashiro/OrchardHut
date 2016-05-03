@@ -129,5 +129,3 @@ class DeliveryMainModule extends AdminControlPanelModule{
 		include view('config');
 	}
 }
-
-?>

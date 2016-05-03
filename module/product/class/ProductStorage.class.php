@@ -86,5 +86,3 @@ ProductStorage::$Mode = array(
 	ProductStorage::NormalMode => lang('common', 'product_storage_normal_mode'),
 	ProductStorage::BookingMode => lang('common', 'product_storage_booking_mode'),
 );
-
-?>

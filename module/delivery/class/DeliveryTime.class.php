@@ -63,5 +63,3 @@ class DeliveryTime{
 		return $s1['time_from'] > $s2['time_from'];
 	}
 }
-
-?>

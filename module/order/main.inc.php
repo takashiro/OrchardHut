@@ -283,5 +283,3 @@ default:
 
 	include view('list');
 }
-
-?>

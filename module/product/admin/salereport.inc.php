@@ -94,5 +94,3 @@ class ProductSaleReportModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

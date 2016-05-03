@@ -103,5 +103,3 @@ ReturnedOrder::$DetailResult = array(
 	ReturnedOrder::FeeOnly => lang('common', 'returned_order_fee_only'),
 	ReturnedOrder::FeeAndItem => lang('common', 'returned_order_fee_and_item'),
 );
-
-?>

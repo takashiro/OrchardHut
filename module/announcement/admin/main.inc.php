@@ -124,5 +124,3 @@ class AnnouncementMainModule extends AdminControlPanelModule{
 		}
 	}
 }
-
-?>

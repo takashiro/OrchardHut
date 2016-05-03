@@ -63,5 +63,3 @@ foreach($orders as $o){
 	echo ',';
 	echo rdate($o['tradetime']), ',', $o['message'], "\r\n";
 }
-
-?>

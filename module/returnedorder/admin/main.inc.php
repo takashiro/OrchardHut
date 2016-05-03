@@ -329,5 +329,3 @@ class ReturnedOrderMainModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

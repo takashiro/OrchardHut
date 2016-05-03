@@ -145,5 +145,3 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

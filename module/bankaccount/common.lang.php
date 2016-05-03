@@ -26,5 +26,3 @@ return array(
 	'permission_bankaccount' => '资金账户',
 	'permission_bankaccount_comment' => '',
 );
-
-?>

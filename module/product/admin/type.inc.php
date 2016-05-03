@@ -79,5 +79,3 @@ class ProductTypeModule extends AdminControlPanelModule{
 	}
 }
 
-
-?>

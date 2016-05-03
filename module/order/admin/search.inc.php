@@ -35,5 +35,3 @@ class OrderSearchModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

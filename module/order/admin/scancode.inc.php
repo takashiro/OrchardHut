@@ -34,5 +34,3 @@ class OrderScancodeModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

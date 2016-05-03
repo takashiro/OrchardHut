@@ -25,5 +25,3 @@ return array(
 
 	'permission_promotion' => '推广设置',
 );
-
-?>

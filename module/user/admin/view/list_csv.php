@@ -37,5 +37,3 @@ foreach($user_list as $u){
 	}
 	echo "\n";
 }
-
-?>

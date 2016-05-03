@@ -45,5 +45,3 @@ foreach($returned_orders as $o){
 	echo ',"', addslashes(trim($o['adminreply'])), '"';
 	echo "\r\n";
 }
-
-?>

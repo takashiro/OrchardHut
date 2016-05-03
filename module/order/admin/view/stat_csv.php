@@ -35,5 +35,3 @@ foreach($stat_list as $product_id => $subtypes){
 		echo "\r\n";
 	}
 }
-
-?>

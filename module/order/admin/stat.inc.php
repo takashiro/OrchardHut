@@ -181,5 +181,3 @@ class OrderStatModule extends AdminControlPanelModule{
 	}
 
 }
-
-?>

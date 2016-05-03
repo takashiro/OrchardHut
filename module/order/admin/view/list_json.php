@@ -16,5 +16,3 @@ echo json_encode(array(
 	'page' => $page,
 	'data' => $orders
 ));
-
-?>

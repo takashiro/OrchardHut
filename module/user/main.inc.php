@@ -203,5 +203,3 @@ default:
 	$paymentconfig = readdata('payment');
 	include view('home');
 }
-
-?>
