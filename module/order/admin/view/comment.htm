@@ -1,0 +1,84 @@
+{template header}
+
+<style type="text/css">
+.level_1{
+	color: #F15A45;
+}
+
+.level_2{
+	color: #FFBA41;
+}
+
+.level_3{
+	color: #D8DF20;
+}
+
+.level_4{
+	color: #87C43B;
+}
+
+.level_5{
+	color: #21B24B;
+}
+</style>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=order">订单</a></li>
+	<li>评价</li>
+</ol>
+
+<div class="box">
+	<h1>订单评价</h1>
+	<div class="content">
+		<form action="$mod_url" method="post" class="quick_search">
+			<dl>
+				<dt>送货速度：</dt>
+				<dt><input type="text" class="number narrow" name="minlevel1" value="$minlevel1"> - <input type="text" class="number narrow" name="maxlevel1" value="$maxlevel1"></dt>
+				<dt>商品质量：</dt>
+				<dt><input type="text" class="number narrow" name="minlevel2" value="$minlevel2"> - <input type="text" class="number narrow" name="maxlevel2" value="$maxlevel2"></dt>
+				<dt>服务态度：</dt>
+				<dt><input type="text" class="number narrow" name="minlevel3" value="$minlevel3"> - <input type="text" class="number narrow" name="maxlevel3" value="$maxlevel3"></dt>
+			</dl>
+
+			<div class="post_buttons">
+				<button type="submit">筛选</button>
+			</div>
+		</form>
+
+		<div class="list">
+			<table>
+				<thead>
+					<tr>
+						<td>编号</td>
+						<td>地址</td>
+						<td>收件人</td>
+						<td>评价时间</td>
+						<td>送货速度</td>
+						<td>商品质量</td>
+						<td>服务态度</td>
+						<td width="400">留言</td>
+					</tr>
+				</thead>
+				<tbody>
+					<!--{loop $comments $c}-->
+					<tr>
+						<td><a href="admin.php?mod=order&orderid=$c[orderid]" target="_blank">$c[orderid]</a></td>
+						<td>{echo Address::FullPathString($c['addressid'])}&nbsp;$c[extaddress]</td>
+						<td>$c[addressee]<br />$c[mobile]</td>
+						<td title="下单时间：{echo rdate($c['orderdateline'])}">{echo rdate($c['dateline'])}</td>
+						<td class="level_{$c['level1']}">$c[level1]</td>
+						<td class="level_{$c['level2']}">$c[level2]</td>
+						<td class="level_{$c['level3']}">$c[level3]</td>
+						<td>$c[content]</td>
+					</tr>
+					<!--{/loop}-->
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{echo Template::mpage($pagenum, $page, $limit, $mod_url.'&'.$query_string)}
+
+{template footer}

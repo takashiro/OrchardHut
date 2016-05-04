@@ -22,6 +22,7 @@ takashiro@qq.com
 
 return array(
 	'module_order' => '订单',
+	'module_order:comment' => '订单评价',
 	'module_order:scancode' => '扫码处理',
 	'module_order:stat' => '分拣报表',
 	'module_order:search' => '高级查找',

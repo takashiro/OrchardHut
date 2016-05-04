@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS `pre_ordercomment` (
   `level2` tinyint(3) unsigned NOT NULL,
   `level3` tinyint(3) unsigned NOT NULL,
   `content` text NOT NULL,
-  PRIMARY KEY (`orderid`)
+  PRIMARY KEY (`orderid`),
+  KEY `level` (`level1`,`level2`,`level3`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `pre_orderdetail`;
