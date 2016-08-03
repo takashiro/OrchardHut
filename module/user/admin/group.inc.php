@@ -48,6 +48,7 @@ class UserGroupModule extends AdminControlPanelModule{
 		}
 		if(!$usergroup->exists())
 			$usergroup->insert();
+		UserGroup::RefreshCache();
 		echo json_encode($usergroup->toReadable());
 		exit;
 	}
@@ -58,6 +59,7 @@ class UserGroupModule extends AdminControlPanelModule{
 			exit;
 
 		UserGroup::Delete($id);
+		UserGroup::RefreshCache();
 		global $db;
 		echo $db->affected_rows;
 		exit;
