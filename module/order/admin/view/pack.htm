@@ -1,0 +1,44 @@
+{template header}
+
+<script type="text/javascript">
+var Order = {
+	WaitForPacking : {echo Order::WaitForPacking}
+};
+var Product = {
+	PriceUnit : '{echo Product::$PriceUnit}'
+};
+</script>
+<script type="text/javascript" src="data/js/addresscomponent.js"></script>
+<script type="text/javascript" src="extension/module/order/admin/view/js/pack.js"></script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=order">订单</a></li>
+	<li>拣货列表</li>
+</ol>
+
+<div class="box">
+	<h1>拣货列表</h1>
+	<div class="content">
+		<div class="list">
+			<table>
+				<thead>
+					<tr>
+						<td>编号</td>
+						<td>地址</td>
+						<td>收件人</td>
+						<td>用户</td>
+						<td>物品</td>
+						<td>价格</td>
+						<td width="80">操作</td>
+						<td>留言</td>
+					</tr>
+				</thead>
+				<tbody id="orderlist">
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{template footer}

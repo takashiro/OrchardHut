@@ -40,7 +40,9 @@
 							<a href="index.php?mod=order&action=view&orderid=$o[id]" class="view">[详细]</a>
 							<!--{if $o['status'] == Order::Unsorted}-->
 								<a href="index.php?mod=order&action=delete&orderid=$o[id]">[取消]</a>
-							<!--{elseif $o['status'] == Order::Sorted || $o['status'] == Order::ToDeliveryStation || $o['status'] == Order::InDeliveryStation || $o['status'] == Order::Delivering}-->
+							<!--{elseif $o['status'] == Order::ToDeliveryStation || $o['status'] == Order::InDeliveryStation}-->
+								<a href="index.php?mod=order&action=pack&orderid=$o[id]">[提货]</a>
+							<!--{elseif $o['status'] == Order::Packing || $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
 								<a href="index.php?mod=order&action=mark_received&orderid=$o[id]">[收货]</a>
 							<!--{elseif $o['status'] == Order::Received}-->
 								<a href="index.php?mod=order&action=comment&orderid=$o[id]">[评价]</a>

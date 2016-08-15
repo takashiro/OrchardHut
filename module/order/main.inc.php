@@ -236,6 +236,27 @@ case 'pay':
 	include view('pay');
 	break;
 
+case 'pack':
+	if(empty($_GET['orderid'])){
+		exit('access denied');
+	}
+	$orderid = intval($_GET['orderid']);
+	$order = new Order($orderid);
+
+	if(!$order->exists() || $order->userid != $_G['user']->id){
+		showmsg('order_not_exist', 'back');
+	}
+
+	if($order->status != Order::ToDeliveryStation && $order->status != Order::InDeliveryStation){
+		showmsg('order_not_exist', 'back');
+	}
+
+	$order->packcode = rand(1, 0xFFFF);
+	$order = $order->toReadable();
+
+	include view('pack');
+	break;
+
 default:
 	$limit = 10;
 	$offset = ($page - 1) * $limit;

@@ -57,6 +57,10 @@ class OrderMainModule extends AdminControlPanelModule{
 			$available_status[Order::Received] = false;
 			$available_status[Order::Rejected] = false;
 		}
+		if($_G['admin']->hasPermission('order:pack')){
+			$available_status[Order::WaitForPacking] = false;
+			$available_status[Order::Packing] = false;
+		}
 		$available_status[Order::Canceled] = false;
 
 		//显示（或导出Excel表格）订单列表
@@ -266,6 +270,16 @@ class OrderMainModule extends AdminControlPanelModule{
 				$condition[] = 'o.mobile=\''.$mobile.'\'';
 			}else{
 				$mobile = '';
+			}
+
+			//限定状态改变的时间
+			if(!empty($_REQUEST['statusid']) && !empty($_REQUEST['statustime'])){
+				$statusid = intval($_REQUEST['statusid']);
+				$statustime = intval($_REQUEST['statustime']);
+				if($statusid > 0){
+					$status_changed = Order::StatusChanged;
+					$condition[] = "EXISTS (SELECT * FROM {$tpre}orderlog l WHERE l.orderid=o.id AND l.operation=$status_changed AND l.dateline>$statustime)";
+				}
 			}
 
 			//连接成WHERE子句

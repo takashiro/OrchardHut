@@ -33,6 +33,8 @@ class Order extends DBObject{
 	const InDeliveryStation = 5;
 	const Canceled = 6;
 	const ToDeliveryStation = 7;
+	const WaitForPacking = 8;
+	const Packing = 9;
 
 	//Delivery Method
 	public static $DeliveryMethod;
@@ -423,6 +425,8 @@ Order::$Status = array(
 	Order::Sorted => lang('common', 'order_sorted'),
 	Order::ToDeliveryStation => lang('common', 'order_to_delivery_station'),
 	Order::InDeliveryStation => lang('common', 'order_in_delivery_station'),
+	Order::WaitForPacking => lang('common', 'order_wait_for_packing'),
+	Order::Packing => lang('common', 'order_packing'),
 	Order::Delivering => lang('common', 'order_delivering'),
 	Order::Received => lang('common', 'order_received'),
 	Order::Rejected => lang('common', 'order_rejected'),

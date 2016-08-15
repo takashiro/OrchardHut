@@ -99,13 +99,13 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 
 			$condition = implode(' AND ', $condition);
 
-			if(!empty($_REQUEST['mark_received'])){
+			if(!empty($_REQUEST['request_packing'])){
 				$orders = $db->fetch_all("SELECT id FROM {$tpre}order WHERE $condition");
 				if($orders){
 					foreach($orders as $o){
 						$order = new Order($o['id']);
-						$order->status = Order::Received;
-						$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
+						$order->status = Order::WaitForPacking;
+						$order->addLog($_G['admin'], Order::StatusChanged, Order::WaitForPacking);
 					}
 					exit(json_encode(array('ok' => 1)));
 				}else{

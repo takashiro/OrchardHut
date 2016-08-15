@@ -1,0 +1,50 @@
+{template header}
+
+<style type="text/css">
+canvas#barcode{
+	width: 90%;
+}
+</style>
+
+<script type="text/javascript" src="./3rdparty/jquery.ean13/jquery-ean13.min.js"></script>
+<script type="text/javascript" src="./3rdparty/jquery.qrcode.min.js"></script>
+<script type="text/javascript">
+function id2barcode(id, packcode){
+	var barcode = '';
+	var leading_zero_num = 8 - id.length;
+	for(var i = 0; i < leading_zero_num; i++){
+		barcode += '0';
+	}
+	barcode += id;
+	leading_zero_num = 3 - packcode.length;
+	for(var i = 0; i < leading_zero_num; i++){
+		barcode += '0';
+	}
+	barcode += packcode;
+	return barcode;
+}
+
+$(function(){
+	$('#barcode').EAN13(id2barcode('$order[id]', '$order[packcode]'));
+	$('#qrcode').qrcode('{$_G[site_url]}index.php?mod=order&action=pack&orderid=$order[id]&packcode=$order[packcode]');
+});
+</script>
+
+<div class="box">
+	<h1>我的订单 - 提货二维码</h1>
+	<div class="content order_list">
+		<dl class="form">
+			<dt>订单编号：</dt><dd>$order[id]</dd>
+			<dt>下单时间：</dt><dd>$order[dateline]</dd>
+			<dt>收件人：</dt><dd>$order[addressee]</dd>
+			<dt>联系电话：</dt><dd>$order[mobile]</dd>
+			<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
+			<dt>总计：</dt><dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
+		</dl>
+
+		<canvas id="barcode"></canvas>
+		<div id="qrcode"></div>
+	</div>
+</div>
+
+{template footer}
