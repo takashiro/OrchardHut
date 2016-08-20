@@ -28,6 +28,28 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 		return array('order');
 	}
 
+	public function updateAction(){
+		$condition = array();
+
+		//过滤配送范围
+		$limitation_addressids = $_G['admin']->getLimitations();
+		if($limitation_addressids){
+			$condition[] = 'o.addressid IN ('.implode(',', $limitation_addressids).')';
+		}
+
+		$order_wait_for_packing = Order::WaitForPacking;
+		$condition[] = "o.status=$order_wait_for_packing";
+
+		$condition = implode(' AND ', $condition);
+
+		global $db, $tpre;
+		$waiting_num = $db->result_first("SELECT COUNT(*)
+			FROM {$tpre}order o
+			WHERE $condition");
+		echo $waiting_num;
+		exit;
+	}
+
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
@@ -78,6 +100,9 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 
 			if(!empty($_REQUEST['orderid'])){
 				$condition[] = 'id='.intval($_REQUEST['orderid']);
+				if(!empty($_REQUEST['packcode'])){
+					$condition[] = 'packcode='.intval($_REQUEST['packcode']);
+				}
 			}elseif(!empty($_REQUEST['mobile'])){
 				$condition[] = 'mobile=\''.raddslashes($_REQUEST['mobile']).'\'';
 			}elseif(!empty($_REQUEST['orderids']) && is_array($_REQUEST['orderids'])){

@@ -24,38 +24,57 @@
 
 		<div class="box">
 			<h2><img src="extension/view/user/pink/image/logo.png" width="150" height="50" />自助打印提货单</h2>
-			<div class="content">
-				<table>
-					<tr>
-						<th>下单时间：</th>
-						<td><input type="text" class="datetime" id="time_start" value="{echo rdate($time_start, 'Y-m-d H:i')}" /> - <input type="text" class="datetime" id="time_end" value="{echo rdate($time_end, 'Y-m-d H:i')}" /></td>
-					</tr>
-					<tr>
-						<th>订单号或手机号：</th>
-						<td><input type="text" id="orderid_or_mobile" autocomplete="off" /></td>
-					</tr>
-				</table>
+			<div class="content tabview">
+				<ul class="tab">
+					<li class="current"><button type="button">扫码</button></li>
+					<li><button type="button">手动输入</button></li>
+				</ul>
+				<ul class="pages">
+					<li>
+						<ol>
+							<li>请进入$_CONFIG[sitename]微信公众号，打开“我的订单”。</li>
+							<li>点击订单右侧的“提货”按钮。</li>
+							<li>将手机上的显示的条码/二维码对准扫描枪。</li>
+						</ol>
+						<form id="scan_form" action="###" method="post">
+							<input type="text" id="scan_input" autofocus="autofocus" autocomplete="off" />
+							<button type="submit">提交</button>
+						</form>
+					</li>
+					<li>
+						<table>
+							<tr>
+								<th>下单时间：</th>
+								<td><input type="text" class="datetime" id="time_start" value="{echo rdate($time_start, 'Y-m-d H:i')}" /> - <input type="text" class="datetime" id="time_end" value="{echo rdate($time_end, 'Y-m-d H:i')}" /></td>
+							</tr>
+							<tr>
+								<th>订单号或手机号：</th>
+								<td><input type="text" id="orderid_or_mobile" autofocus="autofocus" autocomplete="off" /></td>
+							</tr>
+						</table>
 
-				<div class="number_board">
-					<button type="button">7</button>
-					<button type="button">8</button>
-					<button type="button">9</button>
-					<button type="button">4</button>
-					<button type="button">5</button>
-					<button type="button">6</button>
-					<button type="button">1</button>
-					<button type="button">2</button>
-					<button type="button">3</button>
-					<button type="button">*</button>
-					<button type="button">0</button>
-					<button type="button">#</button>
-				</div>
+						<div class="number_board">
+							<button type="button">7</button>
+							<button type="button">8</button>
+							<button type="button">9</button>
+							<button type="button">4</button>
+							<button type="button">5</button>
+							<button type="button">6</button>
+							<button type="button">1</button>
+							<button type="button">2</button>
+							<button type="button">3</button>
+							<button type="button">*</button>
+							<button type="button">0</button>
+							<button type="button">#</button>
+						</div>
 
-				<div class="post_buttons">
-					<button type="submit" id="print_button">查询</button>
-					<button type="button" id="backspace_button">退格</button>
-					<button type="button" id="clear_button">清空</button>
-				</div>
+						<div class="post_buttons">
+							<button type="submit" id="print_button">查询</button>
+							<button type="button" id="backspace_button">退格</button>
+							<button type="button" id="clear_button">清空</button>
+						</div>
+					</li>
+				</ul>
 			</div>
 		</div>
 		<footer>

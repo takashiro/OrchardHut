@@ -95,3 +95,52 @@ button{
 	border: #CBD899 1px solid;
 	color: white;
 }
+
+.tabview{
+	min-height: 500px;
+}
+
+.tabview ul{
+	padding: 0;
+}
+
+.tabview ul > li{
+	list-style: none;
+}
+
+.tabview ul.pages > li:not(:first-child){
+	display: none;
+}
+
+.tabview ul.tab{
+	background: #ABCA17;
+	padding: 0.3em 0 0 1%;
+}
+
+.tabview ul.tab li{
+	display: inline-block;
+	border: 0 solid;
+	width: 49%;
+	text-align: center;
+}
+
+.tabview ul.tab li.current{
+	background: white;
+}
+
+.tabview ul.tab li.current button{
+	color: #ABCA17;
+}
+
+.tabview ul.tab li button{
+	font-size: 28pt;
+	border: 0 solid;
+	text-align: center;
+	width: 100%;
+	background: none;
+}
+
+#scan_form{
+	height: 0;
+	overflow: hidden;
+}
