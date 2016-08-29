@@ -29,6 +29,7 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 	}
 
 	public function updateAction(){
+		global $_G;
 		$condition = array();
 
 		//过滤配送范围

@@ -37,23 +37,28 @@
 						</tr>
 					</table>
 
-					<div class="number_board">
-						<button type="button">7</button>
-						<button type="button">8</button>
-						<button type="button">9</button>
-						<button type="button">4</button>
-						<button type="button">5</button>
-						<button type="button">6</button>
-						<button type="button">1</button>
-						<button type="button">2</button>
-						<button type="button">3</button>
-						<button type="button" id="clear_button" class="tiny">清空</button>
-						<button type="button">0</button>
-						<button type="button" id="backspace_button" class="tiny">退格</button>
-					</div>
+					<div class="panel">
+						<div class="number_board">
+							<button type="button">7</button>
+							<button type="button">8</button>
+							<button type="button">9</button>
+							<button type="button">4</button>
+							<button type="button">5</button>
+							<button type="button">6</button>
+							<button type="button">1</button>
+							<button type="button">2</button>
+							<button type="button">3</button>
+							<button type="button" id="clear_button" class="tiny">清空</button>
+							<button type="button">0</button>
+							<button type="button" id="backspace_button" class="tiny">退格</button>
+						</div>
 
-					<div class="post_buttons">
-						<button type="submit">查询</button>
+						<div id="waiting_list">您前面有<span id="waiting_num">0</span>个订单正在等待拣货</div>
+						<div id="message_box"></div>
+
+						<div class="post_buttons">
+							<button type="submit">查询</button>
+						</div>
 					</div>
 				</form>
 			</div>

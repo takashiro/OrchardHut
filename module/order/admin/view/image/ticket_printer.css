@@ -102,3 +102,31 @@ button{
 	border: #CBD899 1px solid;
 	color: white;
 }
+
+.panel{
+	position: relative;
+}
+
+#waiting_list{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 130px;
+	padding-right: 40px;
+	text-align: center;
+}
+
+#message_box{
+	position: absolute;
+	top: 60px;
+	right: 5px;
+	width: 140px;
+	padding: 0;
+	padding-right: 30px;
+	overflow: hidden;
+	height: 200px;
+}
+
+#message_box p{
+	position: relative;
+}
