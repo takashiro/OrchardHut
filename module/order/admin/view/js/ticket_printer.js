@@ -1,23 +1,40 @@
 $(function(){
-	$('#print_button').click(function(e){
+	$('#scan_form').submit(function(e){
 		e.preventDefault();
 
-		if($('#orderid_or_mobile').val() == ''){
-			alert('请输入订单号或手机号。');
+		if($('#mobile').val() == ''){
+			return;
 		}else{
-			var input = $('#orderid_or_mobile');
+			var input = $('#mobile');
+			var input_text = input.val();
 
 			var parameters;
-			if (input.val().length == 11){
-				parameters = '&mobile=' + parseInt(input.val(), 10);
-			}else{
-				parameters = '&orderid=' + parseInt(input.val(), 10);
+			if(input_text.charAt(0) == '0' && input_text.length == 13){
+				var orderid = parseInt(input_text.substr(0, 9), 10);
+				var packcode = parseInt(input_text.substr(9, 4), 10);
+				if(!isNaN(orderid) && !isNaN(packcode) && orderid > 0 && packcode > 0){
+					parameters += '&orderid=' + orderid + '&packcode=' + packcode;
+				}
+			}else if(input_text.charAt(0) == '{'){
+				var value = JSON.parse(input_text);
+				if(value.orderid != undefined && value.packcode != undefined){
+					var orderid = parseInt(value.orderid, 10);
+					var packcode = parseInt(value.packcode, 10);
+					if(!isNaN(orderid) && !isNaN(packcode) && orderid > 0 && packcode > 0){
+						parameters += '&orderid=' + orderid + '&packcode=' + packcode;
+					}
+				}
+			}else if(input_text.length == 11){
+				parameters = '&mobile=' + parseInt(input_text, 10);
+			}
+			if(!parameters){
+				return;
 			}
 
 			parameters += '&time_start=' + escape($('#time_start').val());
 			parameters += '&time_end=' + escape($('#time_end').val());
 
-			var url = 'admin.php?mod=order:ticketprinter&auto_receive=1' + parameters;
+			var url = 'admin.php?mod=order:ticketprinter&auto_receive=1&auto_print=1' + parameters;
 			var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
 			new_window.focus();
 
@@ -26,81 +43,29 @@ $(function(){
 		}
 	});
 
-	$('#orderid_or_mobile').focus();
+	$('#mobile').focus();
 
 	$('.number_board button').click(function(){
-		var input = $('#orderid_or_mobile');
-		input.val(input.val() + $(this).text());
+		var input = $('#mobile');
+		var number = parseInt($(this).text(), 10);
+		if(!isNaN(number)){
+			input.val(input.val() + number);
+			input.focus();
+		}
 	});
 
 	$('#backspace_button').click(function(){
-		var input = $('#orderid_or_mobile');
+		var input = $('#mobile');
 		var content = input.val();
 		input.val(content.substr(0, content.length - 1));
+		input.focus();
+		return false;
 	});
 
 	$('#clear_button').click(function(){
-		var input = $('#orderid_or_mobile');
+		var input = $('#mobile');
 		input.val('');
-	});
-
-	$('.tabview').on('click', '.tab li button', function(e){
-		var button = $(e.target);
-		var li = button.parent();
-		var tab = li.parent();
-		tab.children().removeClass('current');
-		li.addClass('current');
-
-		var pages = tab.parent().children('.pages').children();
-		pages.hide();
-		var index = li.index();
-		var current = pages.eq(index);
-		current.show();
-
-		current.find('input[autofocus="autofocus"]').focus();
-	});
-
-	$('#scan_form').on('submit', function(e){
-		e.preventDefault();
-		var input = $('#scan_input');
-		var input_text = input.val();
-		input.val('');
-
-		var orderid = 0;
-		var packcode = 0;
-		if (input_text.substr(0, 7) == "http://"){
-			var parameters = input_text.split('&');
-			for(var i = 0; i < parameters.length; i++){
-				var temp = parameters[i].split('=');
-				if(temp.length != 2){
-					continue;
-				}
-				if(temp[0] == 'orderid'){
-					orderid = parseInt(temp[1], 10);
-				}else if(temp[0] == 'packcode'){
-					packcode = parseInt(temp[1], 10);
-				}
-			}
-		}else{
-			orderid = parseInt(input_text.substr(0, input_text.length - 5), 10);
-			packcode = parseInt(input_text.substr(input_text.length - 5));
-		}
-
-		if(orderid <= 0 || packcode <= 0){
-			input.focus();
-			return;
-		}
-
-		var parameters = '&orderid=' + orderid + '&packcode=' + packcode;
-		parameters += '&time_start=' + escape($('#time_start').val());
-		parameters += '&time_end=' + escape($('#time_end').val());
-
-		var url = 'admin.php?mod=order:ticketprinter&auto_receive=1' + parameters;
-		var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
-		new_window.focus();
-
 		input.focus();
+		return false;
 	});
-
-	$('#scan_input').focus();
 });

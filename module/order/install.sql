@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `pre_order` (
   `tradeid` varchar(255) NOT NULL,
   `tradestate` tinyint(4) NOT NULL,
   `tradetime` int(11) unsigned NOT NULL,
-  `packcode` smallint(5) unsigned DEFAULT NULL,
+  `packcode` tinyint(3) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `tradetime` (`tradetime`),

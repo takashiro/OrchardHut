@@ -33,10 +33,17 @@ footer{
 
 .number_board button{
 	font-size: 32pt;
+	line-height: 80px;
 	width: 80px;
 	height: 80px;
 	overflow: hidden;
-	margin: 2px;
+	margin: 5px 2px;
+}
+
+.number_board button.tiny{
+	font-size: 22pt;
+	position: relative;
+	top: -5px;
 }
 
 #ticket_form table th, #ticket_form table td, #ticket_form input{
@@ -94,53 +101,4 @@ button{
 	background: #ABCA17;
 	border: #CBD899 1px solid;
 	color: white;
-}
-
-.tabview{
-	min-height: 500px;
-}
-
-.tabview ul{
-	padding: 0;
-}
-
-.tabview ul > li{
-	list-style: none;
-}
-
-.tabview ul.pages > li:not(:first-child){
-	display: none;
-}
-
-.tabview ul.tab{
-	background: #ABCA17;
-	padding: 0.3em 0 0 1%;
-}
-
-.tabview ul.tab li{
-	display: inline-block;
-	border: 0 solid;
-	width: 49%;
-	text-align: center;
-}
-
-.tabview ul.tab li.current{
-	background: white;
-}
-
-.tabview ul.tab li.current button{
-	color: #ABCA17;
-}
-
-.tabview ul.tab li button{
-	font-size: 28pt;
-	border: 0 solid;
-	text-align: center;
-	width: 100%;
-	background: none;
-}
-
-#scan_form{
-	height: 0;
-	overflow: hidden;
 }

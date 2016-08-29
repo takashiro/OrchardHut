@@ -119,7 +119,7 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 				}
 
 			}else{
-				showmsg('please_input_order_id_or_mobile', 'back');
+				exit;
 			}
 
 			$condition = implode(' AND ', $condition);

@@ -10,13 +10,13 @@ canvas#barcode{
 <script type="text/javascript" src="./3rdparty/jquery.qrcode.min.js"></script>
 <script type="text/javascript">
 function id2barcode(id, packcode){
-	var barcode = '';
+	var barcode = '0';
 	var leading_zero_num = 8 - id.length;
 	for(var i = 0; i < leading_zero_num; i++){
 		barcode += '0';
 	}
 	barcode += id;
-	leading_zero_num = 3 - packcode.length;
+	leading_zero_num = 4 - packcode.length;
 	for(var i = 0; i < leading_zero_num; i++){
 		barcode += '0';
 	}
@@ -26,7 +26,7 @@ function id2barcode(id, packcode){
 
 $(function(){
 	$('#barcode').EAN13(id2barcode('$order[id]', '$order[packcode]'));
-	$('#qrcode').qrcode('{$_G[site_url]}index.php?mod=order&action=pack&orderid=$order[id]&packcode=$order[packcode]');
+	$('#qrcode').qrcode('{"orderid":$order[id], "packcode":$order[packcode]}');
 });
 </script>
 

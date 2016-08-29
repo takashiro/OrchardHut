@@ -69,25 +69,22 @@ case 'mark_received':
 		showmsg('order_not_exist', 'back');
 	}
 
-	if($order->deliverymethod == Order::HomeDelivery){
+	$old_status = array(Order::Packing, Order::Sorted, Order::Delivering);
+	if(in_array($order->status, $old_status)){
 		if(empty($_GET['confirm'])){
 			showmsg('confirm_to_mark_order_as_received', 'confirm');
 		}
 
-		$old_status = array(Order::Sorted, Order::ToDeliveryStation, Order::Delivering, Order::InDeliveryStation);
 		$old_status = implode(',', $old_status);
 		$new_status = Order::Received;
 		$home_delivery = Order::HomeDelivery;
-		$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND userid={$_USER['id']} AND deliverymethod=$home_delivery AND status IN ($old_status)");
+		$db->query("UPDATE {$tpre}order SET status=$new_status WHERE id=$orderid AND userid={$_USER['id']} AND status IN ($old_status)");
 		if($db->affected_rows > 0){
 			$order = new Order($orderid);
 			$order->addLog($_G['user'], Order::StatusChanged, Order::Received);
 		}
 		rsetcookie('order-number-cache-time', 0);
 		showmsg('successfully_received', 'index.php?mod=order');
-	}else{
-		$order = $order->toReadable();
-		include view('barcode');
 	}
 	break;
 
@@ -251,7 +248,7 @@ case 'pack':
 		showmsg('order_not_exist', 'back');
 	}
 
-	$order->packcode = rand(1, 0xFFFF);
+	$order->packcode = rand(1, 0xFF);
 	$order = $order->toReadable();
 
 	include view('pack');

@@ -34,6 +34,10 @@ function id2barcode(id){
 	width: 6cm;
 	height: 2.5cm;
 }
+.notice{
+	font-size: 20pt;
+	margin: 30% 0 0 0;
+}
 </style>
 <style type="text/css" media="print">
 .footer{
@@ -71,13 +75,21 @@ $(function(){
 		window.close();
 		{/if}
 	});
+
+{if !empty($_GET['auto_print'])}
+	setTimeout(function(){
+		$('#print_button').click();
+	}, 500);
+{/if}
 });
 </script>
 <button id="print_button">确认打印</button>
 <!--{else}-->
+<div class="notice">抱歉，没有查询到订单。</div>
 <script type="text/javascript">
-alert('没有查询到订单！');
-window.close();
+setTimeout(function(){
+	window.close();
+}, 1500);
 </script>
 <!--{/if}-->
 
