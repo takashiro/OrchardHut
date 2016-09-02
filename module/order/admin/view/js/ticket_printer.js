@@ -1,17 +1,21 @@
 function showmsg(message){
 	var p = $('<p></p>');
 	p.text(message);
-	p.appendTo($('#message_box'));
-	setTimeout(function(){
-		var height = p.outerHeight();
-		var top = $('#message_box').css('top');
-		$('#message_box').animate({'top': '-=' + height + 'px'}, 500, function(){
-			$('#message_box').css('top', top);
-		});
-		p.animate({'opacity': 0}, 500, function(){
+	var box = $('#message_box');
+	p.css('opacity', 0);
+
+	p.appendTo(box);
+	p.animate({'opacity' : 1}, 500);
+
+	var messages = box.children();
+	if(messages.length > 4){
+		var p = messages.eq(0);
+		var height = p.outerHeight(true);
+		box.animate({'scrollTop' : '+=' + height + 'px'}, 500, function(){
+			box.css('scrollTop', '-=' + height + 'px');
 			p.remove();
 		});
-	}, 3000);
+	}
 }
 
 $(function(){

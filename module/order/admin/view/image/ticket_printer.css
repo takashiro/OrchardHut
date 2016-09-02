@@ -110,10 +110,10 @@ button{
 #waiting_list{
 	position: absolute;
 	top: 5px;
-	right: 5px;
-	width: 130px;
-	padding-right: 40px;
+	right: 35px;
+	width: 140px;
 	text-align: center;
+	border-bottom: gray 1px dotted;
 }
 
 #message_box{
@@ -129,4 +129,5 @@ button{
 
 #message_box p{
 	position: relative;
+	margin: 5px 0;
 }
