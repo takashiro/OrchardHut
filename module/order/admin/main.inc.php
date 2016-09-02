@@ -559,7 +559,7 @@ class OrderMainModule extends AdminControlPanelModule{
 				exit('permission denied');
 			}
 
-			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryStation) || $_G['admin']->isSuperAdmin()){
+			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryStation || $order->status == Order::Packing) || $_G['admin']->isSuperAdmin()){
 				$order->status = Order::Received;
 				$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
 			}
