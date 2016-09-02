@@ -1,0 +1,254 @@
+/* Common */
+
+@import url('fontello.css');
+
+body{
+	margin: 0;
+	padding: 0;
+	font-family: 'Microsoft YaHei', 'Arial', 'Times New Roman';
+	font-size: 12pt;
+}
+
+a{
+	text-decoration: none;
+}
+
+ul{
+	padding: 0;
+	margin: 0;
+}
+
+ul li{
+	list-style: none;
+}
+
+.debug{
+	display: none;
+}
+
+/* List */
+ul.brief > li{
+	position: relative;
+	min-height: 100px;
+	border-bottom: #dcdcdc 1px solid;
+}
+
+ul.brief > li .icon{
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	top: 10px;
+	left: 0;
+	background: #dcdcdc;
+}
+
+/* Banner */
+section.banner{
+	height: auto;
+}
+
+section.banner img{
+	width: 100%;
+}
+
+/* Footer */
+footer{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background: white;
+	border-top: #dcdcdc 1px solid;
+}
+
+footer ul.button > li{
+	width: 32%;
+	display: inline-block;
+	text-align: center;
+}
+
+footer ul.button > li a{
+	color: #787878;
+	display: block;
+	width: 100%;
+	padding: 0.6em 0 0.8em 0;
+}
+
+footer ul.button > li a .icon{
+	display: block;
+	margin: 0 auto;
+}
+
+footer ul.button > li.active a .icon{
+	color: #00b658;
+}
+
+footer div.number-notice div.number{
+	font-size: 9pt;
+}
+
+/* Number notice */
+div.number-notice{
+	position: relative;
+	display: inline-block;
+}
+
+div.number-notice div.number{
+	background: #ff503c;
+	color: white;
+	width: 1.6em;
+	height: 1.6em;
+	line-height: 1.6em;
+	border-radius: 0.8em;
+	display: block;
+	overflow: hidden;
+	top: -0.3em;
+	right: -0.5em;
+	position: absolute;
+}
+
+/* Sidebar Layout */
+section.layout{
+	position: relative;
+	background: #efefef;
+}
+
+section.sidebar{
+	width: 120px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #efefef;
+}
+
+section.main{
+	padding-left: 120px;
+	background: white;
+}
+
+/* Tab */
+ul.tab{
+	background: #efefef;
+	border-bottom: #dcdcdc 1px solid;
+	line-height: 3em;
+	text-align: center;
+}
+
+ul.tab > li{
+	border-bottom: #dcdcdc 1px solid;
+	border-right: #dcdcdc 1px solid;
+}
+
+ul.tab > li.active{
+	border-left: #00b758 6px solid;
+	border-right: white 1px solid;
+	background: white;
+}
+
+ul.tab > li a{
+	display: block;
+	width: 100%;
+	color: black;
+}
+
+ul.tab > li:last-child{
+	border-bottom: 0 solid;
+}
+
+/* Number Box */
+.numberbox{
+	color: black;
+	width: 96px;
+	height: 24px;
+	line-height: 24px;
+}
+
+.numberbox input{
+	background: none;
+	border: 0 solid;
+	width: 48px;
+	height: 100%;
+	text-align: center;
+	font-size: 14pt;
+	padding: 0;
+	float: left;
+}
+
+.numberbox button{
+	border: #bebebe 2px solid;
+	border-radius: 12px;
+	width: 24px;
+	height: 24px;
+	background: none;
+	text-align: center;
+	overflow: hidden;
+	margin: 0;
+	float: left;
+}
+
+.numberbox button.decrease{
+	color: #bebebe;
+}
+
+.numberbox button.increase{
+	background: #00b658;
+	border: #00b758 1px solid;
+	color: white;
+}
+
+/* Market */
+section.market.layout{
+	border-top: #dcdcdc 1px solid;
+	margin-bottom: 120px;
+}
+
+section.market ul.brief{
+	margin-left: 10px;
+}
+
+section.market ul.brief .detail{
+	padding-top: 10px;
+}
+
+section.market ul.brief .detail,
+section.market ul.brief ul.rule{
+	margin-left: 90px;
+}
+
+section.market ul.brief .soldout,
+section.market ul.brief .briefintro{
+	color: #808080;
+	font-size: 10pt;
+}
+
+section.market ul.brief .price,
+section.market ul.brief .priceunit,
+section.market ul.brief .amount,
+section.market ul.brief .amountunit{
+	color: #ff5143;
+}
+
+
+section.market ul.brief .photo,
+section.market ul.brief .introduction{
+	display: none;
+}
+
+section.market ul.brief ul.rule li{
+	position: relative;
+	line-height: 2em;
+}
+
+section.market ul.brief ul.rule li .order_input{
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 2em;
+}
+
+section.market ul.brief ul.rule li .order_input .numberbox{
+	position: absolute;
+	top: 50%;
+	right: 7px;
+	margin-top: -12px;
+}
