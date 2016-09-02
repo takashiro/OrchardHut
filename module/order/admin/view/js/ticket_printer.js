@@ -72,15 +72,19 @@ $(function(){
 			parameters += '&time_start=' + escape($('#time_start').val());
 			parameters += '&time_end=' + escape($('#time_end').val());
 
-			if(orderid > 0){
-				showmsg(orderid + '号订单正在等待拣货...');
-			}else if(mobile > 0){
-				showmsg('手机尾号' + input_text.substr(7, 4) + '的订单正在等待拣货...');
-			}
-
-			var url = 'admin.php?mod=order:ticketprinter&auto_receive=1&auto_print=1' + parameters;
-			var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
-			new_window.focus();
+			var order_text = orderid > 0 ? orderid + '号订单' : '手机尾号' + input_text.substr(7, 4) + '的订单';
+			var url = 'admin.php?mod=order:ticketprinter' + parameters;
+			$.post(url + '&check=1', {}, function(exists){
+				exists = parseInt(exists, 10);
+				if(!isNaN(exists) && exists > 0){
+					showmsg(order_text + '正在等待拣货...');
+					url += '&auto_receive=1&auto_print=1';
+					var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
+					new_window.focus();
+				}else{
+					showmsg('未查询到' + order_text);
+				}
+			}, 'text');
 
 			input.val('');
 			input.focus();

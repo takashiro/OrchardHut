@@ -149,6 +149,11 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 				}
 			}
 
+			if(!empty($_GET['check'])){
+				$result = $db->result_first("SELECT 1 FROM {$tpre}order WHERE $condition LIMIT 1");
+				exit($result ? '1' : '0');
+			}
+
 			$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition");
 
 			if($orders){
