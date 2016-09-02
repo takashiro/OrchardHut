@@ -106,4 +106,8 @@ $(function(){
 			tr.remove();
 		});
 	});
+
+	$('#batch_mark_packing').click(function(){
+		$('a.mark_packing').click();
+	});
 });
