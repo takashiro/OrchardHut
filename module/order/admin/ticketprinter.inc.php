@@ -41,6 +41,16 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 		$order_wait_for_packing = Order::WaitForPacking;
 		$condition[] = "o.status=$order_wait_for_packing";
 
+		//加入时间条件
+		if(isset($_GET['time_start'])){
+			$time_start = rstrtotime($_GET['time_start']);
+			$condition[] = 'o.tradetime>='.$time_start;
+		}
+		if(isset($_GET['time_end'])){
+			$time_end = rstrtotime($_GET['time_end']);
+			$condition[] = 'o.tradetime<='.$time_end;
+		}
+
 		$condition = implode(' AND ', $condition);
 
 		global $db, $tpre;

@@ -16,7 +16,11 @@ function showmsg(message){
 
 $(function(){
 	function updateWaitingNum(){
-		$.get('admin.php?mod=order:ticketprinter&action=update', {}, function(result){
+		var data = {
+			'time_start' : $('#time_start').val(),
+			'time_end' : $('#time_end').val()
+		};
+		$.get('admin.php?mod=order:ticketprinter&action=update', data, function(result){
 			var num = parseInt(result, 10);
 			if(!isNaN(num)){
 				$('#waiting_num').text(num);
