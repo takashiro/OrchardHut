@@ -44,5 +44,6 @@ CREATE TABLE IF NOT EXISTS `pre_station` (
   `name` varchar(100) NOT NULL,
   `address` varchar(255) NOT NULL,
   `orderrange` mediumint(8) unsigned NOT NULL,
+  `pauseprinting` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

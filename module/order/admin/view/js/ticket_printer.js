@@ -10,7 +10,11 @@ function showmsg(message){
 	p.animate({'opacity' : 1}, 500);
 
 	var messages = box.children();
-	if(messages.length > 4){
+	var total_height = 0;
+	messages.each(function(){
+		total_height += $(this).outerHeight();
+	});
+	if(total_height > box.height()){
 		var p = messages.eq(0);
 		var height = p.outerHeight(true);
 		box.animate({'scrollTop' : '+=' + height + 'px'}, 500, function(){
@@ -30,7 +34,7 @@ $(function(){
 			var input = $('#mobile');
 			var input_text = input.val();
 
-			var parameters;
+			var parameters = '&stationid=' + stationid;
 			var orderid = 0;
 			var mobile = 0;
 			if(input_text.charAt(0) == '0' && input_text.length == 13){
@@ -50,7 +54,7 @@ $(function(){
 				}
 			}else if(input_text.length == 11){
 				mobile = parseInt(input_text, 10);
-				parameters = '&mobile=' + parseInt(input_text, 10);
+				parameters += '&mobile=' + parseInt(input_text, 10);
 			}
 			if(!parameters){
 				return;
@@ -60,16 +64,22 @@ $(function(){
 			parameters += '&time_end=' + escape($('#time_end').val());
 
 			var order_text = orderid > 0 ? orderid + '号订单' : '手机尾号' + input_text.substr(7, 4) + '的订单';
-			var url = 'admin.php?mod=order:ticketprinter' + parameters;
-			$.post(url + '&check=1', {}, function(exists){
-				exists = parseInt(exists, 10);
-				if(!isNaN(exists) && exists > 0){
+			var url = 'admin.php?mod=order:ticketprinter&action=print' + parameters;
+			$.post(url + '&check=1', {}, function(error){
+				error = parseInt(error, 10);
+				if(isNaN(error)){
+					showmsg('未知故障。');
+				}else if(error >= 0){
 					showmsg(order_text + '正在等待拣货...');
 					url += '&auto_receive=1&auto_print=1';
 					var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
 					new_window.focus();
-				}else{
+				}else if(error == -1){
 					showmsg('未查询到' + order_text);
+				}else if(error == -2){
+					showmsg('工作人员忙不过来了，您稍等一下');
+					input.val(input_text);
+					input.focus();
 				}
 			}, 'text');
 

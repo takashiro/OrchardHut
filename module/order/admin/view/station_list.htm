@@ -1,0 +1,29 @@
+<!--{template header}-->
+
+<script src="extension/module/order/admin/view/js/station_list.js"></script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="###">订单</a></li>
+	<li>打印提货单</li>
+</ol>
+
+<div class="box list">
+	<h1>配送站控制台</h1>
+
+	<div class="content">
+		<table class="station_list">
+			<thead><tr><td>配送站名称</td><td>提货单打印状态</td><td>其他</td></tr></thead>
+			<tbody>
+			<!--{loop $stations $s}-->
+				<tr>
+					<td>$s[name]</td>
+					<td><button type="button" class="pause" data-stationid="$s[id]" data-paused="$s[pauseprinting]" data-alternative-text="{if !empty($s['pauseprinting'])}可打印{else}打印暂停{/if}">{if !empty($s['pauseprinting'])}打印暂停{else}可打印{/if}</button></td>
+					<td><a class="button" href="$mod_url&action=print&stationid=$s[id]" target="_blank">自助提货终端</a></td>
+				</tr>
+			<!--{/loop}-->
+		</table>
+	</div>
+</div>
+
+<!--{template footer}-->

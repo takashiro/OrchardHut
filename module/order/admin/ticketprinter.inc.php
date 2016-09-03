@@ -29,7 +29,62 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 	}
 
 	public function defaultAction(){
+		global $db, $_G;
+		$table = $db->select_table('station');
+		$limitation_addressids = $_G['admin']->getLimitations();
+		if($limitation_addressids){
+			$condition = 'o.addressid IN ('.implode(',', $limitation_addressids).')';
+		}else{
+			$condition = '1';
+		}
+		$stations = $table->fetch_all('*', $condition);
+
+		extract($GLOBALS, EXTR_REFS | EXTR_SKIP);
+		include view('station_list');
+	}
+
+	public function pauseAction(){
+		if(empty($_POST['stationid'])) exit('invalid station id');
+		$stationid = intval($_POST['stationid']);
+		if($stationid <= 0) exit('invalid station id');
+
+		$paused = !empty($_POST['paused']) ? 1 : 0;
+
+		global $db, $tpre;
+		$db->query("UPDATE {$tpre}station SET pauseprinting=$paused WHERE id=$stationid");
+		echo $db->affected_rows;
+		exit;
+	}
+
+	public function printAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
+
+		$stationid = isset($_GET['stationid']) ? intval($_GET['stationid']) : 0;
+		$table = $db->select_table('station');
+		$addresses = $_G['admin']->getLimitations();
+		if($addresses){
+			$condition = 'addressid IN ('.implode(',', $addresses).')';
+		}else{
+			$condition = '1';
+		}
+		$condition.= ' LIMIT 1';
+		if($stationid <= 0){
+			$station = $table->fetch_first('id,orderrange,pauseprinting', $condition);
+			if(empty($station)){
+				exit('invalid station id');
+			}
+			$stationid = $station['id'];
+		}else{
+			$station = $table->fetch_first('id,orderrange,pauseprinting', 'id='.$stationid.' AND '.$condition);
+			if(!$station){
+				exit('invalid station id');
+			}
+		}
+		if($station['pauseprinting']){
+			if(!empty($_GET['check'])){
+				exit('-2');
+			}
+		}
 
 		$condition = array();
 
@@ -68,10 +123,12 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 
 		if(isset($_REQUEST['orderid']) || isset($_REQUEST['mobile']) || isset($_REQUEST['orderids'])){
 			//过滤掉送货地点不在当前管理员的管辖范围内的订单
-			$limitation_addressids = $_G['admin']->getLimitations();
-			if($limitation_addressids){
-				$condition[] = 'addressid IN ('.implode(',', $limitation_addressids).')';
+			$limited_addressids = Address::Extension($station['orderrange']);
+			$admin_limited_addressids = $_G['admin']->getLimitations();
+			if($admin_limited_addressids){
+				$limited_addressids = array_intersect($limited_addressids, $admin_limited_addressids);
 			}
+			$condition[] = 'addressid IN ('.implode(',', $limited_addressids).')';
 
 			//到自提点的订单
 			$condition[] = 'status='.Order::InDeliveryStation;
@@ -112,15 +169,15 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 						$order->status = Order::Received;
 						$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
 					}
-					exit(json_encode(array('ok' => 1)));
+					exit('1');
 				}else{
-					exit(json_encode(array('ok' => 0)));
+					exit('0');
 				}
 			}
 
 			if(!empty($_GET['check'])){
 				$result = $db->result_first("SELECT 1 FROM {$tpre}order WHERE $condition LIMIT 1");
-				exit($result ? '1' : '0');
+				exit($result ? '0' : '-1');
 			}
 
 			$orders = $db->fetch_all("SELECT * FROM {$tpre}order WHERE $condition");

@@ -63,15 +63,17 @@ $(function(){
 		];
 		orderids.shift();
 
-		$.post('{$mod_url}&time_start=&time_end=&mark_received=1', {'orderids' : orderids}, function(result){
-			if(result.ok) {
+		$.post('{$mod_url}&action=print&time_start=&time_end=&mark_received=1', {'orderids' : orderids}, function(result){
+			result = parseInt(result, 10);
+			if(!isNaN(result) && result > 0){
 				window.print();
 			}else{
-				alert('打印失败。未查询到可打印订单。');
+				alert('打印失败QAQ 没查到您的订单Orz...');
 			}
 			window.close();
-		}, 'json');
+		}, 'text');
 		{else}
+		window.print();
 		window.close();
 		{/if}
 	});
