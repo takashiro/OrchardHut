@@ -56,8 +56,6 @@ return array(
 	'order_received' => '已签收',
 	'order_rejected' => '已拒收',
 	'order_canceled' => '已取消',
-	'order_wait_for_packing' => '等待拣货',
-	'order_packing' => '拣货中',
 	'order_refund' => '退款',
 	'order_payment' => '支付',
 

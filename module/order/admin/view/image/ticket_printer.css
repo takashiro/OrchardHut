@@ -107,27 +107,23 @@ button{
 	position: relative;
 }
 
-#waiting_list{
-	position: absolute;
-	top: 5px;
-	right: 35px;
-	width: 140px;
-	text-align: center;
-	border-bottom: gray 1px dotted;
-}
-
 #message_box{
 	position: absolute;
-	top: 60px;
+	top: 25px;
 	right: 5px;
 	width: 140px;
 	padding: 0;
 	padding-right: 30px;
 	overflow: hidden;
 	height: 200px;
+	color: #878682;
 }
 
 #message_box p{
 	position: relative;
 	margin: 5px 0;
+}
+
+#message_box p.active{
+	color: #222222;
 }

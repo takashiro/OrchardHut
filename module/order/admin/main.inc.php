@@ -57,10 +57,6 @@ class OrderMainModule extends AdminControlPanelModule{
 			$available_status[Order::Received] = false;
 			$available_status[Order::Rejected] = false;
 		}
-		if($_G['admin']->hasPermission('order:pack')){
-			$available_status[Order::WaitForPacking] = false;
-			$available_status[Order::Packing] = false;
-		}
 		$available_status[Order::Canceled] = false;
 
 		//显示（或导出Excel表格）订单列表
@@ -559,7 +555,7 @@ class OrderMainModule extends AdminControlPanelModule{
 				exit('permission denied');
 			}
 
-			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryStation || $order->status == Order::Packing) || $_G['admin']->isSuperAdmin()){
+			if(($order->status == Order::Delivering || $order->status == Order::InDeliveryStation) || $_G['admin']->isSuperAdmin()){
 				$order->status = Order::Received;
 				$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
 			}

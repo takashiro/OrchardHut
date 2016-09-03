@@ -28,39 +28,6 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 		return array('order');
 	}
 
-	public function updateAction(){
-		global $_G;
-		$condition = array();
-
-		//过滤配送范围
-		$limitation_addressids = $_G['admin']->getLimitations();
-		if($limitation_addressids){
-			$condition[] = 'o.addressid IN ('.implode(',', $limitation_addressids).')';
-		}
-
-		$order_wait_for_packing = Order::WaitForPacking;
-		$condition[] = "o.status=$order_wait_for_packing";
-
-		//加入时间条件
-		if(isset($_GET['time_start'])){
-			$time_start = rstrtotime($_GET['time_start']);
-			$condition[] = 'o.tradetime>='.$time_start;
-		}
-		if(isset($_GET['time_end'])){
-			$time_end = rstrtotime($_GET['time_end']);
-			$condition[] = 'o.tradetime<='.$time_end;
-		}
-
-		$condition = implode(' AND ', $condition);
-
-		global $db, $tpre;
-		$waiting_num = $db->result_first("SELECT COUNT(*)
-			FROM {$tpre}order o
-			WHERE $condition");
-		echo $waiting_num;
-		exit;
-	}
-
 	public function defaultAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
@@ -110,12 +77,15 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 			$condition[] = 'status='.Order::InDeliveryStation;
 
 			if(!empty($_REQUEST['orderid'])){
-				$condition[] = 'id='.intval($_REQUEST['orderid']);
 				if(!empty($_REQUEST['packcode'])){
+					$condition[] = 'id='.intval($_REQUEST['orderid']);
 					$condition[] = 'packcode='.intval($_REQUEST['packcode']);
+				}else{
+					exit('invalid pack code');
 				}
 			}elseif(!empty($_REQUEST['mobile'])){
-				$condition[] = 'mobile=\''.raddslashes($_REQUEST['mobile']).'\'';
+				$mobile = trim($_REQUEST['mobile']);
+				$condition[] = 'mobile=\''.raddslashes($mobile).'\'';
 			}elseif(!empty($_REQUEST['orderids']) && is_array($_REQUEST['orderids'])){
 				$orderids = array();
 				foreach($_REQUEST['orderids'] as $orderid){
@@ -128,20 +98,19 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 				if($orderids){
 					$condition[] = 'id IN ('.implode(',', $orderids).')';
 				}
-
 			}else{
 				exit;
 			}
 
 			$condition = implode(' AND ', $condition);
 
-			if(!empty($_REQUEST['request_packing'])){
+			if(!empty($_REQUEST['mark_received'])){
 				$orders = $db->fetch_all("SELECT id FROM {$tpre}order WHERE $condition");
 				if($orders){
 					foreach($orders as $o){
 						$order = new Order($o['id']);
-						$order->status = Order::WaitForPacking;
-						$order->addLog($_G['admin'], Order::StatusChanged, Order::WaitForPacking);
+						$order->status = Order::Received;
+						$order->addLog($_G['admin'], Order::StatusChanged, Order::Received);
 					}
 					exit(json_encode(array('ok' => 1)));
 				}else{

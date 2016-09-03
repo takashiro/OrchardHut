@@ -2,8 +2,10 @@ function showmsg(message){
 	var p = $('<p></p>');
 	p.text(message);
 	var box = $('#message_box');
+	p.addClass('active');
 	p.css('opacity', 0);
 
+	box.children('.active').removeClass('active');
 	p.appendTo(box);
 	p.animate({'opacity' : 1}, 500);
 
@@ -19,21 +21,6 @@ function showmsg(message){
 }
 
 $(function(){
-	function updateWaitingNum(){
-		var data = {
-			'time_start' : $('#time_start').val(),
-			'time_end' : $('#time_end').val()
-		};
-		$.get('admin.php?mod=order:ticketprinter&action=update', data, function(result){
-			var num = parseInt(result, 10);
-			if(!isNaN(num)){
-				$('#waiting_num').text(num);
-				setTimeout(updateWaitingNum, 1000);
-			}
-		});
-	}
-	updateWaitingNum();
-
 	$('#scan_form').submit(function(e){
 		e.preventDefault();
 

@@ -69,7 +69,7 @@ case 'mark_received':
 		showmsg('order_not_exist', 'back');
 	}
 
-	$old_status = array(Order::Packing, Order::Sorted, Order::Delivering);
+	$old_status = array(Order::Sorted, Order::Delivering);
 	if(in_array($order->status, $old_status)){
 		if(empty($_GET['confirm'])){
 			showmsg('confirm_to_mark_order_as_received', 'confirm');

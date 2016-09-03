@@ -63,7 +63,7 @@ $(function(){
 		];
 		orderids.shift();
 
-		$.post('{$mod_url}&time_start=&time_end=&request_packing=1', {'orderids' : orderids}, function(result){
+		$.post('{$mod_url}&time_start=&time_end=&mark_received=1', {'orderids' : orderids}, function(result){
 			if(result.ok) {
 				window.print();
 			}else{
