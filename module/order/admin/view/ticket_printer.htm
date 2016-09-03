@@ -15,7 +15,7 @@
 <script type="text/javascript" src="./extension/module/order/admin/view/js/ticket_printer.js?$_CONFIG[refversion]"></script>
 <script type="text/javascript" src="./js/datetime.js"></script>
 <script>
-var stationid = $stationid;
+var station = {echo json_encode($station)};
 </script>
 </head>
 
@@ -59,7 +59,7 @@ var stationid = $stationid;
 						<div id="message_box"></div>
 
 						<div class="post_buttons">
-							<button type="submit">查询</button>
+							<button type="submit" id="query_button">查询</button>
 						</div>
 					</div>
 				</form>

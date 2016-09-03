@@ -80,9 +80,13 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 				exit('invalid station id');
 			}
 		}
-		if($station['pauseprinting']){
-			if(!empty($_GET['check'])){
+
+		if(!empty($_GET['check'])){
+			if($station['pauseprinting']){
 				exit('-2');
+			}
+			if(empty($_REQUEST['orderid']) && empty($_REQUEST['mobile']) && empty($_REQUEST['orderids'])){
+				exit('0');
 			}
 		}
 

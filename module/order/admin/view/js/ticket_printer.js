@@ -24,6 +24,19 @@ function showmsg(message){
 	}
 }
 
+function waitforprinting(){
+	$.post('admin.php?mod=order:ticketprinter&action=print&check=1&stationid=' + station.id, {}, function(response){
+		response = parseInt(response, 10);
+		if(isNaN(response) || response == -2){
+			setTimeout(waitforprinting, 1000);
+		}else if(response == 0){
+			station.pauseprinting = false;
+			$('#query_button').attr('disabled', false);
+			$('#scan_form').submit();
+		}
+	}, 'text');
+}
+
 $(function(){
 	$('#scan_form').submit(function(e){
 		e.preventDefault();
@@ -34,7 +47,7 @@ $(function(){
 			var input = $('#mobile');
 			var input_text = input.val();
 
-			var parameters = '&stationid=' + stationid;
+			var parameters = '&stationid=' + station.id;
 			var orderid = 0;
 			var mobile = 0;
 			if(input_text.charAt(0) == '0' && input_text.length == 13){
@@ -80,6 +93,10 @@ $(function(){
 					showmsg('工作人员忙不过来了，您稍等一下');
 					input.val(input_text);
 					input.focus();
+
+					station.pauseprinting = true;
+					$('#query_button').attr('disabled', true);
+					setTimeout(waitforprinting, 5000);
 				}
 			}, 'text');
 
