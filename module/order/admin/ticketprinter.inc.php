@@ -69,13 +69,13 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 		}
 		$condition.= ' LIMIT 1';
 		if($stationid <= 0){
-			$station = $table->fetch_first('id,orderrange,pauseprinting', $condition);
+			$station = $table->fetch_first('*', $condition);
 			if(empty($station)){
 				exit('invalid station id');
 			}
 			$stationid = $station['id'];
 		}else{
-			$station = $table->fetch_first('id,orderrange,pauseprinting', 'id='.$stationid.' AND '.$condition);
+			$station = $table->fetch_first('*', 'id='.$stationid.' AND '.$condition);
 			if(!$station){
 				exit('invalid station id');
 			}
