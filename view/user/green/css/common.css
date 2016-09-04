@@ -5,8 +5,11 @@
 body{
 	margin: 0;
 	padding: 0;
-	font-family: 'Microsoft YaHei', 'Arial', 'Times New Roman';
 	font-size: 12pt;
+}
+
+body, button, input, select, textarea{
+	font-family: 'Microsoft YaHei', 'Arial', 'Times New Roman';
 }
 
 a{
@@ -27,6 +30,10 @@ ul li{
 	display: none;
 }
 
+.currency_symbol:before{
+	content: '￥';
+}
+
 /* List */
 ul.brief > li{
 	position: relative;
@@ -41,6 +48,39 @@ ul.brief > li .icon{
 	top: 10px;
 	left: 0;
 	background: #dcdcdc;
+}
+
+/* Selection List */
+ul.mselect > li{
+	position: relative;
+	line-height: 2em;
+	border-bottom: #dcdcdc 1px solid;
+	padding: 0 15px;
+	cursor: pointer;
+}
+
+ul.mselect > li:hover,
+ul.mselect > li.checked{
+	color: #00b658;
+}
+
+ul.mselect > li input[type="radio"]{
+	position: absolute;
+	top: 7px;
+	right: 15px;
+}
+
+ul.mselect > li em{
+	color: #787878;
+	font-size: 10pt;
+	font-style: normal;
+	margin: 1em;
+}
+
+ul.mselect > li a.remove{
+	font-size: 10pt;
+	color: #787878;
+	margin-left: 5px;
 }
 
 /* Banner */
@@ -111,7 +151,7 @@ div.number-notice div.number{
 /* Sidebar Layout */
 section.layout{
 	position: relative;
-	background: #efefef;
+	margin-bottom: 120px;
 }
 
 section.sidebar{
@@ -197,61 +237,127 @@ ul.tab > li:last-child{
 	color: white;
 }
 
+/* Address Table */
+table.address{
+	text-align: left;
+	border-collapse: collapse;
+	width: 100%;
+	line-height: 2em;
+	font-size: 12pt;
+}
+
+table.address input[type="text"]{
+	border: 0 solid;
+	width: 100%;
+	font-size: 12pt;
+}
+
+table.address select{
+	border: #dcdcdc 1px solid;
+	line-height: 2em;
+	font-size: 12pt;
+}
+
+table.address tr{
+	border-bottom: #dcdcdc 1px solid;
+}
+
+table.address tr th{
+	width: 7em;
+	font-weight: normal;
+	padding-left: 15px;
+}
+
 /* Market */
 section.market.layout{
 	border-top: #dcdcdc 1px solid;
-	margin-bottom: 120px;
 }
 
-section.market ul.brief{
+ul.product{
 	margin-left: 10px;
 }
 
-section.market ul.brief .detail{
+ul.product .detail{
 	padding-top: 10px;
+	margin-bottom: 0.5em;
 }
 
-section.market ul.brief .detail,
-section.market ul.brief ul.rule{
+ul.product .detail,
+ul.product ul.rule{
 	margin-left: 90px;
 }
 
-section.market ul.brief .soldout,
-section.market ul.brief .briefintro{
+ul.product .soldout,
+ul.product .briefintro{
 	color: #808080;
 	font-size: 10pt;
 }
 
-section.market ul.brief .price,
-section.market ul.brief .priceunit,
-section.market ul.brief .amount,
-section.market ul.brief .amountunit{
+ul.product .price,
+ul.product .priceunit,
+ul.product .amount,
+ul.product .amountunit{
 	color: #ff5143;
 }
 
 
-section.market ul.brief .photo,
-section.market ul.brief .introduction{
+ul.product .photo,
+ul.product .introduction{
 	display: none;
 }
 
-section.market ul.brief ul.rule li{
+ul.product ul.rule li{
 	position: relative;
 	line-height: 2em;
 }
 
-section.market ul.brief ul.rule li .order_input{
+ul.product ul.rule li .order_input{
 	position: absolute;
 	top: 0;
 	right: 0;
 	height: 2em;
 }
 
-section.market ul.brief ul.rule li .order_input .numberbox{
+ul.product ul.rule li .order_input .numberbox{
 	position: absolute;
 	top: 50%;
 	right: 7px;
 	margin-top: -12px;
+}
+
+ul.product button.remove{
+	position: absolute;
+	top: 0;
+	right: 3px;
+	width: 24px;
+	height: 24px;
+}
+
+/* Shopping Cart */
+section.cart ul.product li{
+	min-height: 70px;
+}
+
+
+section.cart ul.product button.remove{
+	background: none;
+	border: 0 solid;
+	font-size: 16pt;
+}
+
+section.cart ul.product button.remove:before{
+	font-family: fontello;
+	content: '\e803';
+	font-weight: normal;
+	color: #333;
+}
+
+section.cart .bottom_toolset .info .prices{
+	display: inline-block;
+}
+
+section.cart .bottom_toolset .info{
+	color: #ff5143;
 }
 
 /* Form */
@@ -266,7 +372,6 @@ button.big{
 	margin: 10px auto;
 	border: 0 solid;
 	color: white;
-	font-family: 'Microsoft YaHei', 'Arial', '黑体';
 	padding: 0.4em 0;
 }
 
@@ -290,7 +395,6 @@ form.simple input[type="password"]
 	font-size: 15pt;
 	line-height: 2em;
 	margin: 10px 0;
-	font-family: 'Microsoft YaHei', 'Arial', '黑体';
 }
 
 .login_api{
@@ -341,4 +445,53 @@ form.simple input[type="password"]
 
 .box.message .content a{
 	font-size: 13pt;
+}
+
+.lightbox h1{
+	background: #efefef;
+	margin: 0;
+	padding: 0.8em 0.5em 0.4em 0.5em;
+	font-weight: normal;
+	border: #dcdcdc 1px solid;
+}
+
+.message input{
+	width: 100%;
+	border: 0 solid;
+	font-size: 12pt;
+	line-height: 2em;
+	margin: 5px 10px;
+}
+
+.bottom_toolset{
+	position: fixed;
+	left: 0;
+	bottom: 65px;
+	width: 100%;
+	font-size: 17pt;
+	height: 50px;
+	border-top: #dcdcdc 1px solid;
+	background: white;
+}
+
+.bottom_toolset .info{
+	display: inline-block;
+	width: auto;
+	padding-left: 0.5em;
+	height: 100%;
+	line-height: 50px;
+	margin: 0;
+}
+
+.bottom_toolset button{
+	margin: 0;
+	background: #00b658;
+	color: white;
+	width: 4em;
+	border: 0 solid;
+	height: 100%;
+	font-size: 17pt;
+	position: absolute;
+	top: 0;
+	right: 0;
 }

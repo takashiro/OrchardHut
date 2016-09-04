@@ -121,6 +121,16 @@ switch($action){
 		}
 
 		$deliveryconfig = readdata('deliveryconfig');
+		$deliverymethods = array();
+		foreach($deliveryconfig as $methodid => $config){
+			$config['id'] = $methodid;
+			$config['name'] = Order::$DeliveryMethod[$methodid];
+			$deliverymethods[] = $config;
+		}
+		usort($deliverymethods, function($m1, $m2){
+			return $m1['displayorder'] > $m2['displayorder'];
+		});
+
 		$paymentconfig = readdata('payment');
 
 		if($_POST){

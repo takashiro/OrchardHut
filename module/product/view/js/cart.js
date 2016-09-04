@@ -19,41 +19,49 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
+function updateProductPrice(product_list){
+	var new_total = 0.0;
+	product_list.children().each(function(){
+		var $this = $(this);
+		var price = parseFloat($this.find('.price').text());
+		var num = parseInt($this.find('input.number').val(), 10);
+		var subtotal = isNaN(price) || isNaN(num) ? 0 : price * num;
+		new_total += subtotal;
+	});
+
+	var input = $('#product_price');
+	input.val(new_total.toFixed(2));
+	input.change();
+}
+
 $(function(){
 
-	$('.cart .product_list button.remove').click(function(e){
+	$('ul.product button.remove').click(function(e){
 		var button = $(e.target);
 		var li = button.parent();
 		var price_id = parseInt(li.data('price-id'), 10);
 		if(!isNaN(price_id)){
-			var subtotal = parseFloat(li.find('.subtotal .number').html());
-			var total_price = parseFloat($('#total_price').html());
-			total_price -= subtotal;
-			$('#total_price').text(total_price.toFixed(2));
-			$('#total_price').change();
-
+			var product_list = li.parent();
 			ShoppingCart.setItem(price_id, 0);
 			li.remove();
+			updateProductPrice(product_list);
 		}
 	});
 
-	$('.cart .product_list .order_input input').change(function(e){
+	$('ul.product .order_input input').change(function(e){
 		var input = $(e.target);
 		var numberbox = input.parent();
 		var li = numberbox.parent().parent();
 		var rule = li.parent();
-		var detail = rule.parent();
-		var subtotal = detail.children('.subtotal');
+		var product_list = rule.parent().parent();
+		updateProductPrice(product_list);
+	});
 
-		var new_input = parseInt(input.val(), 10);
-		var new_subtotal = isNaN(new_input) ? 0 : new_input * parseFloat(li.children('.price').text());
-		subtotal.children('.number').text(new_subtotal.toFixed(2));
-
-		var new_total = 0.0;
-		$('.cart .product_list .subtotal').each(function(){
-			new_total += parseFloat($(this).children('.number').text());
-		});
-		$('#total_price').text(new_total.toFixed(2));
+	$('#product_price').change(function(){
+		var product_price = parseFloat($(this).val());
+		var delivery_fee = parseFloat($('#deliveryfee').val());
+		var total_price = product_price + delivery_fee;
+		$('#total_price').text(total_price.toFixed(2));
 		$('#total_price').change();
 	});
 
@@ -82,25 +90,28 @@ $(function(){
 		}
 	});
 
-	$('input[type="radio"][name="paymentmethod"]:first').parent().click();
-
-	$('#total_price, input[name="deliverymethod"]').change(function(){
-		var deliverymethod = $('input[name="deliverymethod"]:checked').val();
-		var totalprice = parseFloat($('#total_price').text());
-		var df = DeliveryConfig[deliverymethod];
-		if(df.fee > 0 && totalprice < df.maxorderprice){
-			$('#deliveryfee').text(df.fee);
+	$('input[type="radio"][name="deliverymethod"]').change(function(){
+		var deliverymethod = $(this).val();
+		var product_price = parseFloat($('#product_price').val());
+		var config = DeliveryConfig[deliverymethod];
+		var delivery_fee = 0;
+		if(config.fee > 0 && product_price < config.maxorderprice){
+			delivery_fee = config.fee;
+			$('#deliveryfee').val(delivery_fee.toFixed(2));
 		}else{
-			$('#deliveryfee').text('0');
+			$('#deliveryfee').val('0');
 		}
+		var total_price = product_price + delivery_fee;
+		$('#total_price').text(total_price.toFixed(2));
+		$('#total_price').change();
 	});
 
 	$('#total_price').change(function(){
 		$('input[name="paymentmethod"]').each(function(){
 			if($(this).val() == Order.PaidWithWallet){
 				var userwallet = parseFloat($('#userwallet').text());
-				var totalprice = parseFloat($('#total_price').text());
-				if(userwallet < totalprice){
+				var total_price = parseFloat($('#total_price').text());
+				if(userwallet < total_price){
 					if($(this).is(':checked')){
 						alert('钱包余额不足，请重新选择支付方式。');
 						$(this).prop('checked', false);
@@ -119,6 +130,5 @@ $(function(){
 		}
 	});
 
-	$('#total_price').change();
-
+	updateProductPrice($('ul.product'));
 });

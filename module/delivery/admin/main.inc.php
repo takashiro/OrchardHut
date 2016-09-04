@@ -98,7 +98,7 @@ class DeliveryMainModule extends AdminControlPanelModule{
 		$deliveryconfig = array();
 
 		foreach(Order::$DeliveryMethod as $methodid => $name){
-			foreach(array('fee', 'maxorderprice') as $var){
+			foreach(array('fee', 'maxorderprice', 'displayorder') as $var){
 				if(isset($_POST['config'][$methodid][$var])){
 					$deliveryconfig[$methodid][$var] = max(0, floatval($_POST['config'][$methodid][$var]));
 				}

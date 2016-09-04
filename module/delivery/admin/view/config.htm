@@ -27,6 +27,7 @@ $(function(){
 					<td>配送方式</td>
 					<td>配送费（{echo Product::$PriceUnit}）</td>
 					<td>生效条件</td>
+					<td>显示顺序</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -36,6 +37,7 @@ $(function(){
 					<td>$methodname</td>
 					<td><input type="text" name="config[{$methodid}][fee]" value="{echo $deliveryconfig[$methodid]['fee']}" /></td>
 					<td>订单总额&lt;<input type="text" name="config[{$methodid}][maxorderprice]" value="{echo $deliveryconfig[$methodid]['maxorderprice']}" />{echo Product::$PriceUnit}</td>
+					<td><input type="text" class="number" name="config[{$methodid}][displayorder]" value="{echo $deliveryconfig[$methodid]['displayorder']}" /></td>
 				</tr>
 			<!--{/loop}-->
 			</tbody>
