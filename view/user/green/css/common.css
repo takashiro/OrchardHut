@@ -11,6 +11,7 @@ body{
 
 a{
 	text-decoration: none;
+	color: #00b758;
 }
 
 ul{
@@ -316,4 +317,28 @@ form.simple input[type="password"]
 .login_api a.wechat_login{
 	background: url(../image/wx_logo.png) no-repeat;
 	background-size: auto 100%;
+}
+
+/* Message Box */
+.box.message{
+	margin: 0;
+}
+
+.box.message h1{
+	font-size: 15pt;
+	background: #00b758;
+	color: white;
+	line-height: 3em;
+	height: 3em;
+	margin: 0;
+	text-align: center;
+}
+
+.box.message .content{
+	font-size: 15pt;
+	margin: 20px;
+}
+
+.box.message .content a{
+	font-size: 13pt;
 }

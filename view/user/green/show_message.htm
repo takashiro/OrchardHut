@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>$_CONFIG[sitename]</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<base href="{$_G[root_url]}" />
+<link rel="stylesheet" href="{__TEMPLATE_ROOT__}css/common.css?$_CONFIG[refversion]" type="text/css" />
+</head>
+<body>
+	<div class="box message">
+		<h1>$_CONFIG[sitename] - 提示消息</h1>
+		<div class="content">
+			<p>$message</p>
+			<!--{if $url_forward != 'confirm'}-->
+				<!--{if !empty($url_forward)}-->
+				<a href="$url_forward" target="_top">如果没有自动跳转，请点击这里</a>
+				<script type="text/javascript">
+				setTimeout('top.location.href="$url_forward";', 5 * 1000);
+				</script>
+				<!--{/if}-->
+			<!--{else}-->
+				<button type="button" onclick="top.location.href=location.href + (location.href.indexOf('?') ? '&' : '?') + 'confirm=true&confirm_key=$confirm_key';">确认</button>
+				<button type="button" onclick="history.back();">取消</button>
+			<!--{/if}-->
+		</div>
+	</div>
+</body>
+</html>
