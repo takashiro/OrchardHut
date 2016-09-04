@@ -35,20 +35,19 @@ class WeixinHook{
 
 			if($log['extra'] == Order::InDeliveryStation){
 				$text = lang('message', 'your_order_just_arrived_in_delivery_station');
-
-				$fullpath = Address::FullPathIds($order->addressid);
-				if($fullpath){
-					$min_range = Address::MinRange('orderrange', $order->addressid);
-					$station = $db->fetch_first("SELECT id,address FROM {$tpre}station WHERE orderrange IN ($fullpath) ORDER BY $min_range LIMIT 1");
-					if(!empty($station['address'])){
-						$text.= lang('message', 'the_station_is_located_in').$station['address'].lang('common', 'period');
-					}
-				}
-
 				if($order->deliverymethod == Order::HomeDelivery){
 					$text.= lang('message', 'please_wait_for_the_deliverer');
 				}else{
+					$fullpath = Address::FullPathIds($order->addressid);
+					if($fullpath){
+						$min_range = Address::MinRange('orderrange', $order->addressid);
+						$station = $db->fetch_first("SELECT id,address FROM {$tpre}station WHERE orderrange IN ($fullpath) ORDER BY $min_range LIMIT 1");
+						if(!empty($station['address'])){
+							$text.= lang('message', 'the_station_is_located_in').$station['address'].lang('common', 'period');
+						}
+					}
 					$text.= lang('message', 'please_fetch_your_package');
+					$text.= '<a href="'.$_G['site_url'].'index.php?mod=order&action=pack&orderid='.$order->id.'">'.lang('common', 'show_pack_qrcode').'</a>';
 				}
 			}else{
 				$text = lang('message', 'your_order_is_being_delivered');

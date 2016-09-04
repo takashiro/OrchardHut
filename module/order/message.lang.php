@@ -9,6 +9,7 @@ return array(
 	'deliverer_is' => '配送员：',
 	'please_wait_for_the_deliverer' => '等配送员送货上门哦~',
 	'please_fetch_your_package' => '坐等您来自提点取货哦~',
+	'show_pack_qrcode' => '【显示取货二维码】',
 	'the_station_is_located_in' => '配送站地址：',
 	'thanks_for_supporting_please_rank' => '感谢您购买，请点这里给我们打分吧~',
 
