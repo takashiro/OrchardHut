@@ -31,9 +31,9 @@ var uid = parseInt('{echo $_G['user']->id}', 10);
 				<p>
 				<!--{if $_G['user']->isLoggedIn()}-->
 					<a href="index.php?mod=order">$_USER[account]</a>
-					<a href="index.php?mod=user&action=logout">[退出]</a>
+					<a href="index.php?mod=user:logout">[退出]</a>
 				<!--{else}-->
-					<a href="index.php?mod=user&action=login" class="button">登录</a>
+					<a href="index.php?mod=user:login" class="button">登录</a>
 				<!--{/if}-->
 				</p>
 			</div>

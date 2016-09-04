@@ -22,73 +22,9 @@ takashiro@qq.com
 
 if(!defined('S_ROOT')) exit('access denied');
 
-$action = !empty($_REQUEST['action']) ? trim($_REQUEST['action']) : ($_G['user']->isLoggedIn() ? 'home' : 'login');
+$action = !empty($_REQUEST['action']) ? trim($_REQUEST['action']) : 'home';
 
 switch($action){
-case 'login':
-	if($_G['user']->isLoggedIn()){
-		showmsg('you_have_logged_in', 'index.php');
-	}
-
-	if($_POST){
-		$result = USER::ACTION_FAILED;
-
-		$methods = array('account');
-		$method = !empty($_POST['method']) && in_array($_POST['method'], $methods) ? $_POST['method'] : $methods[0];
-
-		if(!empty($_POST['account']) && !empty($_POST['password'])){
-			$result = $_G['user']->login($_POST['account'], $_POST['password'], $method) ? User::ACTION_SUCCEEDED : User::ACTION_FAILED;
-		}
-
-		if($result == User::ACTION_SUCCEEDED){
-			if(empty($_POST['http_referer'])){
-				showmsg('successfully_logged_in', 'index.php');
-			}else{
-				showmsg('successfully_logged_in', $_POST['http_referer']);
-			}
-		}else{
-			showmsg('invalid_account_or_password', 'back');
-		}
-	}
-
-	$wx = readdata('wxconnect');
-	include view('login');
-	break;
-
-case 'logout':
-	$_G['user']->logout();
-	rsetcookie('delivering-order-number');
-	rsetcookie('order-number-cache-time');
-	redirect('index.php');
-	break;
-
-case 'register':
-	if($_POST){
-		$uid = User::Register($_POST);
-		if($uid > 0){
-			$_G['user']->login($_POST['account'], $_POST['password'], 'account');
-			if(!empty($_COOKIE['referrerid'])){
-				$referrerid = intval($_COOKIE['referrerid']);
-				if(User::Exist($referrerid)){
-					$_G['user']->referrerid = $referrerid;
-				}
-				rsetcookie('referrerid');
-			}
-			redirect('index.php?mod=product');
-		}elseif($uid == User::INVALID_ACCOUNT){
-			showmsg('account_too_short_or_too_long', 'back');
-		}elseif($uid == User::INVALID_PASSWORD){
-			showmsg('password_too_short', 'back');
-		}elseif($uid == User::DUPLICATED_ACCOUNT){
-			showmsg('duplicated_account', 'back');
-		}else{
-			showmsg('unknown_error_period', 'back');
-		}
-	}
-
-	redirect('index.php');
-	break;
-
 case 'edit':
 	if(!$_G['user']->isLoggedIn()){
 		showmsg('inaccessible_if_not_logged_in', 'index.php');
@@ -197,7 +133,7 @@ case 'edit':
 
 default:
 	if(!$_G['user']->isLoggedIn()){
-		showmsg('inaccessible_if_not_logged_in', 'index.php');
+		redirect('index.php?mod=user:login');
 	}
 
 	$paymentconfig = readdata('payment');

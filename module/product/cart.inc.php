@@ -24,7 +24,7 @@ if(!defined('S_ROOT')) exit('access denied');
 
 //Disallow guests opening the shopping cart
 if(!$_G['user']->isLoggedIn()){
-	redirect('index.php?mod=user');
+	redirect('index.php?mod=user:login');
 }
 
 $tradestates = array(0, Wallet::WaitBuyerPay);
