@@ -42,6 +42,8 @@ $(function(){
 			<dt>总计：</dt><dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
 		</dl>
 
+		<button type="button" onclick="location.reload()">刷新提货码</button>
+
 		<canvas id="barcode"></canvas>
 		<div id="qrcode"></div>
 	</div>

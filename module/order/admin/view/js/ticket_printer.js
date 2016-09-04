@@ -1,25 +1,22 @@
 function showmsg(message){
 	var p = $('<p></p>');
 	p.text(message);
-	var box = $('#message_box');
 	p.addClass('active');
 	p.css('opacity', 0);
 
+	var box = $('#message_box');
 	box.children('.active').removeClass('active');
 	p.appendTo(box);
 	p.animate({'opacity' : 1}, 500);
 
 	var messages = box.children();
-	var total_height = 0;
-	messages.each(function(){
-		total_height += $(this).outerHeight();
-	});
-	if(total_height > box.height()){
-		var p = messages.eq(0);
-		var height = p.outerHeight(true);
+	var height = box[0].scrollHeight - box.height();
+	if(height > 0){
 		box.animate({'scrollTop' : '+=' + height + 'px'}, 500, function(){
-			box.css('scrollTop', '-=' + height + 'px');
-			p.remove();
+			var p = messages.eq(0);
+			if(p.outerHeight(true) + p.position().top <= 0){
+				p.remove();
+			}
 		});
 	}
 }
@@ -55,21 +52,43 @@ $(function(){
 				var packcode = parseInt(input_text.substr(9, 4), 10);
 				if(!isNaN(orderid) && !isNaN(packcode) && orderid > 0 && packcode > 0){
 					parameters += '&orderid=' + orderid + '&packcode=' + packcode;
+				}else{
+					showmsg('条形码无效，请重试');
 				}
 			}else if(input_text.charAt(0) == '{'){
-				var value = JSON.parse(input_text);
-				if(value.orderid != undefined && value.packcode != undefined){
+				var value = null;
+				try{
+					value = JSON.parse(input_text);
+				}catch(e){
+					showmsg('二维码无效，请重试');
+				}
+				var packcode = 0;
+				if(value && value.orderid != undefined && value.packcode != undefined){
 					orderid = parseInt(value.orderid, 10);
-					var packcode = parseInt(value.packcode, 10);
-					if(!isNaN(orderid) && !isNaN(packcode) && orderid > 0 && packcode > 0){
-						parameters += '&orderid=' + orderid + '&packcode=' + packcode;
-					}
+					packcode = parseInt(value.packcode, 10);
+				}
+				if(!isNaN(orderid) && !isNaN(packcode) && orderid > 0 && packcode > 0){
+					parameters += '&orderid=' + orderid + '&packcode=' + packcode;
+				}else{
+					showmsg('二维码无效，请重试');
 				}
 			}else if(input_text.length == 11){
 				mobile = parseInt(input_text, 10);
-				parameters += '&mobile=' + parseInt(input_text, 10);
+				if(!isNaN(mobile) && mobile >= 10000000000){
+					parameters += '&mobile=' + parseInt(input_text, 10);
+				}else{
+					showmsg('手机号码无效');
+				}
+			}else{
+				showmsg('请输入11位数字或扫描提货码');
+				if(input_text.match(/^\d+$/g)){
+					return;
+				}
 			}
-			if(!parameters){
+
+			if(orderid <= 0 && mobile <= 0){
+				input.val('');
+				input.focus();
 				return;
 			}
 
@@ -88,7 +107,11 @@ $(function(){
 					var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
 					new_window.focus();
 				}else if(error == -1){
-					showmsg('未查询到' + order_text);
+					if(orderid > 0){
+						showmsg('提货码失效，请刷新提货码。');
+					}else{
+						showmsg('未查询到' + order_text);
+					}
 				}else if(error == -2){
 					showmsg('工作人员忙不过来了，您稍等一下');
 					input.val(input_text);
