@@ -33,7 +33,7 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 		$table = $db->select_table('station');
 		$limitation_addressids = $_G['admin']->getLimitations();
 		if($limitation_addressids){
-			$condition = 'o.addressid IN ('.implode(',', $limitation_addressids).')';
+			$condition = 'orderrange IN ('.implode(',', $limitation_addressids).')';
 		}else{
 			$condition = '1';
 		}
