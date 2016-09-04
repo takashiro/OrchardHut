@@ -1,37 +1,23 @@
 {template header}
 
-<style text="text/css">
-@import url({__TEMPLATE_ROOT__}image/login.css?$_CONFIG[refversion]);
-</style>
-
 <script type="text/javascript">
 var follow_guide_page = '$wx[follow_guide_page]';
 </script>
-<script type="text/javascript" src="{__TEMPLATE_ROOT__}js/login.js?$_CONFIG[refversion]"></script>
 
-<form id="login_form" action="index.php?mod=user&action=login" method="post" onkeydown="if(event.keyCode==13){return false;}">
-	<div class="login_form">
-		<div class="header">
-			$_CONFIG[sitename] - 用户<span id="action_text">登录</span>
-		</div>
-		<!--{if strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false || (strpos($_SERVER['HTTP_USER_AGENT'], 'GT-I9500') !== false && strpos($_SERVER['HTTP_USER_AGENT'], 'MQQBrowser') !== false)}-->
-		<p>微信的内置浏览器就是会抽风诶，真是没办法QAQ。咱表示已经习惯了喵/(ㄒoㄒ)/~~</p>
-		<!--{/if}-->
-		<div class="login_api">
-			<a href="index.php?mod=qqconnect" class="qq_login">通过QQ登录</a>
-			<a href="index.php?mod=weixin:connect" class="wechat_login">通过微信登录</a>
-		</div>
+<form class="simple login_form" id="login_form" action="index.php?mod=user&action=login" method="post">
+	<header>$_CONFIG[sitename] - 用户登录</header>
 
-		<label for="account">账号</label><input type="text" id="account" name="account" />
-		<label for="password">密码</label><input type="password" id="password" name="password" />
-		<div class="for_register">
-			<label for="password2">再次确认密码</label><input type="password" id="password2" name="password2" />
-		</div>
-		<input type="hidden" name="http_referer" value="{if !empty($_GET['http_referer'])}$_GET[http_referer]{/if}" />
-		<div class="post_buttons">
-			<button type="submit" id="login_button" name="action" value="login">登录</button>
-			<button type="submit" id="register_button" name="action" value="register">注册</button>
-		</div>
+	<div class="login_api">
+		<a href="index.php?mod=qqconnect" class="qq_login">QQ登录</a>
+		<a href="index.php?mod=weixin:connect" class="wechat_login">微信登录</a>
+	</div>
+
+	<input type="text" id="account" name="account" placeholder="请输入账户名" />
+	<input type="password" id="password" name="password" placeholder="请输入密码" />
+	<input type="hidden" name="http_referer" value="{if !empty($_GET['http_referer'])}$_GET[http_referer]{elseif !empty($_SERVER['HTTP_REFERER'])}$_SERVER[HTTP_REFERER]{/if}" />
+	<div class="post_buttons">
+		<button type="submit" class="big" name="action" value="login">登录</button>
+		<button type="submit" class="big" name="action" value="register">注册</button>
 	</div>
 </form>
 

@@ -252,3 +252,68 @@ section.market ul.brief ul.rule li .order_input .numberbox{
 	right: 7px;
 	margin-top: -12px;
 }
+
+/* Form */
+.post_buttons{
+	text-align: center;
+}
+
+button.big{
+	width: 80%;
+	background: #00b658;
+	font-size: 15pt;
+	margin: 10px auto;
+	border: 0 solid;
+	color: white;
+	font-family: 'Microsoft YaHei', 'Arial', '黑体';
+	padding: 0.4em 0;
+}
+
+form > header{
+	background: #00b758;
+	color: white;
+	height: 3em;
+	line-height: 3em;
+	margin-bottom: 2em;
+}
+
+form.simple{
+	text-align: center;
+	font-size: 15pt;
+}
+
+form.simple input[type="text"],
+form.simple input[type="password"]
+{
+	width: 80%;
+	font-size: 15pt;
+	line-height: 2em;
+	margin: 10px 0;
+	font-family: 'Microsoft YaHei', 'Arial', '黑体';
+}
+
+.login_api{
+	text-align: center;
+	width: 80%;
+	margin: auto;
+}
+
+.login_api a{
+	font-size: 15pt;
+	display: inline-block;
+	width: 5em;
+	height: 2em;
+	line-height: 2em;
+	padding-left: 2em;
+	color: #00b758;
+}
+
+.login_api a.qq_login{
+	background: url(../image/qq_logo.png) no-repeat;
+	background-size: auto 100%;
+}
+
+.login_api a.wechat_login{
+	background: url(../image/wx_logo.png) no-repeat;
+	background-size: auto 100%;
+}
