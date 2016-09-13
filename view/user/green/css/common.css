@@ -52,6 +52,11 @@ ul.brief > li .icon{
 	background: #dcdcdc;
 }
 
+ul.brief > li .icon img{
+	width: 80px;
+	height: 80px;
+}
+
 /* Selection List */
 ul.mselect > li{
 	position: relative;
