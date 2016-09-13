@@ -6,77 +6,41 @@ $(function(){
 });
 </script>
 
-<div class="box">
-	<h1>我的账号</h1>
-
-	<div class="content edit_form">
-		<div class="profile">
-			<div class="icon_home"></div>
-			<div class="account">$_USER[account]</div>
-			<ul class="operation">
-				<li><a href="index.php?mod=user&action=edit">[修改信息]</a></li>
-				<li><a href="index.php?mod=payment:log">[钱包记录]</a></li>
-				<li><a href="index.php?mod=user:logout">[退出]</a></li>
-			</ul>
+<section class="user layout">
+	<div class="profile">
+		<div class="avatar">
+			<!--{if empty($_USER[avatar])}-->
+			<div class="default"></div>
+			<!--{else}-->
+			<img src="$_USER[avatar]" />
+			<!--{/if}-->
 		</div>
-
-		<table>
-			<tr>
-				<th><label>QQ：</label></th>
-				<td>
-					<!--{if $_G['user']->qqopenid}-->
-					<a href="index.php?mod=qqconnect&action=unbind">[点此解绑]</a>
-					<!--{else}-->
-					<a href="index.php?mod=qqconnect">[点此绑定]</a>
-					<!--{/if}-->
-				</td>
-			</tr>
-			<tr>
-				<th><label>微信：</label></th>
-				<td>
-					<!--{if $_G['user']->wxopenid}-->
-					<a href="index.php?mod=weixin&action=unbind">[点此解绑]</a>
-					<!--{else}-->
-					您无法接收微信到货通知，请向$_CONFIG[sitename]公众号发送“绑定”。
-					<!--{/if}-->
-				</td>
-			</tr>
-			<tr>
-				<th><label>推荐人：</label></th>
-				<td><!--{if !empty($referrer['id'])}-->$referrer[account]<!--{else}-->无<!--{/if}--></td>
-			</tr>
-		</table>
-
-		<form id="rechargeform" action="index.php" method="get">
-			<table>
-				<tr>
-					<th><label>钱包余额：</label></th>
-					<td>{echo $_G['user']->wallet}{echo Wallet::$PriceUnit}</td>
-				</tr>
-				<tr>
-					<th><label>钱包充值：</label></th>
-					<td><input type="text" name="recharge" value="100.00" />{echo Wallet::$PriceUnit}</td>
-				</tr>
-			</table>
-
-			<div class="lightbox">
-				<h1>付款方式</h1>
-				<div class="content">
-					<ul class="mselect paymentmethod">
-					<!--{loop $paymentconfig['method'] $method}-->
-					<!--{if !empty(Wallet::$PaymentInterface[$method['id']]) && $method['id'] != Wallet::ViaWallet && !empty($method['enabled'])}-->
-						<li><input type="radio" name="mod" value="{echo Wallet::$PaymentInterface[$method['id']]}" />{echo Wallet::$PaymentMethod[$method['id']]}<!--{if !empty($method['recommended'])}-->(推荐)<!--{/if}--></li>
-					<!--{/if}-->
-					<!--{/loop}-->
-					</ul>
-				</div>
-			</div>
-
-			<div class="post_buttons">
-				<button type="submit">充值</button>
-			</div>
-		</form>
+		<span class="name">$_USER[account]</span>
 	</div>
-</div>
+
+	<ul class="link">
+		<li><a href="index.php?mod=order"><i class="icon icon-doc-text"></i>我的订单</a></li>
+		<li><a href="index.php?mod=user&action=edit"><i class="icon icon-user"></i>个人信息</a></li>
+		<li><a href="index.php?mod=payment"><i class="icon icon-money"></i>我的钱包</a></li>
+		<li>
+			<!--{if $_G['user']->qqopenid}-->
+			<a href="index.php?mod=qqconnect&action=unbind"><i class="icon icon-qq"></i>解绑QQ</a>
+			<!--{else}-->
+			<a href="index.php?mod=qqconnect"><i class="icon icon-qq"></i>绑定QQ</a>
+			<!--{/if}-->
+		</li>
+		<li>
+			<!--{if $_G['user']->wxopenid}-->
+			<a href="index.php?mod=weixin&action=unbind"><i class="icon icon-wechat"></i>解绑微信</a>
+			<!--{else}-->
+			<i class="icon icon-wechat"></i>请向$_CONFIG[sitename]公众号发送“绑定”。
+			<!--{/if}-->
+		</li>
+	</ul>
+
+	<div class="post_buttons">
+		<a class="button big" href="index.php?mod=user:logout">退出登录</a>
+	</div>
+</section>
 
 <!--{template footer}-->
