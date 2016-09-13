@@ -372,7 +372,10 @@ section.cart .bottom_toolset .info{
 	text-align: center;
 }
 
-button.big, a.button.big{
+button.big,
+a.button.big,
+.box.message button,
+.box.message a.button{
 	width: 80%;
 	background: #69b24f;
 	font-size: 15pt;
@@ -455,6 +458,7 @@ section.layout h4{
 
 .box.message{
 	margin: 0;
+	padding-bottom: 50px;
 }
 
 .box.message h1{
@@ -472,8 +476,17 @@ section.layout h4{
 	margin: 20px;
 }
 
+.box.message .content p{
+	margin: 60px 0;
+}
+
 .box.message .content a{
 	font-size: 13pt;
+}
+
+.box.message button{
+	display: block;
+	margin: 15px auto;
 }
 
 .lightbox h1{
