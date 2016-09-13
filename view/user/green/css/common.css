@@ -674,6 +674,8 @@ ul.operation li.main:after{
 
 dl.form{
 	background: white;
+	margin: 4px 0;
+	padding: 10px 0;
 }
 
 dl.form dt{

@@ -2,7 +2,10 @@
 
 <style type="text/css">
 canvas#barcode{
-	width: 90%;
+	width: 80%;
+}
+#qrcode{
+	padding-bottom: 50px;
 }
 </style>
 
@@ -30,8 +33,8 @@ $(function(){
 });
 </script>
 
-<div class="box">
-	<h1>我的订单 - 提货二维码</h1>
+<section class="layout">
+	<header><i class="icon icon-doc-text"></i>我的订单 - 提货二维码</header>
 	<div class="content order_list">
 		<dl class="form">
 			<dt>订单编号：</dt><dd>$order[id]</dd>
@@ -42,11 +45,12 @@ $(function(){
 			<dt>总计：</dt><dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
 		</dl>
 
-		<button type="button" onclick="location.reload()">刷新提货码</button>
-
-		<canvas id="barcode"></canvas>
-		<div id="qrcode"></div>
+		<div class="lightbox" style="text-align: center">
+			<button type="button" onclick="location.reload()" class="big">刷新提货码</button>
+			<canvas id="barcode"></canvas>
+			<div id="qrcode"></div>
+		</div>
 	</div>
-</div>
+</section>
 
 {template footer}
