@@ -1,66 +1,58 @@
 {template header}
 
-<div class="box">
-	<h1>我的订单</h1>
+<section class="box layout">
+	<header><i class="icon icon-doc-text"></i>我的订单</header>
 	<div class="content">
-		<div class="order_list">
-			<table>
-				<thead>
-					<tr>
-						<td>物品</td>
-						<td width="48">操作</td>
-					</tr>
-				</thead>
-				<tbody>
-				<!--{loop $orders $o}-->
-					<tr>
-						<td>
-							<ul class="item">
-							<!--{loop $o['items'] $item}-->
-								<li>$item</li>
-							<!--{/loop}-->
-							</ul>
-							<ul class="extrainfo">
-								<li>$o[id]号</li>
-								<li>{$o[totalprice]}{echo Product::$PriceUnit}<!--{if $o['deliveryfee'] > 0}--><span class="deliveryfee">(含运费{$o[deliveryfee]}{echo Product::$PriceUnit})</span><!--{/if}--></li>
-								<li>{echo Order::$Status[$o['status']]}</li>
-								<li>
-									{echo Wallet::$PaymentMethod[$o['paymentmethod']]}
-									<!--{if $o['paymentmethod'] != Wallet::ViaCash}-->
-									<!--{if $o['tradestate']}-->
-									({echo Wallet::$TradeState[$o['tradestate']]})
-									<!--{else}-->
-									(等待付款)
-									<!--{/if}-->
-									<!--{/if}-->
-								</li>
-							</ul>
-						</td>
-						<td class="operation">
-							<a href="index.php?mod=order&action=view&orderid=$o[id]" class="view">[详细]</a>
-							<!--{if $o['status'] == Order::Unsorted}-->
-								<a href="index.php?mod=order&action=delete&orderid=$o[id]">[取消]</a>
-							<!--{elseif $o['status'] == Order::ToDeliveryStation || $o['status'] == Order::InDeliveryStation}-->
-								<a href="index.php?mod=order&action=pack&orderid=$o[id]">[提货]</a>
-							<!--{elseif $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
-								<a href="index.php?mod=order&action=mark_received&orderid=$o[id]">[收货]</a>
-							<!--{elseif $o['status'] == Order::Received}-->
-								<a href="index.php?mod=order&action=comment&orderid=$o[id]">[评价]</a>
-							<!--{/if}-->
-							<!--{if $o['paymentmethod'] != Wallet::ViaCash && (empty($o['tradestate']) || $o['tradestate'] == Wallet::WaitBuyerPay) && $o['status'] != Order::Canceled}-->
-								<a href="index.php?mod=order&action=pay&orderid=$o[id]">[付款]</a>
-							<!--{/if}-->
-							<!--{if $o['status'] == Order::Received}-->
-							<a href="index.php?mod=order&action=return&orderid=$o[id]">[退货]</a>
-							<!--{/if}-->
-						</td>
-					</tr>
-				<!--{/loop}-->
-				</tbody>
-			</table>
+	<!--{loop $orders $o}-->
+		<div class="order-info">
+			<ul class="two-column">
+				<li>
+					<span class="left">订单号：$o[id]</span>
+					<span class="right">{echo Order::$Status[$o['status']]}</span>
+				</li>
+			<!--{loop $o['items'] $item}-->
+				<li>
+					<span class="left">$item[name]</span>
+					<span class="right">$item[num]</span>
+				</li>
+			<!--{/loop}-->
+				<li>
+					<span class="left">下单时间：{echo rdate($o['dateline'])}</span>
+					<span class="right price">共{$o[totalprice]}{echo Product::$PriceUnit}<!--{if $o['deliveryfee'] > 0}--><span class="deliveryfee">(含运费{$o[deliveryfee]}{echo Product::$PriceUnit})</span><!--{/if}--></span>
+				</li>
+				<li>
+					支付状态：{echo Wallet::$PaymentMethod[$o['paymentmethod']]}
+					<!--{if $o['paymentmethod'] != Wallet::ViaCash}-->
+					<!--{if $o['tradestate']}-->
+					({echo Wallet::$TradeState[$o['tradestate']]})
+					<!--{else}-->
+					(等待付款)
+					<!--{/if}-->
+					<!--{/if}-->
+				</li>
+			</ul>
+			<ul class="operation">
+				<li class="main"><a href="index.php?mod=order&action=view&orderid=$o[id]">查看详细</a></li>
+				<!--{if $o['status'] == Order::Unsorted}-->
+					<li><a href="index.php?mod=order&action=delete&orderid=$o[id]">取消</a></li>
+				<!--{elseif $o['status'] == Order::ToDeliveryStation || $o['status'] == Order::InDeliveryStation}-->
+					<li><a href="index.php?mod=order&action=pack&orderid=$o[id]">提货</a></li>
+				<!--{elseif $o['status'] == Order::Sorted || $o['status'] == Order::Delivering}-->
+					<li><a href="index.php?mod=order&action=mark_received&orderid=$o[id]">收货</a></li>
+				<!--{elseif $o['status'] == Order::Received}-->
+					<li><a href="index.php?mod=order&action=comment&orderid=$o[id]">评价</a></li>
+				<!--{/if}-->
+				<!--{if $o['paymentmethod'] != Wallet::ViaCash && (empty($o['tradestate']) || $o['tradestate'] == Wallet::WaitBuyerPay) && $o['status'] != Order::Canceled}-->
+					<li><a href="index.php?mod=order&action=pay&orderid=$o[id]">付款</a></li>
+				<!--{/if}-->
+				<!--{if $o['status'] == Order::Received}-->
+				<li><a href="index.php?mod=order&action=return&orderid=$o[id]">退货</a></li>
+				<!--{/if}-->
+			</ul>
 		</div>
+	<!--{/loop}-->
 	</div>
-</div>
+</section>
 
 {eval echo Template::mpage($pagenum, $page, $limit, 'index.php?mod=order')}
 

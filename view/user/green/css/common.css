@@ -5,12 +5,13 @@
 body{
 	margin: 0;
 	padding: 0;
-	font-size: 12pt;
 	background: #efefef;
 }
 
 body, button, input, select, textarea{
 	font-family: 'Microsoft YaHei', 'Arial', 'Times New Roman';
+	font-weight: 300;
+	font-size: 12pt;
 }
 
 a{
@@ -430,6 +431,19 @@ form.simple input[type="password"]
 	background-size: auto 100%;
 }
 
+/* Section Box */
+section.box header{
+	font-size: 20pt;
+	line-height: 3em;
+	text-align: center;
+	border-bottom: #efefef 1px solid;
+	background: white;
+}
+
+section.box header .icon{
+	color: #69b24f;
+}
+
 /* Message Box */
 .box.message{
 	margin: 0;
@@ -558,4 +572,76 @@ ul.link > li .icon{
 	font-size: 18pt;
 	width: 3.2em;
 	text-align: center;
+}
+
+ul.two-column{
+	margin-left: 20px;
+	padding-top: 16px;
+}
+
+ul.two-column li{
+	position: relative;
+	line-height: 1.8em;
+	height: 1.8em;
+}
+
+ul.two-column li .left{
+	position: static;
+}
+
+ul.two-column li .right{
+	position: absolute;
+	top: 0;
+	right: 20px;
+}
+
+.order-info{
+	margin: 10px 0;
+	background: white;
+}
+
+.order-info ul.two-column li:first-child{
+	font-weight: 500;
+}
+
+.order-info .price{
+	color: #ff503c;
+}
+
+ul.operation{
+	border-top: #efefef 2px solid;
+	padding: 10px;
+	position: relative;
+}
+
+ul.operation li{
+	display: inline-block;
+	border: #808080 1px solid;
+	border-radius: 5px;
+	margin: 0 5px;
+	height: 1.8em;
+	line-height: 1.8em;
+}
+
+ul.operation li a{
+	color: #808080;
+	display: inline-block;
+	height: 1.8em;
+	line-height: 1.8em;
+	padding: 0 0.5em;
+}
+
+ul.operation li.main{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	border: 0 solid;
+}
+
+ul.operation li.main a{
+	color: black;
+}
+
+ul.operation li.main:after{
+	content: ' > ';
 }

@@ -287,7 +287,10 @@ default:
 
 		$order_details = array();
 		foreach($details as &$d){
-			$order_details[$d['orderid']][] = $d['productname'].(!empty($d['subtype']) ? '('.$d['subtype'].')' : '').' '.($d['amount'] * $d['number']).$d['amountunit'];
+			$order_details[$d['orderid']][] = array(
+				'name' => $d['productname'].(!empty($d['subtype']) ? '('.$d['subtype'].')' : ''),
+				'num' => ($d['amount'] * $d['number']).$d['amountunit'],
+			);
 		}
 		unset($d);
 
