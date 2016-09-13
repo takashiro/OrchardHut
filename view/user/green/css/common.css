@@ -503,6 +503,11 @@ section.layout h4{
 	border: #dcdcdc 1px solid;
 }
 
+.lightbox table{
+	margin: auto;
+	width: 90%;
+}
+
 .message input{
 	width: 100%;
 	border: 0 solid;
@@ -760,4 +765,10 @@ textarea.full-block{
 	height: 100px;
 	border: 0 solid;
 	padding: 15px;
+}
+
+select.full-block{
+	width: 100%;
+	line-height: 2em;
+	height: 2em;
 }
