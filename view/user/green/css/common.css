@@ -432,7 +432,7 @@ form.simple input[type="password"]
 }
 
 /* Section Box */
-section.box header{
+section.layout header{
 	font-size: 20pt;
 	line-height: 3em;
 	text-align: center;
@@ -440,11 +440,19 @@ section.box header{
 	background: white;
 }
 
-section.box header .icon{
+section.layout header .icon{
 	color: #69b24f;
 }
 
+section.layout h4{
+	margin: 4px 20px;
+}
+
 /* Message Box */
+.box{
+	background: white;
+}
+
 .box.message{
 	margin: 0;
 }
@@ -597,7 +605,6 @@ ul.two-column li .right{
 
 .order-info{
 	margin: 10px 0;
-	background: white;
 }
 
 .order-info ul.two-column li:first-child{
@@ -644,4 +651,61 @@ ul.operation li.main a{
 
 ul.operation li.main:after{
 	content: ' > ';
+}
+
+dl.form{
+	background: white;
+}
+
+dl.form dt{
+	display: inline-block;
+	width: 25%;
+	text-align: right;
+}
+
+dl.form dd{
+	display: inline-block;
+	width: 70%;
+	margin: 0;
+}
+
+section.order-detail .total.price{
+	color: #ff503c;
+}
+
+section.order-detail ul.two-column li .right .price{
+	width: 5em;
+	display: inline-block;
+	text-align: right;
+}
+
+section.order-detail .content{
+	background: white;
+}
+
+.timeline{
+	position: relative;
+}
+
+.timeline .line{
+	border-left: #787878 2px solid;
+	height: calc(100% - 20px - 1em);
+	position: absolute;
+	top: 20px;
+	left: 27px;
+}
+
+.timeline ul{
+	padding: 0;
+}
+
+.timeline ul li:before{
+	content: '●';
+	color: #69b24f;
+	font-style: normal;
+	font-size: 20pt;
+}
+
+.timeline ul li:last-child:before{
+	color: #787878;
 }

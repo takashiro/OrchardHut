@@ -1,27 +1,47 @@
 {template header}
 
-<div class="box">
-	<h1>我的订单</h1>
+<section class="box order-detail layout">
+	<header><i class="icon icon-doc-text"></i>订单详情</header>
 	<div class="content">
+		<ul class="two-column">
+			<li>
+				<span class="left">订单编号：$order[id]</span>
+				<span class="right">{echo Order::$Status[$order['status']]}</span>
+			</li>
+		</ul>
 		<dl class="form">
-			<dt>订单编号：</dt><dd>$order[id]</dd>
 			<dt>下单时间：</dt><dd>$order[dateline]</dd>
 			<dt>收件人：</dt><dd>$order[addressee]</dd>
 			<dt>联系电话：</dt><dd>$order[mobile]</dd>
 			<dt>配送地址：</dt><dd>$order[deliveryaddress]</dd>
 			<dt>用户留言：</dt><dd>$order[message]</dd>
-			<dt>物品：</dt><dd><dl class="order_detail">
-					<!--{loop $order['detail'] $d}-->
-					<dt><!--{if $d['state'] == 1}-->[缺货] <!--{/if}-->$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--> {echo $d['amount'] * $d['number']}{$d[amountunit]}</dt>
-					<dd>{$d[subtotal]}{echo Product::$PriceUnit}</dd>
-					<!--{/loop}-->
-			</dl></dd>
-			<dt>总计：</dt><dd>{$order[totalprice]}{echo Product::$PriceUnit}</dd>
+		</dl>
 
-			<dt>订单状态：</dt><dd><ul>
-				<li>{$order[dateline]}，您在{$_CONFIG[sitename]}下单</li>
+		<h4>果果信息</h4>
+		<ul class="two-column">
+			<!--{loop $order['detail'] $d}-->
+			<li>
+				<span class="left"><!--{if $d['state'] == 1}-->[缺货] <!--{/if}-->$d[productname]<!--{if !empty($d['subtype'])}-->($d[subtype])<!--{/if}--></span>
+				<span class="right">{echo $d['amount'] * $d['number']}{$d[amountunit]} <span class="price">{$d[subtotal]}{echo Product::$PriceUnit}</span></dt>
+			</li>
+			<!--{/loop}-->
+			<li>
+				<span class="right total price">共{$order[totalprice]}{echo Product::$PriceUnit}</span>
+			</li>
+		</ul>
+
+		<h4>订单状态</h4>
+		<div class="timeline">
+			<div class="line"></div>
+			<ul class="two-column">
+				<li>
+					<span class="left">{$order[dateline]}</span>
+					<span class="right">您在{$_CONFIG[sitename]}下单</span>
+				</li>
 			<!--{loop $orderlog $log}-->
-				<li>{echo rdate($log['dateline'])}，
+				<li>
+					<span class="left">{echo rdate($log['dateline'])}</span>
+					<span class="right">
 					<!--{if $log['operatorgroup'] == Order::SystemOperated}-->
 						系统
 					<!--{elseif $log['operatorgroup'] == Order::AdministratorOperated}-->
@@ -62,11 +82,12 @@
 					<!--{elseif $log['operation'] == Order::DetailInStock || $log['operation'] == Order::DetailOutOfStock}-->
 						将 $log[productname]<!--{if $log['subtype']}-->($log[subtype])<!--{/if}-->{echo $log['amount'] * $log['number']}{$log[amountunit]} 标记为<!--{if $log['operation'] == Order::DetailInStock}-->有货<!--{else}-->缺货<!--{/if}-->
 					<!--{/if}-->
+					</span>
 				</li>
-			<!--{/loop}-->
-			</ul></dd>
-		</dl>
+				<!--{/loop}-->
+			</ul>
+		</div>
 	</div>
-</div>
+</section>
 
 {template footer}
