@@ -375,7 +375,9 @@ section.cart .bottom_toolset .info{
 button.big,
 a.button.big,
 .box.message button,
-.box.message a.button{
+.box.message a.button,
+.post_buttons button[type="submit"]
+{
 	width: 80%;
 	background: #69b24f;
 	font-size: 15pt;
@@ -487,6 +489,10 @@ section.layout h4{
 .box.message button{
 	display: block;
 	margin: 15px auto;
+}
+
+.lightbox{
+	background: white;
 }
 
 .lightbox h1{
@@ -721,4 +727,28 @@ section.order-detail .content{
 
 .timeline ul li:last-child:before{
 	color: #787878;
+}
+
+.edit_form{
+	background: white;
+	line-height: 2.5em;
+}
+
+.edit_form table{
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.edit_form table tr th{
+	width: 30%;
+	text-align: right;
+	padding-right: 1em;
+}
+
+.edit_form input{
+	border: 0 solid;
+}
+
+.edit_form table tr{
+	border-bottom: #e6e6e6 1px solid;
 }

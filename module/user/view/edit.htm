@@ -1,55 +1,47 @@
 <!--{template header}-->
 
-<div class="box">
-	<h1>个人信息</h1>
+<section class="box layout">
+	<header><i class="icon icon-user"></i>个人信息</header>
 
 	<div class="content edit_form">
-		<div class="profile">
-			<div class="icon_home"></div>
-			<div class="account">$_USER[account]</div>
-		</div>
-
 		<form action="index.php?mod=user&action=edit" method="post">
 		<table>
 			<tr>
-				<th><label>用户名：</label></th>
+				<th><label>用户名</label></th>
 				<td>
-					<input type="text" id="account" name="account" {if !empty($_G['user']->account)} value="{echo $_G['user']->account}" readonly="readonly" {/if} />
-					<div class="tips">用户名用于直接登录本站，不可修改。通过其他账号（如QQ、微信）登录本站的用户可以进行设置。</div>
+					<input type="text" id="account" name="account" placeholder="用户名设置后不可修改" {if !empty($_G['user']->account)} value="{echo $_G['user']->account}" readonly="readonly" {/if} />
 				</td>
 			</tr>
 			<tr>
-				<th><label>昵称：</label></th>
+				<th><label>昵称</label></th>
 				<td>
-					<input type="text" id="nickname" name="nickname" value="$_USER[nickname]" />
-					<div class="tips">设置昵称后，您的用户名仅用于登录，昵称替代用户名显示</div>
+					<input type="text" id="nickname" name="nickname" value="$_USER[nickname]" placeholder="设置昵称后，昵称替代用户名显示" />
 				</td>
 			</tr>
 			<tr>
-				<th><label>旧密码：</label></th>
+				<th><label>旧密码</label></th>
 				<td>
-					<input type="password" id="old_password" name="old_password" />
-					<div class="tips">若您不需要修改登录密码，此处密码请留空。通过其他账号（如QQ、微信）登录的用户若要修改密码，此处请留空。</div>
+					<input type="password" id="old_password" name="old_password" placeholder="QQ、微信登录用户修改密码，此处请留空" />
 				</td>
 			</tr>
 			<tr>
-				<th><label>新密码：</label></th>
+				<th><label>新密码</label></th>
 				<td>
-					<input type="password" id="new_password" name="new_password" />
-					<div class="tips">该密码用于配合用户名登录本站。不需修改密码请留空。</div>
+					<input type="password" id="new_password" name="new_password" placeholder="请输入密码" />
+					<div class="tips"></div>
 				</td>
 			</tr>
 			<tr>
-				<th><label>再次确认：</label></th>
-				<td><input type="password" id="new_password2" name="new_password2" /></td>
+				<th><label>再次确认</label></th>
+				<td><input type="password" id="new_password2" name="new_password2" placeholder="请再次输入密码" /></td>
 			</tr>
 			<tr>
-				<th><label>E-mail：</label></th>
-				<td><input type="text" id="email" name="email" value="$_USER[email]" /></td>
+				<th><label>E-mail</label></th>
+				<td><input type="text" id="email" name="email" value="$_USER[email]" placeholder="请输入常用邮箱" /></td>
 			</tr>
 			<tr>
-				<th><label>手机号码：</label></th>
-				<td><input type="text" id="mobile" name="mobile" value="$_USER[mobile]" /></td>
+				<th><label>手机号码</label></th>
+				<td><input type="text" id="mobile" name="mobile" value="$_USER[mobile]" placeholder="请输入手机号码" /></td>
 			</tr>
 		</table>
 
@@ -59,6 +51,6 @@
 
 		</form>
 	</div>
-</div>
+</section>
 
 <!--{template footer}-->
