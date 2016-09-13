@@ -643,6 +643,7 @@ ul.operation{
 	border-top: #efefef 2px solid;
 	padding: 10px;
 	position: relative;
+	height: 1.8em;
 }
 
 ul.operation li{
