@@ -171,6 +171,12 @@ section.sidebar{
 	background: #efefef;
 }
 
+section.sidebar.fixed{
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
 section.main{
 	padding-left: 6em;
 	background: white;

@@ -158,21 +158,23 @@ $(function(){
 		popup_message(title.html(), detail.html());
 	});
 
-	$(window).scroll(function(){
-		var product_type = $('.product_type');
+	var autoFixSideBar = function(){
+		var product_type = $('section.sidebar.auto-fixed');
 		if(product_type.length <= 0)
 			return;
-		var offset_top = $('.product_list').offset().top - $(window).scrollTop();
-		if(product_type.hasClass('product_type_fixed')){
+		var offset_top = $('section.main').offset().top - $(window).scrollTop();
+		if(product_type.hasClass('fixed')){
 			if(offset_top > 0){
-				product_type.removeClass('product_type_fixed');
+				product_type.removeClass('fixed');
 			}
 		}else{
 			if(offset_top <= 0){
-				product_type.addClass('product_type_fixed');
+				product_type.addClass('fixed');
 			}
 		}
-	});
+	};
+	$(window).scroll(autoFixSideBar);
+	autoFixSideBar();
 
 	$('.product_list').on('click', '.icon, .name', function(e){
 		var target = $(this);
