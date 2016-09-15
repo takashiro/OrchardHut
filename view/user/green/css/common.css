@@ -212,6 +212,12 @@ ul.tab > li:last-child{
 }
 
 /* Number Box */
+input.number{
+	background: none;
+	width: 48px;
+	border: 0 solid;
+}
+
 .numberbox{
 	color: black;
 	width: 96px;
@@ -219,10 +225,7 @@ ul.tab > li:last-child{
 	line-height: 24px;
 }
 
-.numberbox input{
-	background: none;
-	border: 0 solid;
-	width: 48px;
+.numberbox input.number{
 	height: 100%;
 	text-align: center;
 	font-size: 14pt;
