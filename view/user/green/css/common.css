@@ -362,6 +362,18 @@ ul.product button.remove{
 	height: 24px;
 }
 
+.countdown{
+	width: 1.6em;
+	height: 1.6em;
+	line-height: 1.6em;
+	color: white;
+	background: #69b24f;
+	border-radius: 4px;
+	text-align: center;
+	font-size: 9pt;
+	display: inline-block;
+}
+
 /* Shopping Cart */
 section.cart{
 	background: white;
