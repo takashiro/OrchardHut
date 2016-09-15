@@ -242,7 +242,8 @@ class Order extends DBObject{
 			FROM {$tpre}orderlog l
 				LEFT JOIN {$tpre}administrator a ON l.operatorgroup=$operatorgroup AND a.id=l.operator
 				LEFT JOIN {$tpre}orderdetail d ON l.operation IN ($detailop) AND d.id=l.extra
-			WHERE l.orderid={$this->id}");
+			WHERE l.orderid={$this->id}
+			ORDER BY l.dateline DESC");
 	}
 
 	public function makeComment($comment){

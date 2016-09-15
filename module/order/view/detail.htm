@@ -33,15 +33,11 @@
 		<h4>订单状态</h4>
 		<div class="timeline">
 			<div class="line"></div>
-			<ul class="two-column">
-				<li>
-					<span class="left">{$order[dateline]}</span>
-					<span class="right">您在{$_CONFIG[sitename]}下单</span>
-				</li>
+			<ul>
 			<!--{loop $orderlog $log}-->
 				<li>
-					<span class="left">{echo rdate($log['dateline'])}</span>
-					<span class="right">
+					<span class="time">{echo rdate($log['dateline'])}</span>
+					<span class="text">
 					<!--{if $log['operatorgroup'] == Order::SystemOperated}-->
 						系统
 					<!--{elseif $log['operatorgroup'] == Order::AdministratorOperated}-->
@@ -85,6 +81,10 @@
 					</span>
 				</li>
 				<!--{/loop}-->
+				<li>
+					<span class="time">{$order[dateline]}</span>
+					<span class="text">您在{$_CONFIG[sitename]}下单</span>
+				</li>
 			</ul>
 		</div>
 	</div>
