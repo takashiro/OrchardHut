@@ -159,6 +159,7 @@ div.number-notice div.number{
 /* Sidebar Layout */
 section.layout{
 	position: relative;
+	min-height: 500px;
 	margin-bottom: 120px;
 	background: #efefef;
 }
