@@ -68,7 +68,7 @@ ul.brief > li .icon img{
 /* Selection List */
 ul.mselect > li{
 	position: relative;
-	line-height: 2em;
+	line-height: 2.5em;
 	border-bottom: #dcdcdc 1px solid;
 	padding: 0 38px 0 15px;
 	cursor: pointer;
