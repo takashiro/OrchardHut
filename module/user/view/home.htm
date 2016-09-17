@@ -19,21 +19,21 @@ $(function(){
 	</div>
 
 	<ul class="link">
-		<li><a href="index.php?mod=order"><i class="icon icon-doc-text"></i>我的订单</a></li>
-		<li><a href="index.php?mod=user&action=edit"><i class="icon icon-user"></i>个人信息</a></li>
-		<li><a href="index.php?mod=payment"><i class="icon icon-money"></i>我的钱包</a></li>
+		<li><a href="index.php?mod=order"><i class="icon doc-text"></i>我的订单</a></li>
+		<li><a href="index.php?mod=user&action=edit"><i class="icon user"></i>个人信息</a></li>
+		<li><a href="index.php?mod=payment"><i class="icon money"></i>我的钱包</a></li>
 		<li>
 			<!--{if $_G['user']->qqopenid}-->
-			<a href="index.php?mod=qqconnect&action=unbind"><i class="icon icon-qq"></i>解绑QQ</a>
+			<a href="index.php?mod=qqconnect&action=unbind"><i class="icon qq"></i>解绑QQ</a>
 			<!--{else}-->
-			<a href="index.php?mod=qqconnect"><i class="icon icon-qq"></i>绑定QQ</a>
+			<a href="index.php?mod=qqconnect"><i class="icon qq"></i>绑定QQ</a>
 			<!--{/if}-->
 		</li>
 		<li>
 			<!--{if $_G['user']->wxopenid}-->
-			<a href="index.php?mod=weixin&action=unbind"><i class="icon icon-wechat"></i>解绑微信</a>
+			<a href="index.php?mod=weixin&action=unbind"><i class="icon wechat"></i>解绑微信</a>
 			<!--{else}-->
-			<i class="icon icon-wechat"></i>请向$_CONFIG[sitename]公众号发送“绑定”。
+			<i class="icon wechat"></i>请向$_CONFIG[sitename]公众号发送“绑定”。
 			<!--{/if}-->
 		</li>
 	</ul>

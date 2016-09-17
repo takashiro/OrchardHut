@@ -14,7 +14,7 @@
 }
 */
 
- [class^="icon-"]:before, [class*=" icon-"]:before {
+ .icon:before, .icon:before {
   font-family: "fontello";
   font-style: normal;
   font-weight: normal;
@@ -44,14 +44,14 @@
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
-.icon-plus:before { content: '\e800'; } /* '' */
-.icon-minus:before { content: '\e801'; } /* '' */
-.icon-ok:before { content: '\e802'; } /* '' */
-.icon-cancel:before { content: '\e803'; } /* '' */
-.icon-user:before { content: '\e804'; } /* '' */
-.icon-basket:before { content: '\e805'; } /* '' */
-.icon-box:before { content: '\e806'; } /* '' */
-.icon-money:before { content: '\e807'; } /* '' */
-.icon-doc-text:before { content: '\f0f6'; } /* '' */
-.icon-qq:before { content: '\f1d6'; } /* '' */
-.icon-wechat:before { content: '\f1d7'; } /* '' */
+.icon.plus:before { content: '\e800'; } /* '' */
+.icon.minus:before { content: '\e801'; } /* '' */
+.icon.ok:before { content: '\e802'; } /* '' */
+.icon.cancel:before { content: '\e803'; } /* '' */
+.icon.user:before { content: '\e804'; } /* '' */
+.icon.basket:before { content: '\e805'; } /* '' */
+.icon.box:before { content: '\e806'; } /* '' */
+.icon.money:before { content: '\e807'; } /* '' */
+.icon.doc-text:before { content: '\f0f6'; } /* '' */
+.icon.qq:before { content: '\f1d6'; } /* '' */
+.icon.wechat:before { content: '\f1d7'; } /* '' */
