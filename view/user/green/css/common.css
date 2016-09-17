@@ -296,6 +296,10 @@ section.market.layout{
 	border-top: #dcdcdc 1px solid;
 }
 
+section.market.layout section.sidebar{
+	font-size: 12pt;
+}
+
 ul.product{
 	margin-left: 10px;
 }
@@ -555,7 +559,7 @@ section.layout h4{
 .lightbox h1{
 	background: #efefef;
 	margin: 0;
-	padding: 0.8em 0.5em 0.4em 0.5em;
+	padding: 0.8em 15px 0.4em 15px;
 	font-weight: normal;
 	border: #dcdcdc 1px solid;
 }
