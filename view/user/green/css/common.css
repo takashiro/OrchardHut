@@ -47,6 +47,10 @@ ul.brief > li{
 	border-bottom: #dcdcdc 1px solid;
 }
 
+ul.brief > li:last-child{
+	border-bottom: 0 solid;
+}
+
 ul.brief > li .icon{
 	position: absolute;
 	width: 64px;
@@ -306,8 +310,8 @@ ul.product{
 }
 
 ul.product > li{
-	padding-bottom: 5px;
-	margin-bottom: 12px;
+	padding-bottom: 11px;
+	margin-bottom: 11px;
 }
 
 ul.product .detail{
