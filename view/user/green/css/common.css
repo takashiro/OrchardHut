@@ -366,6 +366,7 @@ ul.product ul.rule li .order_input{
 }
 
 ul.product ul.rule li .order_input .unit{
+	display: none;
 	position: absolute;
 	bottom: 0;
 	right: 33px;
