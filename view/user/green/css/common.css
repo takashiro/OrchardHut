@@ -252,6 +252,8 @@ input.number{
 	overflow: hidden;
 	margin: 0;
 	float: left;
+	font-size: 15pt;
+	line-height: 1em;
 }
 
 .numberbox button.decrease{
