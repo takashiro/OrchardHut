@@ -312,11 +312,8 @@ ul.product > li{
 
 ul.product .detail{
 	padding-top: 10px;
-	margin-bottom: 0.5em;
-}
-
-ul.product .detail{
-	margin-left: 75px;
+	margin: 0 0 5px 75px;
+	min-height: 64px;
 }
 
 ul.product .soldout{
@@ -418,6 +415,9 @@ section.cart ul.product li{
 	min-height: 70px;
 }
 
+section.cart ul.product .detail{
+	min-height: 0;
+}
 
 section.cart ul.product button.remove{
 	background: none;
