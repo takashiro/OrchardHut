@@ -386,7 +386,7 @@ ul.product button.remove{
 	height: 24px;
 }
 
-.countdown{
+ul.product .countdown{
 	width: 1.6em;
 	height: 1.6em;
 	line-height: 1.6em;
@@ -396,6 +396,17 @@ ul.product button.remove{
 	text-align: center;
 	font-size: 9pt;
 	display: inline-block;
+}
+
+ul.product .limit{
+    color: white;
+    background: #69b24f;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 0 4px;
+    font-size: 8pt;
+    height: 1.5em;
+    line-height: 1.5em;
 }
 
 /* Shopping Cart */
