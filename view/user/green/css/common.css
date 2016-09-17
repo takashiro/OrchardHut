@@ -233,7 +233,7 @@ input.number{
 .numberbox input.number{
 	height: 100%;
 	text-align: center;
-	font-size: 14pt;
+	font-size: 12.8pt;
 	padding: 0;
 	float: left;
 }
@@ -305,6 +305,11 @@ ul.product{
 	margin-left: 10px;
 }
 
+ul.product > li{
+	padding-bottom: 5px;
+	margin-bottom: 12px;
+}
+
 ul.product .detail{
 	padding-top: 10px;
 	margin-bottom: 0.5em;
@@ -321,7 +326,7 @@ ul.product .soldout{
 
 ul.product .briefintro{
 	color: #505050;
-	font-size: 11pt;
+	font-size: 9.5pt;
 	margin-top: 2px;
 	min-height: 1.2em;
 }
