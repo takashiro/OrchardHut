@@ -64,7 +64,14 @@ $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 			<div class="content">
 				<ul class="mselect">
 					<!--{loop $delivery_addresses $i $a}-->
-					<li><input type="radio" name="deliveryaddressid" value="$a[id]" autocomplete="off" />$a[address_text]<a href="###" class="remove">删除</a></li>
+					<li>
+						<input type="radio" name="deliveryaddressid" value="$a[id]" autocomplete="off" />
+						<div class="address">
+							<span class="addressee">收件人：$a[addressee]<span class="mobile">$a[mobile]</span></span>
+							<span class="detail">$a[address_text]</span>
+							<a href="###" class="remove">删除</a>
+						</div>
+					</li>
 					<!--{/loop}-->
 					<li><input type="radio" name="deliveryaddressid" value="0" autocomplete="off" />使用新地址</li>
 				</ul>

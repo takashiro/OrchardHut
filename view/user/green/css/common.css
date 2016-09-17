@@ -870,3 +870,26 @@ select.full-block{
 	line-height: 2em;
 	height: 2em;
 }
+
+.address{
+	position: relative;
+	line-height: 2em;
+}
+
+.address .addressee{
+	display: block;
+}
+
+.address .addressee .mobile{
+	margin-left: 2em;
+}
+
+.address .detail{
+	display: block;
+}
+
+.address .remove{
+	position: absolute;
+	bottom: 0;
+	right: 15px;
+}

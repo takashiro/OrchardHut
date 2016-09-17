@@ -346,7 +346,6 @@ switch($action){
 				unset($delivery_addresses[$aid]);
 			}else{
 				$a['address_text'] = Address::FullPathString($a['addressid']);
-				$a['address_text'].= ' '.$a['extaddress'].' '.$a['addressee'].'('.$a['mobile'].')';
 			}
 		}
 		unset($a);
