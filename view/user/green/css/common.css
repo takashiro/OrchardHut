@@ -796,14 +796,16 @@ section.order-detail .content{
 
 .timeline{
 	position: relative;
+	margin: 0 0 10px 0;
+	padding-bottom: 10px;
 }
 
 .timeline .line{
 	border-left: #787878 1.5px solid;
-	height: calc(100% - 22px - 1em);
+	height: calc(100% - 39px - 1em);
 	position: absolute;
-	top: 20px;
-	left: 27px;
+	top: 14px;
+	left: 25px;
 }
 
 .timeline ul{
@@ -812,6 +814,7 @@ section.order-detail .content{
 
 .timeline ul li{
 	position: relative;
+	margin: 10px 0;
 }
 
 .timeline ul li:before{
