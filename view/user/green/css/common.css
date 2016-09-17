@@ -74,8 +74,7 @@ ul.mselect > li{
 	cursor: pointer;
 }
 
-ul.mselect > li:hover,
-ul.mselect > li.checked{
+ul.mselect > li:hover{
 	color: #69b24f;
 }
 
