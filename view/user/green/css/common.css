@@ -257,6 +257,7 @@ input.number{
 
 .numberbox button.decrease{
 	color: #bebebe;
+	visibility: hidden;
 }
 
 .numberbox button.increase{

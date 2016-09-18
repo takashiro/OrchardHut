@@ -87,7 +87,9 @@ $(function(){
 	var items = ShoppingCart.getItems();
 	for(var price_id in items){
 		var number = items[price_id];
-		$('li[data-price-id=' + price_id + '] .order_input input').val(number);
+		var input = $('li[data-price-id=' + price_id + '] .order_input input');
+		input.val(number);
+		input.change();
 	}
 
 	if(uid){
