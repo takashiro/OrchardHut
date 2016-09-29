@@ -20,8 +20,6 @@ takashiro@qq.com
 ************************************************************************/
 
 $(function(){
-	$('.product_list').css('min-height', $('.product_type').height());
-
 	$('.order_input input').change(function(e){
 		var input = $(e.target);
 		var numberbox = input.parent();
@@ -35,7 +33,7 @@ $(function(){
 		if(typeof ProductStorage[storage_id] != 'undefined'){
 			var total = ProductStorage[storage_id];
 			var cart = ShoppingCart.getItems();
-			$('.product_list .rule li').each(function(){
+			$('ul.product .rule li').each(function(){
 				if($(this).data('storage-id') == storage_id){
 					var ordered = parseInt($(this).find('.order_input input').val(), 10);
 					if(!isNaN(ordered)){
@@ -87,64 +85,6 @@ $(function(){
 		ShoppingCart.setItem(price_id, number);
 	});
 
-	$('.product_list .rule').each(function(){
-		var rule = $(this);
-		var list = rule.children();
-		var more = rule.next();
-		var more_button = more.children('a');
-		if(list.length == 1){
-			more_button.addClass('disabled');
-		}else{
-			var brief = $($.parseHTML('<div></div>'));
-			brief.addClass('brief');
-			brief.html('');
-			if(list.length == 2){
-				if(list.eq(0).find('.subtype').html() == '' && list.eq(1).find('.subtype').html() == ''
-					&& list.eq(0).find('.briefintro').html() == '' && list.eq(1).find('.briefintro').html() == ''){
-					brief.html('');
-					brief.append(list.eq(0).children('span').clone());
-					brief.append($.parseHTML('<span class="split"> / </span>'));
-					brief.append(list.eq(1).children('span').clone());
-				}
-			}else{
-				var prev = null;
-				list.each(function(){
-					if(prev != null && prev == $(this).find('.subtype').html()){
-						$(this).children('.intro').html('');
-					}else{
-						prev = $(this).find('.subtype').html();
-					}
-				});
-			}
-
-			rule.before(brief);
-
-			var countdown_icon = rule.find('.countdown:eq(0)').clone();
-			if(countdown_icon.length > 0){
-				var li = rule.parent();
-				var icon = li.children('.icon');
-				icon.append(countdown_icon);
-			}
-
-			more_button.click(function(e){
-				e.preventDefault();
-				if(list.is(':visible')){
-					list.hide();
-					brief.show();
-					countdown_icon.show();
-					$(this).text('点击展开并购买');
-				}else{
-					list.show();
-					brief.hide();
-					countdown_icon.hide();
-					$(this).text('点击收起');
-				}
-			});
-
-			more_button.click();
-		}
-	});
-
 	$('.announcement .title').each(function(){
 		var title = $(this);
 		var detail = title.next();
@@ -176,7 +116,7 @@ $(function(){
 	$(window).scroll(autoFixSideBar);
 	autoFixSideBar();
 
-	$('.product_list').on('click', '.icon, .name', function(e){
+	$('ul.product').on('click', '.icon, .name', function(e){
 		var target = $(this);
 		var detail = target.is('.icon') ? target.next() : target.parent();
 		var rightpanel = detail.parent();
@@ -198,7 +138,7 @@ $(function(){
 		if(isNaN(product_id))
 			return;
 
-		$('.product_list li').each(function(){
+		$('ul.product li').each(function(){
 			if($(this).data('product-id') != product_id)
 				return true;
 

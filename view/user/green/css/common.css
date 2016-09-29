@@ -65,6 +65,13 @@ ul.brief > li .icon img{
 	height: 64px;
 }
 
+button.remove:before{
+	font-family: fontello;
+	content: '\e803';
+	font-weight: normal;
+	color: #333;
+}
+
 /* Selection List */
 ul.mselect > li{
 	position: relative;
@@ -430,13 +437,6 @@ section.cart ul.product button.remove{
 	background: none;
 	border: 0 solid;
 	font-size: 16pt;
-}
-
-section.cart ul.product button.remove:before{
-	font-family: fontello;
-	content: '\e803';
-	font-weight: normal;
-	color: #333;
 }
 
 section.cart ul.product ul.rule{
@@ -896,4 +896,54 @@ select.full-block{
 	position: absolute;
 	bottom: 0;
 	right: 15px;
+}
+
+
+.popup_message_wrapper{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 0.5);
+	display: none;
+	z-index: 99;
+}
+
+.popup_message{
+	background: white;
+	box-shadow:rgb(116, 116, 116) 0px 0px 8px 0px;
+	margin:50px 15px;
+}
+
+.popup_message header{
+	background: #69b24f;
+	color: white;
+	position:relative;
+	padding:8px 10px;
+}
+
+.popup_message header h4{
+	margin:0;
+}
+
+.popup_message header button.remove{
+	width: 30px;
+	height: 30px;
+	background: none;
+	border: 0 solid;
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.popup_message .content{
+	max-height:380px;
+	overflow-y:auto;
+}
+
+.popup_message .content .photo{
+	text-align:center;
 }
