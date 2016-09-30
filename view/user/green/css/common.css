@@ -639,6 +639,7 @@ section.layout h4{
 	height: 90px;
 	border-radius: 90px;
 	background: rgba(25, 25, 25, 0.5);
+	overflow: hidden;
 }
 
 .avatar .default{
@@ -648,6 +649,10 @@ section.layout h4{
 	background-position: center center;
 	background-size: 40px auto;
 	margin: auto;
+}
+
+.avatar img{
+	width: 100%;
 }
 
 .profile{

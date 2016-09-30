@@ -9,11 +9,13 @@ $(function(){
 <section class="user layout">
 	<div class="profile">
 		<div class="avatar">
-			<!--{if empty($_USER['avatar'])}-->
-			<div class="default"></div>
-			<!--{else}-->
-			<img src="$_USER[avatar]" />
-			<!--{/if}-->
+			<a href="index.php?mod=weixin:connect&action=updateavatar&referrer={echo rawurlencode('index.php?mod=user')}">
+				<!--{if empty($_USER['avatar'])}-->
+				<div class="default"></div>
+				<!--{else}-->
+				<img src="$_USER[avatar]" />
+				<!--{/if}-->
+			</a>
 		</div>
 		<span class="name">$_USER[account]</span>
 	</div>
