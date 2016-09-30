@@ -146,7 +146,7 @@ class ProductMainModule extends AdminControlPanelModule{
 				$product->insert();
 			}
 
-			$product->uploadImage('icon');
+			$product->uploadImage('icon', 'icon', 120);
 			$product->uploadImage('photo');
 
 			if(!empty($_GET['ajax'])){
