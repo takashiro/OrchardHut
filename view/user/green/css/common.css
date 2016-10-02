@@ -952,3 +952,7 @@ select.full-block{
 .popup_message .content .photo{
 	text-align:center;
 }
+
+.popup_message .content .photo img{
+	max-width: 100%;
+}

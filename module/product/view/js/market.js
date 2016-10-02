@@ -130,6 +130,7 @@ $(function(){
 		message.append(introduction.clone());
 		message = message.html();
 		popup_message(title, message);
+		$('.popup_message img').lazyload();
 	});
 
 	if(location.href.indexOf('productid=') != -1){
