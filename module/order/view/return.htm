@@ -11,6 +11,22 @@ $(function(){
 	});
 
 	$('#reason').change();
+
+	$('#return-form').submit(function(e){
+		var form = $(e.target);
+		var all_zero = true;
+		form.find('input.number').each(function(){
+			var value = parseInt($(this).val(), 10);
+			if(!isNaN(value) && value > 0){
+				all_zero = false;
+				return false;
+			}
+		});
+		if(all_zero){
+			e.preventDefault();
+			makeToast('请先选择需要退货的商品数量。');
+		}
+	});
 });
 </script>
 
@@ -43,7 +59,7 @@ $(function(){
 		</dl>
 
 		<!--{if empty($returned_order)}-->
-		<form action="index.php?mod=order&action=return&orderid=$orderid" method="post">
+		<form id="return-form" action="index.php?mod=order&action=return&orderid=$orderid" method="post">
 			<div class="lightbox">
 				<h1>退货明细</h1>
 				<table>
