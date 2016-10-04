@@ -956,3 +956,12 @@ select.full-block{
 .popup_message .content .photo img{
 	max-width: 100%;
 }
+
+div.toast{
+	background: #DFF0D8;
+	border: #D6E9C6 1px solid;
+	color: #3C763D;
+	position: fixed;
+	width: 50%;
+	padding: 1em;
+}
