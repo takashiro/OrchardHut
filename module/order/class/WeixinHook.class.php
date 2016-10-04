@@ -47,7 +47,8 @@ class WeixinHook{
 						}
 					}
 					$text.= lang('message', 'please_fetch_your_package');
-					$text.= '<a href="'.$_G['site_url'].'index.php?mod=order&action=pack&orderid='.$order->id.'">'.lang('common', 'show_pack_qrcode').'</a>';
+					$text.= lang('message', 'scan_qrcode_in_front_of_packer');
+					$text.= '<a href="'.$_G['site_url'].'index.php?mod=order&action=pack&orderid='.$order->id.'">'.lang('message', 'show_pack_qrcode').'</a>';
 				}
 			}else{
 				$text = lang('message', 'your_order_is_being_delivered');
