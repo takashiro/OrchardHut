@@ -38,6 +38,9 @@ class ProductTypeModule extends AdminControlPanelModule{
 			$producttype['displayorder'] = intval($_POST['displayorder']);
 		}
 
+		if(isset($_POST['hidden'])){
+			$producttype['hidden'] = !empty($_POST['hidden']) ? 1 : 0;
+		}
 
 		global $db;
 		$table = $db->select_table('producttype');
