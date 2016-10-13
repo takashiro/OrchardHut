@@ -41,7 +41,8 @@ class ProductMainModule extends AdminControlPanelModule{
 
 		if(!empty($_GET['productname'])){
 			$productname = addslashes(trim($_GET['productname']));
-			$condition[] = '(name LIKE \'%'.$productname.'%\' OR namecapital LIKE \'%'.$productname.'%\')';
+
+			$condition[] = '(name LIKE \'%'.$productname.'%\' OR id IN ('.Hanzi::QueryAcronym('product', 'name', $productname).'))';
 			$query_string['productname'] = $productname;
 		}
 
@@ -98,7 +99,6 @@ class ProductMainModule extends AdminControlPanelModule{
 
 			if(isset($_POST['name'])){
 				$product->name = $_POST['name'];
-				$product->namecapital = Hanzi::ToCapital($product->name);
 			}
 
 			if(isset($_POST['type'])){
@@ -144,6 +144,10 @@ class ProductMainModule extends AdminControlPanelModule{
 
 			if($productid == 0){
 				$product->insert();
+			}
+
+			if(isset($_POST['name'])){
+				Hanzi::UpdateAcronym('product', array('id' => $product->id), 'name', $product->name);
 			}
 
 			$product->uploadImage('icon', 'icon', 120);
@@ -265,6 +269,34 @@ class ProductMainModule extends AdminControlPanelModule{
 		$table = $db->select_table('productpricelimit');
 		$table->delete(array('id' => $id, 'productid' => $productid));
 		echo $table->affected_rows();
+		exit;
+	}
+
+	public function suggestAction(){
+		if(empty($_GET['query'])){
+			exit;
+		}
+
+		$word = addslashes(trim($_GET['query']));
+		global $db, $tpre;
+
+		$result = array(
+			'query' => $word,
+			'suggestions' => array(),
+		);
+
+		$acronym_condition = Hanzi::QueryAcronym('product', 'name', $word);
+		$query = $db->query("SELECT id,name
+			FROM {$tpre}product
+			WHERE name LIKE '%$word%' OR id IN ($acronym_condition)");
+		while($row = $query->fetch_array()){
+			$result['suggestions'][] = array(
+				'value' => $row[1],
+				'data' => $row[0],
+			);
+		}
+
+		echo json_encode($result);
 		exit;
 	}
 
