@@ -103,8 +103,8 @@ DROP TABLE IF EXISTS `pre_producttype`;
 CREATE TABLE IF NOT EXISTS `pre_producttype` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(33) NOT NULL,
-  `displayorder` tinyint(3) unsigned NOT NULL,
-  `hidden` tinyint(1) NOT NULL,
+  `displayorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hidden` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

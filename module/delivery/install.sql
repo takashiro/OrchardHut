@@ -1,5 +1,5 @@
 
-ALTER TABLE `pre_user` ADD `addressid` mediumint(8) unsigned NOT NULL;
+ALTER TABLE `pre_user` ADD `addressid` mediumint(8) unsigned NULL;
 ALTER TABLE `pre_user` ADD KEY `addressid` (`addressid`);
 
 ALTER TABLE `pre_administrator` ADD `limitation` text NOT NULL;
