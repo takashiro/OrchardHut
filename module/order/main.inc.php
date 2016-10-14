@@ -254,6 +254,41 @@ case 'pack':
 	include view('pack');
 	break;
 
+case 'qrpack':
+	if(empty($_GET['qrcode']) || empty($_GET['stationid'])) exit;
+
+	$qrcode = intval($_GET['qrcode']);
+	$stationid = intval($_GET['stationid']);
+	$db->query("UPDATE {$tpre}station SET packqrcode=0 WHERE id=$stationid AND packqrcode=$qrcode");
+	if($db->affected_rows > 0){
+		$order_range = $db->result_first("SELECT orderrange FROM {$tpre}station WHERE id=$stationid");
+		$order_range = $order_range ? explode(',', $order_range) : array();
+		$order_range = Address::Extension($order_range);
+
+		$condition = array('userid='.$_G['user']->id, 'status='.Order::InDeliveryStation);
+		if($order_range){
+			$condition[] = 'addressid IN ('.implode(',', $order_range).')';
+		}
+
+		$condition = implode(' AND ', $condition);
+		$orderid = $db->result_first("SELECT id FROM {$tpre}order WHERE $condition ORDER BY dateline DESC LIMIT 1");
+		if(!$orderid){
+			showmsg('you_have_no_order_in_this_station');
+		}
+
+		$table = $db->select_table('stationorder');
+		$row = array(
+			'stationid' => $stationid,
+			'orderid' => $orderid,
+			'dateline' => TIMESTAMP,
+		);
+		$table->insert($row);
+
+		showmsg('please_wait_for_printing_ticket');
+	}else{
+		showmsg('qrcode_expired_please_rescan');
+	}
+
 default:
 	$limit = 10;
 	$offset = ($page - 1) * $limit;
@@ -273,6 +308,18 @@ default:
 				END)
 		END),id DESC LIMIT $offset,$limit");
 	$pagenum = $table->result_first('COUNT(*)', $condition);
+
+	$view = 'list';
+	if(isset($_GET['packqrcode']) && isset($_GET['stationid'])){
+		$stationid = intval($_GET['stationid']);
+		$packqrcode = intval($_GET['packqrcode']);
+		foreach($orders as $i => $order){
+			if($order['status'] != Order::InDeliveryStation){
+				unset($orders[$i]);
+			}
+		}
+		$view = 'confirm_pack';
+	}
 
 	if($orders){
 		$orderids = array();
@@ -302,5 +349,5 @@ default:
 		unset($o);
 	}
 
-	include view('list');
+	include view($view);
 }

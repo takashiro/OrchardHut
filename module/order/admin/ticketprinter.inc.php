@@ -60,6 +60,8 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
 		$stationid = isset($_GET['stationid']) ? intval($_GET['stationid']) : 0;
+
+		global $db, $_G;
 		$table = $db->select_table('station');
 		$addresses = $_G['admin']->getLimitations();
 		if($addresses){
@@ -130,9 +132,18 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 			$limited_addressids = Address::Extension($station['orderrange']);
 			$admin_limited_addressids = $_G['admin']->getLimitations();
 			if($admin_limited_addressids){
-				$limited_addressids = array_intersect($limited_addressids, $admin_limited_addressids);
+				if($limited_addressids){
+					$limited_addressids = array_intersect($limited_addressids, $admin_limited_addressids);
+					if(!$limited_addressids){
+						$condition[] = '0';
+					}
+				}else{
+					$limited_addressids = $admin_limited_addressids;
+				}
 			}
-			$condition[] = 'addressid IN ('.implode(',', $limited_addressids).')';
+			if($limited_addressids){
+				$condition[] = 'addressid IN ('.implode(',', $limited_addressids).')';
+			}
 
 			//到自提点的订单
 			$condition[] = 'status='.Order::InDeliveryStation;
@@ -211,8 +222,64 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 			include view('list_ticket');
 
 		}else{
+			$station['pauseprinting'] = intval($station['pauseprinting']);
 			include view('ticket_printer');
 		}
+	}
+
+	public function getPackQRCodeAction(){
+		if(empty($_GET['stationid'])) exit;
+		$stationid = intval($_GET['stationid']);
+		$qrcode = rand(0, 0xFFFF);
+		$expiry = TIMESTAMP + 60;
+
+		global $db, $tpre;
+		$timestamp = TIMESTAMP;
+		$db->query("UPDATE {$tpre}station SET packqrcode=$qrcode,packqrcodeexpiry=$expiry WHERE id=$stationid");
+		if($db->affected_rows > 0){
+			$result = array(
+				'qrcode' => $qrcode,
+				'expiry' => $expiry,
+			);
+			echo json_encode($result);
+		}else{
+			echo '{}';
+		}
+		exit;
+	}
+
+	public function getPackOrderAction(){
+		if(empty($_GET['stationid'])) exit;
+		$stationid = intval($_GET['stationid']);
+
+		global $db, $tpre;
+		$result = array(
+			'orders' => array(),
+			'refreshqrcode' => false,
+		);
+		$query = $db->query("SELECT orderid FROM {$tpre}stationorder WHERE stationid=$stationid");
+		while($row = $query->fetch_array()){
+			$db->query("DELETE FROM {$tpre}stationorder WHERE orderid={$row[0]} AND stationid=$stationid");
+			if($db->affected_rows > 0){
+				$packcode = rand(1, 0xFF);
+				$db->query("UPDATE {$tpre}order SET packcode=$packcode WHERE id={$row[0]}");
+				$result['orders'][] = array(
+					'orderid' => $row[0],
+					'packcode' => $packcode,
+				);
+			}
+		}
+
+		if(!$result['orders']){
+			$timestamp = TIMESTAMP;
+			$qrcode = $db->result_first("SELECT packqrcode FROM {$tpre}station WHERE id=$stationid AND packqrcodeexpiry>=$timestamp");
+			if(!$qrcode){
+				$result['refreshqrcode'] = true;
+			}
+		}
+
+		echo json_encode($result);
+		exit;
 	}
 
 }

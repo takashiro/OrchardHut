@@ -79,20 +79,6 @@ footer{
 	margin: 0 auto;
 }
 
-.post_buttons{
-	position: absolute;
-	right: 60px;
-	bottom: 20px;
-	width: 120px;
-}
-
-.post_buttons button{
-	width: 120px;
-	height: 60px;
-	font-size: 28pt;
-	margin: 10px 0;
-}
-
 input{
 	border: #ABCA17 1px solid;
 }
@@ -107,15 +93,19 @@ button{
 	position: relative;
 }
 
-#message_box{
+.panel .extra{
 	position: absolute;
-	top: 25px;
-	right: 5px;
+	top: 0;
+	right: 10px;
+	width: 200px;
+}
+
+#message_box{
 	width: 140px;
+	height: 140px;
+	margin: auto;
 	padding: 0;
-	padding-right: 30px;
 	overflow: hidden;
-	height: 200px;
 	color: #878682;
 }
 
@@ -126,4 +116,33 @@ button{
 
 #message_box p.active{
 	color: #222222;
+}
+
+.post_buttons{
+	width: 100px;
+	margin: auto;
+}
+
+#qrcode_area{
+	text-align: center;
+	margin-top: 10px;
+}
+
+#qrcode{
+	width: 120px;
+	height: 120px;
+	background: #878682;
+	margin: auto;
+}
+
+#qrcode canvas{
+	width: 100%;
+	height: 100%;
+}
+
+.post_buttons button{
+	width: 100px;
+	height: 48px;
+	font-size: 24pt;
+	margin: 10px 0;
 }

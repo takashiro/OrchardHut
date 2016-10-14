@@ -34,6 +34,47 @@ function waitforprinting(){
 	}, 'text');
 }
 
+var qrcodeinterval = null;
+function fetchqrcode(){
+	$.get('admin.php?mod=order:ticketprinter&action=getpackqrcode', {'stationid' : station.id}, function(response){
+		if(station.pauseprinting){
+			$('#qrcode').html('');
+			qrcodeinterval = setTimeout(fetchqrcode, 2000);
+			return;
+		}
+
+		var timeout = 2000;
+		if(response.qrcode != undefined){
+			var div = $('#qrcode');
+			div.html('');
+			div.qrcode(site_url + 'index.php?mod=order&action=qrpack&stationid=' + station.id + '&qrcode=' + response.qrcode);
+			var now = new Date();
+			var timestamp = now.getTime();
+			timeout = response.expiry * 1000 - timestamp;
+			timeout = timeout > 0 ? timeout : 0;
+		}
+
+		qrcodeinterval = setTimeout(fetchqrcode, timeout);
+	}, 'json');
+}
+
+function fetchorderid(){
+	$.get('admin.php?mod=order:ticketprinter&action=getpackorder', {'stationid' : station.id}, function(result){
+		for(var i = 0; i < result.orders.length; i++){
+			var qrcode = JSON.stringify(result.orders[i]);
+			$('#mobile').val(qrcode);
+			$('#scan_form').submit();
+		}
+
+		if(result.refreshqrcode){
+			clearInterval(qrcodeinterval);
+			fetchqrcode();
+		}
+
+		setTimeout(fetchorderid, 2000);
+	}, 'json');
+}
+
 $(function(){
 	$('#scan_form').submit(function(e){
 		e.preventDefault();
@@ -116,6 +157,7 @@ $(function(){
 					showmsg('工作人员忙不过来了，您稍等一下');
 					input.val(input_text);
 					input.focus();
+					$('#qrcode').html('');
 
 					station.pauseprinting = true;
 					$('#query_button').attr('disabled', true);
@@ -153,4 +195,7 @@ $(function(){
 		input.focus();
 		return false;
 	});
+
+	fetchqrcode();
+	fetchorderid();
 });

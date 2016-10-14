@@ -16,4 +16,8 @@ return array(
 
 	'successfully_updated_order_trade_state' => '订单交易状态更新成功。',
 	'order_not_exist_failed_to_update_order_trade_state' => '未查询到该订单，交易状态更新失败。',
+
+	'you_have_no_order_in_this_station' => '您没有在该配送站的自提订单，可能订单仍在运送途中，或已经取货。',
+	'qrcode_expired_please_rescan' => '二维码失效，请重新扫码。',
+	'please_wait_for_printing_ticket' => '小票打印中，请注意取票。',
 );

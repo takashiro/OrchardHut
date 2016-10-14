@@ -42,10 +42,9 @@ class Order extends DBObject{
 	private $detail = array();
 	private $quantity_limit = array();
 
-	public function __construct($id = 0){
+	public function __construct(int $id = 0){
 		parent::__construct();
 
-		$id = intval($id);
 		if($id > 0){
 			$this->fetch('*', 'id='.$id);
 
@@ -118,9 +117,8 @@ class Order extends DBObject{
 		$d['subtotal'] = $d['number'] * $d['price'];
 		$this->totalprice += $d['subtotal'];
 
-		$this->detail[] = array(
+		$detail = array(
 			'productid' => $d['productid'],
-			'storageid' => $d['storageid'],
 			'productname' => $d['name'],
 			'subtype' => $d['subtype'],
 			'amount' => $d['amount'],
@@ -128,6 +126,10 @@ class Order extends DBObject{
 			'number' => $d['number'],
 			'subtotal' => $d['subtotal'],
 		);
+		if($d['storageid']){
+			$detail['storageid'] = $d['storageid'];
+		}
+		$this->detail[] = $detail;
 
 		return true;
 	}
