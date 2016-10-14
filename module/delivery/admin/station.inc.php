@@ -56,10 +56,19 @@ class DeliveryStationModule extends AdminControlPanelModule{
 		foreach($station_list as &$station){
 			$station_range = Address::Extension($station['orderrange']);
 			$station_range = implode(',', $station_range);
-			$station_comment = $db->fetch_first("SELECT AVG(level1) AS level1,AVG(level2) AS level2,AVG(level3) AS level3, COUNT(*) AS commentnum
-				FROM {$tpre}ordercomment c
-					LEFT JOIN {$tpre}order o ON o.id=c.orderid
-				WHERE o.addressid IN ($station_range) $condition");
+			if($station_range){
+				$station_comment = $db->fetch_first("SELECT AVG(level1) AS level1,AVG(level2) AS level2,AVG(level3) AS level3, COUNT(*) AS commentnum
+					FROM {$tpre}ordercomment c
+						LEFT JOIN {$tpre}order o ON o.id=c.orderid
+					WHERE o.addressid IN ($station_range) $condition");
+			}else{
+				$station_comment = array(
+					'level1' => null,
+					'level2' => null,
+					'level3' => null,
+					'commentnum' => 0,
+				);
+			}
 			$station = array_merge($station, $station_comment);
 		}
 		unset($station);
