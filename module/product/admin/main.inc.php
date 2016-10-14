@@ -125,7 +125,7 @@ class ProductMainModule extends AdminControlPanelModule{
 			}
 
 			if(isset($_POST['hide'])){
-				$product->hide = !empty($_POST['hide']);
+				$product->hide = !empty($_POST['hide']) ? 1 : 0;
 			}
 
 			foreach(array('text_color', 'background_color', 'icon_background') as $attr){
