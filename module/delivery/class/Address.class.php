@@ -100,15 +100,26 @@ class Address{
 	}
 
 	static public function Extension($limitation_addressids){
-		is_array($limitation_addressids) || $limitation_addressids = array($limitation_addressids);
+		if(!is_array($limitation_addressids)){
+			$limitation_addressids = intval($limitation_addressids);
+			if($limitation_addressids > 0){
+				$limitation_addressids = array($limitation_addressids);
+			}else{
+				return array();
+			}
+		}
 
 		if($limitation_addressids){
 			global $db;
 			$curids = $limitation_addressids;
 			for($i = 0; $i < self::MAX_CASCADE_LEVEL; $i++){
 				$table = $db->select_table('addresscomponent');
-				$rows = $table->fetch_all('id', 'parentid IN ('.implode(',', $curids).')');
-				if(!$rows){
+				if($curids){
+					$rows = $table->fetch_all('id', 'parentid IN ('.implode(',', $curids).')');
+					if(!$rows){
+						break;
+					}
+				}else{
 					break;
 				}
 				$curids = array();
