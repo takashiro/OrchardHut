@@ -234,9 +234,13 @@ class OrderMainModule extends AdminControlPanelModule{
 				$dacondition = array();
 				foreach($_REQUEST['delivery_address'] as $addressid){
 					$addressid = intval($addressid);
-					$delivery_address[] = $addressid;
-					$address_range = Address::Extension($addressid);
-					$dacondition[] = 'o.addressid IN ('.implode(',', $address_range).')';
+					if($addressid > 0){
+						$delivery_address[] = $addressid;
+						$address_range = Address::Extension($addressid);
+						if($address_range){
+							$dacondition[] = 'o.addressid IN ('.implode(',', $address_range).')';
+						}
+					}
 				}
 				if($dacondition){
 					$dacondition = implode(' OR ', $dacondition);
