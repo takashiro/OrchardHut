@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `pre_station` (
   `packqrcode` smallint(5) unsigned NOT NULL DEFAULT '0',
   `packqrcodeexpiry` int(11) unsigned NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MEMORY  DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `pre_stationorder`;
 CREATE TABLE IF NOT EXISTS `pre_stationorder` (
