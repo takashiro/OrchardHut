@@ -382,7 +382,10 @@ class Order extends DBObject{
 		if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
 			$order->paymentmethod = Wallet::ViaWeChat;
 			//商户网站订单系统中唯一订单号，必填
-			$_G['wechatpaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
+			$trade = &$_G['wechatpaytrade'];
+			$trade['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
+			$trade['subject'] = $_G['config']['sitename'].'订单'.$order->id;
+			$trade['total_fee'] = $order->totalprice;
 		}else{
 			showmsg('order_not_exist');
 		}
