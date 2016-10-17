@@ -10,7 +10,7 @@
 	<h1>公告管理<!--{if $announcement['id']}--> - $announcement[title]<!--{/if}--></h1>
 	<div class="content">
 		<div class="edit_form">
-			<form action="###" method="post">
+			<form class="toast" action="###" method="post">
 				<table>
 					<tr><th>标题</th><td><input type="text" name="title" value="$announcement[title]" class="wide" /></td></tr>
 					<tr><th>起止时间</th><td><input type="text" name="time_start" value="$announcement[time_start]" /> 到 <input type="text" name="time_end" value="$announcement[time_end]" /></td></tr>
