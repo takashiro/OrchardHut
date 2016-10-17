@@ -678,34 +678,20 @@ class OrderMainModule extends AdminControlPanelModule{
 		if($orderid <= 0)
 			exit('invalid order id');
 
-		require module('alipay/config');
-
-		$parameter = array(
-			'service' => 'single_trade_query',
-			'partner' => $alipay_config['partner'],
-			'out_trade_no' => 'O'.$orderid,
-			'_input_charset' => $alipay_config['input_charset'],
-		);
-
-		$alipaySubmit = new AlipaySubmit($alipay_config);
-		$html_text = $alipaySubmit->buildRequestHttp($parameter);
-
-		$doc = new XML;
-		$doc->loadXML($html_text, 'alipay');
-		$xml = $doc->toArray();
-		if(isset($xml['is_success']) && $xml['is_success'] == 'T'){
-			if(isset($xml['response']['trade'])){
-				$trade = $xml['response']['trade'];
-
+		$alipay = new Alipay;
+		$result = $alipay->queryOrder('O'.$orderid, false);
+		if(isset($result['alipay_trade_query_response'])){
+			$response = $result['alipay_trade_query_response'];
+			if(isset($response['trade_status'])){
 				$arguments = array(
 					//商户订单号
-					$trade['out_trade_no'],
+					$response['out_trade_no'],
 
 					//支付宝交易号
-					$trade['trade_no'],
+					$response['trade_no'],
 
 					//交易状态
-					$trade['trade_status'],
+					$response['trade_status'],
 				);
 
 				runhooks('alipay_notified', $arguments);
@@ -714,7 +700,7 @@ class OrderMainModule extends AdminControlPanelModule{
 			showmsg('successfully_updated_order_trade_state', 'refresh');
 		}
 
-		showmsg('order_not_exist_failed_to_update_order_trade_state', 'refresh');
+		showmsg('order_not_exist_failed_to_update_order_trade_state', 'back');
 	}
 
 }
