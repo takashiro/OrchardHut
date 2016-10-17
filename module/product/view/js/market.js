@@ -19,39 +19,70 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-function move_banner(){
-	var banner_box = $('#announcement-banner');
-	var banner_content = banner_box.children();
-	var banners = banner_content.children();
-	var current = banners.filter('.current');
-	if(current.length == 0){
-		current = banners.eq(0);
-	}
-	var next = current.next();
-	var scroll_left = banner_box.width();
-	if(next.length == 0){
-		banner_box.scrollLeft(0);
-		next = banners.eq(1);
-	}else{
-		var scroll_left = banner_box.width() * next.index() - banner_box.scrollLeft();
+$.fn.banner = function(options){
+	var banner_box = $(this);
+	var banner_list = banner_box.children('ol');
+	if(banner_list.children().length <= 1){
+		return;
 	}
 
-	current.removeClass('current');
-	next.addClass('current');
-	banner_box.animate({'scrollLeft' : '+=' + scroll_left}, 500);
-}
+	var banner_list_wrapper = $('<div></div>');
+	banner_list_wrapper.addClass('list');
+	banner_list_wrapper.append(banner_list);
+	banner_box.append(banner_list_wrapper);
+
+	var dots = $('<div></div>');
+	dots.addClass('dots');
+	banner_box.append(dots);
+
+	function move_banner(){
+		var banners = banner_list.children();
+		var current = banners.filter('.current');
+		if(current.length == 0){
+			current = banners.eq(0);
+		}
+		var next = current.next();
+		var scroll_left = banner_list_wrapper.width();
+		if(next.length == 0){
+			banner_list_wrapper.scrollLeft(0);
+			next = banners.eq(1);
+		}else{
+			var scroll_left = banner_list_wrapper.width() * next.index() - banner_list_wrapper.scrollLeft();
+		}
+
+		current.removeClass('current');
+		next.addClass('current');
+		banner_list_wrapper.animate({'scrollLeft' : '+=' + scroll_left}, 500);
+
+		var current_dot = dots.children('.current');
+		current_dot.removeClass('current');
+		var next_dot = dots.children().eq(next.index());
+		if(next_dot.length == 0){
+			next_dot = dots.children().eq(0);
+		}
+		next_dot.addClass('current');
+	}
+
+	if(banner_list.children().length > 1){
+		var banners = banner_list.children();
+		var banner_num = banners.length;
+		for(var i = 0; i < banner_num; i++){
+			var div = $('<div></div>');
+			div.appendTo(dots);
+		}
+		dots.children().eq(0).addClass('current');
+		var first = banners.eq(0).clone();
+		banner_list.append(first);
+
+		var moveBanner = setInterval(move_banner, options.interval);
+		var banner = $('#announcement-banner');
+		banner.one('click', function(){clearInterval(moveBanner);});
+		banner.on('click', move_banner);
+	}
+};
 
 $(function(){
-	var banner_content = $('#announcement-banner').children();
-	if(banner_content.children().length > 1){
-		var first = banner_content.children().eq(0).clone();
-		banner_content.append(first);
-		var moveBanner = setInterval(move_banner, 5000);
-		$('#announcement-banner').one('click', function(){
-			clearInterval(moveBanner);
-			$('#announcement-banner ol li:last-child').remove();
-		});
-	}
+	$('section.banner').banner({'interval' : 5000});
 
 	$('.order_input input').change(function(e){
 		var input = $(e.target);

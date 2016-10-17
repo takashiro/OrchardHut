@@ -108,16 +108,42 @@ ul.mselect > li a.remove{
 section.banner{
 	width: 100%;
 	height: 115px;
-	height: calc(width / 750 * 245);
-	overflow-x: auto;
-	overflow-y: hidden;
+	overflow: hidden;
+	position: relative;
+}
+
+section.banner .dots{
+	position: absolute;
+	right: 10px;
+	bottom: 16px;
+	height: 6px;
+	text-align: right;
+}
+
+section.banner .dots > div{
+	width: 6px;
+	height: 6px;
+	border-radius: 3px;
+	background: gray;
+	display: inline-block;
+	margin: 0 2px;
+}
+
+section.banner .dots > div.current{
+	background: #69b24f;
 }
 
 section.banner img{
 	width: 100%;
 }
 
-section.banner > ol{
+section.banner .list{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+section.banner .list ol{
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -127,7 +153,7 @@ section.banner > ol{
 	height: 100%;
 }
 
-section.banner > ol > li{
+section.banner .list ol > li{
 	display: inline-block;
 	width: 100%;
 	height: 100%;
