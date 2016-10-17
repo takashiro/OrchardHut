@@ -106,11 +106,57 @@ ul.mselect > li a.remove{
 
 /* Banner */
 section.banner{
-	height: auto;
+	width: 100%;
+	height: 115px;
+	height: calc(width / 750 * 245);
+	overflow-x: auto;
+	overflow-y: hidden;
 }
 
 section.banner img{
 	width: 100%;
+}
+
+section.banner > ol{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: inline-block;
+	word-wrap: break-word;
+	white-space: nowrap;
+	height: 100%;
+}
+
+section.banner > ol > li{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	white-space: normal;
+	position: relative;
+}
+
+.announcement{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.announcement h4{
+	margin: 0.5em 0 0 0;
+	padding: 0;
+	text-align: center;
+	line-height: 2em;
+}
+
+.announcement .content{
+	width: 90%;
+	margin: 0 auto;
+	overflow: auto;
+	max-height: 70%;
 }
 
 /* Footer */
