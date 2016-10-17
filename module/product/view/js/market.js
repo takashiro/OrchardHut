@@ -47,7 +47,7 @@ $(function(){
 		var first = banner_content.children().eq(0).clone();
 		banner_content.append(first);
 		var moveBanner = setInterval(move_banner, 5000);
-		$('#announcement-banner').on('click', function(){
+		$('#announcement-banner').one('click', function(){
 			clearInterval(moveBanner);
 			$('#announcement-banner ol li:last-child').remove();
 		});
