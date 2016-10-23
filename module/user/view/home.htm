@@ -38,6 +38,9 @@ $(function(){
 			<i class="icon wechat"></i>请向$_CONFIG[sitename]公众号发送“绑定”。
 			<!--{/if}-->
 		</li>
+		<!--{if $_G['app']['client']['type'] != 'app'}-->
+		<li><a href="index.php?mod=download"><i class="icon plus"></i>客户端下载</a></li>
+		<!--{/if}-->
 	</ul>
 
 	<div class="post_buttons">

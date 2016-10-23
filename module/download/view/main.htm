@@ -1,0 +1,30 @@
+<!--{template header}-->
+
+<style>
+@import url(extension/module/aboutus/view/image/common.css?$_CONFIG[refversion]);
+@import url(extension/module/download/view/common.css?$_CONFIG[refversion]);
+</style>
+
+<section class="box aboutus layout">
+	<header>下载</header>
+	<div class="content">
+        <h2><img src="extension/module/aboutus/view/image/fruitexp.png" class="logo"></h2>
+		<div class="copyright">
+            <p>Copyright &copy; 2013-2016</p>
+            <p>成都微果快线电子商务有限公司</p>
+        </div>
+
+		<!--{if !empty($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false}-->
+		<div class="tips">
+			请点击右上角，选择“在浏览器中打开”，然后再下载App。
+		</div>
+		<!--{/if}-->
+
+        <div class="download">
+			<a class="download-button" href="http://dl.weifruit.cn/FruitExpress-v0.1.apk">微果快线 v0.1 (Android)</a>
+        </div>
+
+    </div>
+</section>
+
+<!--{template footer}-->

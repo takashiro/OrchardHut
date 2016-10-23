@@ -1,7 +1,7 @@
 <?php
 
 /***********************************************************************
-Orchard Hut Online Shop
+Elf Web App
 Copyright (C) 2013-2015  Kazuichi Takashiro
 
 This program is free software: you can redistribute it and/or modify
@@ -20,11 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-return array(
-	'name' => 'Orchard Hut',
-	'version' => '3.0.0',
-	'client' => array(
-		'type' => (!empty($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'NativeApp') !== false) || !empty($_GET['is_client']) ? 'app' : 'browser',
-		'version' => '0.1.0',
-	),
-);
+if(!defined('S_ROOT')) exit('access denied');
+
+include view('main');
