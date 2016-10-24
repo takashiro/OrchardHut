@@ -20,9 +20,36 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-if(!defined('S_ROOT')) exit('access denied');
+require_once '../../../../core/init.inc.php';
+
+if(empty($_POST['sign'])){
+	exit('signature is required');
+}
+
+$data = $_POST;
+$sign = $_POST['sign'];
+unset($data['sign']);
+
+ksort($data);
+$strs = array();
+foreach($data as $key => $value){
+	$strs[] = $key.'='.$value;
+}
+$strs = implode('&', $strs);
 
 $config = readdata('download');
-$release = readdata('download_release');
+if(md5($strs.'&key='.$config['deploy_key']) != $sign){
+	exit('signature is invalid');
+}
 
-include view('main');
+if(isset($data['version'])){
+	$data = array(
+		'version' => $data['version'],
+		'changelog' => $data['changelog'],
+		'timestamp' => TIMESTAMP,
+	);
+	writedata('download_release', $data);
+	echo 'succeed';
+}else{
+	echo 'fail';
+}

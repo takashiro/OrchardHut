@@ -1,0 +1,46 @@
+<!--{template header}-->
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li>下载设置</li>
+</ol>
+
+<div class="box edit_form">
+	<h1>下载设置</h1>
+	<form class="toast" action="$mod_url" method="post">
+
+	<table>
+		<tr>
+			<th><label>DEPLOY KEY：</label></th>
+			<td>
+				<input type="text" name="deploy_key" value="$config[deploy_key]">
+			</td>
+		</tr>
+		<tr>
+			<th><label>服务器地址：</label></th>
+			<td>
+				<input type="text" name="server_url" value="$config[server_url]">
+			</td>
+		</tr>
+		<tr>
+			<th><label>最新版本号：</label></th>
+			<td>$release[version]</td>
+		</tr>
+		<tr>
+			<th><label>更新时间：</label></th>
+			<td>{echo rdate($release['timestamp'])}</td>
+		</tr>
+		<tr>
+			<th><label>更新日志：</label></th>
+			<td>$release[changelog]</td>
+		</tr>
+	</table>
+
+	<div class="post_buttons">
+		<button type="submit">修改设置</button>
+	</div>
+
+	</form>
+</div>
+
+<!--{template footer}-->
