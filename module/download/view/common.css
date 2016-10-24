@@ -15,8 +15,21 @@
 }
 
 a.download-button{
-	font-size: 20pt;
+	font-size: 16pt;
 	background: #69b24f;
 	color: white;
 	padding: 0.6em 0.8em;
+}
+
+.release-dateline{
+	margin-top: 2em;
+}
+
+.changelog{
+	font-size: 11pt;
+	text-align: left;
+	margin: 0 auto;
+	width: 70%;
+	color: gray;
+	font-family: Arial, '宋体';
 }

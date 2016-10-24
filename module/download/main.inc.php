@@ -25,4 +25,6 @@ if(!defined('S_ROOT')) exit('access denied');
 $config = readdata('download');
 $release = readdata('download_release');
 
+$release['changelog'] = preg_split('/[\r\n]+/', $release['changelog']);
+
 include view('main');

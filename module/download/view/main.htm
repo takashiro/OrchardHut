@@ -22,7 +22,14 @@
 
         <div class="download">
 			<a class="download-button" href="$config[server_url]/app/FruitExp-{$release[version]}.apk">微果快线 $release[version] (Android)</a>
-        </div>
+		</div>
+		<p class="release-dateline">更新时间：{echo rdate($release['timestamp'])}</p>
+
+		<ol class="changelog">
+			<!--{loop $release['changelog'] $log}-->
+			<li>$log</li>
+			<!--{/loop}-->
+		</ol>
 
     </div>
 </section>
