@@ -422,6 +422,29 @@ class Order extends DBObject{
 		if($order->tradestate == Wallet::TradeSuccess)
 			$order->tradetime = TIMESTAMP;
 	}
+
+	static public function __on_wechatpay_callback_executed($trade){
+		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
+		if(strncmp($trade['out_trade_no'], self::$AlipayTradeNoPrefix, $prefix_len) != 0)
+			return;
+
+		$order = new Order(substr($trade['out_trade_no'], $prefix_len));
+		if(!$order->exists())
+			return;
+
+		if($trade['trade_state'] == 'SUCCESS'){
+			if($order->tradestate != Wallet::TradeSuccess){
+				$order->paymentmethod = Wallet::ViaWeChat;
+				$order->tradestate = Wallet::TradeSuccess;
+				$order->tradeid = $trade['transaction_id'];
+				if($order->tradestate == Wallet::TradeSuccess)
+					$order->tradetime = TIMESTAMP;
+			}
+			showmsg('the_order_is_successfully_paid', 'index.php?mod=order');
+		}else{
+			showmsg('please_pay_for_the_order', 'index.php?mod=order');
+		}
+	}
 }
 
 Order::$Status = array(
