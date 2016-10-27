@@ -136,6 +136,6 @@ default:
 		redirect('index.php?mod=user:login');
 	}
 
-	$paymentconfig = readdata('payment');
+	$paymentconfig = Wallet::ReadConfig();
 	include view('home');
 }

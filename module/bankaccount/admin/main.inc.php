@@ -41,7 +41,7 @@ class BankAccountMainModule extends AdminControlPanelModule{
 			}
 
 			if(isset($_POST['orderpaymentmethod'])){
-				$paymentconfig = readdata('payment');
+				$paymentconfig = Wallet::ReadConfig();
 				$orderpaymentmethod = intval($_POST['orderpaymentmethod']);
 				if(!empty($paymentconfig['enabled_method'][$orderpaymentmethod])){
 					$bankaccount->orderpaymentmethod = $orderpaymentmethod;
@@ -74,7 +74,7 @@ class BankAccountMainModule extends AdminControlPanelModule{
 
 		$a = $a->toReadable();
 
-		$paymentconfig = readdata('payment');
+		$paymentconfig = Wallet::ReadConfig();
 		include view('edit');
 	}
 

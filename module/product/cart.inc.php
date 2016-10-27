@@ -131,7 +131,7 @@ switch($action){
 			return $m1['displayorder'] > $m2['displayorder'];
 		});
 
-		$paymentconfig = readdata('payment');
+		$paymentconfig = Wallet::ReadConfig();
 
 		if($_POST){
 			if($_G['user']->hasTrickFlag(User::ORDER_IGNORING_TRICK)){

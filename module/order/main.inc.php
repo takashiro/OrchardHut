@@ -229,7 +229,7 @@ case 'pay':
 		showmsg('illegal_operation');
 	}
 
-	$paymentconfig = readdata('payment');
+	$paymentconfig = Wallet::ReadConfig();
 	include view('pay');
 	break;
 
