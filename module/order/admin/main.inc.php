@@ -22,6 +22,27 @@ takashiro@qq.com
 
 if(!defined('IN_ADMINCP')) exit('access denied');
 
+function num2bit(int $num){
+	$arr = array();
+	$i = 0;
+	while($num){
+		if(($num & 1) == 1){
+			$arr[$i] = true;
+		}
+		$num >>= 1;
+		$i++;
+	}
+	return $arr;
+}
+
+function bit2num(array $arr){
+	$num = 0;
+	foreach($arr as $key => $value){
+		$num |= pow(2, $key);
+	}
+	return $num;
+}
+
 class OrderMainModule extends AdminControlPanelModule{
 
 	public function getPermissions(){
@@ -68,15 +89,13 @@ class OrderMainModule extends AdminControlPanelModule{
 			if(!empty($_POST['display_status']) && is_array($_POST['display_status'])){
 				$display_status = $_POST['display_status'];
 			}elseif(isset($_GET['display_status'])){
-				$display_status = array();
-				if(is_string($_GET['display_status'])){
-					foreach(explode(',', $_GET['display_status']) as $status){
-						$display_status[$status] = true;
+				if(is_array($_GET['display_status'])){
+					$display_status = array();
+					foreach($_GET['display_status'] as $status => $on){
+						$display_status[intval($status)] = true;
 					}
 				}else{
-					foreach($_GET['display_status'] as $status => $on){
-						$display_status[$status] = true;
-					}
+					$display_status = num2bit(intval($_GET['display_status']));
 				}
 			}else{
 				$display_status = array();
@@ -196,9 +215,9 @@ class OrderMainModule extends AdminControlPanelModule{
 				}
 			}
 
-			$display_status = array_keys($display_status);
-			if($display_status){
-				$condition[] = 'o.status IN ('.implode(',', $display_status).')';
+			$status = array_keys($display_status);
+			if($status){
+				$condition[] = 'o.status IN ('.implode(',', $status).')';
 			}else{
 				$condition[] = '0';
 			}
@@ -370,7 +389,7 @@ class OrderMainModule extends AdminControlPanelModule{
 
 		//高级查找
 		}else{
-			$display_status = array_keys(Order::$Status);
+			$display_status = Order::$Status;
 			unset($display_status[Order::Canceled]);
 
 			$time_start = rmktime(0, 0, 0, rdate(TIMESTAMP, 'm'), rdate(TIMESTAMP, 'd') - 1, rdate(TIMESTAMP, 'Y'));
@@ -405,7 +424,7 @@ class OrderMainModule extends AdminControlPanelModule{
 			if($template_format == 'html'){
 				$query_string = array();
 				if($display_status){
-					$query_string['display_status'] = implode(',', $display_status);
+					$query_string['display_status'] = bit2num($display_status);
 				}
 
 				$vars = array(
