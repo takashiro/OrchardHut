@@ -231,7 +231,7 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 		if(empty($_GET['stationid'])) exit;
 		$stationid = intval($_GET['stationid']);
 		$qrcode = rand(0, 0xFFFF);
-		$expiry = TIMESTAMP + 60;
+		$expiry = TIMESTAMP + 60 * 5;
 
 		global $db, $tpre;
 		$timestamp = TIMESTAMP;
