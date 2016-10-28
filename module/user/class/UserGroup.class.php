@@ -91,7 +91,9 @@ class UserGroup extends DBObject{
 		$received = Order::Received;
 		$ordernum === null && $ordernum = $db->result_first("SELECT COUNT(*) FROM {$tpre}order WHERE userid={$userid} AND status=$received");
 		$groupid = self::ByOrderNum('id', $ordernum);
-		$db->query("UPDATE LOW_PRIORITY {$tpre}user SET groupid=$groupid WHERE id=$userid");
+		if($groupid){
+			$db->query("UPDATE LOW_PRIORITY {$tpre}user SET groupid=$groupid WHERE id=$userid");
+		}
 	}
 
 	static public function __on_order_log_added($order, $log){
