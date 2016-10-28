@@ -48,10 +48,10 @@ function fetchqrcode(){
 			var div = $('#qrcode');
 			div.html('');
 			div.qrcode(site_url + 'index.php?mod=order&action=qrpack&stationid=' + station.id + '&qrcode=' + response.qrcode);
-			var now = new Date();
-			var timestamp = now.getTime();
-			timeout = response.expiry * 1000 - timestamp;
-			timeout = timeout > 0 ? timeout : 0;
+			var server_timeout = parseInt(response.timeout, 10);
+			if(!isNaN(server_timeout)){
+				timeout = server_timeout * 1000;
+			}
 		}
 
 		qrcodeinterval = setTimeout(fetchqrcode, timeout);
@@ -144,6 +144,8 @@ $(function(){
 					showmsg('未知故障。');
 				}else if(error >= 0){
 					showmsg(order_text + '正在拣货，请等待');
+					clearInterval(qrcodeinterval);
+					fetchqrcode();
 					url += '&auto_receive=1&auto_print=1';
 					var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
 					new_window.focus();

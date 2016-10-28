@@ -231,7 +231,8 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 		if(empty($_GET['stationid'])) exit;
 		$stationid = intval($_GET['stationid']);
 		$qrcode = rand(0, 0xFFFF);
-		$expiry = TIMESTAMP + 60 * 5;
+		$timeout = 60 * 5;
+		$expiry = TIMESTAMP + $timeout;
 
 		global $db, $tpre;
 		$timestamp = TIMESTAMP;
@@ -239,7 +240,7 @@ class OrderTicketPrinterModule extends AdminControlPanelModule{
 		if($db->affected_rows > 0){
 			$result = array(
 				'qrcode' => $qrcode,
-				'expiry' => $expiry,
+				'timeout' => $timeout,
 			);
 			echo json_encode($result);
 		}else{
