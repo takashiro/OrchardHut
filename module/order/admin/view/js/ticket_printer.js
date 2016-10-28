@@ -143,7 +143,7 @@ $(function(){
 				if(isNaN(error)){
 					showmsg('未知故障。');
 				}else if(error >= 0){
-					showmsg(order_text + '正在等待拣货...');
+					showmsg(order_text + '正在拣货，请等待');
 					url += '&auto_receive=1&auto_print=1';
 					var new_window = window.open(url, '打印提货单', 'width=320, height=500, status=no, menubar=no, alwaysraised=yes');
 					new_window.focus();
