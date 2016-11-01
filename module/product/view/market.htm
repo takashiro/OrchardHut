@@ -3,12 +3,14 @@
 {template market_js}
 
 <section class="banner" id="announcement-banner">
-	<ol>
-		<li><img src="extension/view/user/green/image/banner.jpg"></li>
-		<!--{loop $announcements $a}-->
-		<li><div class="announcement"><h4>$a[title]</h4><div class="content">$a[content]</div></div></li>
-		<!--{/loop}-->
-	</ol>
+	<h2>公告栏</h2>
+	<div class="list">
+		<ol>
+			<!--{loop $announcements $a}-->
+			<li><div class="announcement"><h4>$a[title]</h4><div class="content">$a[content]</div></div></li>
+			<!--{/loop}-->
+		</ol>
+	</div>
 </section>
 
 <section class="market layout">

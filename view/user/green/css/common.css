@@ -106,10 +106,35 @@ ul.mselect > li a.remove{
 
 /* Banner */
 section.banner{
-	width: 100%;
 	height: 115px;
-	overflow: hidden;
 	position: relative;
+	margin: 18px 10px 10px 10px;
+	border-radius: 15px;
+	background: white;
+	box-shadow: 1px 1px 1px gray;
+	padding: 5px;
+}
+
+section.banner > h2{
+	position: absolute;
+	font-size: 12pt;
+	margin: 0;
+	margin-left: 50%;
+	top: -14px;
+	left: calc(-13% - 7px);
+	border: #dcdcdc 1px solid;
+	color: #615f5f;
+	width: 26%;
+	height: 32px;
+	line-height: 32px;
+	border-radius: 20px;
+	text-align: center;
+	box-shadow: 2px 2px 3px gray;
+	font-weight: normal;
+	background: #fefefe url(../image/logo.png) no-repeat;
+	background-size: 26px 26px;
+	background-position: 6px 4px;
+	padding-left: 14px;
 }
 
 section.banner .dots{
@@ -141,20 +166,20 @@ section.banner .list{
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+	border-radius: 10px;
+	background: #659E60;
+	color: white;
 }
 
-section.banner > ol,
 section.banner .list ol{
 	list-style: none;
 	padding: 0;
-	margin: 0;
-	display: inline-block;
+	margin: 15px 0 0 0;
 	word-wrap: break-word;
 	white-space: nowrap;
 	height: 100%;
 }
 
-section.banner > ol > li,
 section.banner .list ol > li{
 	display: inline-block;
 	width: 100%;
@@ -185,7 +210,7 @@ section.banner .list ol > li{
 	width: 90%;
 	margin: 0 auto;
 	overflow: auto;
-	max-height: 70%;
+	max-height: 60%;
 }
 
 /* Footer */

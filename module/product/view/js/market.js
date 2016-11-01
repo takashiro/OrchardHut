@@ -21,15 +21,12 @@ takashiro@qq.com
 
 $.fn.banner = function(options){
 	var banner_box = $(this);
-	var banner_list = banner_box.children('ol');
+	var banner_list = banner_box.find('.list ol');
 	if(banner_list.children().length <= 1){
 		return;
 	}
 
-	var banner_list_wrapper = $('<div></div>');
-	banner_list_wrapper.addClass('list');
-	banner_list_wrapper.append(banner_list);
-	banner_box.append(banner_list_wrapper);
+	var banner_list_wrapper = banner_box.children('.list');
 
 	var dots = $('<div></div>');
 	dots.addClass('dots');

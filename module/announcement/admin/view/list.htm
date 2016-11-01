@@ -11,7 +11,7 @@ $(function(){
 	$('#announcement_list').editlist({
 		'edit' : '$mod_url&action=edit',
 		'delete' : '$mod_url&action=delete',
-		'attr' : ['title', 'time_start', 'time_end', 'displayorder']
+		'attr' : ['title', 'content', 'time_start', 'time_end', 'displayorder']
 	});
 });
 </script>
@@ -24,6 +24,7 @@ $(function(){
 				<thead>
 					<tr>
 						<td>标题</td>
+						<td>内容</td>
 						<td>开始时间</td>
 						<td>结束时间</td>
 						<td>显示顺序</td>
@@ -34,6 +35,7 @@ $(function(){
 					<!--{loop $announcements $a}-->
 					<tr data-primaryvalue="$a[id]">
 						<td>$a[title]</td>
+						<td>$a[content]</td>
 						<td>{echo rdate($a['time_start'])}</td>
 						<td>{echo rdate($a['time_end'])}</td>
 						<td>$a[displayorder]</td>
@@ -41,6 +43,7 @@ $(function(){
 					</tr>
 					<!--{/loop}-->
 					<tr>
+						<td><input type="text" /></td>
 						<td><input type="text" /></td>
 						<td><input type="text" /></td>
 						<td><input type="text" /></td>
