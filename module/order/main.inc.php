@@ -282,7 +282,7 @@ case 'qrpack':
 			'orderid' => $orderid,
 			'dateline' => TIMESTAMP,
 		);
-		$table->insert($row);
+		$table->insert($row, false, 'IGNORE');
 
 		showmsg('please_wait_for_printing_ticket');
 	}else{
