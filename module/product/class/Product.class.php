@@ -519,6 +519,23 @@ class Product extends DBObject{
 		}
 		return $result;
 	}
+
+	static private $Flows = null;
+	static public function Flows(){
+		if(self::$Flows === null){
+			self::$Flows = readcache('productflows');
+			if(self::$Flows === null){
+				global $db;
+				$table = $db->select_table('productflow');
+				$query = $table->select('id,name', 'hidden=0 ORDER BY displayorder');
+				while($f = $query->fetch_assoc()){
+					self::$Flows[$f['id']] = $f['name'];
+				}
+				writecache('productflows', self::$Flows);
+			}
+		}
+		return self::$Flows;
+	}
 }
 
 $priceunits = Product::PriceUnits();

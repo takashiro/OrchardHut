@@ -42,10 +42,26 @@ var product_id = $product[id];
 						<input type="file" name="photo" />
 					</td>
 				</tr>
-				<tr><th>介绍</th><td><textarea name="introduction">$product[introduction]</textarea><span class="tips">显示在实物照片下方</span></td></tr>
-				<tr><th>文字颜色</th><td><input type="text" name="text_color" class="color" value="#$product[text_color]" /></td></tr>
-				<tr><th>背景颜色</th><td><input type="text" name="background_color" class="color" value="#$product[background_color]" /></td></tr>
-				<tr><th>图标背景</th><td><input type="text" name="icon_background" class="color" value="#$product[icon_background]" /></td></tr>
+				<tr>
+					<th>介绍</th>
+					<td><textarea name="introduction">$product[introduction]</textarea><span class="tips">显示在实物照片下方</span></td>
+				</tr>
+				<tr>
+					<th>文字颜色</th>
+					<td><input type="text" name="text_color" class="color" value="#$product[text_color]" /></td>
+				</tr>
+				<tr>
+					<th>背景颜色</th>
+					<td><input type="text" name="background_color" class="color" value="#$product[background_color]" /></td>
+				</tr>
+				<tr>
+					<th>图标背景</th>
+					<td><input type="text" name="icon_background" class="color" value="#$product[icon_background]" /></td>
+				</tr>
+				<tr>
+					<th>物流分类</th>
+					<td>{echo Template::select('flowid', Product::Flows(), $product['flowid'])}<span class="tips">不同分类的商品不能提交到同一订单中</span></td>
+				</tr>
 			</table>
 			<div class="post_button">
 				<button type="submit">修改</button>

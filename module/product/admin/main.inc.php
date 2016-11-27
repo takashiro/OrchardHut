@@ -142,6 +142,10 @@ class ProductMainModule extends AdminControlPanelModule{
 				$product->introduction = $_POST['introduction'];
 			}
 
+			if(isset($_POST['flowid'])){
+				$product->flowid = intval($_POST['flowid']);
+			}
+
 			if($productid == 0){
 				$product->insert();
 			}
