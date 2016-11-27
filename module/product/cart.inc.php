@@ -208,13 +208,8 @@ switch($action){
 				$table->insert($delivery_address);
 			}
 
-			//根据购物车中的信息计算每项小计价格
-			foreach($products as &$p){
-				$p['number'] = $cart[$p['id']];
-				$p['price'] = floatval($p['price']);
-				$p['subtotal'] = $p['price'] * $p['number'];
-			}
-			unset($p);
+			//更新用户信息
+			$_G['user']->addressid = $order->addressid;
 
 			//录入用户ID、留言
 			$order->userid = $_G['user']->id;
@@ -232,57 +227,90 @@ switch($action){
 				}
 			}
 
-			//增加产品对应的销量，该销量仅供参考
+			//根据购物车中的信息计算每项小计价格，并增加参考销量
 			foreach($products as &$p){
-				$succeeded = $order->addDetail($p);
-				$succeeded || $item_deleted = true;
+				$p['number'] = $cart[$p['id']];
+				$p['price'] = floatval($p['price']);
+				$p['subtotal'] = $p['price'] * $p['number'];
 
 				$totalamount = $p['amount'] * $p['number'];
 				$db->query("UPDATE LOW_PRIORITY {$tpre}product SET soldout=soldout+$totalamount WHERE id={$p['productid']}");
 			}
 			unset($p);
 
-			//判断订单的配送方式是否合法
-			$order->deliverymethod = isset($_POST['deliverymethod']) ? intval($_POST['deliverymethod']) : Order::HomeDelivery;
-			isset(Order::$DeliveryMethod[$order->deliverymethod]) || $order->deliverymethod = Order::HomeDelivery;
-			//收取配送费用
-			$df = isset($deliveryconfig[$order->deliverymethod]) ? $deliveryconfig[$order->deliverymethod] : null;
-			if($df && isset($df['fee']) && $df['fee'] > 0 && isset($df['maxorderprice']) && $order->totalprice < $df['maxorderprice']){
-				$order->deliveryfee = $df['fee'];
-				$order->totalprice += $order->deliveryfee;
-			}else{
-				$order->deliveryfee = 0;
-			}
-
-			//将订单插入到数据库中
+			//补全必要信息
 			$order->tradestate = 0;
 			$order->tradetime = 0;
-			$order_succeeded = $order->insert();
 
-			//更新用户信息
-			$_G['user']->addressid = $order->addressid;
+			//切割订单
+			$splitted_orders = array();
+			foreach($products as $p){
+				$splitted_orders[$p['flowid']][] = $p;
+			}
+
+			$basic_order = $order;
+			$orders = array();
+			foreach($splitted_orders as $products){
+				//添加物品到订单中
+				$order = clone $basic_order;
+				foreach($products as $p){
+					$succeeded = $order->addDetail($p);
+					$succeeded || $item_deleted = true;
+				}
+
+				//判断订单的配送方式是否合法
+				$order->deliverymethod = isset($_POST['deliverymethod']) ? intval($_POST['deliverymethod']) : Order::HomeDelivery;
+				isset(Order::$DeliveryMethod[$order->deliverymethod]) || $order->deliverymethod = Order::HomeDelivery;
+				//收取配送费用
+				$df = isset($deliveryconfig[$order->deliverymethod]) ? $deliveryconfig[$order->deliverymethod] : null;
+				if($df && isset($df['fee']) && $df['fee'] > 0 && isset($df['maxorderprice']) && $order->totalprice < $df['maxorderprice']){
+					$order->deliveryfee = $df['fee'];
+					$order->totalprice += $order->deliveryfee;
+				}else{
+					$order->deliveryfee = 0;
+				}
+
+				//将订单插入到数据库中
+				if($order->insert()){
+					$orders[] = $order;
+				}
+			}
 
 			//清空购物车
 			rsetcookie('shopping_cart', '{}');
 
 			//显示订单提交结果
-			if($order_succeeded){
+			if($orders){
 				//若为钱包支付，直接扣款
-				if($order->paymentmethod == Wallet::ViaWallet){
-					$wallet = new Wallet($_G['user']);
-					$wallet->pay($order);
+				if($basic_order->paymentmethod == Wallet::ViaWallet){
+					foreach($orders as $order){
+						$wallet = new Wallet($_G['user']);
+						$wallet->pay($order);
+					}
 
 				//若使用线上支付，进入支付宝界面
-				}elseif($order->paymentmethod != Wallet::ViaCash){
+				}elseif($basic_order->paymentmethod != Wallet::ViaCash){
 					if(!empty(Wallet::$PaymentInterface[$order->paymentmethod])){
-						redirect('index.php?mod='.Wallet::$PaymentInterface[$order->paymentmethod].'&orderid='.$order->id);
+						if(count($orders) == 1){
+							redirect('index.php?mod='.Wallet::$PaymentInterface[$order->paymentmethod].'&orderid='.$order->id);
+						}
+
+						$combined_order = new CombinedOrder;
+						foreach($orders as $order){
+							$combined_order->add('O'.$order->id);
+							$combined_order->price += $order->totalprice;
+						}
+						$combined_order->insert();
+						redirect('index.php?mod='.Wallet::$PaymentInterface[$order->paymentmethod].'&combinedorder='.$combined_order->id);
 					}
 				}
 
 				//货到付款的时间默认为下单时间，方便后台统一处理
-				if($order->paymentmethod == Wallet::ViaCash){
-					$order->tradetime = TIMESTAMP;
-					$order->tradestate = Wallet::TradeSuccess;
+				foreach($orders as $order){
+					if($order->paymentmethod == Wallet::ViaCash){
+						$order->tradetime = TIMESTAMP;
+						$order->tradestate = Wallet::TradeSuccess;
+					}
 				}
 
 				if(!$item_deleted){
