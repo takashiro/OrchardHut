@@ -454,8 +454,9 @@ class Product extends DBObject{
 	}
 
 	static public function RefreshCache(){
-		writecache('productunits', NULL);
-		writecache('producttypes', NULL);
+		writecache('productunits', null);
+		writecache('producttypes', null);
+		writecache('productflow', null);
 	}
 
 	static private function Units($type){

@@ -27,6 +27,7 @@ return array(
 	'module_product:balancereport' => '毛利报表',
 	'module_product:unit' => '商品单位',
 	'module_product:type' => '商品类型',
+	'module_product:flow' => '物流分类',
 
 	'permission_product' => '商品管理',
 	'permission_product:unit' => '商品单位设置',
@@ -41,6 +42,8 @@ return array(
 	'permission_product:ticket_comment' => '',
 	'permission_product:storage' => '库存管理',
 	'permission_product:storage_comment' => '',
+	'permission_product:flow' => '商品物流分类管理',
+	'permission_product:flow_comment' => '',
 
 	'storage_import' => '进货',
 	'product_storage_normal_mode' => '标准',

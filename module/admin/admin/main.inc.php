@@ -27,8 +27,6 @@ class AdminMainModule extends AdminControlPanelModule{
 	public function editAction(){
 		extract($GLOBALS, EXTR_SKIP | EXTR_REFS);
 
-		$product_types = Product::AvailableTypes();
-
 		$id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 
 		$admin = new Administrator($id);
@@ -68,55 +66,17 @@ class AdminMainModule extends AdminControlPanelModule{
 				$admin->pwmd5 = rmd5($_POST['password']);
 			}
 
-			if(isset($_POST['nickname'])){
-				$admin->nickname = trim($_POST['nickname']);
-			}
-
-			if(isset($_POST['realname'])){
-				$admin->realname = trim($_POST['realname']);
-			}
-
-			if(isset($_POST['mobile'])){
-				$admin->mobile = trim($_POST['mobile']);
-			}
-
-			if(isset($_POST['limitation'])){
-				if(is_array($_POST['limitation'])){
-					$limitation = array();
-					foreach($_POST['limitation'] as $components){
-						$components = explode(',', $components);
-						do{
-							$componentid = array_pop($components);
-							$componentid = intval($componentid);
-						}while($components && empty($componentid));
-
-						if($componentid){
-							$limitation[] = $componentid;
-						}
-					}
-
-					$limitation = array_unique($limitation);
-					$admin->limitation = implode(',', $limitation);
-				}else{
-					$admin->limitation = '';
+			foreach(array('nickname', 'realname', 'mobile') as $var){
+				if(isset($_POST[$var])){
+					$admin->nickname = htmlspecialchars(trim($_POST[$var]));
 				}
-			}
-
-			if(isset($_POST['producttypes']) && is_array($_POST['producttypes'])){
-				$producttypes = array();
-				foreach($_POST['producttypes'] as $typeid => $checked){
-					isset($product_types[$typeid]) && $producttypes[] = $typeid;
-				}
-				$admin->producttypes = implode(',', $producttypes);
 			}
 
 			showmsg('edit_succeed', $mod_url);
 		}
 
 		$a = $admin->toArray();
-		$a['producttypes'] = empty($a['producttypes']) ? array() : explode(',', $a['producttypes']);
 
-		$address_components = Address::AvailableComponents();
 
 		include view('edit');
 	}
