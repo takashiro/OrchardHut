@@ -73,17 +73,4 @@ $quantity_limit = Product::QuantityLimits($priceids);
 //取得产品限购数据
 $product_storages = Product::Storages($storageids);
 
-//生成JS脚本签名
-if(strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false){
-	//读取微信配置
-	$wxconfig = readdata('wxconnect');
-
-	$wxconfig['nonce'] = randomstr(16);
-	$current_url = $_G['site_url'].'?mod=product'.($_SERVER['QUERY_STRING'] ? '&'.$_SERVER['QUERY_STRING'] : '');
-	$wx = new WeixinAPI;
-	$wxconfig['signature'] = $wx->generateSignature($wxconfig['nonce'], $current_url);
-}else{
-	$wxconfig = array();
-}
-
 include view('market');
