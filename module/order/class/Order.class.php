@@ -263,188 +263,69 @@ class Order extends DBObject{
 		return $table->fetch_first('*', 'orderid='.$this->id);
 	}
 
-	static protected $AlipayTradeNoPrefix = 'O';
-	static public function __on_alipay_started(){
+	const TRADE_PREFIX = 'O';
+
+	static public function __on_trade_started($method){
 		if(isset($_GET['orderid'])){
 			global $_G;
-			$order = new Order($_GET['orderid']);
+			$order = new Order(intval($_GET['orderid']));
 			if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
-				$order->paymentmethod = Wallet::ViaAlipay;
-				//商户网站订单系统中唯一订单号，必填
-				$_G['alipaytrade']['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
+				$order->paymentmethod = $method;
 
-				//订单名称
-				$_G['alipaytrade']['subject'] = $_G['config']['sitename'].'订单'.$order->id;
-
-				//付款金额
-				$_G['alipaytrade']['total_fee'] = $order->totalprice;
-
-				//跳转URL
-				$_G['alipaytrade']['show_url'] = 'index.php?mod=order';
+				$trade = &$_G['trade'];
+				$trade['out_trade_no'] = self::TRADE_PREFIX.$order->id;
+				$trade['subject'] = $_G['config']['sitename'].$trade['out_trade_no'];
+				$trade['total_fee'] = $order->totalprice;
 			}else{
 				showmsg('order_not_exist');
 			}
 		}
 	}
 
-	static public function __on_alipay_notified($out_trade_no, $trade_no, $trade_status){
-		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
-		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, $prefix_len) == 0){
-			$order = new Order(substr($out_trade_no, $prefix_len));
-			if(!$order->exists()){
-				writelog('alipaynotify', "ORDER_NOT_EXIST\t$out_trade_no\t$trade_no\t$trade_status");
-				exit;
-			}
-
-			$trade_status = Wallet::$TradeStateEnum[$trade_status];
-			if($order->tradestate == $trade_status)
-				return;
-
-			$order->paymentmethod = Wallet::ViaAlipay;
-			$order->tradestate = $trade_status;
-			$order->tradeid = $trade_no;
-			if($order->tradestate == Wallet::TradeSuccess)
-				$order->tradetime = TIMESTAMP;
+	static public function __on_trade_notified($id, $method, $trade_id, $trade_status, $extra){
+		if(strncmp($id, self::TRADE_PREFIX, 1) != 0){
+			return;
 		}
-	}
 
-	static public function __on_alipay_callback_executed($out_trade_no, $trade_no, $trade_status){
-		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
-		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, $prefix_len) == 0){
-			$order = new Order(substr($out_trade_no, $prefix_len));
-			if(!$order->exists()){
-				writelog('alipaycallback', "ORDER_NOT_EXIST\t$out_trade_no\t$trade_no\t$trade_status");
-				showmsg('order_does_not_exist', 'index.php?mod=order');
-			}
-
-			$order->paymentmethod = Wallet::ViaAlipay;
-			$order->tradestate = Wallet::$TradeStateEnum[$trade_status];
-			$order->tradeid = $trade_no;
-			if($order->tradestate == Wallet::TradeSuccess){
-				$order->tradetime = TIMESTAMP;
-				showmsg('the_order_is_successfully_paid', 'index.php?mod=order');
-			}else{
-				showmsg('please_pay_for_the_order', 'index.php?mod=order');
-			}
+		$order = new Order(intval(substr($id, 1)));
+		if(!$order->exists()){
+			writelog('trade_notify', "ORDER_NOT_EXIST\t$id\t$method\t$trade_status\t".json_encode($extra));
+			exit;
 		}
-	}
 
-	static public function __on_bestpay_started(){
-		if(isset($_GET['orderid'])){
-			global $_G;
-			$order = new Order($_GET['orderid']);
-			if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
-				$order->paymentmethod = Wallet::ViaBestpay;
-				//商户网站订单系统中唯一订单号，必填
-				$_G['bestpaytrade']['tradeid'] = self::$AlipayTradeNoPrefix.$order->id;
-
-				//订单名称
-				$_G['bestpaytrade']['subject'] = $_G['config']['sitename'].'订单'.$order->id;
-
-				//付款金额
-				$_G['bestpaytrade']['total_fee'] = $order->totalprice;
-				$_G['bestpaytrade']['attached_fee'] = $order->deliveryfee;
-			}else{
-				showmsg('order_not_exist');
-			}
-		}
-	}
-
-	static public function __on_bestpay_notified($out_trade_no, $trade_no, $trade_status){
-		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
-		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, $prefix_len) == 0){
-			$order = new Order(substr($out_trade_no, $prefix_len));
-			if(!$order->exists()){
-				writelog('bestpaynotify', "ORDER_NOT_EXIST\t$out_trade_no\t$trade_no\t$trade_status");
-				exit;
-			}
-
-			$order->paymentmethod = Wallet::ViaBestpay;
-			$order->tradestate = $trade_status == '0000' ? Wallet::TradeSuccess : Wallet::WaitBuyerPay;
-			$order->tradeid = $trade_no;
-			if($order->tradestate == Wallet::TradeSuccess)
-				$order->tradetime = TIMESTAMP;
-		}
-	}
-
-	static public function __on_bestpay_callback_executed($out_trade_no, $trade_no, $result){
-		//以异步通知为准，此处不处理只通知
-		if(strncmp($out_trade_no, self::$AlipayTradeNoPrefix, strlen(self::$AlipayTradeNoPrefix)) == 0)
-			showmsg('the_order_is_successfully_paid', 'index.php?mod=order');
-	}
-
-	static public function __on_wechatpay_started(){
-		if(empty($_GET['orderid']))
+		if($order->tradestate == $trade_status)
 			return;
 
-		global $_G;
-		$order = new Order($_GET['orderid']);
-		if($order->exists() && $order->status != Order::Canceled && $order->userid == $_G['user']->id){
-			$order->paymentmethod = Wallet::ViaWeChat;
-			//商户网站订单系统中唯一订单号，必填
-			$trade = &$_G['wechatpaytrade'];
-			$trade['out_trade_no'] = self::$AlipayTradeNoPrefix.$order->id;
-			$trade['subject'] = $_G['config']['sitename'].'订单'.$order->id;
-			$trade['total_fee'] = $order->totalprice;
-		}else{
-			showmsg('order_not_exist');
-		}
-	}
-
-	static public function __on_wechatpay_createorder(){
-		global $_G;
-		$trade = &$_G['wechatpaytrade'];
-		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
-		if(strncmp($trade['out_trade_no'], self::$AlipayTradeNoPrefix, $prefix_len) != 0)
-			return;
-
-		$order = new Order(substr($trade['out_trade_no'], $prefix_len));
-
-		if($order->exists() && $order->status != Order::Canceled){
-			$trade['total_fee'] = $order->totalprice;
-			$trade['subject'] = $_G['config']['sitename'].'订单'.$order->id;
-			$trade['valid'] = true;
-		}
-	}
-
-	static public function __on_wechatpay_notified($trade){
-		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
-		if(strncmp($trade['out_trade_no'], self::$AlipayTradeNoPrefix, $prefix_len) != 0)
-			return;
-
-		$order = new Order(substr($trade['out_trade_no'], $prefix_len));
-		if(!$order->exists())
-			return;
-
-		$order->paymentmethod = Wallet::ViaWeChat;
-		$order->tradestate = Wallet::TradeSuccess;
-		$order->tradeid = $trade['transaction_id'];
-		if($order->tradestate == Wallet::TradeSuccess)
+		$order->paymentmethod = $method;
+		$order->tradestate = $trade_status;
+		$order->tradeid = $trade_id;
+		if($order->tradestate == Wallet::TradeSuccess){
 			$order->tradetime = TIMESTAMP;
+		}
 	}
 
-	static public function __on_wechatpay_callback_executed($trade){
-		$prefix_len = strlen(self::$AlipayTradeNoPrefix);
-		if(strncmp($trade['out_trade_no'], self::$AlipayTradeNoPrefix, $prefix_len) != 0)
+	static public function __on_trade_callback_executed($id, $method, $trade_id, $trade_status, $extra){
+		if(strncmp($id, self::TRADE_PREFIX, 1) != 0){
 			return;
+		}
 
-		$order = new Order(substr($trade['out_trade_no'], $prefix_len));
-		if(!$order->exists())
-			return;
+		$order = new Order(intval(substr($id, 1)));
+		if(!$order->exists()){
+			writelog('trade_callback', "ORDER_NOT_EXIST\t$id\t$method\t$trade_status\t".json_encode($extra));
+			showmsg('order_does_not_exist', 'index.php?mod=order');
+		}
 
-		if($trade['trade_state'] == 'SUCCESS'){
-			if($order->tradestate != Wallet::TradeSuccess){
-				$order->paymentmethod = Wallet::ViaWeChat;
-				$order->tradestate = Wallet::TradeSuccess;
-				$order->tradeid = $trade['transaction_id'];
-				if($order->tradestate == Wallet::TradeSuccess)
-					$order->tradetime = TIMESTAMP;
-			}
+		$order->paymentmethod = $method;
+		$order->tradestate = $trade_status;
+		$order->tradeid = $trade_id;
+		if($order->tradestate == Wallet::TradeSuccess){
+			$order->tradetime = TIMESTAMP;
 			showmsg('the_order_is_successfully_paid', 'index.php?mod=order');
 		}else{
 			showmsg('please_pay_for_the_order', 'index.php?mod=order');
 		}
 	}
+
 }
 
 Order::$Status = array(

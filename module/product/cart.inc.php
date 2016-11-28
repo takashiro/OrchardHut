@@ -296,12 +296,12 @@ switch($action){
 						}
 
 						$combined_order = new CombinedOrder;
+						$combined_order->userid = $_G['user']->id;
 						foreach($orders as $order){
-							$combined_order->add('O'.$order->id);
-							$combined_order->price += $order->totalprice;
+							$combined_order->add('O'.$order->id, $order->totalprice);
 						}
 						$combined_order->insert();
-						redirect('index.php?mod='.Wallet::$PaymentInterface[$order->paymentmethod].'&combinedorder='.$combined_order->id);
+						redirect('index.php?mod='.Wallet::$PaymentInterface[$order->paymentmethod].'&combinedorderid='.$combined_order->id);
 					}
 				}
 

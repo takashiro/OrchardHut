@@ -702,18 +702,13 @@ class OrderMainModule extends AdminControlPanelModule{
 		if(isset($result['alipay_trade_query_response'])){
 			$response = $result['alipay_trade_query_response'];
 			if(isset($response['trade_status'])){
-				$arguments = array(
-					//商户订单号
+				runhooks('trade_notified', array(
 					$response['out_trade_no'],
-
-					//支付宝交易号
+					Wallet::ViaAlipay,
 					$response['trade_no'],
-
-					//交易状态
-					$response['trade_status'],
-				);
-
-				runhooks('alipay_notified', $arguments);
+					Alipay::$TradeStateEnum[$response['trade_status']],
+					$response,
+				));
 			}
 
 			showmsg('successfully_updated_order_trade_state', 'refresh');
