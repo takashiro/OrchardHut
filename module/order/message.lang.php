@@ -20,4 +20,6 @@ return array(
 	'you_have_no_order_in_this_station' => '您没有在该配送站的自提订单，可能订单仍在运送途中，或已经取货。',
 	'qrcode_expired_please_rescan' => '二维码失效，请重新扫码。',
 	'please_wait_for_printing_ticket' => '小票打印中，请注意取票。',
+
+	'invalid_qrcode_please_refresh' => '二维码已失效，请重新扫码。',
 );

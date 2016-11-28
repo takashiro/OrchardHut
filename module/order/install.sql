@@ -68,3 +68,44 @@ CREATE TABLE IF NOT EXISTS `pre_orderlog` (
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `pre_ribbonorder`;
+CREATE TABLE IF NOT EXISTS `pre_ribbonorder` (
+	`id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+	`userid` mediumint(8) unsigned NOT NULL,
+	`dateline` int(11) unsigned NOT NULL,
+	`totalprice` decimal(9,2) NOT NULL,
+	`paymentmethod` tinyint(4) NOT NULL,
+	`tradeid` varchar(255) NULL,
+	`tradestate` tinyint(4) NULL,
+	`tradetime` int(11) unsigned NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `pre_ribbon`;
+CREATE TABLE IF NOT EXISTS `pre_ribbon` (
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`orderid` mediumint(8) unsigned NOT NULL,
+	`userid` mediumint(8) unsigned NOT NULL,
+	`productid` mediumint(8) unsigned NOT NULL,
+	`productname` varchar(50) NOT NULL,
+	`productsubtype` varchar(100) NOT NULL DEFAULT '',
+	`subtotal` decimal(9,2) NOT NULL,
+	`boughtnum` smallint(5) unsigned NOT NULL,
+	`restnum` smallint(5) unsigned NOT NULL,
+	`amountunit` varchar(30) NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `available` (`userid`,`restnum`),
+	KEY `orderid` (`orderid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `pre_ribbonlog`;
+CREATE TABLE IF NOT EXISTS `pre_ribbonlog` (
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`ribbonid` int(11) unsigned NOT NULL,
+	`dateline` int(11) unsigned NOT NULL,
+	`costnum` smallint(5) unsigned NOT NULL,
+	`adminid` mediumint(8) unsigned NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `ribbonid` (`ribbonid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

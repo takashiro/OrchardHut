@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `pre_product` (
   `displayorder` tinyint(4) NOT NULL DEFAULT '0',
   `hide` tinyint(1) NOT NULL DEFAULT '0',
   `flowid` mediumint(8) NULL,
+  `is_ribbon` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

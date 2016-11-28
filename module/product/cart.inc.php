@@ -244,12 +244,20 @@ switch($action){
 
 			//切割订单
 			$splitted_orders = array();
+			$ribbons = array();
 			foreach($products as $p){
-				$splitted_orders[$p['flowid']][] = $p;
+				if($p['is_ribbon']){
+					$ribbons[] = $p;
+				}else{
+					$splitted_orders[$p['flowid']][] = $p;
+				}
 			}
 
-			$basic_order = $order;
+			//所有订单
 			$orders = array();
+
+			//处理物流订单
+			$basic_order = $order;
 			foreach($splitted_orders as $products){
 				//添加物品到订单中
 				$order = clone $basic_order;
@@ -276,6 +284,22 @@ switch($action){
 				}
 			}
 
+			//处理代金券订单
+			if($ribbons){
+				$ribbon_order = new RibbonOrder;
+				$ribbon_order->userid = $_G['user']->id;
+				$ribbon_order->dateline = TIMESTAMP;
+				$ribbon_order->paymentmethod = $basic_order->paymentmethod;
+				$ribbon_order->tradestate = null;
+				$ribbon_order->tradetime = null;
+				foreach($ribbons as $r){
+					$ribbon_order->add($r);
+				}
+				$ribbon_order->insert();
+				$orders[] = $ribbon_order;
+			}
+
+
 			//清空购物车
 			rsetcookie('shopping_cart', '{}');
 
@@ -285,7 +309,11 @@ switch($action){
 				if($basic_order->paymentmethod == Wallet::ViaWallet){
 					foreach($orders as $order){
 						$wallet = new Wallet($_G['user']);
-						$wallet->pay($order);
+						if($wallet->pay($order->totalprice, $order::TRADE_PREFIX.$order->id)){
+							$order->tradestate = Wallet::TradeSuccess;
+							$order->paymentmethod = Wallet::ViaWallet;
+							$order->tradetime = TIMESTAMP;
+						}
 					}
 
 				//若使用线上支付，进入支付宝界面
@@ -298,7 +326,7 @@ switch($action){
 						$combined_order = new CombinedOrder;
 						$combined_order->userid = $_G['user']->id;
 						foreach($orders as $order){
-							$combined_order->add('O'.$order->id, $order->totalprice);
+							$combined_order->add($order::TRADE_PREFIX.$order->id, $order->totalprice);
 						}
 						$combined_order->insert();
 						redirect('index.php?mod='.Wallet::$PaymentInterface[$order->paymentmethod].'&combinedorderid='.$combined_order->id);

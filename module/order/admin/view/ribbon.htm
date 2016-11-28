@@ -1,0 +1,45 @@
+{template header}
+
+<script src="{__MODULE_ROOT__}view/js/ribbon.js?$_CONFIG[refversion]"></script>
+
+<ol class="nav">
+	<li><a href="admin.php">管理面板</a></li>
+	<li><a href="admin.php?mod=order">订单</a></li>
+	<li>代金券管理</li>
+</ol>
+
+<div class="box">
+	<h1>代金券管理</h1>
+	<div class="content">
+		<div class="notice">
+			<ol>
+				<li>请指导用户依次打开 我的 - 我的代金券，展示二维码。</li>
+			</ol>
+		</div>
+
+		<form id="mark_form" action="###" method="post" class="edit_form">
+			<input type="text" id="scaninput" name="scaninput" placeholder="扫码输入请点击这里" autocomplete="off">
+			<button type="submit">确认扫码</button>
+		</form>
+
+		<form id="consume-form" action="admin.php?mod=order:ribbon&action=query" method="post">
+			<div class="list">
+				<table>
+					<thead>
+						<tr><th></th><td>商品名称</td><td>购买数量</td><td>可用</td><td>本次消费数量</td></tr>
+					</thead>
+					<tbody id="ribbon-list">
+					</tbody>
+				</table>
+			</div>
+
+			<div class="post_buttons">
+				<button type="submit">确认消费</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<audio id="correct_audio" src="{__TEMPLATE_ROOT__}media/correct.ogg">请使用支持HTML 5的浏览器。</audio>
+
+{template footer}

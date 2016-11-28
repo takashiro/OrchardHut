@@ -1,0 +1,69 @@
+{template header}
+
+<script src="3rdparty/jquery.ean13/jquery-ean13.min.js"></script>
+<script src="3rdparty/jquery.qrcode.min.js"></script>
+<script>
+function id2barcode(id, formkey){
+	var barcode = '0';
+
+	var leading_zero_num = 9 - id.length;
+	for(var i = 0; i < leading_zero_num; i++){
+		barcode += '0';
+	}
+	barcode += id;
+
+	leading_zero_num = 3 - formkey.length;
+	for(var i = 0; i < leading_zero_num; i++){
+		barcode += '0';
+	}
+	barcode += formkey;
+
+	return barcode;
+}
+
+var userid = '{echo $_G['user']->id}';
+var formkey = '{echo $_G['user']->formkey}';
+$(function(){
+	$('#barcode').EAN13(id2barcode(userid, formkey));
+	$('#qrcode').qrcode(JSON.stringify({'userid' : userid, 'formkey' : formkey}));
+});
+</script>
+<style>
+.code-area{
+	width: 80%;
+	margin: 20px auto;
+	text-align: center;
+}
+#qrcode{
+	width: 85%;
+	margin: auto;
+}
+#barcode{
+	margin-top: 10px;
+	width: 70%;
+	text-align: center;
+}
+</style>
+
+<section class="box layout">
+	<header><i class="icon doc-text"></i>我的代金券</header>
+	<div class="content">
+		<div class="box order-info">
+			<ul class="two-column">
+				<li style="display:none"></li>
+				<!--{loop $ribbons $r}-->
+				<li>
+					<span class="left">$r[productname]<!--{if !empty($r['productsubtype'])}-->($r[productsubtype])<!--{/if}--></span>
+					<span class="right"><span class="price">$r[restnum]</span> / $r[boughtnum] $r[amountunit]</span>
+				</li>
+				<!--{/loop}-->
+			</ul>
+			<div class="code-area">
+				<div id="qrcode"></div>
+				<canvas id="barcode"></canvas>
+			</div>
+		</div>
+	</div>
+</section>
+
+{template footer}

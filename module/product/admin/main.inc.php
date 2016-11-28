@@ -146,6 +146,10 @@ class ProductMainModule extends AdminControlPanelModule{
 				$product->flowid = intval($_POST['flowid']);
 			}
 
+			if(isset($_POST['is_ribbon'])){
+				$product->is_ribbon = !empty($_POST['is_ribbon']) ? 1 : 0;
+			}
+
 			if($productid == 0){
 				$product->insert();
 			}

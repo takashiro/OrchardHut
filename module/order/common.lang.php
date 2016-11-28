@@ -29,6 +29,7 @@ return array(
 	'module_order:ticketconfig' => '小票设置',
 	'module_order:ticketprinter' => '打印提货单',
 	'module_order:pack' => '配送站拣货',
+	'module_order:ribbon' => '代金券',
 
 	'permission_order:comment' => '订单评价',
 	'permission_order:scancode' => '扫码处理',
@@ -37,6 +38,7 @@ return array(
 	'permission_order:ticketprinter' => '自助印票',
 	'permission_order:stat' => '分拣报表',
 	'permission_order:pack' => '配送站拣货',
+	'permission_order:ribbon' => '代金券',
 
 	'permission_order' => '订单管理',
 	'permission_order_sort' => '查看待分拣订单',

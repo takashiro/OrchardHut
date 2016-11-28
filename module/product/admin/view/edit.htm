@@ -62,6 +62,11 @@ var product_id = $product[id];
 					<th>物流分类</th>
 					<td>{echo Template::select('flowid', Product::Flows(), $product['flowid'])}<span class="tips">不同分类的商品不能提交到同一订单中</span></td>
 				</tr>
+				<tr>
+					<th>其他</th>
+					<td>
+						<p>{echo Template::checkbox('is_ribbon', '代金券', !empty($product['is_ribbon']))}<span class="tips">勾选此项的商品不进入物流订单，生成线下消费的代金券</span></td>
+				</tr>
 			</table>
 			<div class="post_button">
 				<button type="submit">修改</button>
