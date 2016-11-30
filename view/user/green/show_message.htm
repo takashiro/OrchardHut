@@ -17,7 +17,7 @@
 			<!--{if $url_forward != 'confirm'}-->
 				<!--{if !empty($url_forward)}-->
 				<a href="$url_forward" target="_top">如果没有自动跳转，请点击这里</a>
-				<script type="text/javascript">
+				<script>
 				setTimeout('top.location.href="$url_forward";', 5 * 1000);
 				</script>
 				<!--{/if}-->

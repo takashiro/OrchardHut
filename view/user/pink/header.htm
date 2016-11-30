@@ -12,15 +12,15 @@
 <link rel="stylesheet" href="{__TEMPLATE_ROOT__}image/common.css?$_CONFIG[refversion]" type="text/css" />
 <link rel="stylesheet" type="text/css" media="screen and (min-width:800px)" href="{__TEMPLATE_ROOT__}image/desktop.css?$_CONFIG[refversion]" type="text/css">
 <!--{if !empty($_CONFIG['jquery_cdn'])}-->
-<script type="text/javascript" src="$_CONFIG[jquery_cdn]"></script>
+<script src="$_CONFIG[jquery_cdn]"></script>
 <!--{/if}-->
 <script>window.jQuery || document.write('<script src="3rdparty/jquery/jquery-3.1.0.min.js"><\/script>');</script>
-<script type="text/javascript">
+<script>
 var cookiepre = '$_CONFIG[cookiepre]';
 var uid = parseInt('{echo $_G['user']->id}', 10);
 </script>
-<script type="text/javascript" src="js/common.js?$_CONFIG[refversion]"></script>
-<script type="text/javascript" src="extension/module/product/view/js/footer.js?$_CONFIG[refversion]"></script>
+<script src="js/common.js?$_CONFIG[refversion]"></script>
+<script src="extension/module/product/view/js/footer.js?$_CONFIG[refversion]"></script>
 <!--{if isset($_CONFIG['head_element'])}-->$_CONFIG[head_element]<!--{/if}-->
 </head>
 

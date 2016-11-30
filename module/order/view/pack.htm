@@ -9,9 +9,9 @@ canvas#barcode{
 }
 </style>
 
-<script type="text/javascript" src="./3rdparty/jquery.ean13/jquery-ean13.min.js"></script>
-<script type="text/javascript" src="./3rdparty/jquery.qrcode.min.js"></script>
-<script type="text/javascript">
+<script src="3rdparty/jquery.ean13/jquery-ean13.min.js"></script>
+<script src="3rdparty/jquery.qrcode.min.js"></script>
+<script>
 function id2barcode(id, packcode){
 	var barcode = '0';
 	var leading_zero_num = 8 - id.length;

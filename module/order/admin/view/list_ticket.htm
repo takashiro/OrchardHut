@@ -8,11 +8,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="stylesheet" href="./extension/module/order/admin/view/image/order_ticket.css?$_CONFIG[refversion]" type="text/css" />
 <!--{if !empty($_CONFIG['jquery_cdn'])}-->
-<script type="text/javascript" src="$_CONFIG[jquery_cdn]"></script>
+<script src="$_CONFIG[jquery_cdn]"></script>
 <!--{/if}-->
-<script type="text/javascript">window.jQuery || document.write('<script src="./3rdparty/jquery/jquery-3.1.0.min.js"><\/script>');</script>
-<script type="text/javascript" src="./3rdparty/jquery.ean13/jquery-ean13.min.js"></script>
-<script type="text/javascript">
+<script>window.jQuery || document.write('<script src="3rdparty/jquery/jquery-3.1.0.min.js"><\/script>');</script>
+<script src="3rdparty/jquery.ean13/jquery-ean13.min.js"></script>
+<script>
 function id2barcode(id){
 	var barcode = '690';	//stands for China
 
@@ -49,7 +49,7 @@ function id2barcode(id){
 <!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
 
 <!--{if !empty($orders)}-->
-<script type="text/javascript">
+<script>
 $(function(){
 	$('#print_button').click(function(){
 		$('#print_button').hide();
@@ -88,7 +88,7 @@ $(function(){
 <button id="print_button">确认打印</button>
 <!--{else}-->
 <div class="notice">抱歉，没有查询到订单。</div>
-<script type="text/javascript">
+<script>
 setTimeout(function(){
 	window.close();
 }, 1500);
@@ -137,7 +137,7 @@ setTimeout(function(){
 </div>
 
 <div class="barcode"><canvas id="barcode_$order[id]"></canvas></div>
-<script type="text/javascript">
+<script>
 $(function(){
 	$('#barcode_$order[id]').EAN13(id2barcode('$order[id]'));
 });

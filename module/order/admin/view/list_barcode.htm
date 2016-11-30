@@ -6,9 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<script type="text/javascript" src="./3rdparty/jquery/jquery-3.1.0.min.js"></script>
-<script type="text/javascript" src="./3rdparty/jquery.ean13/jquery-ean13.min.js"></script>
-<script type="text/javascript">
+<script src="3rdparty/jquery/jquery-3.1.0.min.js"></script>
+<script src="3rdparty/jquery.ean13/jquery-ean13.min.js"></script>
+<script>
 function id2barcode(id){
 	var barcode = '690';	//stands for China
 
@@ -94,7 +94,7 @@ dl.detail dd{
 <!--{eval !empty($order) && empty($orders) && $orders = array($order);}-->
 <!--{loop $orders $order}-->
 
-<script type="text/javascript">
+<script>
 $(function(){
 	$('#barcode_$order[id]').EAN13(id2barcode('$order[id]'));
 });
@@ -127,7 +127,7 @@ $(function(){
 
 <!--{/loop}-->
 
-<script type="text/javascript">
+<script>
 window.print();
 </script>
 
