@@ -2,14 +2,14 @@
 
 {template market_js}
 
-<script src="js/jquery.cascadeselect.js?$_CONFIG[refversion]"></script>
-<script src="data/js/addresscomponent.js?$_CONFIG[refversion]"></script>
+<script src="{STATIC_URL}js/jquery.cascadeselect.js?$_CONFIG[refversion]"></script>
+<script src="{STATIC_URL}data/js/addresscomponent.js?$_CONFIG[refversion]"></script>
 <script>
 var DeliveryConfig = {echo json_encode($deliveryconfig)};
 var Order = {PaidWithWallet : {echo Wallet::ViaWallet}};
 $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 </script>
-<script src="extension/module/product/view/js/cart.js?$_CONFIG[refversion]"></script>
+<script src="{STATIC_URL}extension/module/product/view/js/cart.js?$_CONFIG[refversion]"></script>
 
 <section class="cart layout">
 	<ul class="brief product">

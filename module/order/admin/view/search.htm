@@ -6,9 +6,9 @@
 	<li>高级查找</li>
 </ol>
 
-<script src="3rdparty/datetimepicker/jquery.datetimepicker.min.js"></script>
-<style type="text/css">@import url(./3rdparty/datetimepicker/jquery.datetimepicker.css);</style>
-<script src="js/jquery.cascadeselect.js?$_CONFIG[refversion]"></script>
+<script src="{STATIC_URL}3rdparty/datetimepicker/jquery.datetimepicker.min.js"></script>
+<style type="text/css">@import url({STATIC_URL}3rdparty/datetimepicker/jquery.datetimepicker.css);</style>
+<script src="{STATIC_URL}js/jquery.cascadeselect.js?$_CONFIG[refversion]"></script>
 <script>
 $(function(){
 	$('#delivery_address_list').on('click', 'li .add', function(e){
@@ -33,8 +33,8 @@ $(function(){
 
 $.cascadeselect.addCommonOptions('all_addresses', {echo json_encode($address_components)});
 </script>
-<script src="extension/module/order/admin/view/js/admin_order_list.js?$_CONFIG[refversion]"></script>
-<script src="js/datetime.js?$_CONFIG[refversion]"></script>
+<script src="{STATIC_URL}extension/module/order/admin/view/js/admin_order_list.js?$_CONFIG[refversion]"></script>
+<script src="{STATIC_URL}js/datetime.js?$_CONFIG[refversion]"></script>
 
 <div class="box">
 	<h1>订单高级查找</h1>
