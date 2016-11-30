@@ -29,7 +29,9 @@
 			<!--{loop $products $p}-->
 			<li data-product-id="$p[id]">
 				<div class="icon">
-					<img data-original="$p[icon]" />
+				<!--{if !empty($p['icon'])}-->
+					<img data-original="{STATIC_URL}$p[icon]">
+				<!--{/if}-->
 				</div>
 				<div class="detail">
 					<div class="name">$p[name]</div>
@@ -52,7 +54,7 @@
 					<li>啊哦，$p[name]已经卖光了QAQ</li>
 					<!--{/if}-->
 				</ul>
-				<div class="photo"><img data-original="$p[photo]" /></div>
+				<div class="photo"><img data-original="{STATIC_URL}$p[photo]" /></div>
 				<div class="introduction">$p[introduction]</div>
 			</li>
 			<!--{/loop}-->

@@ -28,7 +28,7 @@ var product_id = $product[id];
 					<th>图标</th>
 					<td>
 						<!--{if $product['icon']}-->
-						<img src="$product[icon]?{TIMESTAMP}" width="80" /><br />
+						<img src="{STATIC_URL}$product[icon]?{TIMESTAMP}" width="80" /><br />
 						<!--{/if}-->
 						<input type="file" name="icon" />
 					</td>
@@ -37,7 +37,7 @@ var product_id = $product[id];
 					<th>实物照片</th>
 					<td>
 						<!--{if $product['photo']}-->
-						<img src="$product[photo]?{TIMESTAMP}" /><br />
+						<img src="{STATIC_URL}$product[photo]?{TIMESTAMP}" /><br />
 						<!--{/if}-->
 						<input type="file" name="photo" />
 					</td>

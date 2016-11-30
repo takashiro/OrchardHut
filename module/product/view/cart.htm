@@ -16,7 +16,9 @@ $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 		<!--{loop $products $p}-->
 		<li data-price-id="$p[priceid]">
 			<div class="icon">
-				<img data-original="$p[icon]" />
+				<!--{if !empty($p['icon'])}-->
+					<img data-original="{STATIC_URL}$p[icon]">
+				<!--{/if}-->
 			</div>
 			<div class="detail">
 				<div class="name">$p[name]</div>
