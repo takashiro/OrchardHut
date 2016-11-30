@@ -26,6 +26,28 @@ var formkey = '{echo $_G['user']->formkey}';
 $(function(){
 	$('#barcode').EAN13(id2barcode(userid, formkey));
 	$('#qrcode').qrcode(JSON.stringify({'userid' : userid, 'formkey' : formkey}));
+
+	$('.order-info input.number').change(function(){
+		var inputs = $('.order-info input.number');
+		var selected = {};
+		for(var i = 0; i < inputs.length; i++){
+			var input = inputs.eq(i);
+			var value = parseInt(input.val(), 10);
+			if(value > 0){
+				var ribbonid = input.data('ribbonid');
+				selected[ribbonid] = value;
+			}
+		}
+
+		var qrcode_value = {
+			'userid' : userid,
+			'formkey' : formkey,
+			'selected' : selected
+		};
+		var qrcode = $('#qrcode');
+		qrcode.html('');
+		qrcode.qrcode(JSON.stringify(qrcode_value));
+	});
 });
 </script>
 <style>
@@ -43,6 +65,10 @@ $(function(){
 	width: 70%;
 	text-align: center;
 }
+
+.order-info > ul > li{
+	margin: 15px 0;
+}
 </style>
 
 <section class="box layout">
@@ -50,11 +76,11 @@ $(function(){
 	<div class="content">
 		<div class="box order-info">
 			<ul class="two-column">
-				<li style="display:none"></li>
+				<li><span class="left">请选择使用数量</span></li>
 				<!--{loop $ribbons $r}-->
 				<li>
 					<span class="left">$r[productname]<!--{if !empty($r['productsubtype'])}-->($r[productsubtype])<!--{/if}--></span>
-					<span class="right"><span class="price">$r[restnum]</span> / $r[boughtnum] $r[amountunit]</span>
+					<span class="right"><input type="text" class="number" data-ribbonid="$r[id]" data-maxvalue="$r[restnum]" autocomplete="off"></span>
 				</li>
 				<!--{/loop}-->
 			</ul>

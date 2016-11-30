@@ -28,7 +28,7 @@ if(!$_G['user']->isLoggedIn()){
 
 $paidstate = array(Wallet::TradeSuccess, Wallet::TradeFinished);
 $paidstate = implode(',', $paidstate);
-$ribbons = $db->fetch_all("SELECT r.*,o.* FROM
+$ribbons = $db->fetch_all("SELECT o.*,r.* FROM
 	{$tpre}ribbon r
 		LEFT JOIN {$tpre}ribbonorder o ON o.id=r.orderid
 	WHERE r.userid={$_G['user']->id}

@@ -18,6 +18,17 @@ $(function(){
 			scanresult = JSON.parse(scanresult);
 			userid = parseInt(scanresult.userid, 10);
 			formkey = parseInt(scanresult.formkey, 10);
+			if(typeof scanresult.selected == 'object'){
+				for(var ribbonid in scanresult.selected){
+					var use_value = parseInt(scanresult.selected[ribbonid], 10);
+					if(!isNaN(use_value) && use_value > 0){
+						ribbonid = parseInt(ribbonid, 10);
+						if(!isNaN(ribbonid) && ribbonid > 0){
+							items[ribbonid] = use_value;
+						}
+					}
+				}
+			}
 		}else{
 			userid = parseInt(scanresult.substr(0, 10), 10);
 			formkey = parseInt(scanresult.substr(10, 3), 10);
@@ -30,8 +41,7 @@ $(function(){
 
 		var parameters = {
 			'userid' : userid,
-			'formkey' : formkey,
-			'items' : items
+			'formkey' : formkey
 		};
 		$.post('admin.php?mod=order:ribbon&action=query', parameters, function(response){
 			var list = $('#ribbon-list');
@@ -73,6 +83,9 @@ $(function(){
 
 				td = $('<td></td>');
 				td.html('<input type="text" class="number">');
+				if(items[ribbon.id]){
+					td.children('input').val(items[ribbon.id]);
+				}
 				tr.append(td);
 
 				list.append(tr);
