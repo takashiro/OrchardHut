@@ -76,7 +76,7 @@ class AdminMainModule extends AdminControlPanelModule{
 		}
 
 		$a = $admin->toArray();
-
+		$address_components = Address::Components();
 
 		include view('edit');
 	}
