@@ -76,7 +76,7 @@ $(function(){
 	<div class="content">
 		<div class="box order-info">
 			<ul class="two-column">
-				<li><span class="left">请选择使用数量</span></li>
+				<li><span class="left"><!--{if $ribbons}-->请选择使用数量<!--{else}-->您没有可用的代金券<!--{/if}--></span></li>
 				<!--{loop $ribbons $r}-->
 				<li>
 					<span class="left">$r[productname]<!--{if !empty($r['productsubtype'])}-->($r[productsubtype])<!--{/if}--></span>

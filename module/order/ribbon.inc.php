@@ -35,7 +35,9 @@ $ribbons = $db->fetch_all("SELECT o.*,r.* FROM
 		AND r.restnum>0
 		AND o.tradestate IN ($paidstate)");
 
-$_G['user']->formkey = 0;
-$_G['user']->refreshFormKey();
+if($ribbons){
+	$_G['user']->formkey = 0;
+	$_G['user']->refreshFormKey();
+}
 
 include view('ribbon');
