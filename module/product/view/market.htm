@@ -34,7 +34,7 @@
 				<!--{/if}-->
 				</div>
 				<div class="detail">
-					<div class="name">$p[name]</div>
+					<div class="name">$p[name]<!--{if !empty($p['is_ribbon'])}--><em class="label">代金券</em><!--{/if}--><!--{if !empty($p['flowid'])}--><em class="label">$p[flowname]</em><!--{/if}--></div>
 					<div class="soldout">销量：<span class="value">$p[soldout]</span></div>
 					<div class="briefintro">$p[briefintro]</div>
 				</div>

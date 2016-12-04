@@ -12,43 +12,9 @@ $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 <script src="{STATIC_URL}extension/module/product/view/js/cart.js?$_CONFIG[refversion]"></script>
 
 <section class="cart layout">
-	<ul class="brief product">
-		<!--{loop $products $p}-->
-		<li data-price-id="$p[priceid]">
-			<div class="icon">
-				<!--{if !empty($p['icon'])}-->
-					<img data-original="{STATIC_URL}$p[icon]">
-				<!--{/if}-->
-			</div>
-			<div class="detail">
-				<div class="name">$p[name]</div>
-			</div>
-			<ul class="rule">
-				<li data-product-id="$p[productid]" data-price-id="$p[priceid]" data-storage-id="$p[storageid]" data-quantity-limit="$p[quantitylimit]">
-					<span class="intro">
-						<span class="subtype">$p[subtype]</span>
-					</span>
-					<span class="price">$p[price]</span><span class="priceunit">{echo Product::$PriceUnit}</span><span class="amount">$p[amount]</span><span class="amountunit">$p[amountunit]</span>
-					<div class="order_input"><input type="text" class="number" /></div>
-				</li>
-			</ul>
-			<button type="button" class="remove"></button>
-		</li>
-		<!--{/loop}-->
-	</ul>
-	<input type="hidden" id="product_price" />
-	<!--{if !empty($item_deleted)}-->
-	<div class="notice">由于库存紧缺，您刚刚有些商品被别人先下手啦QAQ，所以没有出现在购物车中。</div>
-	<!--{/if}-->
-
 	<form action="index.php?mod=product:cart" method="post">
 		<input type="hidden" name="formkey" value="{echo $_G['user']->formkey}" />
-		<div class="lightbox message">
-			<h1>购物留言</h1>
-			<div class="content">
-				<input type="text" name="message" placeholder="你有什么想告诉我们的吗？" />
-			</div>
-		</div>
+
 		<div class="lightbox">
 			<h1>付款方式</h1>
 			<div class="content">
@@ -61,6 +27,7 @@ $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 				</ul>
 			</div>
 		</div>
+
 		<div class="lightbox deliveryaddress">
 			<h1>收货地址</h1>
 			<div class="content">
@@ -95,23 +62,93 @@ $.cascadeselect.addCommonOptions('all_addresses', addresscomponent);
 				</table>
 			</div>
 		</div>
-		<div class="lightbox deliverymethod">
-			<h1>配送方式</h1>
+
+		<div class="lightbox message">
+			<h1>购物留言</h1>
 			<div class="content">
-				<input type="hidden" id="deliveryfee" value="0" />
-				<ul class="mselect">
-					<!--{loop $deliverymethods $m}-->
-					<li><input type="radio" name="deliverymethod" value="$m[id]" autocomplete="off" />{$m[name]}<!--{if $m['fee'] > 0}--><em>订单总额&lt;{echo $m['maxorderprice']}{echo Product::$PriceUnit}时收取配送费{echo $m['fee']}{echo Product::$PriceUnit}</em><!--{/if}--></li>
-					<!--{/loop}-->
-				</ul>
+				<input type="text" name="message" placeholder="你有什么想告诉我们的吗？" />
 			</div>
 		</div>
+
+		<!--{if $ribbons}-->
+		<div class="flow-area">
+			<div class="lightbox message"><h1>代金券</h1></div>
+			<ul class="brief product">
+				<!--{loop $ribbons $p}-->
+				<li data-price-id="$p[priceid]">
+					<div class="icon">
+						<!--{if !empty($p['icon'])}-->
+							<img data-original="{STATIC_URL}$p[icon]">
+						<!--{/if}-->
+					</div>
+					<div class="detail">
+						<div class="name">$p[name]</div>
+					</div>
+					<ul class="rule">
+						<li data-product-id="$p[productid]" data-price-id="$p[priceid]" data-storage-id="$p[storageid]" data-quantity-limit="$p[quantitylimit]">
+							<span class="intro">
+								<span class="subtype">$p[subtype]</span>
+							</span>
+							<span class="price">$p[price]</span><span class="priceunit">{echo Product::$PriceUnit}</span><span class="amount">$p[amount]</span><span class="amountunit">$p[amountunit]</span>
+							<div class="order_input"><input type="text" class="number" /></div>
+						</li>
+					</ul>
+					<button type="button" class="remove"></button>
+				</li>
+				<!--{/loop}-->
+			</ul>
+		</div>
+		<!--{/if}-->
+
+		<!--{loop $sorted_products $flowid $products}-->
+		<div class="flow-area">
+			<div class="lightbox message"><h1>{echo Product::Flow($flowid)}商品</h1></div>
+			<ul class="brief product">
+				<!--{loop $products $p}-->
+				<li data-price-id="$p[priceid]">
+					<div class="icon">
+						<!--{if !empty($p['icon'])}-->
+							<img data-original="{STATIC_URL}$p[icon]">
+						<!--{/if}-->
+					</div>
+					<div class="detail">
+						<div class="name">$p[name]</div>
+					</div>
+					<ul class="rule">
+						<li data-product-id="$p[productid]" data-price-id="$p[priceid]" data-storage-id="$p[storageid]" data-quantity-limit="$p[quantitylimit]">
+							<span class="intro">
+								<span class="subtype">$p[subtype]</span>
+							</span>
+							<span class="price">$p[price]</span><span class="priceunit">{echo Product::$PriceUnit}</span><span class="amount">$p[amount]</span><span class="amountunit">$p[amountunit]</span>
+							<div class="order_input"><input type="text" class="number" /></div>
+						</li>
+					</ul>
+					<button type="button" class="remove"></button>
+				</li>
+				<!--{/loop}-->
+			</ul>
+			<div class="tinybox deliverymethod">
+				<h2>配送方式</h2>
+				<div class="content">
+					<ul class="mselect">
+						<!--{loop $deliverymethods $m}-->
+						<li><input type="radio" name="deliverymethod[$flowid]" value="$m[id]" autocomplete="off" />{$m[name]}<!--{if $m['fee'] > 0}--><em>订单总额&lt;{echo $m['maxorderprice']}{echo Product::$PriceUnit}时收取配送费{echo $m['fee']}{echo Product::$PriceUnit}</em><!--{/if}--></li>
+						<!--{/loop}-->
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--{/loop}-->
+
+		<!--{if !empty($item_deleted)}-->
+		<div class="notice">由于库存紧缺，您刚刚有些商品被别人先下手啦QAQ，所以没有出现在购物车中。</div>
+		<!--{/if}-->
 
 		<div class="bottom_toolset">
 			<div class="total info">
 				总计：<span class="currency_symbol"></span>
 				<div class="prices">
-					<span class="number" id="total_price">0.00</span>
+					<span class="number" id="total-price">0.00</span>
 					<span class="unit">{echo Product::$PriceUnit}</span>
 				</div>
 			</div>

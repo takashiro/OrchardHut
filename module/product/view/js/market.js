@@ -183,7 +183,8 @@ $(function(){
 		var rightpanel = detail.parent();
 		var photo = rightpanel.children('.photo');
 		var introduction = rightpanel.children('.introduction');
-		var name = detail.children('.name');
+		var name = detail.children('.name').clone();
+		name.children().remove();
 
 		var title = name.html();
 		var message = $('<div></div>');

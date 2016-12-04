@@ -46,6 +46,7 @@ foreach($products as &$p){
 	}
 	$p = $product->toArray();
 	$p['introduction'] = str_replace(array("\r\n", "\n", "\r"), '<br />', $p['introduction']);
+	$p['flowname'] = Product::Flow($p['flowid']);
 }
 unset($p);
 

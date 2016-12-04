@@ -456,7 +456,7 @@ class Product extends DBObject{
 	static public function RefreshCache(){
 		writecache('productunits', null);
 		writecache('producttypes', null);
-		writecache('productflow', null);
+		writecache('productflows', null);
 	}
 
 	static private function Units($type){
@@ -525,6 +525,7 @@ class Product extends DBObject{
 		if(self::$Flows === null){
 			self::$Flows = readcache('productflows');
 			if(self::$Flows === null){
+				self::$Flows = array(0 => '');
 				global $db;
 				$table = $db->select_table('productflow');
 				$query = $table->select('id,name', 'hidden=0 ORDER BY displayorder');
@@ -535,6 +536,13 @@ class Product extends DBObject{
 			}
 		}
 		return self::$Flows;
+	}
+
+	static public function Flow($id){
+		if(self::$Flows === null){
+			self::Flows();
+		}
+		return self::$Flows[$id] ?? '';
 	}
 }
 

@@ -19,23 +19,74 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 takashiro@qq.com
 ************************************************************************/
 
-function updateProductPrice(product_list){
+function updateTotalPrice(){
 	var new_total = 0.0;
-	product_list.children().each(function(){
+	$('.flow-area').each(function(){
+		var subtotal = parseFloat($(this).data('subtotal'));
+		if(!isNaN(subtotal)){
+			new_total += subtotal;
+		}
+		var deliveryfee = parseFloat($(this).data('deliveryfee'));
+		if(!isNaN(deliveryfee)){
+			new_total += deliveryfee;
+		}
+	});
+	$('#total-price').text(new_total.toFixed());
+
+	$('input[name="paymentmethod"]').each(function(){
+		if($(this).val() == Order.PaidWithWallet){
+			var userwallet = parseFloat($('#userwallet').text());
+			if(userwallet < new_total){
+				if($(this).is(':checked')){
+					alert('钱包余额不足，请重新选择支付方式。');
+					$(this).prop('checked', false);
+				}
+				$(this).prop('disabled', true);
+			}else{
+				$(this).prop('disabled', false);
+			}
+		}
+	});
+}
+
+function updateProductPrice($this){
+	var total = 0.0;
+
+	$this.children().each(function(){
 		var $this = $(this);
 		var price = parseFloat($this.find('.price').text());
 		var num = parseInt($this.find('input.number').val(), 10);
 		var subtotal = isNaN(price) || isNaN(num) ? 0 : price * num;
-		new_total += subtotal;
+		total += subtotal;
 	});
 
-	var input = $('#product_price');
-	input.val(new_total.toFixed(2));
-	input.change();
+	var area = $this.parent();
+	area.data('subtotal', total.toFixed(2));
+	updateDeliveryFee(area);
+}
+
+function updateDeliveryFee(area){
+	var input = area.find('.deliverymethod input[type="radio"]');
+	if(input.length > 0){
+		var deliveryfee = 0;
+		var checked_input = input.filter(':checked');
+		if(checked_input.length <= 0){
+			checked_input = input.eq(0);
+			checked_input.prop('checked', true);
+		}
+		var methodid = checked_input.val();
+		var config = DeliveryConfig[methodid];
+		if(config && config.fee > 0){
+			var subtotal = parseFloat(area.data('subtotal'));
+			deliveryfee = subtotal < config.maxorderprice ? config.fee : 0.0;
+		}
+		area.data('deliveryfee', deliveryfee.toFixed(2));
+	}
+
+	updateTotalPrice();
 }
 
 $(function(){
-
 	$('ul.product button.remove').click(function(e){
 		var button = $(e.target);
 		var li = button.parent();
@@ -55,14 +106,6 @@ $(function(){
 		var rule = li.parent();
 		var product_list = rule.parent().parent();
 		updateProductPrice(product_list);
-	});
-
-	$('#product_price').change(function(){
-		var product_price = parseFloat($(this).val());
-		var delivery_fee = parseFloat($('#deliveryfee').val());
-		var total_price = product_price + delivery_fee;
-		$('#total_price').text(total_price.toFixed(2));
-		$('#total_price').change();
 	});
 
 	$('.deliveryaddress ul li a.remove').click(function(e){
@@ -90,38 +133,9 @@ $(function(){
 		}
 	});
 
-	$('input[type="radio"][name="deliverymethod"]').change(function(){
-		var deliverymethod = $(this).val();
-		var product_price = parseFloat($('#product_price').val());
-		var config = DeliveryConfig[deliverymethod];
-		var delivery_fee = 0;
-		if(config.fee > 0 && product_price < config.maxorderprice){
-			delivery_fee = config.fee;
-			$('#deliveryfee').val(delivery_fee.toFixed(2));
-		}else{
-			$('#deliveryfee').val('0');
-		}
-		var total_price = product_price + delivery_fee;
-		$('#total_price').text(total_price.toFixed(2));
-		$('#total_price').change();
-	});
-
-	$('#total_price').change(function(){
-		$('input[name="paymentmethod"]').each(function(){
-			if($(this).val() == Order.PaidWithWallet){
-				var userwallet = parseFloat($('#userwallet').text());
-				var total_price = parseFloat($('#total_price').text());
-				if(userwallet < total_price){
-					if($(this).is(':checked')){
-						alert('钱包余额不足，请重新选择支付方式。');
-						$(this).prop('checked', false);
-					}
-					$(this).prop('disabled', true);
-				}else{
-					$(this).prop('disabled', false);
-				}
-			}
-		});
+	$('.deliverymethod input[type="radio"]').change(function(){
+		var area = $(this).parents('.flow-area');
+		updateDeliveryFee(area);
 	});
 
 	$('input[name="paymentmethod"]').click(function(){
@@ -130,5 +144,7 @@ $(function(){
 		}
 	});
 
-	updateProductPrice($('ul.product'));
+	$('ul.product').each(function(){
+		updateProductPrice($(this));
+	});
 });

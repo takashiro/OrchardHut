@@ -258,7 +258,7 @@ switch($action){
 
 			//处理物流订单
 			$basic_order = $order;
-			foreach($splitted_orders as $products){
+			foreach($splitted_orders as $flowid => $products){
 				//添加物品到订单中
 				$order = clone $basic_order;
 				foreach($products as $p){
@@ -267,7 +267,7 @@ switch($action){
 				}
 
 				//判断订单的配送方式是否合法
-				$order->deliverymethod = isset($_POST['deliverymethod']) ? intval($_POST['deliverymethod']) : Order::HomeDelivery;
+				$order->deliverymethod = isset($_POST['deliverymethod'][$flowid]) ? intval($_POST['deliverymethod'][$flowid]) : Order::HomeDelivery;
 				isset(Order::$DeliveryMethod[$order->deliverymethod]) || $order->deliverymethod = Order::HomeDelivery;
 				//收取配送费用
 				$df = isset($deliveryconfig[$order->deliverymethod]) ? $deliveryconfig[$order->deliverymethod] : null;
@@ -425,6 +425,17 @@ switch($action){
 
 		//生成随机表单key防止重复提交
 		$_G['user']->refreshFormKey();
+
+		//根据物流分类显示订单
+		$ribbons = array();
+		$sorted_products = array();
+		foreach($products as $p){
+			if($p['is_ribbon']){
+				$ribbons[] = $p;
+			}else{
+				$sorted_products[$p['flowid']][] = $p;
+			}
+		}
 
 		include view('cart');
 	break;

@@ -429,6 +429,16 @@ ul.product .detail{
 	min-height: 64px;
 }
 
+ul.product .name > .label{
+	margin: 0 4px;
+	color: gray;
+	border: gray 1px solid;
+	border-radius: 4px;
+	font-style: normal;
+	font-size: 7pt;
+	padding: 1px;
+}
+
 ul.product .soldout{
 	color: #808080;
 	font-size: 10pt;
@@ -691,6 +701,22 @@ section.layout h4{
 .lightbox table{
 	margin: auto;
 	width: 90%;
+}
+
+.tinybox{
+	background: white;
+	overflow: hidden;
+	font-size: 9pt;
+}
+
+.tinybox h2{
+	background: #efefef;
+	margin: 0;
+	padding: 0.8em 15px 0.4em 15px;
+	font-weight: normal;
+	border: #dcdcdc 1px solid;
+	font-size: 9pt;
+	color: #333333;
 }
 
 .message input{

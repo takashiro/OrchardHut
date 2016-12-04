@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `pre_product` (
   `icon_background` mediumint(8) unsigned NOT NULL DEFAULT '13164714',
   `displayorder` tinyint(4) NOT NULL DEFAULT '0',
   `hide` tinyint(1) NOT NULL DEFAULT '0',
-  `flowid` mediumint(8) NULL,
+  `flowid` mediumint(8) NOT NULL DEFAULT '0',
   `is_ribbon` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
