@@ -31,7 +31,7 @@ function updateTotalPrice(){
 			new_total += deliveryfee;
 		}
 	});
-	$('#total-price').text(new_total.toFixed());
+	$('#total-price').text(new_total.toFixed(2));
 
 	$('input[name="paymentmethod"]').each(function(){
 		if($(this).val() == Order.PaidWithWallet){
