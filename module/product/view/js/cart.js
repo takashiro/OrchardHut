@@ -112,15 +112,24 @@ $(function(){
 		e.preventDefault();
 		if(confirm('您确认要删除该收货地址吗？')){
 			var button = $(e.target);
-			var li = button.parent();
-			var address_id = li.children('input').val();
+			var li = button.parent().parent();
+			var address_id = parseInt(li.children('input').val(), 10);
+			if(address_id <= 0){
+				makeToast('地址编号获取失败。');
+				return;
+			}
 
 			var data = {
 				'action' : 'deleteaddress',
 				'address_id' : address_id
 			};
 			$.post('index.php?mod=product:cart', data, function(response){
-				li.remove();
+				var deleted_num = parseInt(response, 10);
+				if(deleted_num > 0){
+					li.remove();
+				}else{
+					makeToast('删除失败，地址不存在。');
+				}
 			});
 		}
 	});
