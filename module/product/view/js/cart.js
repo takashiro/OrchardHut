@@ -134,13 +134,15 @@ $(function(){
 		}
 	});
 
-	$('input[type="radio"][name="deliveryaddressid"]').change(function(){
+	var address_radio = $('input[type="radio"][name="deliveryaddressid"]');
+	address_radio.change(function(){
 		if(parseInt($(this).val(), 10) == 0){
 			$('#new_address_table').show();
 		}else{
 			$('#new_address_table').hide();
 		}
 	});
+	address_radio.change();
 
 	$('.deliverymethod input[type="radio"]').change(function(){
 		var area = $(this).parents('.flow-area');
