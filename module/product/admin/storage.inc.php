@@ -251,12 +251,17 @@ class ProductStorageModule extends AdminControlPanelModule{
 			while($r = $query->fetch_row()){
 				$ids[] = $r[0];
 			}
-			$ids = implode(',', $ids);
 
-			$storage_unit_ratio = $db->fetch_all("SELECT storageid,amount,importamount,importamountunit
-				FROM `{$tpre}productstoragelog`
-				WHERE id IN ($ids)
-				ORDER BY id DESC");
+			if($ids){
+				$ids = implode(',', $ids);
+
+				$storage_unit_ratio = $db->fetch_all("SELECT storageid,amount,importamount,importamountunit
+					FROM `{$tpre}productstoragelog`
+					WHERE id IN ($ids)
+					ORDER BY id DESC");
+			}else{
+				$storage_unit_ratio = array();
+			}
 		}
 
 		foreach($storages as &$s){
